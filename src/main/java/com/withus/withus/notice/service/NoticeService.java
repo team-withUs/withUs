@@ -6,4 +6,6 @@ import com.withus.withus.notice.dto.NoticeResponseDto;
 public interface NoticeService {
 
   NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto);
+
+  NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto);
 }
