@@ -27,7 +27,7 @@ public class Notice extends TimeStamp {
     @Column
     private int report = 0;
 
-    private Boolean isActive=true;
+    private Boolean isActive = true;
 
 //    @Column(nullable = false)
 //    private Long memberId;

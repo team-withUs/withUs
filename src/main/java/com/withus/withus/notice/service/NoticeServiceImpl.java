@@ -49,14 +49,16 @@ public class NoticeServiceImpl implements NoticeService{
   public void updateReportNotice(Long noticeId) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.updateReport(notice.getReport()+1);
-    if(notice.getReport()>=3){
+    if(notice.getReport() >= 3){
       notice.delete();
     }
   }
 
   public Notice findByIsActiveAndNoticeId(Long noticeId) {
     Notice notice = noticeRepository.findByIsActiveAndId(true,noticeId)
-        .orElseThrow(()->new BisException(ErrorCode.NOT_FOUND_NOTICE));
+        .orElseThrow(()->
+            new BisException(ErrorCode.NOT_FOUND_NOTICE)
+        );
     return notice;
   }
 }

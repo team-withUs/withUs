@@ -42,7 +42,7 @@ public class NoticeController {
   ) {
     NoticeResponseDto responseDto = noticeService.updateNotice(noticeId, requestDto);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE,responseDto));
+        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE, responseDto));
   }
 
   @GetMapping("/{noticeId}")
@@ -55,7 +55,7 @@ public class NoticeController {
   }
 
   @DeleteMapping("/{noticeId}")
-  public ResponseEntity<CommonResponse> deleteNotice(
+  public ResponseEntity<CommonResponse<String>> deleteNotice(
       @PathVariable("noticeId") Long noticeId
   ) {
     noticeService.deleteNotice(noticeId);
@@ -64,7 +64,7 @@ public class NoticeController {
   }
 
   @PatchMapping("/report/{noticeId}")
-  public ResponseEntity<CommonResponse> updateReportNotice(
+  public ResponseEntity<CommonResponse<String>> updateReportNotice(
       @PathVariable("noticeId") Long noticeId
   ) {
     noticeService.updateReportNotice(noticeId);
