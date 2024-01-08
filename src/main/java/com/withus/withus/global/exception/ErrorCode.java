@@ -37,6 +37,7 @@ public enum ErrorCode {
 
     /* 404 NOT_FOUND */
     NOT_FOUND_MEMBER(NOT_FOUND, "해당 멤버를 찾을 수 없습니다"),
+    NOT_FOUND_NOTICE(NOT_FOUND,"해당 Notice을 찾을 수없습니다."),
 
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
