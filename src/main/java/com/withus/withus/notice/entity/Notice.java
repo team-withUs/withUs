@@ -25,7 +25,7 @@ public class Notice extends TimeStamp {
     private String image;
 
     @Column
-    private Integer report = 0;
+    private int report = 0;
 
     private Boolean isActive=true;
 
@@ -53,8 +53,8 @@ public class Notice extends TimeStamp {
         this.report=report;
     }
 
-    public void delete(Boolean isActive){
-        this.isActive=isActive;
+    public void delete(){
+        this.isActive=false;
     }
 
     public static Notice createNotice(NoticeRequestDto requestDto){
