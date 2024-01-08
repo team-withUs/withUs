@@ -7,6 +7,7 @@ import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
 import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.dto.UpdateRequestDto;
+import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -60,12 +61,12 @@ public class MemberController {
   public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
       @PathVariable("memberId") Long memberId,
       @Valid @RequestBody UpdateRequestDto updateRequestDto,
-      @AuthenticationPrincipal UserDetailsImpl userDetails
+      Member member
   ) {
     MemberResponseDto memberResponseDto = memberService.updateMember(
         memberId,
         updateRequestDto,
-        userDetails.getMember()
+        member
     );
 
     return ResponseEntity.status(ResponseCode.UPDATE_PROFILE.getHttpStatus())
@@ -73,14 +74,26 @@ public class MemberController {
   }
 
   @DeleteMapping("/{memberId}")
-  public ResponseEntity<CommonResponse> deleteMember(
+  public ResponseEntity<CommonResponse<String>> deleteMember(
       @PathVariable("memberId") Long memberId,
-      @AuthenticationPrincipal UserDetailsImpl userDetails
+      Member member
   ) {
-      memberService.deleteMember(memberId, userDetails.getMember());
+      memberService.deleteMember(memberId, member);
 
       return ResponseEntity
           .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
-          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,null));
+          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,""));
   }
+
+  @PatchMapping("/report/{memberId}")
+  public ResponseEntity<CommonResponse<String>> reportMember(
+      @PathVariable("memberId") Long memberId,
+      Member member
+  ) {
+    memberService.reportMember(memberId,member);
+    return ResponseEntity
+        .status(ResponseCode.INVITE_MEMBER.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""));
+  }
+
 }
