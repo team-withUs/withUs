@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="notices")
 public class Notice extends TimeStamp {
 
     @Id
@@ -26,7 +25,9 @@ public class Notice extends TimeStamp {
     private String image;
 
     @Column
-    private Integer report = 0;
+    private int report = 0;
+
+    private Boolean isActive = true;
 
 //    @Column(nullable = false)
 //    private Long memberId;
@@ -47,6 +48,13 @@ public class Notice extends TimeStamp {
     public void update(NoticeRequestDto requestDto){
         this.title = requestDto.title();
         this.content = requestDto.content();
+    }
+    public void updateReport(Integer report){
+        this.report=report;
+    }
+
+    public void delete(){
+        this.isActive=false;
     }
 
     public static Notice createNotice(NoticeRequestDto requestDto){
