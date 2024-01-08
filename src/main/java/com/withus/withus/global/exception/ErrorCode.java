@@ -19,6 +19,8 @@ public enum ErrorCode {
 
     NOT_MATCH_PASSWORD(BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
 
+    NOT_MATCH_PASSWORD_CHECK(BAD_REQUEST, "비밀번호와 비밀번호 확인이 일치하지 않습니다."),
+
     NOT_MATCH_AUTHCODE(BAD_REQUEST, "인증번호가 일치하지 않습니다."),
 
     /* 401 UNAUTHORIZED */

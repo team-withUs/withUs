@@ -9,12 +9,14 @@ import com.withus.withus.global.utils.RedisService;
 import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
 import com.withus.withus.member.dto.SignupRequestDto;
+import com.withus.withus.member.dto.UpdateRequestDto;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.repository.MemberRepository;
 import java.time.Duration;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -78,7 +80,29 @@ public class MemberServiceImpl implements MemberService{
   public MemberResponseDto getMember(Long memberId) {
     Member member = findMemberByMemberId(memberId);
 
-    return MemberResponseDto.buildMemberResponseDto(member);
+    return MemberResponseDto.createMemberResponseDto(member);
+  }
+
+  @Transactional
+  @Override
+  public MemberResponseDto updateMember(
+      Long memberId,
+      UpdateRequestDto updateRequestDto,
+      Member member
+  ) {
+    if(!memberId.equals(member.getId())){
+      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+    }
+    if(!updateRequestDto.password().equals(updateRequestDto.passwordCheck())){
+      throw new BisException(ErrorCode.NOT_MATCH_PASSWORD_CHECK);
+    }
+    sameMemberInDBByUsername(updateRequestDto.username());
+    sameMemberInDBByEmail(updateRequestDto.email());
+
+    Member updatedMember = findMemberByMemberId(memberId);
+    updatedMember.update(updateRequestDto, passwordEncoder.encode(updateRequestDto.password()));
+
+    return MemberResponseDto.createMemberResponseDto(updatedMember);
   }
 
   public Member findMemberByMemberId(Long memberId){
