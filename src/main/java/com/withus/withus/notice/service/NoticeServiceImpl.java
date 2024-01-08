@@ -26,26 +26,37 @@ public class NoticeServiceImpl implements NoticeService{
   @Transactional
   @Override
   public NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto) {
-    Notice notice = findById(noticeId);
+    Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.update(requestDto);
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 
   @Override
   public NoticeResponseDto getNotice(Long noticeId) {
-    Notice notice = findById(noticeId);
+    Notice notice = findByIsActiveAndNoticeId(noticeId);
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 
   @Transactional
   @Override
   public void deleteNotice(Long noticeId) {
-    Notice notice =findById(noticeId);
+    Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.delete(false);
   }
 
-  public Notice findById(Long noticeId) {
-    Notice notice = noticeRepository.findByIsActiveAndId(true,noticeId).orElseThrow(()->new BisException(ErrorCode.NOT_FOUND_NOTICE));
+  @Transactional
+  @Override
+  public void updateReportNotice(Long noticeId) {
+    Notice notice = findByIsActiveAndNoticeId(noticeId);
+    notice.updateReport(notice.getReport()+1);
+    if(notice.getReport()>=3){
+      notice.delete(false);
+    }
+  }
+
+  public Notice findByIsActiveAndNoticeId(Long noticeId) {
+    Notice notice = noticeRepository.findByIsActiveAndId(true,noticeId)
+        .orElseThrow(()->new BisException(ErrorCode.NOT_FOUND_NOTICE));
     return notice;
   }
 }

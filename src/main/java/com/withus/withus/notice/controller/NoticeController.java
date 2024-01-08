@@ -63,4 +63,13 @@ public class NoticeController {
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_DELETE,""));
   }
 
+  @PatchMapping("/report/{noticeId}")
+  public ResponseEntity<CommonResponse> updateReportNotice(
+      @PathVariable("noticeId") Long noticeId
+  ) {
+    noticeService.updateReportNotice(noticeId);
+    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_REPORT.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_REPORT,""));
+  }
+
 }

@@ -50,6 +50,9 @@ public class Notice extends TimeStamp {
         this.title = requestDto.title();
         this.content = requestDto.content();
     }
+    public void updateReport(Integer report){
+        this.report=report;
+    }
 
     public void delete(Boolean isActive){
         this.isActive=isActive;
