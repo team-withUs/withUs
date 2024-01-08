@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="notices")
 public class Notice extends TimeStamp {
 
     @Id
