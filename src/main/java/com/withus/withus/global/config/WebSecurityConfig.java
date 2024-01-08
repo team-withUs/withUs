@@ -9,6 +9,7 @@ import com.withus.withus.global.security.jwt.JwtAuthorizationFilter;
 import com.withus.withus.global.security.jwt.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -74,6 +75,8 @@ public class WebSecurityConfig {
         authorizeHttpRequests
             .requestMatchers("/api/member/signup/**", "/api/member/login")
             .permitAll()// 회원가입, 로그인요청 인증허가
+            .requestMatchers(HttpMethod.GET,"/api/member/**")
+            .permitAll()
             .anyRequest().authenticated() // 그 외 모든 요청 인증처리
     );
 

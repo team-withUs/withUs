@@ -49,7 +49,19 @@ public class Member extends TimeStamp {
         this.username = username;
     }
 
-
+    public static Member createMember(
+        String loginname,
+        String password,
+        String email,
+        String username
+    ) {
+        return Member.builder()
+            .loginname(loginname)
+            .password(password)
+            .username(username)
+            .email(email)
+            .build();
+    }
 
 
 
