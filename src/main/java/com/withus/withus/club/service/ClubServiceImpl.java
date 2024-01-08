@@ -27,4 +27,14 @@ public class ClubServiceImpl implements ClubService {
         Club savedClub = clubRepository.save(club);
         return new ClubResponseDto(savedClub);
     }
+
+    @Override
+    public ClubResponseDto getClub(Long clubId) {
+        return new ClubResponseDto(findClubById(clubId));
+    }
+
+    private Club findClubById(Long clubId) {
+        return clubRepository.findById(clubId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ClubId입니다."));
+
+    }
 }
