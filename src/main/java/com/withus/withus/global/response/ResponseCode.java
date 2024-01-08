@@ -22,6 +22,11 @@ public enum ResponseCode {
 
     LOGOUT(200, "로그아웃 되었습니다."),
 
+    SUCCESS_NOTICE_UPDATE(200,"Notice 수정 성공"),
+    SUCCESS_NOTICE_GET(200,"Notice 선택조회 성공"),
+    SUCCESS_NOTICE_DELETE(200,"Notice 삭제 성공"),
+    SUCCESS_NOTICE_REPORT(200,"Notice 신고 성공"),
+
     /* 201 CREATED */
     SIGNUP(201, "회원가입 성공"),
     SUCCESS_NOTICE_CREATE(201,"Notice 생성 성공");
