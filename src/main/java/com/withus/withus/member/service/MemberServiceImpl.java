@@ -105,6 +105,17 @@ public class MemberServiceImpl implements MemberService{
     return MemberResponseDto.createMemberResponseDto(updatedMember);
   }
 
+  @Transactional
+  @Override
+  public void deleteMember(Long memberId, Member member) {
+    if(!memberId.equals(member.getId())){
+      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+    }
+
+    Member deletedMember = findMemberByMemberId(memberId);
+    deletedMember.delete();
+  }
+
   public Member findMemberByMemberId(Long memberId){
     return memberRepository.findById(memberId).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)

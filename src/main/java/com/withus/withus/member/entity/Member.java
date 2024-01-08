@@ -69,4 +69,8 @@ public class Member extends TimeStamp {
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
     }
+
+    public void delete() {
+        this.isActive = false;
+    }
 }

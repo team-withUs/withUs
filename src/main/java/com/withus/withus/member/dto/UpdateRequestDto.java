@@ -1,5 +1,7 @@
 package com.withus.withus.member.dto;
 
+import com.withus.withus.global.exception.BisException;
+import com.withus.withus.global.exception.ErrorCode;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -24,11 +26,12 @@ public record UpdateRequestDto(
 
   @Builder
   public UpdateRequestDto(String password, String passwordCheck, String username, String email){
+    if(!password.equals(passwordCheck)){
+      throw new BisException(ErrorCode.NOT_MATCH_PASSWORD_CHECK);
+    }
     this.password = password;
     this.passwordCheck = passwordCheck;
     this.username = username;
     this.email = email;
   }
-
-
 }

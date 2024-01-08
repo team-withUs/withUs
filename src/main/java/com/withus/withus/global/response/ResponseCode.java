@@ -24,6 +24,8 @@ public enum ResponseCode {
 
     UPDATE_PROFILE(200, "프로필 수정 성공"),
 
+    RESIGN_MEMBER(200, "회원탈퇴 성공"),
+
     /* 201 CREATED */
     SIGNUP(201, "회원가입 성공"),
     SUCCESS_NOTICE_CREATE(201,"Notice 생성 성공");

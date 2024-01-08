@@ -59,7 +59,7 @@ public class MemberController {
   @PatchMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
       @PathVariable("memberId") Long memberId,
-      @RequestBody UpdateRequestDto updateRequestDto,
+      @Valid @RequestBody UpdateRequestDto updateRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails
   ) {
     MemberResponseDto memberResponseDto = memberService.updateMember(
@@ -72,4 +72,15 @@ public class MemberController {
         .body(CommonResponse.of(ResponseCode.UPDATE_PROFILE, memberResponseDto));
   }
 
+  @DeleteMapping("/{memberId}")
+  public ResponseEntity<CommonResponse> deleteMember(
+      @PathVariable("memberId") Long memberId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails
+  ) {
+      memberService.deleteMember(memberId, userDetails.getMember());
+
+      return ResponseEntity
+          .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
+          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,null));
+  }
 }
