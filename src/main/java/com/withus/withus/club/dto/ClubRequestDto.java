@@ -1,21 +1,30 @@
 package com.withus.withus.club.dto;
 
 import com.withus.withus.category.entity.ClubCategory;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class ClubRequestDto {
-    private String clubTitle;
-    private String content;
-    private String category;
-    private String image;
-    private int maxMember;
-    private String startTime;
-    private String endTime;
+import java.time.LocalDateTime;
 
-    public ClubCategory getCategoryAsEnum() {
-        return ClubCategory.valueOf(this.category.toUpperCase());
+
+public record ClubRequestDto(
+        @Size(min = 1, max = 50) String clubTitle,
+        @Size(min = 1, max = 50) String content,
+        ClubCategory category,
+        String image,
+        int maxMember,
+        LocalDateTime startTime,
+        LocalDateTime endTime
+) {
+    public ClubRequestDto(
+            @Size(min = 1, max = 50) String clubTitle,
+            @Size(min = 1, max = 50) String content,
+            String category,
+            String image,
+            int maxMember,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    ) {
+        this(clubTitle, content, ClubCategory.valueOf(category.toUpperCase()), image, maxMember, startTime, endTime);
     }
 }

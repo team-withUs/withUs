@@ -9,17 +9,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
 
+
     @Override
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
-        LocalDateTime startTime = LocalDateTime.parse(clubRequestDto.getStartTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        LocalDateTime endTime = LocalDateTime.parse(clubRequestDto.getEndTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime startTime = clubRequestDto.startTime(); // Assuming getStartTime() returns LocalDateTime
+        LocalDateTime endTime = clubRequestDto.endTime(); // Assuming getEndTime() returns LocalDateTime
 
         Club club = new Club(clubRequestDto, member, startTime, endTime);
         club.setMember(member);
