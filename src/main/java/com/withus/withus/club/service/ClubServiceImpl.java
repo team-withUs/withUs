@@ -51,6 +51,14 @@ public class ClubServiceImpl implements ClubService {
         return new ClubResponseDto(club);
     }
 
+    @Override
+    public String deleteClub(Long clubId, UserDetailsImpl userDetails) {
+        Member member = userDetails.getMember();
+        Club club = verifyMember(member, clubId);
+        clubRepository.delete(club);
+        return "Club deleted successfully";
+    }
+
     private Club verifyMember(Member member, Long clubId) {
         Club club = findClubById(clubId);
         if(!club.getMember().getUsername().equals(member.getUsername())){
@@ -58,5 +66,4 @@ public class ClubServiceImpl implements ClubService {
         }
         return club;
     }
-
 }
