@@ -20,7 +20,7 @@ public record MemberResponseDto(
     this.image = image;
   }
 
-  public static MemberResponseDto buildMemberResponseDto(Member member){
+  public static MemberResponseDto createMemberResponseDto(Member member){
     String username = member.getUsername();
     String email = member.getEmail();
     String introduction = member.getIntroduction();

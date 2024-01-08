@@ -2,14 +2,19 @@ package com.withus.withus.member.controller;
 
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
+import com.withus.withus.global.security.UserDetailsImpl;
 import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
 import com.withus.withus.member.dto.SignupRequestDto;
+import com.withus.withus.member.dto.UpdateRequestDto;
 import com.withus.withus.member.service.MemberServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,11 +48,39 @@ public class MemberController {
 
   @GetMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> getMember(
-      @PathVariable(name = "memberId") Long memberId
-  ){
+      @PathVariable("memberId") Long memberId
+  ) {
     MemberResponseDto memberResponseDto = memberService.getMember(memberId);
-    return ResponseEntity.status(ResponseCode.GET_PROFILE.getHttpStatus())
+    return ResponseEntity
+        .status(ResponseCode.GET_PROFILE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.GET_PROFILE, memberResponseDto));
   }
 
+  @PatchMapping("/{memberId}")
+  public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
+      @PathVariable("memberId") Long memberId,
+      @Valid @RequestBody UpdateRequestDto updateRequestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails
+  ) {
+    MemberResponseDto memberResponseDto = memberService.updateMember(
+        memberId,
+        updateRequestDto,
+        userDetails.getMember()
+    );
+
+    return ResponseEntity.status(ResponseCode.UPDATE_PROFILE.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.UPDATE_PROFILE, memberResponseDto));
+  }
+
+  @DeleteMapping("/{memberId}")
+  public ResponseEntity<CommonResponse> deleteMember(
+      @PathVariable("memberId") Long memberId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails
+  ) {
+      memberService.deleteMember(memberId, userDetails.getMember());
+
+      return ResponseEntity
+          .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
+          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,null));
+  }
 }
