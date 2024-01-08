@@ -23,9 +23,11 @@ public class NoticeController {
 
 
   @PostMapping("/{clubId}")
-  public ResponseEntity<CommonResponse> createNotice(@PathVariable Long clubId, @RequestBody
-      NoticeRequestDto requestDto){
-    NoticeResponseDto responseDto = noticeService.createNotice(clubId,requestDto);
-    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_CREATE.getHttpStatus()).body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_CREATE,responseDto));
+  public ResponseEntity<CommonResponse<NoticeResponseDto>> createNotice(
+      @PathVariable("clubId") Long clubId,
+      @RequestBody NoticeRequestDto requestDto) {
+    NoticeResponseDto responseDto = noticeService.createNotice(clubId, requestDto);
+    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_CREATE.getHttpStatus())
+            .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_CREATE,responseDto));
   }
 }
