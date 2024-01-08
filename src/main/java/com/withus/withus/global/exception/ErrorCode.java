@@ -23,6 +23,8 @@ public enum ErrorCode {
 
     NOT_MATCH_AUTHCODE(BAD_REQUEST, "인증번호가 일치하지 않습니다."),
 
+    NOT_CHANGED_PASSWORD(BAD_REQUEST,"이전 비밀번호와 다른 비밀번호여야 합니다."),
+
     /* 401 UNAUTHORIZED */
     ACCESS_DENIED(UNAUTHORIZED, "유효하지 못한 토큰입니다."),
 

@@ -93,8 +93,9 @@ public class MemberServiceImpl implements MemberService{
     if(!memberId.equals(member.getId())){
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
-    if(!updateRequestDto.password().equals(updateRequestDto.passwordCheck())){
-      throw new BisException(ErrorCode.NOT_MATCH_PASSWORD_CHECK);
+
+    if(passwordEncoder.matches(updateRequestDto.password(), member.getPassword())){
+      throw new BisException(ErrorCode.NOT_CHANGED_PASSWORD);
     }
     sameMemberInDBByUsername(updateRequestDto.username());
     sameMemberInDBByEmail(updateRequestDto.email());
