@@ -26,7 +26,7 @@ public class MemberController {
       @Valid @RequestBody EmailRequestDto emailRequestDto
   ) {
     memberService.sendAuthCodeToEmail(emailRequestDto);
-    return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.SEND_MAIL, emailRequestDto));
+    return ResponseEntity.status(ResponseCode.SEND_MAIL.getHttpStatus()).body(CommonResponse.of(ResponseCode.SEND_MAIL, emailRequestDto));
   }
 
   @PostMapping("/signup")
@@ -35,7 +35,7 @@ public class MemberController {
   ) {
 
     memberService.signup(signupRequestDto);
-    return ResponseEntity.status(201).body(CommonResponse.of(ResponseCode.SIGNUP, ""));
+    return ResponseEntity.status(ResponseCode.SIGNUP.getHttpStatus()).body(CommonResponse.of(ResponseCode.SIGNUP, ""));
   }
 
 
