@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +39,8 @@ public class NoticeController {
       @RequestBody NoticeRequestDto requestDto
   ) {
     NoticeResponseDto responseDto = noticeService.updateNotice(noticeId, requestDto);
-    return null;
+    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE,responseDto));
 
   }
 
