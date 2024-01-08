@@ -19,6 +19,8 @@ public enum ErrorCode {
 
     NOT_MATCH_PASSWORD(BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
 
+    NOT_MATCH_AUTHCODE(BAD_REQUEST, "인증번호가 일치하지 않습니다."),
+
     /* 401 UNAUTHORIZED */
     ACCESS_DENIED(UNAUTHORIZED, "유효하지 못한 토큰입니다."),
 
@@ -38,6 +40,8 @@ public enum ErrorCode {
 
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
+
+    DUPLICATE_USERNAME(CONFLICT, "중복된 유저이름 입니다"),
 
     DUPLICATE_EMAIL(CONFLICT, "중복된 Email 입니다"),
 
