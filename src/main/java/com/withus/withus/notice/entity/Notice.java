@@ -28,21 +28,20 @@ public class Notice extends Timestamp {
     @Column
     private Integer report = 0;
 
-    @Column(nullable = false)
-    private Long memberId;
+//    @Column(nullable = false)
+//    private Long memberId;
 
-    @ManyToOne
-    @JoinColumn(name = "Club_id", nullable = false)
-    private Club club;
+//    @ManyToOne
+//    @JoinColumn(name = "Club_id", nullable = false)
+//    private Club club;
 
 
     @Builder
-    public Notice(String title,String content,
-                  Long memberId,Club club){
+    public Notice(String title,String content){
         this.title=title;
         this.content=content;
-        this.memberId=memberId;
-        this.club=club;
+//        this.memberId=memberId;
+//        this.club=club;
     }
 
     public void update(NoticeRequestDto requestDto){

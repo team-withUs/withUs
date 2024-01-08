@@ -1,4 +1,13 @@
 package com.withus.withus.notice.dto;
 
-public class NoticeRequestDto {
+
+import lombok.Getter;
+
+
+public record NoticeRequestDto(
+  String title,
+  String content
+  )
+{
+
 }
