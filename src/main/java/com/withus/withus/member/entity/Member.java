@@ -2,6 +2,7 @@ package com.withus.withus.member.entity;
 
 import com.withus.withus.global.timestamp.Timestamp;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

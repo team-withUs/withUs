@@ -9,7 +9,8 @@ import lombok.Getter;
 public enum ResponseCode {
 
     /* 200 OK */
-    OK(200, "요청 성공");
+    OK(200, "요청 성공"),
+    GET_PROFILE(200,"프로필 가져오기 성공");
 
     /* 201 CREATED */
 
