@@ -52,20 +52,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         HttpServletResponse response, FilterChain chain, Authentication authResult)
         throws IOException, ServletException {
         log.info("로그인 성공 및 JWT 생성");
-        String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
+        String loginname = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
 
-        String accessToken = jwtUtil.createAccessToken(username);
+        String accessToken = jwtUtil.createAccessToken(loginname);
         String refreshToken = "";
 
         try {
             //  Http 로그인 URL 요청시 토큰저장소 조회 **
-            RefreshToken refreshTokenIns = jwtUtil.getTokenDBByusername(username);
+            RefreshToken refreshTokenIns = jwtUtil.getTokenDBByLoginname(loginname);
             refreshToken = refreshTokenIns.getRefreshToken();
 
         } catch (NullPointerException e) {
-            refreshToken = jwtUtil.createRefreshToken(username);
+            refreshToken = jwtUtil.createRefreshToken(loginname);
             // RefreshToken DB에 저장
-            jwtUtil.saveRefreshJwtToDB(refreshToken, username);
+            jwtUtil.saveRefreshJwtToDB(refreshToken, loginname);
         }
 
         // RefreshToken 쿠키에 저장
