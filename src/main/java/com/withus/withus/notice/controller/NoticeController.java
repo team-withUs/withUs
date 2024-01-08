@@ -9,6 +9,7 @@ import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.service.NoticeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +42,15 @@ public class NoticeController {
     NoticeResponseDto responseDto = noticeService.updateNotice(noticeId, requestDto);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE,responseDto));
+  }
 
+  @GetMapping("/{noticeId}")
+  public ResponseEntity<CommonResponse<NoticeResponseDto>> getNotice(
+      @PathVariable("noticeId") Long noticeId
+  ) {
+    NoticeResponseDto responseDto = noticeService.getNotice(noticeId);
+    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GET.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GET,responseDto));
   }
 
 }

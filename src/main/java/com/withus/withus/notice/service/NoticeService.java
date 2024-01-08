@@ -8,4 +8,6 @@ public interface NoticeService {
   NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto);
 
   NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto);
+
+  NoticeResponseDto getNotice(Long noticeId);
 }

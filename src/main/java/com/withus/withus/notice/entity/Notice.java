@@ -28,6 +28,8 @@ public class Notice extends TimeStamp {
     @Column
     private Integer report = 0;
 
+    private Boolean isActive=true;
+
 //    @Column(nullable = false)
 //    private Long memberId;
 

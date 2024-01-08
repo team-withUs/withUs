@@ -31,8 +31,14 @@ public class NoticeServiceImpl implements NoticeService{
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 
+  @Override
+  public NoticeResponseDto getNotice(Long noticeId) {
+    Notice notice = findById(noticeId);
+    return NoticeResponseDto.createNoticeResponseDto(notice);
+  }
+
   public Notice findById(Long noticeId) {
-    Notice notice = noticeRepository.findById(noticeId).orElseThrow(()-> new BisException(ErrorCode.NOT_FOUND_NOTICE));
+    Notice notice = noticeRepository.findByIsActiveAndId(true,noticeId).orElseThrow(()->new BisException(ErrorCode.NOT_FOUND_NOTICE));
     return notice;
   }
 }
