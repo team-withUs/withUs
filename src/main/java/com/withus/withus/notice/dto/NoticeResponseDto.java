@@ -2,20 +2,29 @@ package com.withus.withus.notice.dto;
 
 import com.withus.withus.notice.entity.Notice;
 import java.time.LocalDateTime;
-
-
+import lombok.Builder;
 
 
 public record NoticeResponseDto(
   String title,
-  String content,
-  LocalDateTime createdAt,
-  LocalDateTime modifiedAt
+  String content
+
   )
 {
 
-  public NoticeResponseDto(Notice notice){
-    this(notice.getTitle(), notice.getContent(),
-        notice.getCreatedAt(),notice.getModifiedAt());
+  @Builder
+  public NoticeResponseDto(String title,String content){
+    this.title=title;
+    this.content=content;
   }
+  public static NoticeResponseDto createNoticeResponseDto(Notice notice){
+    String title= notice.getTitle();
+    String content=notice.getContent();
+
+    return NoticeResponseDto.builder()
+        .title(title)
+        .content(content)
+        .build();
+  }
+
 }

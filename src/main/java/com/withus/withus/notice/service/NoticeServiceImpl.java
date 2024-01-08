@@ -19,6 +19,6 @@ public class NoticeServiceImpl implements NoticeService{
 
     Notice notice = Notice.builder().title(requestDto.title()).content(requestDto.content()).build();
     Notice saveNotice = noticeRepository.save(notice);
-    return new NoticeResponseDto(saveNotice);
+    return NoticeResponseDto.createNoticeResponseDto(saveNotice);
   }
 }
