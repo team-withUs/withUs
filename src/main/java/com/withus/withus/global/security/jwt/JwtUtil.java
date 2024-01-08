@@ -65,12 +65,12 @@ public class JwtUtil {
     }
 
     // AccessToken 생성
-    public String createAccessToken(String username) {
+    public String createAccessToken(String loginname) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(username) // 사용자 식별자값(ID)
+                        .setSubject(loginname) // 사용자 식별자값(ID)
                         .claim(AUTHORIZATION_KEY, "USER")
                         .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료 시간
                         .setIssuedAt(date) // 발급일
@@ -79,11 +79,11 @@ public class JwtUtil {
     }
 
     // RefreshToken 생성
-    public String createRefreshToken(String username) {
+    public String createRefreshToken(String loginname) {
         Date date = new Date();
 
         return Jwts.builder()
-                .setSubject(username) // 사용자 식별자값(ID)
+                .setSubject(loginname) // 사용자 식별자값(ID)
                 .claim(AUTHORIZATION_KEY, "USER")
                 .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME)) // 만료 시간
                 .setIssuedAt(date) // 발급일
@@ -106,9 +106,9 @@ public class JwtUtil {
     }
 
     // RefreshToken 객체 생성 및 DB 저장
-    public void saveRefreshJwtToDB(String refreshToken, String username) {
+    public void saveRefreshJwtToDB(String refreshToken, String loginname) {
         // RefreshToken DB에 저장
-        RefreshToken refreshTokenEntity = RefreshToken.createRefreshToken(refreshToken, username);
+        RefreshToken refreshTokenEntity = RefreshToken.createRefreshToken(refreshToken, loginname);
 
         refreshTokenRepository.save(refreshTokenEntity);
     }
@@ -117,7 +117,7 @@ public class JwtUtil {
     public boolean checkTokenDBByToken(String token) {
         Claims user = getUserInfoFromToken(token);
         try {
-            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKeyUsername(user.getSubject());
+            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKeyLoginname(user.getSubject());
             if (refreshToken.isPresent()) {
                 return true;
             }
@@ -133,9 +133,9 @@ public class JwtUtil {
         return redisService.checkExistsValue(token);
     }
 
-    // RefreshToken DB에서 username으로 가져오기
-    public RefreshToken getTokenDBByusername(String username) {
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKeyUsername(username);
+    // RefreshToken DB에서 loginname으로 가져오기
+    public RefreshToken getTokenDBByLoginname(String loginname) {
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKeyLoginname(loginname);
         if (refreshToken.isPresent()) {
             return refreshToken.get();
         } else {
