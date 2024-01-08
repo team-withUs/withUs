@@ -24,7 +24,12 @@ public enum ResponseCode {
 
     /* 201 CREATED */
     SIGNUP(201, "회원가입 성공"),
-    SUCCESS_NOTICE_CREATE(201,"Notice 생성 성공");
+    SUCCESS_NOTICE_CREATE(201,"Notice 생성 성공"),
+    SUCCESS_CLUB_CREATE(201,"Club 생성 성공"),
+    /* 201 UPDATE*/
+    SUCCESS_CLUB_UPDATE(201,"Club 업데이트 성공");
+
+
 
     private final int httpStatus;
     private final String message;

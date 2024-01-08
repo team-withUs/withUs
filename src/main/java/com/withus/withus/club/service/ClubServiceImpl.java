@@ -4,9 +4,11 @@ import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.repository.ClubRepository;
+import com.withus.withus.global.security.UserDetailsImpl;
 import com.withus.withus.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -17,11 +19,11 @@ public class ClubServiceImpl implements ClubService {
 
 
     @Override
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
-        LocalDateTime startTime = clubRequestDto.startTime(); // Assuming getStartTime() returns LocalDateTime
-        LocalDateTime endTime = clubRequestDto.endTime(); // Assuming getEndTime() returns LocalDateTime
+    public ClubResponseDto createClub(ClubRequestDto clubrequestDto, Member member) {
+        LocalDateTime startTime = clubrequestDto.startTime(); // Assuming getStartTime() returns LocalDateTime
+        LocalDateTime endTime = clubrequestDto.endTime(); // Assuming getEndTime() returns LocalDateTime
 
-        Club club = new Club(clubRequestDto, member, startTime, endTime);
+        Club club = new Club(clubrequestDto, member, startTime, endTime);
         club.setMember(member);
 
         Club savedClub = clubRepository.save(club);
@@ -32,9 +34,29 @@ public class ClubServiceImpl implements ClubService {
     public ClubResponseDto getClub(Long clubId) {
         return new ClubResponseDto(findClubById(clubId));
     }
-
     private Club findClubById(Long clubId) {
-        return clubRepository.findById(clubId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ClubId입니다."));
+        return clubRepository.findById(clubId).
+                orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ClubId입니다."));
 
     }
+
+
+    @Override
+    @Transactional
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubrequestDto, UserDetailsImpl userDetails) {
+        Member member = userDetails.getMember();
+        Club club = verifyMember(member,clubId);
+        club.update(clubrequestDto);
+
+        return new ClubResponseDto(club);
+    }
+
+    private Club verifyMember(Member member, Long clubId) {
+        Club club = findClubById(clubId);
+        if(!club.getMember().getUsername().equals(member.getUsername())){
+            throw new IllegalArgumentException("해당 사용자가 아닙니다.");
+        }
+        return club;
+    }
+
 }

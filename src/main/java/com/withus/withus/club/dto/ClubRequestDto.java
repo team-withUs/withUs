@@ -1,15 +1,12 @@
 package com.withus.withus.club.dto;
 
 import com.withus.withus.category.entity.ClubCategory;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-
 public record ClubRequestDto(
-        @Size(min = 1, max = 50) String clubTitle,
-        @Size(min = 1, max = 50) String content,
+        String clubTitle,
+        String content,
         ClubCategory category,
         String image,
         int maxMember,
@@ -17,8 +14,8 @@ public record ClubRequestDto(
         LocalDateTime endTime
 ) {
     public ClubRequestDto(
-            @Size(min = 1, max = 50) String clubTitle,
-            @Size(min = 1, max = 50) String content,
+            String clubTitle,
+            String content,
             String category,
             String image,
             int maxMember,

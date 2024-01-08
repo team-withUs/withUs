@@ -64,4 +64,14 @@ public class Club extends TimeStamp {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+    public void update(ClubRequestDto clubrequestDto) {
+        this.clubTitle = clubrequestDto.clubTitle();
+        this.content = clubrequestDto.content();
+        this.category = clubrequestDto.category();
+        this.image = clubrequestDto.image();
+        this.MaxMember = clubrequestDto.maxMember();
+        this.startTime =clubrequestDto.startTime();
+        this.endTime = clubrequestDto.endTime();
+    }
 }
