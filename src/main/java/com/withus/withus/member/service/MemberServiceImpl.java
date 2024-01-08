@@ -7,6 +7,7 @@ import com.withus.withus.global.security.jwt.RefreshTokenRepository;
 import com.withus.withus.global.utils.EmailService;
 import com.withus.withus.global.utils.RedisService;
 import com.withus.withus.member.dto.EmailRequestDto;
+import com.withus.withus.member.dto.MemberResponseDto;
 import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.repository.MemberRepository;
@@ -73,6 +74,19 @@ public class MemberServiceImpl implements MemberService{
 
   }
 
+  @Override
+  public MemberResponseDto getMember(Long memberId) {
+    Member member = findMemberByMemberId(memberId);
+
+    return MemberResponseDto.buildMemberResponseDto(member);
+  }
+
+  public Member findMemberByMemberId(Long memberId){
+    return memberRepository.findById(memberId).orElseThrow(
+        ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
+    );
+  }
+
   public void sameMemberInDBByLoginname(String loginname) {
     if (memberRepository.existsUserByLoginname(loginname)) {
       throw new BisException(ErrorCode.DUPLICATE_MEMBER);
@@ -110,4 +124,5 @@ public class MemberServiceImpl implements MemberService{
       redisService.deleteValues(redisAuthCode);
     }
   }
+
 }
