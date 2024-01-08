@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService{
     String password = passwordEncoder.encode(signupRequestDto.password());
 
     // 새 멤버 등록
-    Member member = new Member(loginname, password, username, email);
+    Member member = new Member(loginname, password, email, username);
     memberRepository.save(member);
 
   }
