@@ -1,7 +1,7 @@
 package com.withus.withus.notice.entity;
 
 import com.withus.withus.club.entity.Club;
-import com.withus.withus.global.timestamp.Timestamp;
+import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name="notices")
-public class Notice extends Timestamp {
+public class Notice extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

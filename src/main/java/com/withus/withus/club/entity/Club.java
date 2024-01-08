@@ -1,6 +1,6 @@
 package com.withus.withus.club.entity;
 
-import com.withus.withus.global.timestamp.Timestamp;
+import com.withus.withus.global.timestamp.TimeStamp;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "club")
-public class Club extends Timestamp {
+public class Club extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
