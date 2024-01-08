@@ -81,7 +81,7 @@ public class MemberController {
 
       return ResponseEntity
           .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
-          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,null));
+          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,""));
   }
 
   @PatchMapping("/report/{memberId}")
@@ -92,7 +92,7 @@ public class MemberController {
     memberService.reportMember(memberId,userDetails.getMember());
     return ResponseEntity
         .status(ResponseCode.INVITE_MEMBER.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,null));
+        .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""null""));
   }
 
 }
