@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
-  Optional<RefreshToken> findByKeyUsername(String username);
+  Optional<RefreshToken> findByKeyLoginname(String loginname);
 
-  void deleteByKeyUsername(String username);
+  void deleteByKeyLoginname(String loginname);
 
-  boolean existsByKeyUsername(String username);
+  boolean existsByKeyLoginname(String loginname);
 
 
 }

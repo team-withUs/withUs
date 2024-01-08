@@ -27,18 +27,18 @@ public class RefreshToken extends TimeStamp {
     private String refreshToken;
 
     @Column(nullable = false)
-    private String keyUsername;
+    private String keyLoginname;
 
     @Builder
-    public RefreshToken(String refreshToken, String keyUsername) {
+    public RefreshToken(String refreshToken, String keyLoginname) {
         this.refreshToken = refreshToken;
-        this.keyUsername = keyUsername;
+        this.keyLoginname = keyLoginname;
     }
 
-    public static RefreshToken createRefreshToken(String refreshToken, String keyUsername) {
+    public static RefreshToken createRefreshToken(String refreshToken, String keyLoginname) {
         return RefreshToken.builder()
                 .refreshToken(refreshToken)
-                .keyUsername(keyUsername)
+                .keyLoginname(keyLoginname)
                 .build();
     }
 }

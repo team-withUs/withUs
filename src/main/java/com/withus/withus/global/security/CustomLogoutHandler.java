@@ -70,9 +70,9 @@ public class CustomLogoutHandler implements LogoutHandler {
     }
 
     Claims member = jwtUtil.getUserInfoFromToken(accessToken);
-    String username = member.getSubject();
+    String loginname = member.getSubject();
 
-    if (!refreshTokenRepository.existsByKeyUsername(username)) {
+    if (!refreshTokenRepository.existsByKeyLoginname(loginname)) {
       log.error("이미 로그아웃한 유저");
       response.setStatus(400);
       response.setCharacterEncoding("utf-8");
@@ -86,8 +86,8 @@ public class CustomLogoutHandler implements LogoutHandler {
       return;
     }
 
-    redisService.setValues(username, accessToken, Duration.ofMinutes(30));   // AccessToken 만료시간
-    refreshTokenRepository.deleteByKeyUsername(username);
+    redisService.setValues(loginname, accessToken, Duration.ofMinutes(30));   // AccessToken 만료시간
+    refreshTokenRepository.deleteByKeyLoginname(loginname);
 
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     response.setStatus(ResponseCode.LOGOUT.getHttpStatus());
