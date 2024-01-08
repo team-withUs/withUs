@@ -3,6 +3,7 @@ package com.withus.withus.member.controller;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.member.dto.EmailRequestDto;
+import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.service.MemberServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,4 +28,15 @@ public class MemberController {
     memberService.sendAuthCodeToEmail(emailRequestDto);
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.SEND_MAIL, emailRequestDto));
   }
+
+  @PostMapping("/signup")
+  public ResponseEntity<CommonResponse<String>> signupMember (
+      @Valid @RequestBody SignupRequestDto signupRequestDto
+  ) {
+
+    memberService.signup(signupRequestDto);
+    return ResponseEntity.status(201).body(CommonResponse.of(ResponseCode.SIGNUP, ""));
+  }
+
+
 }
