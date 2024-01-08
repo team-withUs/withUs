@@ -1,8 +1,9 @@
 package com.withus.withus.notice.controller;
 
-import static com.withus.withus.global.Response.ResponseCode.CREATE;
 
-import com.withus.withus.global.Response.CommonResponse;
+import static com.withus.withus.global.response.ResponseCode.SUCCESS_NOTICE_CREATE;
+
+import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.service.NoticeService;
@@ -25,6 +26,6 @@ public class NoticeController {
   public ResponseEntity<CommonResponse> createNotice(@PathVariable Long clubId, @RequestBody
       NoticeRequestDto requestDto){
     NoticeResponseDto responseDto = noticeService.createNotice(clubId,requestDto);
-    return ResponseEntity.status(CREATE.getHttpStatus()).body(CommonResponse.of(CREATE,responseDto));
+    return ResponseEntity.status(SUCCESS_NOTICE_CREATE.getHttpStatus()).body(CommonResponse.of(SUCCESS_NOTICE_CREATE,responseDto));
   }
 }
