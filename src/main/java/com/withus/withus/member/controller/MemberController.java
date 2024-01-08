@@ -83,4 +83,16 @@ public class MemberController {
           .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
           .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,null));
   }
+
+  @PatchMapping("/report/{memberId}")
+  public ResponseEntity<CommonResponse> reportMember(
+      @PathVariable("memberId") Long memberId,
+      @AuthenticationPrincipal UserDetailsImpl userDetails
+  ) {
+    memberService.reportMember(memberId,userDetails.getMember());
+    return ResponseEntity
+        .status(ResponseCode.INVITE_MEMBER.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,null));
+  }
+
 }

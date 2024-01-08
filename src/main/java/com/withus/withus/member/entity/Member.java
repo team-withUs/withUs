@@ -73,4 +73,8 @@ public class Member extends TimeStamp {
     public void delete() {
         this.isActive = false;
     }
+
+    public void report() {
+        this.report++;
+    }
 }
