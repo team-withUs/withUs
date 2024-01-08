@@ -10,4 +10,6 @@ public interface NoticeService {
   NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto);
 
   NoticeResponseDto getNotice(Long noticeId);
+
+  void deleteNotice(Long noticeId);
 }

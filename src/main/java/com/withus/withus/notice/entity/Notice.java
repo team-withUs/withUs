@@ -51,6 +51,10 @@ public class Notice extends TimeStamp {
         this.content = requestDto.content();
     }
 
+    public void delete(Boolean isActive){
+        this.isActive=isActive;
+    }
+
     public static Notice createNotice(NoticeRequestDto requestDto){
         String title = requestDto.title();
         String content = requestDto.content();

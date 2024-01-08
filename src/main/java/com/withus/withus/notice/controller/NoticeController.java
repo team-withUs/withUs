@@ -9,6 +9,7 @@ import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.service.NoticeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +52,15 @@ public class NoticeController {
     NoticeResponseDto responseDto = noticeService.getNotice(noticeId);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GET.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GET,responseDto));
+  }
+
+  @DeleteMapping("/{noticeId}")
+  public ResponseEntity<CommonResponse> deleteNotice(
+      @PathVariable("noticeId") Long noticeId
+  ) {
+    noticeService.deleteNotice(noticeId);
+    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_DELETE.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_DELETE,""));
   }
 
 }
