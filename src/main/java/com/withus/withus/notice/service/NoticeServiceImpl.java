@@ -7,8 +7,11 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberServiceImpl;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
+import com.withus.withus.notice.dto.PageableDto;
 import com.withus.withus.notice.entity.Notice;
 import com.withus.withus.notice.repository.NoticeRepository;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +42,17 @@ public class NoticeServiceImpl implements NoticeService{
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 
+  @Override
+  public List<NoticeResponseDto> getsNotice(int page, int size, String sortBy) {
+    List<Notice> noticeList = noticeRepository
+        .findAllByIsActive(true,PageableDto.getsPageableDto(page, size, sortBy).toPageable());
+    List<NoticeResponseDto> responseDtoList = new ArrayList<>();
+    for(Notice notice : noticeList){
+      responseDtoList.add(NoticeResponseDto.createNoticeResponseDto(notice));
+    }
+    return responseDtoList;
+  }
+
   @Transactional
   @Override
   public void deleteNotice(Long noticeId, Member member) {
@@ -51,10 +65,12 @@ public class NoticeServiceImpl implements NoticeService{
   public void updateReportNotice(Long noticeId, Member member) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.updateReport(notice.getReport()+1);
-    if(notice.getReport() >= 3){
+    if(notice.getReport() >= 5){
       notice.delete();
     }
   }
+
+
 
   public Notice findByIsActiveAndNoticeId(Long noticeId) {
     Notice notice = noticeRepository.findByIsActiveAndId(true,noticeId)
