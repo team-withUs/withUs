@@ -24,12 +24,13 @@ public class ClubServiceImpl implements ClubService {
         LocalDateTime endTime = clubRequestDto.endTime();
         Club club = new Club(clubRequestDto, member, startTime, endTime);
         Club savedClub = clubRepository.save(club);
-        return new ClubResponseDto(savedClub);
+        return ClubResponseDto.fromClub(savedClub);
     }
 
     @Override
     public ClubResponseDto getClub(Long clubId) {
-        return new ClubResponseDto(findClubById(clubId));
+        Club club = findClubById(clubId);
+        return ClubResponseDto.fromClub(club);
     }
 
     private Club findClubById(Long clubId) {
@@ -43,7 +44,7 @@ public class ClubServiceImpl implements ClubService {
         club.update(clubRequestDto);
         Club updatedClub = clubRepository.save(club);
 
-        return new ClubResponseDto(updatedClub);
+        return ClubResponseDto.fromClub(updatedClub);
     }
     @Transactional
     public String deleteClub(Long clubId, Member member) {
