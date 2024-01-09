@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-// 런타임 까지 유지
 @Retention(RetentionPolicy.RUNTIME)
 // 타겟은 파라미터에만
 @Target(ElementType.PARAMETER)
@@ -25,4 +24,4 @@ public @interface AuthMember {
  * @AuthenticationPrincipal  이거 대신
  *
  * @AuthUser Member member 로 바로 user 가져올 수 있습니다.
- */
+

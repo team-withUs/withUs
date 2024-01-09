@@ -11,7 +11,6 @@ public record NoticeResponseDto(
 
   )
 {
-
   @Builder
   public NoticeResponseDto(String title,String content){
     this.title = title;
@@ -26,5 +25,4 @@ public record NoticeResponseDto(
         .content(content)
         .build();
   }
-
 }
