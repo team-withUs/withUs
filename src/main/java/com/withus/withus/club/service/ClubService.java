@@ -6,6 +6,7 @@ import com.withus.withus.global.security.UserDetailsImpl;
 import com.withus.withus.member.entity.Member;
 
 public interface ClubService {
+
     ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member);
 
     ClubResponseDto getClub(Long clubId);

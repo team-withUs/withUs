@@ -1,6 +1,7 @@
 package com.withus.withus.club.dto;
+
 import com.withus.withus.club.entity.Club;
-import lombok.Getter;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +20,10 @@ public record ClubResponseDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
+    @Builder
     public ClubResponseDto(Club club) {
-        this(
-                club.getId(),
+
+        this(club.getId(),
                 club.getClubTitle(),
                 club.getMember().getUsername(),
                 club.getContent(),
@@ -32,7 +34,6 @@ public record ClubResponseDto(
                 club.getStartTime(),
                 club.getEndTime(),
                 club.getCreatedAt(),
-                club.getModifiedAt()
-        );
+                club.getModifiedAt());
     }
 }

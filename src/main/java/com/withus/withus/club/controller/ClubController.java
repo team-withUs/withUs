@@ -13,28 +13,30 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/clubs")
+@RequestMapping("/api/club")
 public class ClubController {
     private final ClubService clubService;
 
     // 작성
     @PostMapping
-    public ResponseEntity<CommonResponse> createBoard(@RequestBody ClubRequestDto clubRequestDto,
+    public ResponseEntity<CommonResponse<ClubResponseDto>> createBoard(@RequestBody ClubRequestDto clubRequestDto,
                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
         ClubResponseDto responseDto = clubService.createClub(clubRequestDto, userDetails.getMember());
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE,responseDto));
     }
+
     //조회
     @ResponseBody
     @GetMapping("/{clubId}")
-    public ClubResponseDto getClub(@PathVariable Long clubId) {
+    public ClubResponseDto getClub(@PathVariable("clubId") Long clubId) {
         return clubService.getClub(clubId);
     }
+
     //수정
     @PatchMapping("/{clubId}")
-    public ResponseEntity<CommonResponse> updateClub(@PathVariable Long clubId,
+    public ResponseEntity<CommonResponse> updateClub(@PathVariable("clubId") Long clubId,
                                                      @RequestBody ClubRequestDto clubRequestDto,
                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
         ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, userDetails);
@@ -45,7 +47,7 @@ public class ClubController {
 
     //삭제
     @DeleteMapping("/{clubId}")
-    public ResponseEntity<CommonResponse<String>> deleteClub(@PathVariable Long clubId,
+    public ResponseEntity<CommonResponse<String>> deleteClub(@PathVariable("clubId") Long clubId,
                                                              @AuthenticationPrincipal UserDetailsImpl userDetails){
         String responseDto = clubService.deleteClub(clubId, userDetails);
         CommonResponse<String> commonResponse = CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto);

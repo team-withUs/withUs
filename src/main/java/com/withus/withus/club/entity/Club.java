@@ -5,6 +5,7 @@ import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name ="club")
 public class Club extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,10 +50,9 @@ public class Club extends TimeStamp {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
-    public void setMember(Member member) {
-        this.member = member;
-    }
 
+
+    @Builder
     public Club(ClubRequestDto requestDto, Member member, LocalDateTime startTime, LocalDateTime endTime) {
         this.member = member;
         this.clubTitle = requestDto.clubTitle();
@@ -65,6 +64,8 @@ public class Club extends TimeStamp {
         this.endTime = endTime;
     }
 
+
+
     public void update(ClubRequestDto clubrequestDto) {
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();
@@ -74,4 +75,5 @@ public class Club extends TimeStamp {
         this.startTime =clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
     }
+
 }

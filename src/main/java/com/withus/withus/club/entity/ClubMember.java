@@ -4,18 +4,13 @@ import com.withus.withus.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 @Entity
 @NoArgsConstructor
 @Getter
-@Setter
-@Table(name = "member")
 public class ClubMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "clubMember_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

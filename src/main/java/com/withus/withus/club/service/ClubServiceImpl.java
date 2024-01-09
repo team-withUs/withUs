@@ -4,11 +4,13 @@ import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.repository.ClubRepository;
+import com.withus.withus.global.exception.BisException;
+import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.global.security.UserDetailsImpl;
 import com.withus.withus.member.entity.Member;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -17,15 +19,11 @@ import java.time.LocalDateTime;
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
 
-
     @Override
-    public ClubResponseDto createClub(ClubRequestDto clubrequestDto, Member member) {
-        LocalDateTime startTime = clubrequestDto.startTime(); // Assuming getStartTime() returns LocalDateTime
-        LocalDateTime endTime = clubrequestDto.endTime(); // Assuming getEndTime() returns LocalDateTime
-
-        Club club = new Club(clubrequestDto, member, startTime, endTime);
-        club.setMember(member);
-
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
+        LocalDateTime startTime = clubRequestDto.startTime();
+        LocalDateTime endTime = clubRequestDto.endTime();
+        Club club = new Club(clubRequestDto, member, startTime, endTime);
         Club savedClub = clubRepository.save(club);
         return new ClubResponseDto(savedClub);
     }
@@ -36,7 +34,7 @@ public class ClubServiceImpl implements ClubService {
     }
     private Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
-                orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ClubId입니다."));
+                orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
 
     }
 
@@ -62,7 +60,7 @@ public class ClubServiceImpl implements ClubService {
     private Club verifyMember(Member member, Long clubId) {
         Club club = findClubById(clubId);
         if(!club.getMember().getUsername().equals(member.getUsername())){
-            throw new IllegalArgumentException("해당 사용자가 아닙니다.");
+            throw new BisException(ErrorCode.NOT_FOUND_MEMBER);
         }
         return club;
     }

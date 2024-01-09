@@ -5,5 +5,6 @@ public enum ClubCategory {
     GAME,
     FOOD,
     STUDY,
-    ETC
+    ETC;
+
 }
