@@ -50,19 +50,19 @@ public record ClubResponseDto(
 
     public static ClubResponseDto createClubResponseDto(Club club) {
         String username = club.getMember().getUsername();
-        return new ClubResponseDto(
-                club.getId(),
-                club.getClubTitle(),
-                club.getContent(),
-                club.getCategory().name(),
-                club.getImage(),
-                username,
-                club.getMaxMember(),
-                club.getReport(),
-                club.getStartTime(),
-                club.getEndTime(),
-                club.getCreatedAt(),
-                club.getModifiedAt()
-        );
+        return ClubResponseDto.builder()
+                .clubId(club.getId())
+                .clubTitle(club.getClubTitle())
+                .content(club.getContent())
+                .category(club.getCategory().name())
+                .image(club.getImage())
+                .username(username)
+                .maxMember(club.getMaxMember())
+                .report(club.getReport())
+                .startTime(club.getStartTime())
+                .endTime(club.getEndTime())
+                .createdAt(club.getCreatedAt())
+                .modifiedAt(club.getModifiedAt())
+                .build();
     }
 }
