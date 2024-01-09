@@ -33,7 +33,7 @@ public class ClubServiceImpl implements ClubService {
         return ClubResponseDto.fromClub(club);
     }
 
-    private Club findClubById(Long clubId) {
+    public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
 

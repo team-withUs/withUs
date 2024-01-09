@@ -3,6 +3,7 @@ package com.withus.withus.notice.service;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
+import java.util.List;
 
 public interface NoticeService {
 
@@ -15,4 +16,6 @@ public interface NoticeService {
   void deleteNotice(Long noticeId, Member member);
 
   void updateReportNotice(Long noticeId, Member member);
+
+  List<NoticeResponseDto> getsNotice(int page, int size, String sortBy);
 }
