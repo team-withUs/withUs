@@ -39,7 +39,6 @@ public class Club extends TimeStamp {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -50,7 +49,6 @@ public class Club extends TimeStamp {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
-
 
     @Builder
     public Club(ClubRequestDto requestDto, Member member, LocalDateTime startTime, LocalDateTime endTime) {
@@ -63,9 +61,6 @@ public class Club extends TimeStamp {
         this.startTime = startTime;
         this.endTime = endTime;
     }
-
-
-
     public void update(ClubRequestDto clubrequestDto) {
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();
@@ -75,5 +70,4 @@ public class Club extends TimeStamp {
         this.startTime =clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
     }
-
 }
