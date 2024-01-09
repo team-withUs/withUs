@@ -53,6 +53,25 @@ public class ClubServiceImpl implements ClubService {
 
         return "Club deleted successfully";
     }
+
+    @Transactional
+    @Override
+    public void updateReportClub(Long clubId) {
+        Club club = findByIsActiveAndClubId(clubId);
+        club.updateReport(club.getReport() + 1);
+        if (club.getReport() >= 3) {
+            club.delete();
+        }
+    }
+
+    public Club findByIsActiveAndClubId(Long clubId) {
+        Club club = clubRepository.findByIsActiveAndId(true, clubId)
+                .orElseThrow(() ->
+                        new BisException(ErrorCode.NOT_FOUND_CLUB)
+                );
+        return club;
+    }
+
     private Club verifyMember(Member member, Long clubId) {
         Club club = findClubById(clubId);
         if (!club.getMember().getUsername().equals(member.getUsername())) {

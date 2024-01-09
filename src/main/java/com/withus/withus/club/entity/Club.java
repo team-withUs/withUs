@@ -47,8 +47,7 @@ public class Club extends TimeStamp {
     @Column(nullable = false)
     private ClubCategory category;
 
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Builder
     public Club(ClubRequestDto requestDto, Member member, LocalDateTime startTime, LocalDateTime endTime) {
@@ -62,8 +61,6 @@ public class Club extends TimeStamp {
         this.endTime = endTime;
     }
 
-
-
     public void update(ClubRequestDto clubrequestDto) {
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();
@@ -74,4 +71,11 @@ public class Club extends TimeStamp {
         this.endTime = clubrequestDto.endTime();
     }
 
+    public void delete() {
+        this.isActive=false;
+    }
+
+    public void updateReport(int report) {
+        this.report=report;
+    }
 }

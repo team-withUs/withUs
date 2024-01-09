@@ -14,4 +14,6 @@ public interface ClubService {
     ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member);
 
     String deleteClub(Long clubId, Member member);
+
+    void updateReportClub(Long clubId);
 }
