@@ -1,6 +1,7 @@
 package com.withus.withus.member.entity;
 
 import com.withus.withus.global.timestamp.TimeStamp;
+import com.withus.withus.member.dto.UpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,7 +64,17 @@ public class Member extends TimeStamp {
             .build();
     }
 
+    public void update(UpdateRequestDto updateRequestDto,String password) {
+        this.password = password;
+        this.username = updateRequestDto.username();
+        this.email = updateRequestDto.email();
+    }
 
+    public void delete() {
+        this.isActive = false;
+    }
 
-
+    public void report() {
+        this.report++;
+    }
 }
