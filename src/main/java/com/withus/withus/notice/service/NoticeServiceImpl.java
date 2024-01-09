@@ -1,10 +1,11 @@
 package com.withus.withus.notice.service;
 
 
+import com.withus.withus.club.entity.Club;
+import com.withus.withus.club.service.ClubServiceImpl;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.service.MemberServiceImpl;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.dto.PageableDto;
@@ -20,11 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService{
   private final NoticeRepository noticeRepository;
+  private final ClubServiceImpl clubService;
 
 
   @Override
   public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member) {
-    Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto, member));
+    Club club = clubService.findClubById(clubId);
+    Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto, member, club));
     return NoticeResponseDto.createNoticeResponseDto(saveNotice);
   }
 
