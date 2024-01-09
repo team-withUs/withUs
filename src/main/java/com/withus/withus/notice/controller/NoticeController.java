@@ -66,8 +66,8 @@ public class NoticeController {
       @RequestParam("size") int size,
       @RequestParam("sortBy") String sortBy
   ) {
-    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_REPORT.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_REPORT,
+    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GETS.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GETS,
             noticeService.getsNotice(page, size, sortBy)));
   }
 
