@@ -1,4 +1,5 @@
 package com.withus.withus.comment.dto;
 
-public class Dto {
+public class CommentRequestDto {
+
 }
