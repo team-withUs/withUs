@@ -1,8 +1,11 @@
 package com.withus.withus.member.entity;
 
+import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.dto.UpdateRequestDto;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,8 +42,10 @@ public class Member extends TimeStamp {
     private int report = 0;
 
     @Column
-    private boolean isActive = true;
+    private Boolean isActive = true;
 
+    @OneToMany(mappedBy = "member")
+    private List<ClubMember> clubMemberList = new ArrayList<>();
 
     @Builder
     public Member(String loginname, String password, String email, String username) {

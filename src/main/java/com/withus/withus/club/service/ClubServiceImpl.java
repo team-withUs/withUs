@@ -3,6 +3,8 @@ package com.withus.withus.club.service;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.entity.Club;
+import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
@@ -18,19 +20,23 @@ import java.time.LocalDateTime;
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
 
+    private final ClubMemberServiceImpl clubMemberService;
+
     @Override
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
         LocalDateTime startTime = clubRequestDto.startTime();
         LocalDateTime endTime = clubRequestDto.endTime();
         Club club = new Club(clubRequestDto, member, startTime, endTime);
         Club savedClub = clubRepository.save(club);
-        return ClubResponseDto.fromClub(savedClub);
+        ClubMember clubMember = ClubMember.createClubMember(club,member,ClubMemberRole.ADMIN);
+        clubMemberService.createClubMember(clubMember);
+        return ClubResponseDto.createClubResponseDto(savedClub);
     }
 
     @Override
     public ClubResponseDto getClub(Long clubId) {
         Club club = findClubById(clubId);
-        return ClubResponseDto.fromClub(club);
+        return ClubResponseDto.createClubResponseDto(club);
     }
 
     public Club findClubById(Long clubId) {
@@ -44,7 +50,7 @@ public class ClubServiceImpl implements ClubService {
         club.update(clubRequestDto);
         Club updatedClub = clubRepository.save(club);
 
-        return ClubResponseDto.fromClub(updatedClub);
+        return ClubResponseDto.createClubResponseDto(updatedClub);
     }
     @Transactional
     public String deleteClub(Long clubId, Member member) {

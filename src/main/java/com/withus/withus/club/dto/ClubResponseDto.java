@@ -37,7 +37,7 @@ public record ClubResponseDto(
                 club.getModifiedAt());
     }
 
-    public static ClubResponseDto fromClub(Club savedClub) {
+    public static ClubResponseDto createClubResponseDto(Club savedClub) {
         return new ClubResponseDto(
                 savedClub.getId(),
                 savedClub.getClubTitle(),

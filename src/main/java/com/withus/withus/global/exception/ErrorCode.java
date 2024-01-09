@@ -51,6 +51,8 @@ public enum ErrorCode {
 
     DUPLICATE_EMAIL(CONFLICT, "중복된 Email 입니다"),
 
+
+
     /* 그 외 */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러");
 
