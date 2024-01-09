@@ -1,5 +1,6 @@
 package com.withus.withus.club.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.global.timestamp.TimeStamp;
@@ -37,13 +38,15 @@ public class Club extends TimeStamp {
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
     @Column(nullable = false)
     private String username;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "member_id")
     private Member member;
 

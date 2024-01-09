@@ -31,11 +31,14 @@ public class ClubController {
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE,responseDto));
     }
 
-    //조회
-    @ResponseBody
     @GetMapping("/{clubId}")
-    public ClubResponseDto getClub(@PathVariable("clubId") Long clubId) {
-        return clubService.getClub(clubId);
+    public ResponseEntity<CommonResponse<ClubResponseDto>> getClub(
+            @PathVariable("clubId") Long clubId
+    ) {
+        ClubResponseDto responseDto = clubService.getClub(clubId);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
     }
 
     //수정
