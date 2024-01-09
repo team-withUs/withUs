@@ -34,21 +34,20 @@ public class ClubServiceImpl implements ClubService {
         return ClubResponseDto.createClubResponseDto(club);
     }
 
-    // 수정
+    @Override
     @Transactional
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member) {
-        Club club = verifyMember(member, clubId);
+        Club club = verifyMember(clubId);
         club.update(clubRequestDto);
-        Club updatedClub = clubRepository.save(club);
-        return ClubResponseDto.createClubResponseDto(updatedClub);
+        return ClubResponseDto.createClubResponseDto(club);
     }
 
-    // 삭제
+    @Override
     @Transactional
     public String deleteClub(Long clubId, Member member) {
-        Club club = verifyMember(member, clubId);
-        clubRepository.delete(club);
-        return "Club deleted successfully";
+        Club club = verifyMember(clubId);
+        club.delete();
+        return "Club delete successfully";
     }
 
     // 신고
@@ -75,11 +74,11 @@ public class ClubServiceImpl implements ClubService {
 
     }
 
-    private Club verifyMember(Member member, Long clubId) {
-        Club club = findClubById(clubId);
-        if (!club.getMember().getUsername().equals(member.getUsername())) {
-            throw new BisException(ErrorCode.NOT_FOUND_MEMBER);
-        }
+    private Club verifyMember(Long clubId) {
+        Club club = clubRepository.findByIsActiveAndId(true, clubId)
+        .orElseThrow(() ->
+                new BisException(ErrorCode.NOT_FOUND_CLUB)
+        );
         return club;
     }
 }
