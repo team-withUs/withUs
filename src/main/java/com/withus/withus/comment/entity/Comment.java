@@ -1,6 +1,5 @@
 package com.withus.withus.comment.entity;
 
-import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.global.timestamp.Timestamp;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.entity.Notice;
@@ -51,4 +50,5 @@ public class Comment extends Timestamp {
         this.member = loginMember;
         this.isActive = isActive;
     }
+
 }
