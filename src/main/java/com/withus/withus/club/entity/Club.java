@@ -46,7 +46,6 @@ public class Club extends TimeStamp {
     private String username;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -56,7 +55,16 @@ public class Club extends TimeStamp {
     private boolean isActive = true;
 
     @Builder
-    public Club(String clubTitle, String content, ClubCategory category, int maxMember, Member member, String image, LocalDateTime startTime, LocalDateTime endTime) {
+    public Club(
+            String clubTitle,
+            String content,
+            ClubCategory category,
+            int maxMember,
+            Member member,
+            String image,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    ) {
         this.clubTitle = clubTitle;
         this.content = content;
         this.category = category;
@@ -91,8 +99,9 @@ public class Club extends TimeStamp {
                 .endTime(endTime)
                 .build();
     }
-
-    public void update(ClubRequestDto clubrequestDto) {
+    public void update(
+            ClubRequestDto clubrequestDto
+    ) {
         ClubCategory category = clubrequestDto.category();
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();

@@ -48,7 +48,9 @@ public record ClubResponseDto(
         this.modifiedAt = modifiedAt;
     }
 
-    public static ClubResponseDto createClubResponseDto(Club club) {
+    public static ClubResponseDto createClubResponseDto(
+            Club club
+    ) {
         String username = club.getMember().getUsername();
         return ClubResponseDto.builder()
                 .clubId(club.getId())
