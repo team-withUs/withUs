@@ -1,6 +1,6 @@
 package com.withus.withus.comment.entity;
 
-import com.withus.withus.global.timestamp.Timestamp;
+import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.entity.Notice;
 import jakarta.persistence.*;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Comment extends Timestamp {
+public class Comment extends TimeStamp {
 
     // Comment의 PK index라고 이해하면 되나?
     // @GeneratedValue(strategy = GenerationType.IDENTITY)라고 쓰면 기본 키 생성을 데이터베이스가 알아서한다.

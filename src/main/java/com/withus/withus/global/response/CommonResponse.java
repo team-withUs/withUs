@@ -1,4 +1,4 @@
-package com.withus.withus.global.Response;
+package com.withus.withus.global.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

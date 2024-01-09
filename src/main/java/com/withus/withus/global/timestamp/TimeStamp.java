@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Timestamp {
+public abstract class TimeStamp {
 
     // @CreatedDate => 엔티티가 생성되어 저장될 때 시간이 자동 저장
     // "updatable = false" => 생성일자가 수정되지 않게 막음

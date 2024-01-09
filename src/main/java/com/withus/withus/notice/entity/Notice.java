@@ -1,7 +1,8 @@
 package com.withus.withus.notice.entity;
 
 import com.withus.withus.club.entity.Club;
-import com.withus.withus.global.timestamp.Timestamp;
+import com.withus.withus.global.timestamp.TimeStamp;
+import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -11,8 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="notices")
-public class Notice extends Timestamp {
+public class Notice extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +26,13 @@ public class Notice extends Timestamp {
     private String image;
 
     @Column
-    private Integer report = 0;
+    private int report = 0;
 
-    @Column(nullable = false)
-    private Long memberId;
+    private Boolean isActive = true;
+
+    @ManyToOne
+    @JoinColumn(name="member_id", nullable = false)
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "Club_id", nullable = false)
@@ -37,17 +40,35 @@ public class Notice extends Timestamp {
 
 
     @Builder
-    public Notice(String title,String content,
-                  Long memberId,Club club){
-        this.title=title;
-        this.content=content;
-        this.memberId=memberId;
+    public Notice(String title, String content,Member member, Club club){
+        this.title = title;
+        this.content = content;
+        this.member = member;
         this.club=club;
     }
 
     public void update(NoticeRequestDto requestDto){
-        this.title=title;
-        this.content=content;
+        this.title = requestDto.title();
+        this.content = requestDto.content();
+    }
+    public void updateReport(Integer report){
+        this.report=report;
+    }
+
+    public void delete(){
+        this.isActive=false;
+    }
+
+    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club){
+        String title = requestDto.title();
+        String content = requestDto.content();
+
+      return Notice.builder()
+          .title(title)
+          .content(content)
+          .member(member)
+          .club(club)
+          .build();
     }
 
 

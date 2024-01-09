@@ -1,6 +1,7 @@
 package com.withus.withus.member.entity;
 
-import com.withus.withus.global.timestamp.Timestamp;
+import com.withus.withus.global.timestamp.TimeStamp;
+import com.withus.withus.member.dto.UpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member extends Timestamp {
+public class Member extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +50,31 @@ public class Member extends Timestamp {
         this.username = username;
     }
 
+    public static Member createMember(
+        String loginname,
+        String password,
+        String email,
+        String username
+    ) {
+        return Member.builder()
+            .loginname(loginname)
+            .password(password)
+            .username(username)
+            .email(email)
+            .build();
+    }
 
+    public void update(UpdateRequestDto updateRequestDto,String password) {
+        this.password = password;
+        this.username = updateRequestDto.username();
+        this.email = updateRequestDto.email();
+    }
 
+    public void delete() {
+        this.isActive = false;
+    }
 
-
-
+    public void report() {
+        this.report++;
+    }
 }
