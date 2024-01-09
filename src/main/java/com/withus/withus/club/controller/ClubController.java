@@ -58,10 +58,9 @@ public class ClubController {
             @AuthMember Member member
     ) {
         String responseDto = clubService.deleteClub(clubId, member);
-        CommonResponse<String> commonResponse = CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
-                .body(commonResponse);
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
     }
 
     // 신고
