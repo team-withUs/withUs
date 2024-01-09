@@ -2,6 +2,7 @@ package com.withus.withus.notice.entity;
 
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.global.timestamp.TimeStamp;
+import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -29,8 +30,9 @@ public class Notice extends TimeStamp {
 
     private Boolean isActive = true;
 
-//    @Column(nullable = false)
-//    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name="member_id", nullable = false)
+    private Member member;
 
 //    @ManyToOne
 //    @JoinColumn(name = "Club_id", nullable = false)
@@ -38,10 +40,10 @@ public class Notice extends TimeStamp {
 
 
     @Builder
-    public Notice(String title, String content){
+    public Notice(String title, String content,Member member){
         this.title = title;
         this.content = content;
-//        this.memberId=memberId;
+        this.member = member;
 //        this.club=club;
     }
 
@@ -57,13 +59,14 @@ public class Notice extends TimeStamp {
         this.isActive=false;
     }
 
-    public static Notice createNotice(NoticeRequestDto requestDto){
+    public static Notice createNotice(NoticeRequestDto requestDto, Member member){
         String title = requestDto.title();
         String content = requestDto.content();
 
-        return Notice.builder()
+      return Notice.builder()
             .title(title)
             .content(content)
+            .member(member)
             .build();
     }
 

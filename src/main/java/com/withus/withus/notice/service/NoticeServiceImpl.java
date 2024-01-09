@@ -3,6 +3,8 @@ package com.withus.withus.notice.service;
 
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.member.entity.Member;
+import com.withus.withus.member.service.MemberServiceImpl;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.entity.Notice;
@@ -18,14 +20,14 @@ public class NoticeServiceImpl implements NoticeService{
 
 
   @Override
-  public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto) {
-    Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto));
+  public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member) {
+    Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto, member));
     return NoticeResponseDto.createNoticeResponseDto(saveNotice);
   }
 
   @Transactional
   @Override
-  public NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto) {
+  public NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto, Member member) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.update(requestDto);
     return NoticeResponseDto.createNoticeResponseDto(notice);
@@ -39,14 +41,14 @@ public class NoticeServiceImpl implements NoticeService{
 
   @Transactional
   @Override
-  public void deleteNotice(Long noticeId) {
+  public void deleteNotice(Long noticeId, Member member) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.delete();
   }
 
   @Transactional
   @Override
-  public void updateReportNotice(Long noticeId) {
+  public void updateReportNotice(Long noticeId, Member member) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.updateReport(notice.getReport()+1);
     if(notice.getReport() >= 3){

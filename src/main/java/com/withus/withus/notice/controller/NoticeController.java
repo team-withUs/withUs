@@ -1,9 +1,11 @@
 package com.withus.withus.notice.controller;
 
 
+import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.ResponseCode;
 
 import com.withus.withus.global.response.CommonResponse;
+import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.service.NoticeService;
@@ -28,9 +30,10 @@ public class NoticeController {
   @PostMapping("/{clubId}")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> createNotice(
       @PathVariable("clubId") Long clubId,
-      @RequestBody NoticeRequestDto requestDto
+      @RequestBody NoticeRequestDto requestDto,
+      @AuthMember Member member
   ) {
-    NoticeResponseDto responseDto = noticeService.createNotice(clubId, requestDto);
+    NoticeResponseDto responseDto = noticeService.createNotice(clubId, requestDto, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_CREATE.getHttpStatus())
             .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_CREATE,responseDto));
   }
@@ -38,9 +41,10 @@ public class NoticeController {
   @PatchMapping("/{noticeId}")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> updateNotice(
       @PathVariable("noticeId") Long noticeId,
-      @RequestBody NoticeRequestDto requestDto
+      @RequestBody NoticeRequestDto requestDto,
+      @AuthMember Member member
   ) {
-    NoticeResponseDto responseDto = noticeService.updateNotice(noticeId, requestDto);
+    NoticeResponseDto responseDto = noticeService.updateNotice(noticeId, requestDto, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE, responseDto));
   }
@@ -56,18 +60,20 @@ public class NoticeController {
 
   @DeleteMapping("/{noticeId}")
   public ResponseEntity<CommonResponse<String>> deleteNotice(
-      @PathVariable("noticeId") Long noticeId
+      @PathVariable("noticeId") Long noticeId,
+      @AuthMember Member member
   ) {
-    noticeService.deleteNotice(noticeId);
+    noticeService.deleteNotice(noticeId, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_DELETE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_DELETE,""));
   }
 
   @PatchMapping("/report/{noticeId}")
   public ResponseEntity<CommonResponse<String>> updateReportNotice(
-      @PathVariable("noticeId") Long noticeId
+      @PathVariable("noticeId") Long noticeId,
+      @AuthMember Member member
   ) {
-    noticeService.updateReportNotice(noticeId);
+    noticeService.updateReportNotice(noticeId, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_REPORT.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_REPORT,""));
   }
