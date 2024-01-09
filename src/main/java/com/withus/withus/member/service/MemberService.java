@@ -17,4 +17,6 @@ public interface MemberService {
   MemberResponseDto updateMember(Long memberId, UpdateRequestDto updateRequestDto, Member member);
 
   void deleteMember(Long memberId, Member member);
+
+  void reportMember(Long memberId, Member member);
 }

@@ -117,6 +117,13 @@ public class MemberServiceImpl implements MemberService{
     deletedMember.delete();
   }
 
+  @Transactional
+  @Override
+  public void reportMember(Long memberId, Member member) {
+    Member reportedMember = findMemberByMemberId(memberId);
+    reportedMember.report();
+  }
+
   public Member findMemberByMemberId(Long memberId){
     return memberRepository.findById(memberId).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
