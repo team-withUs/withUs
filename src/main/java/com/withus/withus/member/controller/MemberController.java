@@ -1,5 +1,6 @@
 package com.withus.withus.member.controller;
 
+import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.global.security.UserDetailsImpl;
@@ -61,7 +62,7 @@ public class MemberController {
   public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
       @PathVariable("memberId") Long memberId,
       @Valid @RequestBody UpdateRequestDto updateRequestDto,
-      Member member
+      @AuthMember Member member
   ) {
     MemberResponseDto memberResponseDto = memberService.updateMember(
         memberId,
@@ -76,7 +77,7 @@ public class MemberController {
   @DeleteMapping("/{memberId}")
   public ResponseEntity<CommonResponse<String>> deleteMember(
       @PathVariable("memberId") Long memberId,
-      Member member
+      @AuthMember Member member
   ) {
       memberService.deleteMember(memberId, member);
 
@@ -88,7 +89,7 @@ public class MemberController {
   @PatchMapping("/report/{memberId}")
   public ResponseEntity<CommonResponse<String>> reportMember(
       @PathVariable("memberId") Long memberId,
-      Member member
+      @AuthMember Member member
   ) {
     memberService.reportMember(memberId,member);
     return ResponseEntity
