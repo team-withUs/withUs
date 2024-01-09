@@ -18,42 +18,40 @@ import java.time.LocalDateTime;
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
 
+    // 작성
     @Override
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
         LocalDateTime startTime = clubRequestDto.startTime();
         LocalDateTime endTime = clubRequestDto.endTime();
-        Club club = new Club(clubRequestDto, member, startTime, endTime);
+        Club club = Club.createClub(clubRequestDto, member, startTime, endTime);
         Club savedClub = clubRepository.save(club);
-        return ClubResponseDto.fromClub(savedClub);
+        return ClubResponseDto.createClubResponseDto(savedClub);
     }
-
+    //조회
     @Override
     public ClubResponseDto getClub(Long clubId) {
         Club club = findClubById(clubId);
-        return ClubResponseDto.fromClub(club);
+        return ClubResponseDto.createClubResponseDto(club);
     }
 
-    private Club findClubById(Long clubId) {
-        return clubRepository.findById(clubId).
-                orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
-
-    }
+    // 수정
     @Transactional
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member) {
         Club club = verifyMember(member, clubId);
         club.update(clubRequestDto);
         Club updatedClub = clubRepository.save(club);
-
-        return ClubResponseDto.fromClub(updatedClub);
+        return ClubResponseDto.createClubResponseDto(updatedClub);
     }
+
+    // 삭제
     @Transactional
     public String deleteClub(Long clubId, Member member) {
         Club club = verifyMember(member, clubId);
         clubRepository.delete(club);
-
         return "Club deleted successfully";
     }
 
+    // 신고
     @Transactional
     @Override
     public void updateReportClub(Long clubId) {
@@ -70,6 +68,11 @@ public class ClubServiceImpl implements ClubService {
                         new BisException(ErrorCode.NOT_FOUND_CLUB)
                 );
         return club;
+    }
+    private Club findClubById(Long clubId) {
+        return clubRepository.findById(clubId).
+                orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
+
     }
 
     private Club verifyMember(Member member, Long clubId) {

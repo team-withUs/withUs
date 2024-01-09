@@ -49,17 +49,41 @@ public class Club extends TimeStamp {
 
     private boolean isActive = true;
 
-    @Builder
-    public Club(ClubRequestDto requestDto, Member member, LocalDateTime startTime, LocalDateTime endTime) {
-        this.member = member;
-        this.clubTitle = requestDto.clubTitle();
-        this.content = requestDto.content();
-        this.category = requestDto.category();
-        this.image = requestDto.image();
-        this.MaxMember = requestDto.maxMember();
-        this.startTime = startTime;
-        this.endTime = endTime;
+
+
+@Builder
+public Club(String clubTitle, String content, String category, int maxMember ,Member member, String image,LocalDateTime startTime, LocalDateTime endTime) {
+    this.member = member;
+    this.clubTitle = clubTitle;
+    this.content = content;
+    this.category = ClubCategory.valueOf(category);
+    this.image = image;
+    this.MaxMember = maxMember;
+    this.startTime = startTime;
+    this.endTime = endTime;
+}
+
+    public static Club createClub(ClubRequestDto clubRequestDto, Member member, LocalDateTime startTime, LocalDateTime endTime) {
+        String clubTitle = clubRequestDto.clubTitle();
+        String content = clubRequestDto.clubTitle();
+        String category = String.valueOf(clubRequestDto.category());
+        String image = clubRequestDto.image();
+        int MaxMember = clubRequestDto.maxMember();
+        LocalDateTime startedTime= clubRequestDto.startTime();
+        LocalDateTime endedTime = clubRequestDto.endTime();
+
+        return Club.builder()
+                .member(member)
+                .clubTitle(clubTitle)
+                .content(content)
+                .category(category)
+                .image(image)
+                .maxMember(MaxMember)
+                .startTime(startTime)
+                .endTime(endTime)
+                .build();
     }
+
 
     public void update(ClubRequestDto clubrequestDto) {
         this.clubTitle = clubrequestDto.clubTitle();

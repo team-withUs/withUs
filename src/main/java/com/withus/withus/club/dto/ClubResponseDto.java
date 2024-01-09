@@ -37,20 +37,21 @@ public record ClubResponseDto(
                 club.getModifiedAt());
     }
 
-    public static ClubResponseDto fromClub(Club savedClub) {
+    public static ClubResponseDto createClubResponseDto(Club club) {
         return new ClubResponseDto(
-                savedClub.getId(),
-                savedClub.getClubTitle(),
-                savedClub.getMember().getUsername(),
-                savedClub.getContent(),
-                savedClub.getCategory().name(),
-                savedClub.getImage(),
-                savedClub.getMaxMember(),
-                savedClub.getReport(),
-                savedClub.getStartTime(),
-                savedClub.getEndTime(),
-                savedClub.getCreatedAt(),
-                savedClub.getModifiedAt()
+                club.getId(),
+                club.getClubTitle(),
+                club.getMember().getUsername(),
+                club.getContent(),
+                club.getCategory().name(),
+                club.getImage(),
+                club.getMaxMember(),
+                club.getReport(),
+                club.getStartTime(),
+                club.getEndTime(),
+                club.getCreatedAt(),
+                club.getModifiedAt()
         );
     }
+
 }
