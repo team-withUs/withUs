@@ -36,10 +36,6 @@ public class Comment extends Timestamp {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    // report를 entity로 분리하던지, 걍 빼버리던가.
-    @Column
-    private int report = 0;
-
     @Column
     private Boolean isActive;
 
