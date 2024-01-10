@@ -92,7 +92,7 @@ public class NoticeServiceImpl implements NoticeService{
     if(!reportRepository.existsByNoticeIdAndMemberId(notice.getId(),member.getId())){
       reportRepository.save(Report.createReport(requestDto, member, notice));
       if(reportRepository.countByNoticeId(notice.getId()) <= 5){
-        
+        notice.delete();
       }
     }
     else {
