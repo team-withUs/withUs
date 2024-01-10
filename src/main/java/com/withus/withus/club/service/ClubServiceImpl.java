@@ -34,7 +34,6 @@ public class ClubServiceImpl implements ClubService {
         return ClubResponseDto.createClubResponseDto(club);
     }
 
-    @Override
     @Transactional
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member) {
         Club club = verifyMember(clubId);

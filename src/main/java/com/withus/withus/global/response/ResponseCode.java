@@ -35,6 +35,8 @@ public enum ResponseCode {
   
     SUCCESS_NOTICE_REPORT(200,"Notice 신고 성공"),
 
+    SUCCESS_NOTICE_GETS(200,"Notice 전체조회(페이징) 성공"),
+
     INVITE_MEMBER(200, "초대 성공"),
 
     /* 201 CREATED */

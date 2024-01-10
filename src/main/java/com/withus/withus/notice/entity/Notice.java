@@ -34,17 +34,17 @@ public class Notice extends TimeStamp {
     @JoinColumn(name="member_id", nullable = false)
     private Member member;
 
-//    @ManyToOne
-//    @JoinColumn(name = "Club_id", nullable = false)
-//    private Club club;
+    @ManyToOne
+    @JoinColumn(name = "Club_id", nullable = false)
+    private Club club;
 
 
     @Builder
-    public Notice(String title, String content,Member member){
+    public Notice(String title, String content,Member member, Club club){
         this.title = title;
         this.content = content;
         this.member = member;
-//        this.club=club;
+        this.club=club;
     }
 
     public void update(NoticeRequestDto requestDto){
@@ -59,15 +59,16 @@ public class Notice extends TimeStamp {
         this.isActive=false;
     }
 
-    public static Notice createNotice(NoticeRequestDto requestDto, Member member){
+    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club){
         String title = requestDto.title();
         String content = requestDto.content();
 
       return Notice.builder()
-            .title(title)
-            .content(content)
-            .member(member)
-            .build();
+          .title(title)
+          .content(content)
+          .member(member)
+          .club(club)
+          .build();
     }
 
 
