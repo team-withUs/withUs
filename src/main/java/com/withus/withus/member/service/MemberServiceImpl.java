@@ -173,7 +173,7 @@ public class MemberServiceImpl implements MemberService{
   @Override
   public void inviteMember(Long memberId, Long clubId, Member member) {
     ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member,clubId);
-    if(!clubMember.getClubMemberRole().equals(ClubMemberRole.ADMIN)){
+    if(!clubMember.getClubMemberRole().equals(ClubMemberRole.HOST)){
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
 
