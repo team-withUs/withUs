@@ -3,6 +3,8 @@ package com.withus.withus.notice.service;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
+import com.withus.withus.notice.dto.PageableDto;
+import com.withus.withus.notice.dto.ReportRequestDto;
 import java.util.List;
 
 public interface NoticeService {
@@ -15,7 +17,7 @@ public interface NoticeService {
 
   void deleteNotice(Long clubId, Long noticeId, Member member);
 
-  void createNoticeReport(Long noticeId, Member member);
+  void createReportNotice(Long noticeId, ReportRequestDto requestDto, Member member);
 
-  List<NoticeResponseDto> getsNotice(Long clubId, int page, int size, String sortBy);
+  List<NoticeResponseDto> getsNotice(Long clubId, PageableDto pageableDto);
 }

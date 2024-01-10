@@ -9,8 +9,11 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.dto.PageableDto;
+import com.withus.withus.notice.dto.ReportRequestDto;
 import com.withus.withus.notice.entity.Notice;
+import com.withus.withus.notice.entity.Report;
 import com.withus.withus.notice.repository.NoticeRepository;
+import com.withus.withus.notice.repository.ReportRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService{
   private final NoticeRepository noticeRepository;
+  private final ReportRepository reportRepository;
   private final ClubServiceImpl clubService;
 
 
@@ -52,12 +56,18 @@ public class NoticeServiceImpl implements NoticeService{
   }
 
   @Override
-  public List<NoticeResponseDto> getsNotice(Long clubId, int page, int size, String sortBy) {
+  public List<NoticeResponseDto> getsNotice(Long clubId, PageableDto pageableDto) {
     if(!existsByClubId(clubId)){
       throw new BisException(ErrorCode.NOT_FOUND_CLUB);
     }
     List<Notice> noticeList = noticeRepository
-        .findAllByIsActive(true,PageableDto.getsPageableDto(page, size, sortBy).toPageable());
+        .findAllByIsActive(true,PageableDto.
+            getsPageableDto(
+                pageableDto.page(),
+                pageableDto.size(),
+                pageableDto.sortBy()
+            ).toPageable()
+        );
     List<NoticeResponseDto> responseDtoList = new ArrayList<>();
     for(Notice notice : noticeList){
       responseDtoList.add(NoticeResponseDto.createNoticeResponseDto(notice));
@@ -77,12 +87,15 @@ public class NoticeServiceImpl implements NoticeService{
 
   @Transactional
   @Override
-  public void createNoticeReport(Long noticeId, Member member) {
+  public void createReportNotice(Long noticeId, ReportRequestDto requestDto, Member member) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
-    notice.updateReport(notice.getReport()+1);
-    if(notice.getReport() >= 5){
-      notice.delete();
+    if(!reportRepository.existsByNoticeIdAndMemberId(notice.getId(),member.getId())){
+      reportRepository.save(Report.createReport(requestDto, member, notice));
     }
+    else {
+      throw new BisException(ErrorCode.NOTICE_EXIST_REPORT);
+    }
+
   }
 
 

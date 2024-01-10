@@ -8,6 +8,8 @@ import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
+import com.withus.withus.notice.dto.PageableDto;
+import com.withus.withus.notice.dto.ReportRequestDto;
 import com.withus.withus.notice.service.NoticeService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -65,13 +66,12 @@ public class NoticeController {
   @GetMapping("/club/{clubId}/notice")
   public ResponseEntity<CommonResponse<List<NoticeResponseDto>>> getsNotice(
       @PathVariable("clubId") Long clubId,
-      @RequestParam("page") int page,
-      @RequestParam("size") int size,
-      @RequestParam("sortBy") String sortBy
+      PageableDto pageableDto
+
   ) {
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GETS.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GETS,
-            noticeService.getsNotice(clubId, page, size, sortBy)));
+            noticeService.getsNotice(clubId, pageableDto)));
   }
 
   @DeleteMapping("/club/{clubId}/notice/{noticeId}")
@@ -86,11 +86,12 @@ public class NoticeController {
   }
 
   @PostMapping("notice/{noticeId}/report")
-  public ResponseEntity<CommonResponse<String>> updateReportNotice(
+  public ResponseEntity<CommonResponse<String>> createReportNotice(
       @PathVariable("noticeId") Long noticeId,
+      @RequestBody ReportRequestDto requestDto,
       @AuthMember Member member
   ) {
-    noticeService.createNoticeReport(noticeId, member);
+    noticeService.createReportNotice(noticeId, requestDto, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_REPORT.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_REPORT,""));
   }
