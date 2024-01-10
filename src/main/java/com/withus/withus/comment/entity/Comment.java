@@ -50,5 +50,4 @@ public class Comment extends TimeStamp {
         this.member = loginMember;
         this.isActive = isActive;
     }
-
 }
