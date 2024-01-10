@@ -1,9 +1,7 @@
 package com.withus.withus.club.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
-import com.withus.withus.club.dto.ReportClubRequestDto;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import jakarta.persistence.*;
@@ -32,9 +30,6 @@ public class Club extends TimeStamp {
 
     @Column
     private int MaxMember = 0;
-
-    @Column
-    private int report = 0;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -117,9 +112,4 @@ public class Club extends TimeStamp {
         this.isActive=false;
     }
 
-    // 신고 report update
-
-    public void updateReport(Integer report) {
-        this.report = report;
-    }
 }

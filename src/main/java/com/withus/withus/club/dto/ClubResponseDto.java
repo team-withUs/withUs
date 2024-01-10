@@ -13,7 +13,6 @@ public record ClubResponseDto(
         String image,
         String username,
         int maxMember,
-        int report,
         LocalDateTime startTime,
         LocalDateTime endTime,
         LocalDateTime createdAt,
@@ -28,7 +27,6 @@ public record ClubResponseDto(
             String image,
             String username,
             int maxMember,
-            int report,
             LocalDateTime startTime,
             LocalDateTime endTime,
             LocalDateTime createdAt,
@@ -41,7 +39,6 @@ public record ClubResponseDto(
         this.image = image;
         this.username = username;
         this.maxMember = maxMember;
-        this.report = report;
         this.startTime = startTime;
         this.endTime = endTime;
         this.createdAt = createdAt;
@@ -60,7 +57,6 @@ public record ClubResponseDto(
                 .image(club.getImage())
                 .username(username)
                 .maxMember(club.getMaxMember())
-                .report(club.getReport())
                 .startTime(club.getStartTime())
                 .endTime(club.getEndTime())
                 .createdAt(club.getCreatedAt())

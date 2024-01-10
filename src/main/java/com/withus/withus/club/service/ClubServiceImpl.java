@@ -32,6 +32,7 @@ public class ClubServiceImpl implements ClubService {
         Club savedClub = clubRepository.save(club);
         return ClubResponseDto.createClubResponseDto(savedClub);
     }
+
     //조회
     @Override
     public ClubResponseDto getClub(Long clubId) {
@@ -54,17 +55,21 @@ public class ClubServiceImpl implements ClubService {
         return "Club delete successfully";
     }
 
-    @Override
-    public ReportClubResponseDto reportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
-        ReportClub reportClub = ReportClub.reportClub(reportClubRequestDto, member, club);
-        reportClubRepository.save(reportClub);
-        int clubReportCount = club.getReport();
-        club.updateReport(clubReportCount + 1);
-        clubRepository.save(club);
-        return ReportClubResponseDto.createReportClubResponseDto(club,reportClub);
+    public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
+        Club club = verifyMember(clubId);
+        ReportClub reportClub = ReportClub.createReport(reportClubRequestDto, member, club);
+        if (!reportClubRepository.existsByClubIdAndMemberId(club.getId(), member.getId())) {
+            reportClubRepository.save(reportClub);
+            if (reportClubRepository.countByClubId(club.getId()) > 5) {
+                club.isActive();
+            }
+            return ReportClubResponseDto.createReportClubResponseDto(club, reportClub);
+        } else {
+            throw new BisException(ErrorCode.CLUB_EXIST_REPORT);
+        }
     }
+
+
 
 
     public Club findClubById(Long clubId) {
@@ -75,9 +80,9 @@ public class ClubServiceImpl implements ClubService {
 
     private Club verifyMember(Long clubId) {
         Club club = clubRepository.findByIsActiveAndId(true, clubId)
-        .orElseThrow(() ->
-                new BisException(ErrorCode.NOT_FOUND_CLUB)
-        );
+                .orElseThrow(() ->
+                        new BisException(ErrorCode.NOT_FOUND_CLUB)
+                );
         return club;
     }
 }

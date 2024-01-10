@@ -18,6 +18,7 @@ public record ReportClubResponseDto(
         this.clubId = clubId;
         this.username = username;
         this.content = content;
+
     }
 
     public static ReportClubResponseDto createReportClubResponseDto(

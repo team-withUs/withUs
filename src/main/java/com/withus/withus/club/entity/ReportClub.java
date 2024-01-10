@@ -1,7 +1,6 @@
 package com.withus.withus.club.entity;
 
 import com.withus.withus.club.dto.ReportClubRequestDto;
-import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import jakarta.persistence.*;
@@ -21,11 +20,11 @@ public class ReportClub extends TimeStamp {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id")
+    @JoinColumn(name = "club_id", nullable = false)
     private Club club;
 
     @Builder
@@ -35,16 +34,13 @@ public class ReportClub extends TimeStamp {
         this.member = member;
     }
 
-    public static ReportClub reportClub(
-            ReportClubRequestDto reportClubRequestDto,
-            Member member,
-            Club club
-    ) {
+    public static ReportClub createReport(ReportClubRequestDto reportClubRequestDto, Member member, Club club) {
         String content = reportClubRequestDto.content();
+
         return ReportClub.builder()
                 .content(content)
-                .club(club)
                 .member(member)
+                .club(club)
                 .build();
     }
 }
