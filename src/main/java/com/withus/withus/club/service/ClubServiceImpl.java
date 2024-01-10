@@ -29,7 +29,7 @@ public class ClubServiceImpl implements ClubService {
         LocalDateTime endTime = clubRequestDto.endTime();
         Club club = Club.createClub(clubRequestDto, member, startTime, endTime);
         Club savedClub = clubRepository.save(club);
-        ClubMember clubMember = ClubMember.createClubMember(club,member,ClubMemberRole.ADMIN);
+        ClubMember clubMember = ClubMember.createClubMember(club,member,ClubMemberRole.HOST);
         clubMemberService.createClubMember(clubMember);
         return ClubResponseDto.createClubResponseDto(savedClub);
     }
