@@ -3,6 +3,7 @@ package com.withus.withus.club.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
+import com.withus.withus.club.dto.ReportClubRequestDto;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import jakarta.persistence.*;
@@ -15,7 +16,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-
 public class Club extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,6 +99,7 @@ public class Club extends TimeStamp {
                 .endTime(endTime)
                 .build();
     }
+
     public void update(
             ClubRequestDto clubrequestDto
     ) {
@@ -116,7 +117,9 @@ public class Club extends TimeStamp {
         this.isActive=false;
     }
 
-    public void updateReport(int report) {
-        this.report=report;
+    // 신고 report update
+
+    public void updateReport(Integer report) {
+        this.report = report;
     }
 }

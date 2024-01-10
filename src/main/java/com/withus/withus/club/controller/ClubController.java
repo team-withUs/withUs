@@ -2,6 +2,8 @@ package com.withus.withus.club.controller;
 
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
+import com.withus.withus.club.dto.ReportClubRequestDto;
+import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.service.ClubService;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
@@ -67,12 +69,15 @@ public class ClubController {
     }
 
     // 신고
-    @PatchMapping("/report/{clubId}")
-    public ResponseEntity<CommonResponse<String>> updateReportNotice(
-            @PathVariable("clubId") Long clubId
+    @PostMapping("/{clubId}/report")
+    public ResponseEntity<CommonResponse<ReportClubResponseDto>> reportClub(
+            @PathVariable("clubId") Long clubId,
+            @RequestBody ReportClubRequestDto reportClubRequestDto,
+            @AuthMember Member member
     ) {
-        clubService.updateReportClub(clubId);
-        return ResponseEntity.status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
-                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT,""));
+        ReportClubResponseDto reportClubResponseDto = clubService.reportClub(clubId, reportClubRequestDto, member);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT, reportClubResponseDto));
     }
 }
