@@ -11,6 +11,7 @@ import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.dto.PageableDto;
 import com.withus.withus.notice.dto.ReportRequestDto;
 import com.withus.withus.notice.entity.Notice;
+import com.withus.withus.notice.entity.NoticeCategory;
 import com.withus.withus.notice.entity.ReportNotice;
 import com.withus.withus.notice.repository.NoticeRepository;
 import com.withus.withus.notice.repository.ReportRepository;
@@ -31,7 +32,14 @@ public class NoticeServiceImpl implements NoticeService{
   @Override
   public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member) {
     Club club = clubService.findByIsActiveAndClubId(clubId);
-    Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto, member, club));
+    NoticeCategory category;
+    if(requestDto.category().equals("공지사항")){
+      category=NoticeCategory.NOTICE;
+    }
+    else {
+      category=NoticeCategory.BOARD;
+    }
+    Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto, member, club, category));
     return NoticeResponseDto.createNoticeResponseDto(saveNotice);
   }
 
