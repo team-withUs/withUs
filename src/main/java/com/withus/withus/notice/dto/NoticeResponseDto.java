@@ -7,26 +7,22 @@ import lombok.Builder;
 
 public record NoticeResponseDto(
   String title,
-  String content,
-  int count
+  String content
 
   )
 {
   @Builder
-  public NoticeResponseDto(String title,String content,int count){
+  public NoticeResponseDto(String title,String content){
     this.title = title;
     this.content = content;
-    this.count = count;
   }
   public static NoticeResponseDto createNoticeResponseDto(Notice notice){
     String title = notice.getTitle();
     String content = notice.getContent();
-    int count = notice.getReportList().size();
 
     return NoticeResponseDto.builder()
         .title(title)
         .content(content)
-        .count(count)
         .build();
   }
 }

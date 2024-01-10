@@ -3,6 +3,8 @@ package com.withus.withus.club.service;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.entity.Club;
+import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
@@ -18,6 +20,8 @@ import java.time.LocalDateTime;
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
 
+    private final ClubMemberService clubMemberService;
+
     // 작성
     @Override
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
@@ -25,6 +29,8 @@ public class ClubServiceImpl implements ClubService {
         LocalDateTime endTime = clubRequestDto.endTime();
         Club club = Club.createClub(clubRequestDto, member, startTime, endTime);
         Club savedClub = clubRepository.save(club);
+        ClubMember clubMember = ClubMember.createClubMember(club,member,ClubMemberRole.HOST);
+        clubMemberService.createClubMember(clubMember);
         return ClubResponseDto.createClubResponseDto(savedClub);
     }
     //조회
@@ -67,7 +73,7 @@ public class ClubServiceImpl implements ClubService {
                 );
         return club;
     }
-   private Club findClubById(Long clubId) {
+   public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
 

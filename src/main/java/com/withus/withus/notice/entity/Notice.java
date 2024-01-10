@@ -42,8 +42,6 @@ public class Notice extends TimeStamp {
 //    @Column(nullable = false)
 //    private NoticeCategory category;
 
-    @OneToMany(mappedBy = "notice", cascade = CascadeType.REMOVE)
-    private List<Report> reportList = new ArrayList<>();
 
 
     @Builder

@@ -2,6 +2,7 @@ package com.withus.withus.club.service;
 
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
+import com.withus.withus.club.entity.Club;
 import com.withus.withus.member.entity.Member;
 
 public interface ClubService {
@@ -16,4 +17,6 @@ public interface ClubService {
     String deleteClub(Long clubId, Member member);
 
     void updateReportClub(Long clubId);
+
+    Club findClubById(Long clubId);
 }
