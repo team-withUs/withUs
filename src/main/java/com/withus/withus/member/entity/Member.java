@@ -36,7 +36,7 @@ public class Member extends TimeStamp {
     private String introduction;
 
     @Column
-    private String image;
+    private String filename;
 
     @Column
     private Boolean isActive = true;
@@ -66,15 +66,15 @@ public class Member extends TimeStamp {
             .build();
     }
 
-    public void update(UpdateRequestDto updateRequestDto,String password) {
+    public void update(UpdateRequestDto updateRequestDto, String password, String filename) {
         this.password = password;
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
-        this.image = updateRequestDto.image();
+        this.filename = filename;
     }
 
-    public void inActive() {
+    public void inactive() {
         this.isActive = false;
     }
 

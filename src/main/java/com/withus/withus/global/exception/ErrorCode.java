@@ -25,6 +25,8 @@ public enum ErrorCode {
 
     NOT_CHANGED_PASSWORD(BAD_REQUEST,"이전 비밀번호와 다른 비밀번호여야 합니다."),
 
+    FAILED_UPLOAD_IMAGE(BAD_REQUEST,"이미지 업로드에 실패했습니다."),
+
     /* 401 UNAUTHORIZED */
     ACCESS_DENIED(UNAUTHORIZED, "유효하지 못한 토큰입니다."),
 

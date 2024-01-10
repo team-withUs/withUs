@@ -1,5 +1,7 @@
 package com.withus.withus.member.service;
 
+import static com.withus.withus.global.s3.S3Const.S3_DIR_MEMBER;
+
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
@@ -10,6 +12,7 @@ import com.withus.withus.club.service.ClubServiceImpl;
 import com.withus.withus.global.config.EmailConfig;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.global.s3.S3Util;
 import com.withus.withus.global.security.jwt.RefreshTokenRepository;
 import com.withus.withus.global.utils.EmailService;
 import com.withus.withus.global.utils.RedisService;
@@ -52,9 +55,11 @@ public class MemberServiceImpl implements MemberService{
 
   private final EmailConfig emailConfig;
 
-  private final ClubMemberService clubMemberService;
+  private final ClubMemberServiceImpl clubMemberService;
 
-  private final ClubService clubService;
+  private final ClubServiceImpl clubService;
+
+  private final S3Util s3Util;
 
   @Override
   public void sendAuthCodeToEmail(EmailRequestDto emailRequestDto) {
@@ -100,7 +105,10 @@ public class MemberServiceImpl implements MemberService{
   public MemberResponseDto getMember(Long memberId) {
     Member member = findMemberByMemberId(memberId);
 
-    return MemberResponseDto.createMemberResponseDto(member);
+    return MemberResponseDto.createMemberResponseDto(
+        member,
+        s3Util.getFileURL(member.getFilename(), S3_DIR_MEMBER)
+    );
   }
 
   @Transactional
@@ -121,9 +129,21 @@ public class MemberServiceImpl implements MemberService{
     sameMemberInDBByEmail(updateRequestDto.email());
 
     Member updatedMember = findMemberByMemberId(memberId);
-    updatedMember.update(updateRequestDto, passwordEncoder.encode(updateRequestDto.password()));
+    if(updatedMember.getFilename() != null){
+      s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
+    }
 
-    return MemberResponseDto.createMemberResponseDto(updatedMember);
+    String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
+    updatedMember.update(
+        updateRequestDto,
+        passwordEncoder.encode(updateRequestDto.password()),
+        filename
+    );
+
+    return MemberResponseDto.createMemberResponseDto(
+        updatedMember,
+        s3Util.getFileURL(filename,S3_DIR_MEMBER)
+    );
   }
 
   @Transactional
@@ -134,7 +154,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Member deletedMember = findMemberByMemberId(memberId);
-    deletedMember.inActive();
+    deletedMember.inactive();
   }
 
   @Transactional
@@ -156,7 +176,7 @@ public class MemberServiceImpl implements MemberService{
 
     if(reportMemberRepository.countByReportedId(memberId) > 5){
       Member reportedMember = findMemberByMemberId(memberId);
-      reportedMember.inActive();
+      reportedMember.inactive();
     }
   }
 

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
 
-    private final ClubMemberService clubMemberService;
+    private final ClubMemberServiceImpl clubMemberService;
 
     // 작성
     @Override
