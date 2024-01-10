@@ -41,8 +41,12 @@ public enum ErrorCode {
 
     /* 404 NOT_FOUND */
     NOT_FOUND_CLUB(NOT_FOUND, "존재하지 않는 클럽입니다."),
+
     NOT_FOUND_MEMBER(NOT_FOUND, "해당 멤버를 찾을 수 없습니다"),
+
     NOT_FOUND_NOTICE(NOT_FOUND,"해당 Notice을 찾을 수없습니다."),
+
+    NOT_FOUND_CATEGORY(NOT_FOUND,"해당 카테고리을 찾을 수없습니다."),
 
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
@@ -50,6 +54,8 @@ public enum ErrorCode {
     DUPLICATE_USERNAME(CONFLICT, "중복된 유저이름 입니다"),
 
     DUPLICATE_EMAIL(CONFLICT, "중복된 Email 입니다"),
+
+    DUPLICATE_REPORT(CONFLICT, "이미 신고한 대상입니다."),
 
 
 

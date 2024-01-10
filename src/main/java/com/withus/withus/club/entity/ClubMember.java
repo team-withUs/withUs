@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ClubMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userClub_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)

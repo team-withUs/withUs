@@ -3,6 +3,7 @@ package com.withus.withus.member.service;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
+import com.withus.withus.member.dto.ReportRequestDto;
 import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.dto.UpdateRequestDto;
 import com.withus.withus.member.entity.Member;
@@ -21,7 +22,7 @@ public interface MemberService {
 
   void deleteMember(Long memberId, Member member);
 
-  void reportMember(Long memberId, Member member);
+  void reportMember(Long memberId, ReportRequestDto reportRequestDto, Member member);
 
   List<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
 

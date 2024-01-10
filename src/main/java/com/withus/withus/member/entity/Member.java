@@ -39,9 +39,6 @@ public class Member extends TimeStamp {
     private String image;
 
     @Column
-    private int report = 0;
-
-    @Column
     private Boolean isActive = true;
 
     @OneToMany(mappedBy = "member")
@@ -79,7 +76,4 @@ public class Member extends TimeStamp {
         this.isActive = false;
     }
 
-    public void report() {
-        this.report++;
-    }
 }

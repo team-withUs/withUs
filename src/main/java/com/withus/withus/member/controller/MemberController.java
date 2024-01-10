@@ -7,6 +7,7 @@ import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.global.security.UserDetailsImpl;
 import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
+import com.withus.withus.member.dto.ReportRequestDto;
 import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.dto.UpdateRequestDto;
 import com.withus.withus.member.entity.Member;
@@ -90,15 +91,16 @@ public class MemberController {
           .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,""));
   }
 
-  @PatchMapping("/report/{memberId}")
+  @PostMapping("/{memberId}/report")
   public ResponseEntity<CommonResponse<String>> reportMember(
       @PathVariable("memberId") Long memberId,
+      @RequestBody ReportRequestDto reportRequestDto,
       @AuthMember Member member
   ) {
-    memberService.reportMember(memberId,member);
+    memberService.reportMember(memberId,reportRequestDto,member);
     return ResponseEntity
         .status(ResponseCode.INVITE_MEMBER.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""));
+        .body(CommonResponse.of(ResponseCode.SUCCESS_MEMBER_REPORT,""));
   }
 
   @GetMapping("/club")
