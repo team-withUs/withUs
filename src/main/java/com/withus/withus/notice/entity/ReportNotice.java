@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Report {
+public class ReportNotice {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -32,16 +32,16 @@ public class Report {
   private Notice notice;
 
   @Builder
-  public Report(String content, Member member, Notice notice){
+  public ReportNotice(String content, Member member, Notice notice){
     this.content = content;
     this.member = member;
     this.notice = notice;
   }
 
-  public static Report createReport(ReportRequestDto requestDto, Member member, Notice notice){
+  public static ReportNotice createReport(ReportRequestDto requestDto, Member member, Notice notice){
     String content = requestDto.content();
 
-    return Report.builder()
+    return ReportNotice.builder()
         .content(content)
         .member(member)
         .notice(notice)

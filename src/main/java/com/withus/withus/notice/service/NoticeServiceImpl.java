@@ -11,7 +11,7 @@ import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.dto.PageableDto;
 import com.withus.withus.notice.dto.ReportRequestDto;
 import com.withus.withus.notice.entity.Notice;
-import com.withus.withus.notice.entity.Report;
+import com.withus.withus.notice.entity.ReportNotice;
 import com.withus.withus.notice.repository.NoticeRepository;
 import com.withus.withus.notice.repository.ReportRepository;
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class NoticeServiceImpl implements NoticeService{
   public void createReportNotice(Long noticeId, ReportRequestDto requestDto, Member member) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     if(!reportRepository.existsByNoticeIdAndMemberId(notice.getId(),member.getId())){
-      reportRepository.save(Report.createReport(requestDto, member, notice));
+      reportRepository.save(ReportNotice.createReport(requestDto, member, notice));
       if(reportRepository.countByNoticeId(notice.getId()) >= 5){
         notice.delete();
       }

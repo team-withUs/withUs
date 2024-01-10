@@ -1,10 +1,10 @@
 package com.withus.withus.notice.repository;
 
 
-import com.withus.withus.notice.entity.Report;
+import com.withus.withus.notice.entity.ReportNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReportRepository extends JpaRepository<Report,Long> {
+public interface ReportRepository extends JpaRepository<ReportNotice,Long> {
   boolean existsByNoticeIdAndMemberId(Long noticeId, Long memberId);
   int countByNoticeId(Long noticeId);
 
