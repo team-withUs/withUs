@@ -39,10 +39,16 @@ public enum ErrorCode {
     /* 403 FORBIDDEN */
     YOUR_NOT_COME_IN(FORBIDDEN, "권한이 없습니다"), // 포괄적인 Forbidden 코드
 
+    REJECT_SEND_CHAT_SELF(FORBIDDEN, "자기 자신에게 채팅을 할수 없습니다."),
+
     /* 404 NOT_FOUND */
     NOT_FOUND_CLUB(NOT_FOUND, "존재하지 않는 클럽입니다."),
+
     NOT_FOUND_MEMBER(NOT_FOUND, "해당 멤버를 찾을 수 없습니다"),
+
     NOT_FOUND_NOTICE(NOT_FOUND,"해당 Notice을 찾을 수없습니다."),
+
+    NOT_FOUND_CHATROOM(NOT_FOUND, "해당 채팅방을 찾을 수 없습니다."),
 
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),

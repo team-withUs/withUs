@@ -125,7 +125,13 @@ public class MemberServiceImpl implements MemberService{
   }
 
   public Member findMemberByMemberId(Long memberId){
-    return memberRepository.findById(memberId).orElseThrow(
+    return memberRepository.findMemberByIdAndIsActive(memberId, true).orElseThrow(
+        ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
+    );
+  }
+
+  public Member findMemberByLoginname(String loginname){
+    return memberRepository.findMemberByLoginnameAndIsActive(loginname, true).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }
@@ -140,12 +146,6 @@ public class MemberServiceImpl implements MemberService{
     if (memberRepository.existsUserByUsername(username)) {
       throw new BisException(ErrorCode.DUPLICATE_USERNAME);
     }
-  }
-
-  public Member findUserInDBById(Long id) {
-    return memberRepository.findById(id).orElseThrow(() ->
-        new BisException(ErrorCode.NOT_FOUND_MEMBER)
-    );
   }
 
   public void sameMemberInDBByEmail(String email) {
