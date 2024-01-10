@@ -25,6 +25,10 @@ public enum ResponseCode {
     UPDATE_PROFILE(200, "프로필 수정 성공"),
 
     RESIGN_MEMBER(200, "회원탈퇴 성공"),
+
+    GET_MY_CLUBLIST(200, "내 클럽 불러오기 성공"),
+
+    SUCCESS_MEMBER_REPORT(200, "Member 신고 성공"),
   
     /* NOTICE */
     SUCCESS_NOTICE_UPDATE(200,"Notice 수정 성공"),
