@@ -1,5 +1,6 @@
 package com.withus.withus.club.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.global.timestamp.TimeStamp;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
+
 public class Club extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,42 +38,85 @@ public class Club extends TimeStamp {
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @ManyToOne
+    @Column(nullable = false)
+    private String username;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private ClubCategory category;
 
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Builder
-    public Club(ClubRequestDto requestDto, Member member, LocalDateTime startTime, LocalDateTime endTime) {
+    public Club(
+            String clubTitle,
+            String content,
+            ClubCategory category,
+            int maxMember,
+            Member member,
+            String image,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    ) {
+        this.clubTitle = clubTitle;
+        this.content = content;
+        this.category = category;
+        this.image = image;
         this.member = member;
-        this.clubTitle = requestDto.clubTitle();
-        this.content = requestDto.content();
-        this.category = requestDto.category();
-        this.image = requestDto.image();
-        this.MaxMember = requestDto.maxMember();
+        this.MaxMember = maxMember;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.username = member.getUsername();
     }
 
+    public static Club createClub(
+            ClubRequestDto clubRequestDto,
+            Member member,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    ) {
+        String clubTitle = clubRequestDto.clubTitle();
+        String content = clubRequestDto.content();
+        ClubCategory category = clubRequestDto.category();
+        String image = clubRequestDto.image();
+        int maxMember = clubRequestDto.maxMember();
 
-
-    public void update(ClubRequestDto clubrequestDto) {
+        return Club.builder()
+                .clubTitle(clubTitle)
+                .content(content)
+                .category(category)
+                .image(image)
+                .member(member)
+                .maxMember(maxMember)
+                .startTime(startTime)
+                .endTime(endTime)
+                .build();
+    }
+    public void update(
+            ClubRequestDto clubrequestDto
+    ) {
+        ClubCategory category = clubrequestDto.category();
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();
-        this.category = clubrequestDto.category();
+        this.category = category;
         this.image = clubrequestDto.image();
         this.MaxMember = clubrequestDto.maxMember();
-        this.startTime =clubrequestDto.startTime();
+        this.startTime = clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
     }
 
+    public void delete() {
+        this.isActive=false;
+    }
+
+    public void updateReport(int report) {
+        this.report=report;
+    }
 }

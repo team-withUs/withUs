@@ -23,4 +23,6 @@ public @interface AuthMember {
  * @AuthenticationPrincipal  이거 대신
  *
  * @AuthUser Member member 로 바로 user 가져올 수 있습니다.
- */
+
+
+**/

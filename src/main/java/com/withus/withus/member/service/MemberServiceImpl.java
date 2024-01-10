@@ -1,5 +1,12 @@
 package com.withus.withus.member.service;
 
+import com.withus.withus.club.dto.ClubResponseDto;
+import com.withus.withus.club.entity.Club;
+import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.service.ClubMemberService;
+import com.withus.withus.club.service.ClubMemberServiceImpl;
+import com.withus.withus.club.service.ClubService;
+import com.withus.withus.club.service.ClubServiceImpl;
 import com.withus.withus.global.config.EmailConfig;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
@@ -8,12 +15,19 @@ import com.withus.withus.global.utils.EmailService;
 import com.withus.withus.global.utils.RedisService;
 import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
+import com.withus.withus.member.dto.ReportRequestDto;
 import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.dto.UpdateRequestDto;
 import com.withus.withus.member.entity.Member;
+import com.withus.withus.club.entity.ClubMemberRole;
+import com.withus.withus.member.entity.ReportMember;
 import com.withus.withus.member.repository.MemberRepository;
+import com.withus.withus.member.repository.ReportMemberRepository;
 import java.time.Duration;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +40,8 @@ public class MemberServiceImpl implements MemberService{
 
   private final MemberRepository memberRepository;
 
+  private final ReportMemberRepository reportMemberRepository;
+
   private final PasswordEncoder passwordEncoder;
 
   private final RefreshTokenRepository refreshTokenRepository;
@@ -35,6 +51,10 @@ public class MemberServiceImpl implements MemberService{
   private final RedisService redisService;
 
   private final EmailConfig emailConfig;
+
+  private final ClubMemberService clubMemberService;
+
+  private final ClubService clubService;
 
   @Override
   public void sendAuthCodeToEmail(EmailRequestDto emailRequestDto) {
@@ -114,18 +134,69 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Member deletedMember = findMemberByMemberId(memberId);
-    deletedMember.delete();
+    deletedMember.inActive();
   }
 
   @Transactional
   @Override
-  public void reportMember(Long memberId, Member member) {
-    Member reportedMember = findMemberByMemberId(memberId);
-    reportedMember.report();
+  public void reportMember(Long memberId, ReportRequestDto reportRequestDto, Member member) {
+    if(!existMemberByIsActiveAndId(memberId)){
+      throw new BisException(ErrorCode.NOT_FOUND_MEMBER);
+    }
+
+    if(reportMemberRepository.existsByReporterIdAndReportedId(member.getId(),memberId)){
+      throw new BisException(ErrorCode.DUPLICATE_REPORT);
+    }
+    ReportMember reportMember = ReportMember.createReportMember(
+        member.getId(),
+        memberId,
+        reportRequestDto.content()
+    );
+    reportMemberRepository.save(reportMember);
+
+    if(reportMemberRepository.countByReportedId(memberId) > 5){
+      Member reportedMember = findMemberByMemberId(memberId);
+      reportedMember.inActive();
+    }
+  }
+
+  @Override
+  public List<ClubResponseDto> getMyClubList(Pageable pageable, Member member) {
+    Page<ClubMember> myClubMemberPage = clubMemberService.findAllByMemberId(member,pageable);
+    List<ClubResponseDto> clubResponseDtoList = myClubMemberPage
+        .map(clubMember -> ClubResponseDto.createClubResponseDto(clubMember.getClub()))
+        .getContent();
+
+    return clubResponseDtoList;
+  }
+
+  @Override
+  public void inviteMember(Long memberId, Long clubId, Member member) {
+    ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member,clubId);
+    if(!clubMember.getClubMemberRole().equals(ClubMemberRole.HOST)){
+      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+    }
+
+    if(!existMemberByIsActiveAndId(memberId)){
+      throw new BisException(ErrorCode.NOT_FOUND_MEMBER);
+    }
+
+    Member invitedMember = findMemberByMemberId(memberId);
+    if(!clubMemberService.existsClubMemberByMemberIdAndClubId(memberId,clubId)){
+      throw new BisException(ErrorCode.DUPLICATE_MEMBER);
+    }
+
+    Club club = clubService.findClubById(clubId);
+    ClubMember invitedclubMember = ClubMember.createClubMember(club, invitedMember, ClubMemberRole.GUEST);
+    clubMemberService.createClubMember(invitedclubMember);
+  }
+
+  public boolean existMemberByIsActiveAndId(Long memberId){
+    return memberRepository.existsByIsActiveAndId(true, memberId);
   }
 
   public Member findMemberByMemberId(Long memberId){
-    return memberRepository.findById(memberId).orElseThrow(
+    return memberRepository.findByIsActiveAndId(true, memberId).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }

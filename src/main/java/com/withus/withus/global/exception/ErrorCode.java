@@ -36,13 +36,20 @@ public enum ErrorCode {
 
     NOT_EXIST_ACCESS_TOKEN(UNAUTHORIZED, "엑세스토큰이 존재하지 않슴니다."),
 
+    NOTICE_EXIST_REPORT(BAD_REQUEST,"이미 해당 게시판을 신고하셨습니다."),
+
+
     /* 403 FORBIDDEN */
     YOUR_NOT_COME_IN(FORBIDDEN, "권한이 없습니다"), // 포괄적인 Forbidden 코드
 
     /* 404 NOT_FOUND */
     NOT_FOUND_CLUB(NOT_FOUND, "존재하지 않는 클럽입니다."),
+
     NOT_FOUND_MEMBER(NOT_FOUND, "해당 멤버를 찾을 수 없습니다"),
+
     NOT_FOUND_NOTICE(NOT_FOUND,"해당 Notice을 찾을 수없습니다."),
+
+    NOT_FOUND_CATEGORY(NOT_FOUND,"해당 카테고리을 찾을 수없습니다."),
 
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
@@ -50,6 +57,10 @@ public enum ErrorCode {
     DUPLICATE_USERNAME(CONFLICT, "중복된 유저이름 입니다"),
 
     DUPLICATE_EMAIL(CONFLICT, "중복된 Email 입니다"),
+
+    DUPLICATE_REPORT(CONFLICT, "이미 신고한 대상입니다."),
+
+
 
     /* 그 외 */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러");
