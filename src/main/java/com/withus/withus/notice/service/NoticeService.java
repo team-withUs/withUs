@@ -9,13 +9,13 @@ public interface NoticeService {
 
   NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member);
 
-  NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto, Member member);
+  NoticeResponseDto updateNotice(Long clubId, Long noticeId, NoticeRequestDto requestDto, Member member);
 
-  NoticeResponseDto getNotice(Long noticeId);
+  NoticeResponseDto getNotice(Long clubId, Long noticeId);
 
-  void deleteNotice(Long noticeId, Member member);
+  void deleteNotice(Long clubId, Long noticeId, Member member);
 
-  void updateReportNotice(Long noticeId, Member member);
+  void createNoticeReport(Long noticeId, Member member);
 
-  List<NoticeResponseDto> getsNotice(int page, int size, String sortBy);
+  List<NoticeResponseDto> getsNotice(Long clubId, int page, int size, String sortBy);
 }

@@ -67,7 +67,7 @@ public class ClubServiceImpl implements ClubService {
                 );
         return club;
     }
-    public Club findClubById(Long clubId) {
+   private Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
 
@@ -79,6 +79,10 @@ public class ClubServiceImpl implements ClubService {
                 new BisException(ErrorCode.NOT_FOUND_CLUB)
         );
         return club;
+    }
+
+    public boolean existByIsActiveAndClubId(Long clubId){
+        return clubRepository.existsByIsActiveAndId(true,clubId);
     }
 }
 

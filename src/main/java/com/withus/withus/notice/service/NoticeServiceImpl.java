@@ -26,27 +26,36 @@ public class NoticeServiceImpl implements NoticeService{
 
   @Override
   public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member) {
-    Club club = clubService.findClubById(clubId);
+    Club club = clubService.findByIsActiveAndClubId(clubId);
     Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto, member, club));
     return NoticeResponseDto.createNoticeResponseDto(saveNotice);
   }
 
   @Transactional
   @Override
-  public NoticeResponseDto updateNotice(Long noticeId, NoticeRequestDto requestDto, Member member) {
+  public NoticeResponseDto updateNotice(Long clubId, Long noticeId, NoticeRequestDto requestDto, Member member) {
+    if(!existsByClubId(clubId)){
+      throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+    }
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.update(requestDto);
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 
   @Override
-  public NoticeResponseDto getNotice(Long noticeId) {
+  public NoticeResponseDto getNotice(Long clubId, Long noticeId) {
+    if(!existsByClubId(clubId)){
+      throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+    }
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 
   @Override
-  public List<NoticeResponseDto> getsNotice(int page, int size, String sortBy) {
+  public List<NoticeResponseDto> getsNotice(Long clubId, int page, int size, String sortBy) {
+    if(!existsByClubId(clubId)){
+      throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+    }
     List<Notice> noticeList = noticeRepository
         .findAllByIsActive(true,PageableDto.getsPageableDto(page, size, sortBy).toPageable());
     List<NoticeResponseDto> responseDtoList = new ArrayList<>();
@@ -58,14 +67,17 @@ public class NoticeServiceImpl implements NoticeService{
 
   @Transactional
   @Override
-  public void deleteNotice(Long noticeId, Member member) {
+  public void deleteNotice(Long clubId, Long noticeId, Member member) {
+    if(!existsByClubId(clubId)){
+      throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+    }
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.delete();
   }
 
   @Transactional
   @Override
-  public void updateReportNotice(Long noticeId, Member member) {
+  public void createNoticeReport(Long noticeId, Member member) {
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     notice.updateReport(notice.getReport()+1);
     if(notice.getReport() >= 5){
@@ -81,5 +93,9 @@ public class NoticeServiceImpl implements NoticeService{
             new BisException(ErrorCode.NOT_FOUND_NOTICE)
         );
     return notice;
+  }
+
+  public boolean existsByClubId(Long clubId){
+    return clubService.existByIsActiveAndClubId(clubId);
   }
 }
