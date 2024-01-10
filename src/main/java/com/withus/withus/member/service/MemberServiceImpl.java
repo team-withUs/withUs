@@ -105,10 +105,7 @@ public class MemberServiceImpl implements MemberService{
   public MemberResponseDto getMember(Long memberId) {
     Member member = findMemberByMemberId(memberId);
 
-    return MemberResponseDto.createMemberResponseDto(
-        member,
-        s3Util.getFileURL(member.getFilename(), S3_DIR_MEMBER)
-    );
+    return MemberResponseDto.createMemberResponseDto(member);
   }
 
   @Transactional
@@ -133,16 +130,18 @@ public class MemberServiceImpl implements MemberService{
       s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
     }
 
-    String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
-    updatedMember.update(
-        updateRequestDto,
-        passwordEncoder.encode(updateRequestDto.password()),
-        filename
-    );
+    if(updateRequestDto.imageFile().getName().isEmpty()) {
+      String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
+      updatedMember.update(
+          updateRequestDto,
+          passwordEncoder.encode(updateRequestDto.password()),
+          s3Util.getFileURL(filename, S3_DIR_MEMBER),
+          filename
+      );
+    }
 
     return MemberResponseDto.createMemberResponseDto(
-        updatedMember,
-        s3Util.getFileURL(filename,S3_DIR_MEMBER)
+        updatedMember
     );
   }
 

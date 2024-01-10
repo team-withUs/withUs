@@ -21,10 +21,11 @@ public record MemberResponseDto(
     this.imageURL = imageURL;
   }
 
-  public static MemberResponseDto createMemberResponseDto(Member member, String imageURL){
+  public static MemberResponseDto createMemberResponseDto(Member member){
     String username = member.getUsername();
     String email = member.getEmail();
     String introduction = member.getIntroduction();
+    String imageURL = member.getImageURL();
 
     return MemberResponseDto.builder()
         .username(username)

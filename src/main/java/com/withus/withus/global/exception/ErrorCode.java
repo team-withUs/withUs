@@ -27,6 +27,8 @@ public enum ErrorCode {
 
     FAILED_UPLOAD_IMAGE(BAD_REQUEST,"이미지 업로드에 실패했습니다."),
 
+    OVER_FILE_SIZE(BAD_REQUEST, "파일의 크기가 50MB보다 큽니다."),
+
     /* 401 UNAUTHORIZED */
     ACCESS_DENIED(UNAUTHORIZED, "유효하지 못한 토큰입니다."),
 

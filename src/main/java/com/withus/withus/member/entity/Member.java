@@ -36,6 +36,9 @@ public class Member extends TimeStamp {
     private String introduction;
 
     @Column
+    private String imageURL;
+
+    @Column
     private String filename;
 
     @Column
@@ -66,11 +69,17 @@ public class Member extends TimeStamp {
             .build();
     }
 
-    public void update(UpdateRequestDto updateRequestDto, String password, String filename) {
+    public void update(
+        UpdateRequestDto updateRequestDto,
+        String password,
+        String imageURL,
+        String filename
+    ) {
         this.password = password;
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
+        this.imageURL = imageURL;
         this.filename = filename;
     }
 
