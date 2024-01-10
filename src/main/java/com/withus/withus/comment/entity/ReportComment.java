@@ -31,5 +31,6 @@ public class ReportComment {
         this.comment = reportComment;
         this.member = loginMember;
         this.content = content;
+
     }
 }
