@@ -70,9 +70,11 @@ public class Member extends TimeStamp {
         this.password = password;
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
+        this.introduction = updateRequestDto.introduction();
+        this.image = updateRequestDto.image();
     }
 
-    public void delete() {
+    public void inActive() {
         this.isActive = false;
     }
 

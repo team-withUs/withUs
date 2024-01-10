@@ -134,7 +134,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Member deletedMember = findMemberByMemberId(memberId);
-    deletedMember.delete();
+    deletedMember.inActive();
   }
 
   @Transactional
@@ -154,9 +154,9 @@ public class MemberServiceImpl implements MemberService{
     );
     reportMemberRepository.save(reportMember);
 
-    if(reportMemberRepository.countByReportedId(memberId) >= 2){
+    if(reportMemberRepository.countByReportedId(memberId) > 5){
       Member reportedMember = findMemberByMemberId(memberId);
-      reportedMember.delete();
+      reportedMember.inActive();
     }
   }
 
@@ -187,16 +187,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Club club = clubService.findClubById(clubId);
-    ClubMember invitedclubMember = ClubMember.createClubMember(club,invitedMember,ClubMemberRole.GUEST);
+    ClubMember invitedclubMember = ClubMember.createClubMember(club, invitedMember, ClubMemberRole.GUEST);
     clubMemberService.createClubMember(invitedclubMember);
   }
 
   public boolean existMemberByIsActiveAndId(Long memberId){
-    return memberRepository.existsByIsActiveAndId(true,memberId);
+    return memberRepository.existsByIsActiveAndId(true, memberId);
   }
 
   public Member findMemberByMemberId(Long memberId){
-    return memberRepository.findByIsActiveAndId(true,memberId).orElseThrow(
+    return memberRepository.findByIsActiveAndId(true, memberId).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }

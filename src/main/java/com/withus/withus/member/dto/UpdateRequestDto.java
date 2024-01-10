@@ -21,11 +21,21 @@ public record UpdateRequestDto(
     @NotBlank(message = "이메일은 필수항목입니다.")
     @Length(max = 255)
     @Pattern(regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$", message = "이메일 형식에 맞게 작성해주세요.")
-    String email
+    String email,
+    String introduction,
+    String image
+
 ) {
 
   @Builder
-  public UpdateRequestDto(String password, String passwordCheck, String username, String email){
+  public UpdateRequestDto(
+      String password,
+      String passwordCheck,
+      String username,
+      String email,
+      String introduction,
+      String image
+  ) {
     if(!password.equals(passwordCheck)){
       throw new BisException(ErrorCode.NOT_MATCH_PASSWORD_CHECK);
     }
@@ -33,5 +43,7 @@ public record UpdateRequestDto(
     this.passwordCheck = passwordCheck;
     this.username = username;
     this.email = email;
+    this.introduction = introduction;
+    this.image = image;
   }
 }
