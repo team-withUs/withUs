@@ -5,14 +5,13 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 
-
 public record ClubResponseDto(
         Long clubId,
         String clubTitle,
-        String memberId,
         String content,
         String category,
         String image,
+        String username,
         int maxMember,
         int report,
         LocalDateTime startTime,
@@ -21,36 +20,51 @@ public record ClubResponseDto(
         LocalDateTime modifiedAt
 ) {
     @Builder
-    public ClubResponseDto(Club club) {
-
-        this(club.getId(),
-                club.getClubTitle(),
-                club.getMember().getUsername(),
-                club.getContent(),
-                club.getCategory().name(),
-                club.getImage(),
-                club.getMaxMember(),
-                club.getReport(),
-                club.getStartTime(),
-                club.getEndTime(),
-                club.getCreatedAt(),
-                club.getModifiedAt());
+    public ClubResponseDto(
+            Long clubId,
+            String clubTitle,
+            String content,
+            String category,
+            String image,
+            String username,
+            int maxMember,
+            int report,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            LocalDateTime createdAt,
+            LocalDateTime modifiedAt
+    ) {
+        this.clubId = clubId;
+        this.clubTitle = clubTitle;
+        this.content = content;
+        this.category = category;
+        this.image = image;
+        this.username = username;
+        this.maxMember = maxMember;
+        this.report = report;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
-    public static ClubResponseDto fromClub(Club savedClub) {
-        return new ClubResponseDto(
-                savedClub.getId(),
-                savedClub.getClubTitle(),
-                savedClub.getMember().getUsername(),
-                savedClub.getContent(),
-                savedClub.getCategory().name(),
-                savedClub.getImage(),
-                savedClub.getMaxMember(),
-                savedClub.getReport(),
-                savedClub.getStartTime(),
-                savedClub.getEndTime(),
-                savedClub.getCreatedAt(),
-                savedClub.getModifiedAt()
-        );
+    public static ClubResponseDto createClubResponseDto(
+            Club club
+    ) {
+        String username = club.getMember().getUsername();
+        return ClubResponseDto.builder()
+                .clubId(club.getId())
+                .clubTitle(club.getClubTitle())
+                .content(club.getContent())
+                .category(club.getCategory().name())
+                .image(club.getImage())
+                .username(username)
+                .maxMember(club.getMaxMember())
+                .report(club.getReport())
+                .startTime(club.getStartTime())
+                .endTime(club.getEndTime())
+                .createdAt(club.getCreatedAt())
+                .modifiedAt(club.getModifiedAt())
+                .build();
     }
 }

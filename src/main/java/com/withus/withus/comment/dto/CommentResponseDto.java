@@ -1,6 +1,5 @@
 package com.withus.withus.comment.dto;
 
-
 import com.withus.withus.global.timestamp.TimeStamp;
 import lombok.Getter;
 

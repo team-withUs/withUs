@@ -21,26 +21,33 @@ public class ClubController {
 
     // 작성
     @PostMapping
-    public ResponseEntity<CommonResponse<ClubResponseDto>> createBoard(@RequestBody ClubRequestDto clubRequestDto,
-                                                                       @AuthMember Member member) {
+    public ResponseEntity<CommonResponse<ClubResponseDto>> createBoard(
+            @RequestBody ClubRequestDto clubRequestDto,
+            @AuthMember Member member
+    ) {
         ClubResponseDto responseDto = clubService.createClub(clubRequestDto, member);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE,responseDto));
     }
 
-    //조회
-    @ResponseBody
     @GetMapping("/{clubId}")
-    public ClubResponseDto getClub(@PathVariable("clubId") Long clubId) {
-        return clubService.getClub(clubId);
+    public ResponseEntity<CommonResponse<ClubResponseDto>> getClub(
+            @PathVariable("clubId") Long clubId
+    ) {
+        ClubResponseDto responseDto = clubService.getClub(clubId);
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
     }
 
     //수정
     @PatchMapping("/{clubId}")
-    public ResponseEntity<CommonResponse> updateClub(@PathVariable("clubId") Long clubId,
-                                                     @RequestBody ClubRequestDto clubRequestDto,
-                                                     @AuthMember Member member) {
+    public ResponseEntity<CommonResponse> updateClub(
+            @PathVariable("clubId") Long clubId,
+            @RequestBody ClubRequestDto clubRequestDto,
+            @AuthMember Member member
+    ) {
         ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_UPDATE.getHttpStatus())
@@ -49,22 +56,23 @@ public class ClubController {
 
     //삭제
     @DeleteMapping("/{clubId}")
-    public ResponseEntity<CommonResponse<String>> deleteClub(@PathVariable("clubId") Long clubId,
-                                                             @AuthMember Member member){
+    public ResponseEntity<CommonResponse<String>> deleteClub(
+            @PathVariable("clubId") Long clubId,
+            @AuthMember Member member
+    ) {
         String responseDto = clubService.deleteClub(clubId, member);
-        CommonResponse<String> commonResponse = CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
-                .body(commonResponse);
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
     }
 
     // 신고
-//    @PatchMapping("/report/{clubId}")
-//    public ResponseEntity<CommonResponse<String>> updateReportNotice(
-//            @PathVariable("clubId") Long clubId
-//    ) {
-//        clubService.updateReportClub(clubId);
-//        return ResponseEntity.status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
-//                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT,""));
-//    }
+    @PatchMapping("/report/{clubId}")
+    public ResponseEntity<CommonResponse<String>> updateReportNotice(
+            @PathVariable("clubId") Long clubId
+    ) {
+        clubService.updateReportClub(clubId);
+        return ResponseEntity.status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT,""));
+    }
 }
