@@ -38,6 +38,10 @@ public class Notice extends TimeStamp {
     @JoinColumn(name = "Club_id", nullable = false)
     private Club club;
 
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private NoticeCategory category;
+
 
     @Builder
     public Notice(String title, String content,Member member, Club club){
