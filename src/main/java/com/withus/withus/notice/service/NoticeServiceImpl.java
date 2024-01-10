@@ -82,7 +82,7 @@ public class NoticeServiceImpl implements NoticeService{
       throw new BisException(ErrorCode.NOT_FOUND_CLUB);
     }
     Notice notice = findByIsActiveAndNoticeId(noticeId);
-    notice.delete();
+    notice.inActive();
   }
 
   @Transactional
@@ -91,8 +91,8 @@ public class NoticeServiceImpl implements NoticeService{
     Notice notice = findByIsActiveAndNoticeId(noticeId);
     if(!reportRepository.existsByNoticeIdAndMemberId(notice.getId(),member.getId())){
       reportRepository.save(ReportNotice.createReport(requestDto, member, notice));
-      if(reportRepository.countByNoticeId(notice.getId()) >= 5){
-        notice.delete();
+      if(reportRepository.countByNoticeId(notice.getId()) > 5){
+        notice.inActive();
       }
     }
     else {

@@ -57,7 +57,7 @@ public class Notice extends TimeStamp {
         this.content = requestDto.content();
     }
 
-    public void delete(){
+    public void inActive(){
         this.isActive=false;
     }
 
