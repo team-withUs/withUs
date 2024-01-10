@@ -5,6 +5,8 @@ import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +27,6 @@ public class Notice extends TimeStamp {
     @Column
     private String image;
 
-    @Column
-    private int report = 0;
 
     private Boolean isActive = true;
 
@@ -42,6 +42,9 @@ public class Notice extends TimeStamp {
 //    @Column(nullable = false)
 //    private NoticeCategory category;
 
+    @OneToMany(mappedBy = "notice", cascade = CascadeType.REMOVE)
+    private List<Report> reportList = new ArrayList<>();
+
 
     @Builder
     public Notice(String title, String content,Member member, Club club){
@@ -54,9 +57,6 @@ public class Notice extends TimeStamp {
     public void update(NoticeRequestDto requestDto){
         this.title = requestDto.title();
         this.content = requestDto.content();
-    }
-    public void updateReport(Integer report){
-        this.report=report;
     }
 
     public void delete(){

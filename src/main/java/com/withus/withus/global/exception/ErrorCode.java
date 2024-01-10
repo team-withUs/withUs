@@ -36,6 +36,9 @@ public enum ErrorCode {
 
     NOT_EXIST_ACCESS_TOKEN(UNAUTHORIZED, "엑세스토큰이 존재하지 않슴니다."),
 
+    NOTICE_EXIST_REPORT(BAD_REQUEST,"이미 해당 게시판을 신고하셨습니다."),
+
+
     /* 403 FORBIDDEN */
     YOUR_NOT_COME_IN(FORBIDDEN, "권한이 없습니다"), // 포괄적인 Forbidden 코드
 
