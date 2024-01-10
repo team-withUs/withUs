@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class ClubMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userClub_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,9 +22,5 @@ public class ClubMember {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public ClubMember(Club club, Member member) {
-        this.club = club;
-        this.member = member;
-    }
 
 }
