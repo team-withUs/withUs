@@ -55,7 +55,7 @@ public record ClubResponseDto(
                 .content(club.getContent())
                 .category(club.getCategory().name())
                 .image(club.getImage())
-                .username(username)
+                .username(club.getUsername())
                 .maxMember(club.getMaxMember())
                 .startTime(club.getStartTime())
                 .endTime(club.getEndTime())

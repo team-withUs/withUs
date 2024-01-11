@@ -37,6 +37,9 @@ public class Club extends TimeStamp {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
+    @Column(name = "created_date")
+    private LocalDateTime createdDate;
+
     @Column(nullable = false)
     private String username;
 

@@ -1,5 +1,6 @@
 package com.withus.withus.club.controller;
 
+import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.dto.ReportClubRequestDto;
@@ -9,9 +10,12 @@ import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.member.entity.Member;
+import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -77,6 +81,20 @@ public class ClubController {
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT, reportClubResponse));
+    }
+    // 카테고리
+    @GetMapping("/{category}/club")
+    public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
+            @PathVariable("category") ClubCategory category,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdDate") String sortBy
+    ) {
+        PageableDto pageableDto = new PageableDto(page, size, sortBy);
+
+        return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.OK,
+                        clubService.getsClubByCategory(category, pageableDto)));
     }
 
 }
