@@ -58,7 +58,14 @@ public class NoticeServiceImpl implements NoticeService{
       throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
     }
     Notice notice = findByIsActiveAndNoticeId(noticeId);
-    notice.update(requestDto);
+    NoticeCategory category;
+    if(requestDto.category().equals("공지사항")){
+      category=NoticeCategory.NOTICE;
+    }
+    else {
+      category=NoticeCategory.BOARD;
+    }
+    notice.update(requestDto,category);
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 

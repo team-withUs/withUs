@@ -53,9 +53,10 @@ public class Notice extends TimeStamp {
         this.category = category;
     }
 
-    public void update(NoticeRequestDto requestDto){
+    public void update(NoticeRequestDto requestDto, NoticeCategory category){
         this.title = requestDto.title();
         this.content = requestDto.content();
+        this.category = category;
     }
 
     public void inActive(){
