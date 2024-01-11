@@ -51,6 +51,8 @@ public enum ErrorCode {
 
     NOT_FOUND_CATEGORY(NOT_FOUND,"해당 카테고리을 찾을 수없습니다."),
 
+    NOT_FOUND_CLUB_MEMBER_EXIST(NOT_FOUND,"클럽멤버가 아닙니다"),
+
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
 
