@@ -38,7 +38,7 @@ public class MemberController {
 
 
   @PostMapping("/signup/email")
-  public ResponseEntity<CommonResponse> authenticationEmail (
+  public ResponseEntity<CommonResponse<EmailRequestDto>> authenticationEmail (
       @Valid @RequestBody EmailRequestDto emailRequestDto
   ) {
     memberService.sendAuthCodeToEmail(emailRequestDto);

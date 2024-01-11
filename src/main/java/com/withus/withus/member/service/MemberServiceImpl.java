@@ -47,8 +47,6 @@ public class MemberServiceImpl implements MemberService{
 
   private final PasswordEncoder passwordEncoder;
 
-  private final RefreshTokenRepository refreshTokenRepository;
-
   private final EmailService emailService;
 
   private final RedisService redisService;
@@ -96,7 +94,7 @@ public class MemberServiceImpl implements MemberService{
     String password = passwordEncoder.encode(signupRequestDto.password());
 
     // 새 멤버 등록
-    Member member = new Member(loginname, password, email, username);
+    Member member = Member.createMember(loginname, password, email, username);
     memberRepository.save(member);
 
   }
@@ -215,7 +213,13 @@ public class MemberServiceImpl implements MemberService{
   }
 
   public Member findMemberByMemberId(Long memberId){
-    return memberRepository.findByIsActiveAndId(true, memberId).orElseThrow(
+    return memberRepository.findMemberByIdAndIsActive(memberId, true).orElseThrow(
+        ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
+    );
+  }
+
+  public Member findMemberByLoginname(String loginname){
+    return memberRepository.findMemberByLoginnameAndIsActive(loginname, true).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }
@@ -230,12 +234,6 @@ public class MemberServiceImpl implements MemberService{
     if (memberRepository.existsUserByUsername(username)) {
       throw new BisException(ErrorCode.DUPLICATE_USERNAME);
     }
-  }
-
-  public Member findUserInDBById(Long id) {
-    return memberRepository.findById(id).orElseThrow(() ->
-        new BisException(ErrorCode.NOT_FOUND_MEMBER)
-    );
   }
 
   public void sameMemberInDBByEmail(String email) {
