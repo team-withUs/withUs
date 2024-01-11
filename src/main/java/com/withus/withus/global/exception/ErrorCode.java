@@ -25,6 +25,10 @@ public enum ErrorCode {
 
     NOT_CHANGED_PASSWORD(BAD_REQUEST,"이전 비밀번호와 다른 비밀번호여야 합니다."),
 
+    FAILED_UPLOAD_IMAGE(BAD_REQUEST,"이미지 업로드에 실패했습니다."),
+
+    OVER_FILE_SIZE(BAD_REQUEST, "파일의 크기가 50MB보다 큽니다."),
+
     /* 401 UNAUTHORIZED */
     CLUB_EXIST_REPORT(BAD_REQUEST,"이미 해당 클럽을 신고하셨습니다."),
 

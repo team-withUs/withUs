@@ -19,23 +19,21 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 
   private final ClubMemberRepository clubMemberRepository;
 
-  @Override
+
   public void createClubMember(ClubMember clubMember){
     clubMemberRepository.save(clubMember);
   }
 
-  @Override
+
   public ClubMember findClubMemberByMemberIdAndClubId(Member member, Long clubId){
     return clubMemberRepository.findClubMemberByMemberIdAndClubId(member.getId(), clubId)
         .orElseThrow(() -> new BisException(ErrorCode.YOUR_NOT_COME_IN));
   }
 
-  @Override
   public Page<ClubMember> findAllByMemberId(Member member, Pageable pageable){
     return clubMemberRepository.findByMemberId(member.getId(), pageable);
   }
 
-  @Override
   public boolean existsClubMemberByMemberIdAndClubId(Long memberId, Long clubId){
     return clubMemberRepository.existsByMemberIdAndClubId(memberId, clubId);
   }

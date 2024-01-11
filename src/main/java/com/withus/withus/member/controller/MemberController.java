@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,7 +67,7 @@ public class MemberController {
   @PatchMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
       @PathVariable("memberId") Long memberId,
-      @Valid @RequestBody UpdateRequestDto updateRequestDto,
+      @Valid @ModelAttribute UpdateRequestDto updateRequestDto,
       @AuthMember Member member
   ) {
     MemberResponseDto memberResponseDto = memberService.updateMember(
