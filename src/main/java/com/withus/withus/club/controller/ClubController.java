@@ -14,7 +14,6 @@ import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class ClubController {
     private final ClubService clubService;
 
     @PostMapping
-    public ResponseEntity<CommonResponse<ClubResponseDto>> createBoard(
+    public ResponseEntity<CommonResponse<ClubResponseDto>> createClub(
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
@@ -50,7 +49,7 @@ public class ClubController {
     @PatchMapping("/{clubId}")
     public ResponseEntity<CommonResponse> updateClub(
             @PathVariable("clubId") Long clubId,
-            @RequestBody ClubRequestDto clubRequestDto,
+            @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
         ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member);

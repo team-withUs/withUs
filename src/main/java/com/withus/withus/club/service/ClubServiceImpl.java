@@ -6,6 +6,8 @@ import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.dto.ReportClubRequestDto;
 import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.entity.Club;
+import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.entity.ReportClub;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.club.repository.ReportClubRepository;
@@ -31,6 +33,7 @@ public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final ReportClubRepository reportClubRepository;
     private final S3Util s3Util;
+    private final ClubMemberService clubMemberService;
 
 
     @Override
@@ -47,6 +50,8 @@ public class ClubServiceImpl implements ClubService {
             club.setImageUrl(imageFile); // 이미지 URL 설정
             Club savedClub = clubRepository.save(club);
 
+            ClubMember clubMember = ClubMember.createClubMember(club,member,ClubMemberRole.HOST);
+            clubMemberService.createClubMember(clubMember);
             return ClubResponseDto.createClubResponseDto(savedClub);
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,6 +86,7 @@ public class ClubServiceImpl implements ClubService {
 
     }
 
+    @Override
     public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
         Club club = verifyMember(clubId);
         ReportClub reportClub = ReportClub.createReport(reportClubRequestDto, member, club);
