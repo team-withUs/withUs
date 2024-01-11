@@ -13,9 +13,8 @@ import java.util.Optional;
 public interface ClubRepository extends JpaRepository<Club, Long> {
 
     Optional<Club> findByIsActiveAndId(boolean isActive, Long clubId);
+  
+    boolean existsByIsActiveAndId(boolean isActive, Long clubId);
 
-
-
-    Page<Club> findByIsActiveAndCategory(boolean b, ClubCategory category, Pageable pageable);
 }
 

@@ -5,6 +5,8 @@ import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +27,6 @@ public class Notice extends TimeStamp {
     @Column
     private String image;
 
-    @Column
-    private int report = 0;
 
     private Boolean isActive = true;
 
@@ -38,28 +38,31 @@ public class Notice extends TimeStamp {
     @JoinColumn(name = "Club_id", nullable = false)
     private Club club;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NoticeCategory category;
+
+
 
     @Builder
-    public Notice(String title, String content,Member member, Club club){
+    public Notice(String title, String content,Member member, Club club, NoticeCategory category){
         this.title = title;
         this.content = content;
         this.member = member;
-        this.club=club;
+        this.club = club;
+        this.category = category;
     }
 
     public void update(NoticeRequestDto requestDto){
         this.title = requestDto.title();
         this.content = requestDto.content();
     }
-    public void updateReport(Integer report){
-        this.report=report;
-    }
 
-    public void delete(){
+    public void inActive(){
         this.isActive=false;
     }
 
-    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club){
+    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club, NoticeCategory category){
         String title = requestDto.title();
         String content = requestDto.content();
 
@@ -68,6 +71,7 @@ public class Notice extends TimeStamp {
           .content(content)
           .member(member)
           .club(club)
+          .category(category)
           .build();
     }
 

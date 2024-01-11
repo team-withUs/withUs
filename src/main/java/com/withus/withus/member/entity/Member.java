@@ -1,8 +1,11 @@
 package com.withus.withus.member.entity;
 
+import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.dto.UpdateRequestDto;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,11 +39,10 @@ public class Member extends TimeStamp {
     private String image;
 
     @Column
-    private int report = 0;
+    private Boolean isActive = true;
 
-    @Column
-    private boolean isActive = true;
-
+    @OneToMany(mappedBy = "member")
+    private List<ClubMember> clubMemberList = new ArrayList<>();
 
     @Builder
     public Member(String loginname, String password, String email, String username) {
@@ -68,13 +70,12 @@ public class Member extends TimeStamp {
         this.password = password;
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
+        this.introduction = updateRequestDto.introduction();
+        this.image = updateRequestDto.image();
     }
 
-    public void delete() {
+    public void inActive() {
         this.isActive = false;
     }
 
-    public void report() {
-        this.report++;
-    }
 }
