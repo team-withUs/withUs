@@ -27,5 +27,6 @@ public class CommentController {
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_COMMENT_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_CREATE,responseDto));
+
     }
 }
