@@ -50,6 +50,8 @@ public enum ResponseCode {
 
     SUCCESS_CLUB_CREATE(201,"Club 생성 성공"),
 
+    SUCCESS_COMMENT_CREATE(201, "Comment 생성 성공"),
+
     SUCCESS_CLUB_REPORT(201, "Club 신고 성공"),
 
     SUCCESS_CLUB_GET(200,"Club 조회 성공"),
