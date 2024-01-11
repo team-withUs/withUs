@@ -83,6 +83,16 @@ public class Member extends TimeStamp {
         this.filename = filename;
     }
 
+    public void update(
+        UpdateRequestDto updateRequestDto,
+        String password
+    ) {
+        this.password = password;
+        this.username = updateRequestDto.username();
+        this.email = updateRequestDto.email();
+        this.introduction = updateRequestDto.introduction();
+    }
+
     public void inactive() {
         this.isActive = false;
     }
