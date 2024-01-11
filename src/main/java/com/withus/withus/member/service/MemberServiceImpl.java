@@ -124,7 +124,7 @@ public class MemberServiceImpl implements MemberService{
     sameMemberInDBByEmail(updateRequestDto.email());
 
     Member updatedMember = findMemberByMemberId(memberId);
-    if(updatedMember.getFilename()!=null){
+    if(updatedMember.getFilename() != null){
       s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
     }
 
