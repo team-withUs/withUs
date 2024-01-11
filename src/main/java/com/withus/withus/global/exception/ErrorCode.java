@@ -26,6 +26,8 @@ public enum ErrorCode {
     NOT_CHANGED_PASSWORD(BAD_REQUEST,"이전 비밀번호와 다른 비밀번호여야 합니다."),
 
     /* 401 UNAUTHORIZED */
+    CLUB_EXIST_REPORT(BAD_REQUEST,"이미 해당 클럽을 신고하셨습니다."),
+
     ACCESS_DENIED(UNAUTHORIZED, "유효하지 못한 토큰입니다."),
 
     LOGOUT_USER(UNAUTHORIZED, "로그아웃한 유저입니다. 다시 로그인해주세요."),

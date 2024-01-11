@@ -2,10 +2,13 @@ package com.withus.withus.club.service;
 
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
+import com.withus.withus.club.dto.ReportClubRequestDto;
+import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.repository.ClubRepository;
+import com.withus.withus.club.repository.ReportClubRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
@@ -19,6 +22,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
+    private final ReportClubRepository reportClubRepository;
 
     private final ClubMemberService clubMemberService;
 
@@ -33,6 +37,7 @@ public class ClubServiceImpl implements ClubService {
         clubMemberService.createClubMember(clubMember);
         return ClubResponseDto.createClubResponseDto(savedClub);
     }
+
     //조회
     @Override
     public ClubResponseDto getClub(Long clubId) {
@@ -55,17 +60,20 @@ public class ClubServiceImpl implements ClubService {
         return "Club delete successfully";
     }
 
-    // 신고
-    @Transactional
-    @Override
-    public void updateReportClub(Long clubId) {
-        Club club = findByIsActiveAndClubId(clubId);
-        club.updateReport(club.getReport() + 1);
-        if (club.getReport() >= 3) {
-            club.delete();
+    public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
+        Club club = verifyMember(clubId);
+        ReportClub reportClub = ReportClub.createReport(reportClubRequestDto, member, club);
+        if (!reportClubRepository.existsByClubIdAndMemberId(club.getId(), member.getId())) {
+            reportClubRepository.save(reportClub);
+            if (reportClubRepository.countByClubId(club.getId()) > 5) {
+                club.isActive();
+            }
+            return ReportClubResponseDto.createReportClubResponseDto(club, reportClub);
+        } else {
+            throw new BisException(ErrorCode.CLUB_EXIST_REPORT);
         }
     }
-
+  
     public Club findByIsActiveAndClubId(Long clubId) {
         Club club = clubRepository.findByIsActiveAndId(true, clubId)
                 .orElseThrow(() ->
@@ -73,6 +81,7 @@ public class ClubServiceImpl implements ClubService {
                 );
         return club;
     }
+  
    public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
@@ -81,9 +90,9 @@ public class ClubServiceImpl implements ClubService {
 
     private Club verifyMember(Long clubId) {
         Club club = clubRepository.findByIsActiveAndId(true, clubId)
-        .orElseThrow(() ->
-                new BisException(ErrorCode.NOT_FOUND_CLUB)
-        );
+                .orElseThrow(() ->
+                        new BisException(ErrorCode.NOT_FOUND_CLUB)
+                );
         return club;
     }
 
