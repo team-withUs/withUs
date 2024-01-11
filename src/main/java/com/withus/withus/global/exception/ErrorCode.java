@@ -25,7 +25,13 @@ public enum ErrorCode {
 
     NOT_CHANGED_PASSWORD(BAD_REQUEST,"이전 비밀번호와 다른 비밀번호여야 합니다."),
 
+    FAILED_UPLOAD_IMAGE(BAD_REQUEST,"이미지 업로드에 실패했습니다."),
+
+    OVER_FILE_SIZE(BAD_REQUEST, "파일의 크기가 50MB보다 큽니다."),
+
     /* 401 UNAUTHORIZED */
+    CLUB_EXIST_REPORT(BAD_REQUEST,"이미 해당 클럽을 신고하셨습니다."),
+
     ACCESS_DENIED(UNAUTHORIZED, "유효하지 못한 토큰입니다."),
 
     LOGOUT_USER(UNAUTHORIZED, "로그아웃한 유저입니다. 다시 로그인해주세요."),
@@ -52,6 +58,8 @@ public enum ErrorCode {
     NOT_FOUND_NOTICE(NOT_FOUND,"해당 Notice을 찾을 수없습니다."),
 
     NOT_FOUND_CATEGORY(NOT_FOUND,"해당 카테고리을 찾을 수없습니다."),
+
+    NOT_FOUND_CLUB_MEMBER_EXIST(NOT_FOUND,"클럽멤버가 아닙니다"),
 
     NOT_FOUND_CHATROOM(NOT_FOUND, "해당 채팅방을 찾을 수 없습니다."),
 

@@ -38,18 +38,19 @@ public class Notice extends TimeStamp {
     @JoinColumn(name = "Club_id", nullable = false)
     private Club club;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private NoticeCategory category;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NoticeCategory category;
 
 
 
     @Builder
-    public Notice(String title, String content,Member member, Club club){
+    public Notice(String title, String content,Member member, Club club, NoticeCategory category){
         this.title = title;
         this.content = content;
         this.member = member;
-        this.club=club;
+        this.club = club;
+        this.category = category;
     }
 
     public void update(NoticeRequestDto requestDto){
@@ -61,7 +62,7 @@ public class Notice extends TimeStamp {
         this.isActive=false;
     }
 
-    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club){
+    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club, NoticeCategory category){
         String title = requestDto.title();
         String content = requestDto.content();
 
@@ -70,6 +71,7 @@ public class Notice extends TimeStamp {
           .content(content)
           .member(member)
           .club(club)
+          .category(category)
           .build();
     }
 
