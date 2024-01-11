@@ -10,13 +10,14 @@ import com.withus.withus.club.entity.Club;
 
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
+import jakarta.transaction.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ClubService {
 
-
-    ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member);
+    ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member, MultipartFile image);
 
     ClubResponseDto getClub(Long clubId);
 

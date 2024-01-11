@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -25,8 +26,8 @@ public class Club extends TimeStamp {
     @Column(nullable = false)
     private String content;
 
-    @Column
-    private String image;
+    @Column(nullable = false)
+    private String filename;
 
     @Column
     private int MaxMember = 0;
@@ -59,14 +60,14 @@ public class Club extends TimeStamp {
             ClubCategory category,
             int maxMember,
             Member member,
-            String image,
+            String filename,
             LocalDateTime startTime,
             LocalDateTime endTime
     ) {
         this.clubTitle = clubTitle;
         this.content = content;
         this.category = category;
-        this.image = image;
+        this.filename = filename;
         this.member = member;
         this.MaxMember = maxMember;
         this.startTime = startTime;
@@ -74,23 +75,17 @@ public class Club extends TimeStamp {
         this.username = member.getUsername();
     }
 
-    public static Club createClub(
-            ClubRequestDto clubRequestDto,
-            Member member,
-            LocalDateTime startTime,
-            LocalDateTime endTime
+    public static Club createClub(ClubRequestDto clubRequestDto,Member member,String filename,LocalDateTime startTime, LocalDateTime endTime
     ) {
         String clubTitle = clubRequestDto.clubTitle();
         String content = clubRequestDto.content();
         ClubCategory category = clubRequestDto.category();
-        String image = clubRequestDto.image();
         int maxMember = clubRequestDto.maxMember();
-
         return Club.builder()
                 .clubTitle(clubTitle)
                 .content(content)
                 .category(category)
-                .image(image)
+                .filename(filename)
                 .member(member)
                 .maxMember(maxMember)
                 .startTime(startTime)
@@ -99,13 +94,14 @@ public class Club extends TimeStamp {
     }
 
     public void update(
-            ClubRequestDto clubrequestDto
+            ClubRequestDto clubrequestDto,
+            String filename
     ) {
         ClubCategory category = clubrequestDto.category();
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();
         this.category = category;
-        this.image = clubrequestDto.image();
+        this.filename = filename;
         this.MaxMember = clubrequestDto.maxMember();
         this.startTime = clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
@@ -115,4 +111,7 @@ public class Club extends TimeStamp {
         this.isActive=false;
     }
 
+    public String setImageUrl(String imageUrl) {
+        return imageUrl;
+    }
 }

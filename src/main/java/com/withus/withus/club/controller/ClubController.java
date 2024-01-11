@@ -14,6 +14,7 @@ import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,16 +24,16 @@ import java.util.List;
 public class ClubController {
     private final ClubService clubService;
 
-    // 작성
     @PostMapping
     public ResponseEntity<CommonResponse<ClubResponseDto>> createBoard(
-            @RequestBody ClubRequestDto clubRequestDto,
+            @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        ClubResponseDto responseDto = clubService.createClub(clubRequestDto, member);
+        System.out.println(clubRequestDto);
+        ClubResponseDto responseDto = clubService.createClub(clubRequestDto, member, clubRequestDto.imageFile());
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
-                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE,responseDto));
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE, responseDto));
     }
 
     @GetMapping("/{clubId}")

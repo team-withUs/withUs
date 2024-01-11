@@ -1,6 +1,7 @@
 package com.withus.withus.club.dto;
 
 import com.withus.withus.club.entity.Club;
+import com.withus.withus.global.s3.S3Const;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public record ClubResponseDto(
         String clubTitle,
         String content,
         String category,
-        String image,
+        String imageURL,
         String username,
         int maxMember,
         LocalDateTime startTime,
@@ -24,7 +25,7 @@ public record ClubResponseDto(
             String clubTitle,
             String content,
             String category,
-            String image,
+            String imageURL,
             String username,
             int maxMember,
             LocalDateTime startTime,
@@ -36,7 +37,7 @@ public record ClubResponseDto(
         this.clubTitle = clubTitle;
         this.content = content;
         this.category = category;
-        this.image = image;
+        this.imageURL = imageURL;
         this.username = username;
         this.maxMember = maxMember;
         this.startTime = startTime;
@@ -46,15 +47,16 @@ public record ClubResponseDto(
     }
 
     public static ClubResponseDto createClubResponseDto(
-            Club club
+            Club club,
+            String imageURL
     ) {
-        String username = club.getMember().getUsername();
+        String imageUrl = imageURL;
         return ClubResponseDto.builder()
                 .clubId(club.getId())
                 .clubTitle(club.getClubTitle())
                 .content(club.getContent())
                 .category(club.getCategory().name())
-                .image(club.getImage())
+                .imageURL(imageUrl)
                 .username(club.getUsername())
                 .maxMember(club.getMaxMember())
                 .startTime(club.getStartTime())
@@ -62,5 +64,9 @@ public record ClubResponseDto(
                 .createdAt(club.getCreatedAt())
                 .modifiedAt(club.getModifiedAt())
                 .build();
+    }
+
+    public static ClubResponseDto createClubResponseDto(Club club) {
+        return createClubResponseDto(club, S3Const.S3_DIR_CLUB);
     }
 }

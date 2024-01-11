@@ -6,18 +6,20 @@ import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.dto.ReportClubRequestDto;
 import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.entity.Club;
-import com.withus.withus.club.entity.ClubMember;
-import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.entity.ReportClub;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.club.repository.ReportClubRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.global.s3.S3Const;
+import com.withus.withus.global.s3.S3Util;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,15 +30,28 @@ import java.util.stream.Collectors;
 public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final ReportClubRepository reportClubRepository;
+    private final S3Util s3Util;
 
-    // 작성
+
     @Override
-    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
+    @Transactional
+    public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
         LocalDateTime startTime = clubRequestDto.startTime();
         LocalDateTime endTime = clubRequestDto.endTime();
-        Club club = Club.createClub(clubRequestDto, member, startTime, endTime);
-        Club savedClub = clubRepository.save(club);
-        return ClubResponseDto.createClubResponseDto(savedClub);
+        try {
+            // S3에 이미지 업로드
+            String imageFile = s3Util.uploadFile(image, S3Const.S3_DIR_CLUB);
+            // 클럽 생성
+            System.out.println(imageFile);
+            Club club = Club.createClub(clubRequestDto, member, imageFile, startTime, endTime);
+            club.setImageUrl(imageFile); // 이미지 URL 설정
+            Club savedClub = clubRepository.save(club);
+
+            return ClubResponseDto.createClubResponseDto(savedClub);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+        }
     }
 
     //조회
@@ -49,7 +64,7 @@ public class ClubServiceImpl implements ClubService {
     @Transactional
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member) {
         Club club = verifyMember(clubId);
-        club.update(clubRequestDto);
+        club.update(clubRequestDto, club.getFilename());
         return ClubResponseDto.createClubResponseDto(club);
     }
 
