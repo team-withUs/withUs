@@ -7,6 +7,7 @@ import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.club.entity.ClubMemberRole;
+import com.withus.withus.club.entity.ReportClub;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.club.repository.ReportClubRepository;
 import com.withus.withus.global.exception.BisException;
@@ -24,8 +25,6 @@ public class ClubServiceImpl implements ClubService {
     private final ClubRepository clubRepository;
     private final ReportClubRepository reportClubRepository;
 
-    private final ClubMemberServiceImpl clubMemberService;
-
     // 작성
     @Override
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member) {
@@ -33,8 +32,6 @@ public class ClubServiceImpl implements ClubService {
         LocalDateTime endTime = clubRequestDto.endTime();
         Club club = Club.createClub(clubRequestDto, member, startTime, endTime);
         Club savedClub = clubRepository.save(club);
-        ClubMember clubMember = ClubMember.createClubMember(club,member,ClubMemberRole.HOST);
-        clubMemberService.createClubMember(clubMember);
         return ClubResponseDto.createClubResponseDto(savedClub);
     }
 
@@ -60,6 +57,11 @@ public class ClubServiceImpl implements ClubService {
         return "Club delete successfully";
     }
 
+    @Override
+    public void updateReportClub(Long clubId) {
+
+    }
+
     public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
         Club club = verifyMember(clubId);
         ReportClub reportClub = ReportClub.createReport(reportClubRequestDto, member, club);
@@ -73,16 +75,8 @@ public class ClubServiceImpl implements ClubService {
             throw new BisException(ErrorCode.CLUB_EXIST_REPORT);
         }
     }
-  
-    public Club findByIsActiveAndClubId(Long clubId) {
-        Club club = clubRepository.findByIsActiveAndId(true, clubId)
-                .orElseThrow(() ->
-                        new BisException(ErrorCode.NOT_FOUND_CLUB)
-                );
-        return club;
-    }
-  
-   public Club findClubById(Long clubId) {
+
+    public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
 
@@ -96,8 +90,15 @@ public class ClubServiceImpl implements ClubService {
         return club;
     }
 
+    public Club findByIsActiveAndClubId(Long clubId) {
+        Club club = clubRepository.findByIsActiveAndId(true, clubId)
+                .orElseThrow(() ->
+                        new BisException(ErrorCode.NOT_FOUND_CLUB)
+                );
+        return club;
+    }
+
     public boolean existByIsActiveAndClubId(Long clubId){
         return clubRepository.existsByIsActiveAndId(true,clubId);
     }
 }
-
