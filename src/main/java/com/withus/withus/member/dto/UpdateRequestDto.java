@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 public record UpdateRequestDto(
     @NotBlank(message = "비밀번호는 필수항목입니다.")
@@ -23,7 +24,7 @@ public record UpdateRequestDto(
     @Pattern(regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$", message = "이메일 형식에 맞게 작성해주세요.")
     String email,
     String introduction,
-    String image
+    MultipartFile imageFile
 
 ) {
 
@@ -34,7 +35,7 @@ public record UpdateRequestDto(
       String username,
       String email,
       String introduction,
-      String image
+      MultipartFile imageFile
   ) {
     if(!password.equals(passwordCheck)){
       throw new BisException(ErrorCode.NOT_MATCH_PASSWORD_CHECK);
@@ -44,6 +45,6 @@ public record UpdateRequestDto(
     this.username = username;
     this.email = email;
     this.introduction = introduction;
-    this.image = image;
+    this.imageFile = imageFile;
   }
 }

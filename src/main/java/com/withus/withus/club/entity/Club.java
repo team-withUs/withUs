@@ -1,9 +1,8 @@
 package com.withus.withus.club.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
-import com.withus.withus.global.timestamp.Timestamp;
+import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -15,8 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-
-public class Club extends Timestamp {
+public class Club extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,9 +30,6 @@ public class Club extends Timestamp {
 
     @Column
     private int MaxMember = 0;
-
-    @Column
-    private int report = 0;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -99,6 +94,7 @@ public class Club extends Timestamp {
                 .endTime(endTime)
                 .build();
     }
+
     public void update(
             ClubRequestDto clubrequestDto
     ) {
@@ -116,7 +112,4 @@ public class Club extends Timestamp {
         this.isActive=false;
     }
 
-    public void updateReport(int report) {
-        this.report=report;
-    }
 }

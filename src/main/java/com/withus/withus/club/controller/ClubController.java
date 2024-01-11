@@ -2,15 +2,15 @@ package com.withus.withus.club.controller;
 
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
+import com.withus.withus.club.dto.ReportClubRequestDto;
+import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.service.ClubService;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
-import com.withus.withus.global.security.UserDetailsImpl;
 import com.withus.withus.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -67,12 +67,16 @@ public class ClubController {
     }
 
     // 신고
-    @PatchMapping("/report/{clubId}")
-    public ResponseEntity<CommonResponse<String>> updateReportNotice(
-            @PathVariable("clubId") Long clubId
+    @PostMapping("/{clubId}/report")
+    public ResponseEntity<CommonResponse<ReportClubResponseDto>> reportClub(
+            @PathVariable("clubId") Long clubId,
+            @RequestBody ReportClubRequestDto reportClubRequestDto,
+            @AuthMember Member member
     ) {
-        clubService.updateReportClub(clubId);
-        return ResponseEntity.status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
-                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT,""));
+        ReportClubResponseDto reportClubResponse = clubService.createReportClub(clubId, reportClubRequestDto, member); // 수정된 부분
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT, reportClubResponse));
     }
+
 }
