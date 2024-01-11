@@ -34,7 +34,6 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE, responseDto));
     }
-
     @GetMapping("/{clubId}")
     public ResponseEntity<CommonResponse<ClubResponseDto>> getClub(
             @PathVariable("clubId") Long clubId
@@ -44,7 +43,6 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
     }
-
     //수정
     @PatchMapping("/{clubId}")
     public ResponseEntity<CommonResponse> updateClub(
@@ -52,12 +50,11 @@ public class ClubController {
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member);
+        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member,clubRequestDto.imageFile());
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_UPDATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_UPDATE, responseDto));
     }
-
     //삭제
     @DeleteMapping("/{clubId}")
     public ResponseEntity<CommonResponse<String>> deleteClub(
@@ -69,7 +66,6 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
     }
-
     // 신고
     @PostMapping("/{clubId}/report")
     public ResponseEntity<CommonResponse<ReportClubResponseDto>> reportClub(
@@ -77,11 +73,12 @@ public class ClubController {
             @RequestBody ReportClubRequestDto reportClubRequestDto,
             @AuthMember Member member
     ) {
-        ReportClubResponseDto reportClubResponse = clubService.createReportClub(clubId, reportClubRequestDto, member); // 수정된 부분
+        ReportClubResponseDto reportClubResponse = clubService.createReportClub(clubId, reportClubRequestDto, member);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT, reportClubResponse));
     }
+
     // 카테고리
     @GetMapping("/{category}/club")
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(

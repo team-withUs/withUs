@@ -26,8 +26,11 @@ public class Club extends TimeStamp {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
+    @Column
     private String filename;
+
+    @Column
+    private String imageURL;
 
     @Column
     private int MaxMember = 0;
@@ -61,6 +64,7 @@ public class Club extends TimeStamp {
             int maxMember,
             Member member,
             String filename,
+            String ImgURL,
             LocalDateTime startTime,
             LocalDateTime endTime
     ) {
@@ -68,6 +72,7 @@ public class Club extends TimeStamp {
         this.content = content;
         this.category = category;
         this.filename = filename;
+        this.imageURL = ImgURL;
         this.member = member;
         this.MaxMember = maxMember;
         this.startTime = startTime;
@@ -106,7 +111,9 @@ public class Club extends TimeStamp {
         this.startTime = clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
     }
-
+    public void inActive() {
+        isActive = false;
+    }
     public void delete() {
         this.isActive=false;
     }
@@ -114,4 +121,5 @@ public class Club extends TimeStamp {
     public String setImageUrl(String imageUrl) {
         return imageUrl;
     }
+
 }

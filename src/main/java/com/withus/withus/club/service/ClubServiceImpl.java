@@ -55,7 +55,7 @@ public class ClubServiceImpl implements ClubService {
             return ClubResponseDto.createClubResponseDto(savedClub);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+            throw new BisException(ErrorCode.INVALID_VALUE);
         }
     }
 
@@ -66,9 +66,21 @@ public class ClubServiceImpl implements ClubService {
         return ClubResponseDto.createClubResponseDto(club);
     }
 
+    /// 수정
     @Transactional
-    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member) {
+    @Override
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
         Club club = verifyMember(clubId);
+        if (image != null) {
+            try {
+                // S3에 새로운 이미지 업로드
+                String newImageFile = s3Util.uploadFile(image, S3Const.S3_DIR_CLUB);
+                club.setImageUrl(newImageFile); // 이미지 URL 설정
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BisException(ErrorCode.INVALID_VALUE);
+            }
+        }
         club.update(clubRequestDto, club.getFilename());
         return ClubResponseDto.createClubResponseDto(club);
     }
@@ -82,18 +94,13 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public void updateReportClub(Long clubId) {
-
-    }
-
-    @Override
     public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
         Club club = verifyMember(clubId);
         ReportClub reportClub = ReportClub.createReport(reportClubRequestDto, member, club);
         if (!reportClubRepository.existsByClubIdAndMemberId(club.getId(), member.getId())) {
             reportClubRepository.save(reportClub);
             if (reportClubRepository.countByClubId(club.getId()) > 5) {
-                club.isActive();
+                club.inActive();
             }
             return ReportClubResponseDto.createReportClubResponseDto(club, reportClub);
         } else {
