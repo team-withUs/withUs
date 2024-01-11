@@ -128,13 +128,18 @@ public class MemberServiceImpl implements MemberService{
       s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
     }
 
-    if(updateRequestDto.imageFile().getName().isEmpty()) {
+    if(!updateRequestDto.imageFile().getName().isEmpty()) {
       String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
       updatedMember.update(
           updateRequestDto,
           passwordEncoder.encode(updateRequestDto.password()),
           s3Util.getFileURL(filename, S3_DIR_MEMBER),
           filename
+      );
+    }else {
+      updatedMember.update(
+          updateRequestDto,
+          passwordEncoder.encode(updateRequestDto.password())
       );
     }
 
