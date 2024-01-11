@@ -47,8 +47,6 @@ public class MemberServiceImpl implements MemberService{
 
   private final PasswordEncoder passwordEncoder;
 
-  private final RefreshTokenRepository refreshTokenRepository;
-
   private final EmailService emailService;
 
   private final RedisService redisService;
@@ -96,7 +94,7 @@ public class MemberServiceImpl implements MemberService{
     String password = passwordEncoder.encode(signupRequestDto.password());
 
     // 새 멤버 등록
-    Member member = new Member(loginname, password, email, username);
+    Member member = Member.createMember(loginname, password, email, username);
     memberRepository.save(member);
 
   }
