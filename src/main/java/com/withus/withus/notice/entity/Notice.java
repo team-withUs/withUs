@@ -25,9 +25,12 @@ public class Notice extends TimeStamp {
     private String content;
 
     @Column
-    private String image;
+    private String imageURL;
 
+    @Column
+    private String filename;
 
+    @Column
     private Boolean isActive = true;
 
     @ManyToOne
@@ -45,18 +48,29 @@ public class Notice extends TimeStamp {
 
 
     @Builder
-    public Notice(String title, String content,Member member, Club club, NoticeCategory category){
+    public Notice(String title, String content,Member member, Club club,
+        NoticeCategory category, String imageURL, String filename){
         this.title = title;
         this.content = content;
         this.member = member;
         this.club = club;
         this.category = category;
+        this.imageURL = imageURL;
+        this.filename = filename;
     }
 
     public void update(NoticeRequestDto requestDto, NoticeCategory category){
         this.title = requestDto.title();
         this.content = requestDto.content();
         this.category = category;
+    }
+    public void updatePlusImage(NoticeRequestDto requestDto, NoticeCategory category,
+        String imageURL, String filename){
+        this.title = requestDto.title();
+        this.content = requestDto.content();
+        this.category = category;
+        this.imageURL = imageURL;
+        this.filename = filename;
     }
 
     public void inActive(){
@@ -74,6 +88,22 @@ public class Notice extends TimeStamp {
           .club(club)
           .category(category)
           .build();
+    }
+
+    public static Notice createNoticePlusImage(NoticeRequestDto requestDto, Member member, Club club,
+        NoticeCategory category, String imageURL, String filename){
+        String title = requestDto.title();
+        String content = requestDto.content();
+
+        return Notice.builder()
+            .title(title)
+            .content(content)
+            .member(member)
+            .club(club)
+            .category(category)
+            .imageURL(imageURL)
+            .filename(filename)
+            .build();
     }
 
 

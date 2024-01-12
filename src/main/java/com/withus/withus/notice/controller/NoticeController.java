@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class NoticeController {
   @PostMapping("/club/{clubId}/notice")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> createNotice(
       @PathVariable("clubId") Long clubId,
-      @RequestBody NoticeRequestDto requestDto,
+      @ModelAttribute NoticeRequestDto requestDto,
       @AuthMember Member member
   ) {
     NoticeResponseDto responseDto = noticeService.createNotice(clubId, requestDto, member);
@@ -45,7 +46,7 @@ public class NoticeController {
   public ResponseEntity<CommonResponse<NoticeResponseDto>> updateNotice(
       @PathVariable("clubId") Long clubId,
       @PathVariable("noticeId") Long noticeId,
-      @RequestBody NoticeRequestDto requestDto,
+      @ModelAttribute NoticeRequestDto requestDto,
       @AuthMember Member member
   ) {
     NoticeResponseDto responseDto = noticeService.updateNotice(clubId, noticeId, requestDto, member);
