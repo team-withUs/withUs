@@ -72,6 +72,8 @@ public enum ErrorCode {
 
     DUPLICATE_REPORT(CONFLICT, "이미 신고한 대상입니다."),
 
+    DELETED_MEMBER(CONFLICT, "이미 탈퇴한 회원입니다."),
+
 
 
     /* 그 외 */
