@@ -26,13 +26,13 @@ public class ReportMember {
   private String content;
 
   @Builder
-  public ReportMember(Long reporterId, Long reportedId, String content){
+  private ReportMember(Long reporterId, Long reportedId, String content) {
     this.reporterId = reporterId;
     this.reportedId = reportedId;
     this.content = content;
   }
 
-  public static ReportMember createReportMember(Long reporterId, Long reportedId, String content){
+  public static ReportMember createReportMember(Long reporterId, Long reportedId, String content) {
     return ReportMember.builder()
         .reporterId(reporterId)
         .reportedId(reportedId)
