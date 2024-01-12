@@ -48,7 +48,7 @@ public class Notice extends TimeStamp {
 
 
     @Builder
-    public Notice(String title, String content,Member member, Club club,
+    private Notice(String title, String content,Member member, Club club,
         NoticeCategory category, String imageURL, String filename){
         this.title = title;
         this.content = content;
