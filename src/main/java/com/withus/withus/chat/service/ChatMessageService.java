@@ -50,11 +50,6 @@ public class ChatMessageService {
   }
 
   public ChatMessagePageListResponseDto getsMessage(long roomId, int page, int size, Member member) {
-    if (member == null) {
-      log.info("인증되지 않은 회원의 접근으로 채팅 목록을 가져올 수 없음");
-      throw new BisException(ErrorCode.ACCESS_DENIED);
-    }
-
     // 해당 채팅방의 메세지를 가져와야 함
     Page<ChatMessage> messages = findMessages(roomId, page, size);
     PageInfo pageInfo = new PageInfo(page, size, (int) messages.getTotalElements(),

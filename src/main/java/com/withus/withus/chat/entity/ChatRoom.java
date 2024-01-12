@@ -44,7 +44,7 @@ public class ChatRoom extends TimeStamp {
         .build();
   }
 
-  public void ChatRoomTransform() {
+  public void chatRoomTransform() {
     this.isActive = !isActive;
   }
 }
