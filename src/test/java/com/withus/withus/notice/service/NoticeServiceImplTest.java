@@ -28,6 +28,7 @@ import com.withus.withus.notice.service.NoticeService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -106,284 +107,312 @@ class NoticeServiceImplTest {
 
   }
 
-  @Test
-  @Rollback(value = false)
-  @DisplayName("게시판 생성 성공")
-  void createNotice_Success() {
+  @Nested
+  @DisplayName("게시판 생성")
+  class createNotice{
 
-    //given
-    NoticeRequestDto noticeRequestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", null);
+    @Test
+    @Rollback(value = false)
+    @DisplayName("게시판 생성 성공")
+    void createNotice_Success() {
 
-
-    //when
-    NoticeResponseDto responseDto = noticeService.createNotice(testClub.getId(), noticeRequestDto, testMember);
-
-
-    //then
-    assertEquals("공지사항1", responseDto.title());
-    assertEquals("공지사항입니다1.", responseDto.content());
-
-  }
-
-  @Test
-  @DisplayName("게시판 생성 실패(클럽멤버가 아닐경우)")
-  void createNotice_Failure_ClubMember(){
-
-    //given
-    NoticeRequestDto requestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", null);
+      //given
+      NoticeRequestDto noticeRequestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", null);
 
 
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.createNotice(testClub.getId(), requestDto, testNotClubMember);
-    });
+      //when
+      NoticeResponseDto responseDto = noticeService.createNotice(testClub.getId(), noticeRequestDto, testMember);
 
 
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+      //then
+      assertEquals("공지사항1", responseDto.title());
+      assertEquals("공지사항입니다1.", responseDto.content());
 
-  }
+    }
 
-  @Test
-  @DisplayName("게시판 생성 실패(클럽이 없을경우)")
-  void createNotice_Failure_Club(){
-    //given
-    NoticeRequestDto requestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", null);
+    @Test
+    @DisplayName("게시판 생성 실패(클럽멤버가 아닐경우)")
+    void createNotice_Failure_ClubMember(){
 
-
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.createNotice(10L, requestDto, testMember);
-    });
+      //given
+      NoticeRequestDto requestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", null);
 
 
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
-
-  }
-
-  @Test
-  @Rollback(value = false)
-  @DisplayName("게시판 수정 성공")
-  void updateNotice_Success(){
-
-    //given
-    NoticeRequestDto updateRequestDto = new NoticeRequestDto("공지사항1 수정", "공지사항입니다1. 수정", "board", null);
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.createNotice(testClub.getId(), requestDto, testNotClubMember);
+      });
 
 
-    //when
-    NoticeResponseDto responseDto = noticeService.updateNotice(testClub.getId(), testNotice.getId(), updateRequestDto, testMember);
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+
+    }
+
+    @Test
+    @DisplayName("게시판 생성 실패(클럽이 없을경우)")
+    void createNotice_Failure_Club(){
+      //given
+      NoticeRequestDto requestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", null);
 
 
-    //then
-    assertEquals(updateRequestDto.title(), responseDto.title());
-    assertEquals(updateRequestDto.content(), responseDto.content());
-
-  }
-
-  @Test
-  @DisplayName("게시판 수정 실패(클럽멤버가 아닐경우)")
-  void updateNotice_Failure_ClubMember(){
-
-    //given
-    NoticeRequestDto updateRequestDto = new NoticeRequestDto("공지사항1 수정", "공지사항입니다1. 수정", "board", null);
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.createNotice(10L, requestDto, testMember);
+      });
 
 
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.updateNotice(testClub.getId(), testNotice.getId(), updateRequestDto, testNotClubMember);
-    });
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
+
+    }
+
+    @Test
+    @DisplayName("게시판 생성 성공(이미지)")
+    void createNotice_Success_Image(){
+      //given
+      MockMultipartFile file = new MockMultipartFile("file", "hello.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
+      NoticeRequestDto noticeRequestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", file);
 
 
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+      //when
+      NoticeResponseDto responseDto = noticeService.createNotice(testClub.getId(), noticeRequestDto, testMember);
+
+
+      //then
+      assertEquals("공지사항1", responseDto.title());
+      assertEquals("공지사항입니다1.", responseDto.content());
+      assertNotNull(responseDto.imageURL());
+
+    }
 
   }
 
-  @Test
-  @DisplayName("게시판 수정 실패(클럽이 없을경우)")
-  void updateNotice_Failure_Club(){
+  @Nested
+  @DisplayName("게시판 수정")
+  class updateNotice{
 
-    //given
-    NoticeRequestDto updateRequestDto = new NoticeRequestDto("공지사항1 수정", "공지사항입니다1. 수정", "board", null);
+    @Test
+    @Rollback(value = false)
+    @DisplayName("게시판 수정 성공")
+    void updateNotice_Success(){
 
-
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.updateNotice(10L, testNotice.getId(), updateRequestDto, testMember);
-    });
-
-
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
-
-  }
-
-  @Test
-  @Rollback(value = false)
-  @DisplayName("게시판 삭제 성공")
-  void deleteNotice_Success(){
-
-    //given
-    // when
-    noticeService.deleteNotice(testClub.getId(), testNotice.getId(), testMember);
+      //given
+      NoticeRequestDto updateRequestDto = new NoticeRequestDto("공지사항1 수정", "공지사항입니다1. 수정", "board", null);
 
 
-    //then
-    assertEquals(false, testNotice.getIsActive());
-
-  }
-
-  @Test
-  @DisplayName("게시판 삭제 실패(클럽멤버가 아닐경우)")
-  void deleteNotice_Failure_ClubMember(){
-
-    //given
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.deleteNotice(testClub.getId(), testNotice.getId(), testNotClubMember);
-    });
+      //when
+      NoticeResponseDto responseDto = noticeService.updateNotice(testClub.getId(), testNotice.getId(), updateRequestDto, testMember);
 
 
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+      //then
+      assertEquals(updateRequestDto.title(), responseDto.title());
+      assertEquals(updateRequestDto.content(), responseDto.content());
 
-  }
+    }
 
-  @Test
-  @DisplayName("게시판 삭제 실패(클럽이 없을경우)")
-  void deleteNotice_Failure_Club(){
+    @Test
+    @DisplayName("게시판 수정 실패(클럽멤버가 아닐경우)")
+    void updateNotice_Failure_ClubMember(){
 
-    //given
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.deleteNotice(10L, testNotice.getId(), testMember);
-    });
+      //given
+      NoticeRequestDto updateRequestDto = new NoticeRequestDto("공지사항1 수정", "공지사항입니다1. 수정", "board", null);
 
 
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.updateNotice(testClub.getId(), testNotice.getId(), updateRequestDto, testNotClubMember);
+      });
+
+
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+
+    }
+
+    @Test
+    @DisplayName("게시판 수정 실패(클럽이 없을경우)")
+    void updateNotice_Failure_Club(){
+
+      //given
+      NoticeRequestDto updateRequestDto = new NoticeRequestDto("공지사항1 수정", "공지사항입니다1. 수정", "board", null);
+
+
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.updateNotice(10L, testNotice.getId(), updateRequestDto, testMember);
+      });
+
+
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
+
+    }
 
   }
 
-  @Test
-  @Rollback(value = false)
-  @DisplayName("게시판 조회 성공")
-  void getNotice_Success(){
+  @Nested
+  @DisplayName("게시판 삭제")
+  class deleteNotice{
 
-    //given
-    //when
-    NoticeResponseDto responseDto = noticeService.getNotice(testClub.getId(), testNotice.getId());
+    @Test
+    @Rollback(value = false)
+    @DisplayName("게시판 삭제 성공")
+    void deleteNotice_Success(){
 
-
-    //then
-    assertEquals(testNotice.getTitle(), responseDto.title());
-    assertEquals(testNotice.getContent(), responseDto.content());
-
-  }
-
-  @Test
-  @DisplayName("게시판 조회 실패(클럽이 없을경우)")
-  void getNotice_Failure_Club(){
-    //given
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.getNotice(10L, testNotice.getId());
-    });
-
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
-
-  }
-
-  @Test
-  @Rollback(value = false)
-  @DisplayName("게시판 전체조회(페이징) 성공")
-  void getsNotice_Success(){
-
-    //given
-    NoticeRequestDto noticeRequestDto2 = new NoticeRequestDto("공지사항2", "공지사항입니다2.", "board", null);
-    NoticeRequestDto noticeRequestDto3 = new NoticeRequestDto("공지사항3", "공지사항입니다3.", "board", null);
-    Notice testNotice2 = Notice.createNotice(noticeRequestDto2, testMember, testClub, NoticeCategory.BOARD);
-    Notice testNotice3 = Notice.createNotice(noticeRequestDto3, testMember, testClub, NoticeCategory.BOARD);
-    noticeRepository.save(testNotice2);
-    noticeRepository.save(testNotice3);
-    PageableDto pageableDto = new PageableDto(1,3,"CreatedAt");
+      //given
+      // when
+      noticeService.deleteNotice(testClub.getId(), testNotice.getId(), testMember);
 
 
-    //when
-    List<NoticeResponseDto> list = noticeService.getsNotice(testClub.getId(), pageableDto);
+      //then
+      assertEquals(false, testNotice.getIsActive());
+
+    }
+
+    @Test
+    @DisplayName("게시판 삭제 실패(클럽멤버가 아닐경우)")
+    void deleteNotice_Failure_ClubMember(){
+
+      //given
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.deleteNotice(testClub.getId(), testNotice.getId(), testNotClubMember);
+      });
 
 
-    //then
-    assertEquals("공지사항3", list.get(0).title());
-    assertEquals("공지사항2", list.get(1).title());
-    assertEquals("공지사항1", list.get(2).title());
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+
+    }
+
+    @Test
+    @DisplayName("게시판 삭제 실패(클럽이 없을경우)")
+    void deleteNotice_Failure_Club(){
+
+      //given
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.deleteNotice(10L, testNotice.getId(), testMember);
+      });
+
+
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
+
+    }
 
   }
 
-  @Test
-  @Rollback(value = false)
-  @DisplayName("게시판 전체조회(페이징) 실패(클럽이 없을경우)")
-  void getsNotice_Failure_Club(){
+  @Nested
+  @DisplayName("게시판 조회")
+  class getNotice{
 
-    //given
-    NoticeRequestDto noticeRequestDto2 = new NoticeRequestDto("공지사항2", "공지사항입니다2.", "board", null);
-    Notice testNotice2 = Notice.createNotice(noticeRequestDto2, testMember, testClub, NoticeCategory.BOARD);
-    noticeRepository.save(testNotice2);
-    PageableDto pageableDto = new PageableDto(1,3,"CreatedAt");
+    @Test
+    @Rollback(value = false)
+    @DisplayName("게시판 조회 성공")
+    void getNotice_Success(){
 
-
-    //when
-    BisException exception = assertThrows(BisException.class, ()-> {
-      noticeService.getsNotice(10L, pageableDto);
-    });
+      //given
+      //when
+      NoticeResponseDto responseDto = noticeService.getNotice(testClub.getId(), testNotice.getId());
 
 
-    //then
-    assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
+      //then
+      assertEquals(testNotice.getTitle(), responseDto.title());
+      assertEquals(testNotice.getContent(), responseDto.content());
+
+    }
+
+    @Test
+    @DisplayName("게시판 조회 실패(클럽이 없을경우)")
+    void getNotice_Failure_Club(){
+      //given
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.getNotice(10L, testNotice.getId());
+      });
+
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
+
+    }
+
+    @Test
+    @Rollback(value = false)
+    @DisplayName("게시판 전체조회(페이징) 성공")
+    void getsNotice_Success(){
+
+      //given
+      NoticeRequestDto noticeRequestDto2 = new NoticeRequestDto("공지사항2", "공지사항입니다2.", "board", null);
+      NoticeRequestDto noticeRequestDto3 = new NoticeRequestDto("공지사항3", "공지사항입니다3.", "board", null);
+      Notice testNotice2 = Notice.createNotice(noticeRequestDto2, testMember, testClub, NoticeCategory.BOARD);
+      Notice testNotice3 = Notice.createNotice(noticeRequestDto3, testMember, testClub, NoticeCategory.BOARD);
+      noticeRepository.save(testNotice2);
+      noticeRepository.save(testNotice3);
+      PageableDto pageableDto = new PageableDto(1,3,"CreatedAt");
+
+
+      //when
+      List<NoticeResponseDto> list = noticeService.getsNotice(testClub.getId(), pageableDto);
+
+
+      //then
+      assertEquals("공지사항3", list.get(0).title());
+      assertEquals("공지사항2", list.get(1).title());
+      assertEquals("공지사항1", list.get(2).title());
+
+    }
+
+    @Test
+    @Rollback(value = false)
+    @DisplayName("게시판 전체조회(페이징) 실패(클럽이 없을경우)")
+    void getsNotice_Failure_Club(){
+
+      //given
+      NoticeRequestDto noticeRequestDto2 = new NoticeRequestDto("공지사항2", "공지사항입니다2.", "board", null);
+      Notice testNotice2 = Notice.createNotice(noticeRequestDto2, testMember, testClub, NoticeCategory.BOARD);
+      noticeRepository.save(testNotice2);
+      PageableDto pageableDto = new PageableDto(1,3,"CreatedAt");
+
+
+      //when
+      BisException exception = assertThrows(BisException.class, ()-> {
+        noticeService.getsNotice(10L, pageableDto);
+      });
+
+
+      //then
+      assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
+
+    }
 
   }
 
-  @Test
-  @Rollback(value = false)
-  @DisplayName("게시판 신고 성공")
-  void createReportNotice_Success(){
+  @Nested
+  @DisplayName("게시판 신고")
+  class createReportNotice{
 
-    //given
-    ReportRequestDto requestDto = new ReportRequestDto("신고 사유");
+    @Test
+    @Rollback(value = false)
+    @DisplayName("게시판 신고 성공")
+    void createReportNotice_Success(){
 
-
-    //when
-    noticeService.createReportNotice(testNotice.getId(), requestDto, testMember);
-
-
-    //then
-    List<ReportNotice> reportNoticeList = reportRepository.findAllByNoticeId(testNotice.getId());
-    assertEquals(1, reportNoticeList.size());
-
-  }
-
-  @Test
-  @DisplayName("게시판 생성 성공(이미지)")
-  void createNotice_Success_Image(){
-    //given
-    MockMultipartFile file = new MockMultipartFile("file", "hello.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
-    NoticeRequestDto noticeRequestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", file);
+      //given
+      ReportRequestDto requestDto = new ReportRequestDto("신고 사유");
 
 
-    //when
-    NoticeResponseDto responseDto = noticeService.createNotice(testClub.getId(), noticeRequestDto, testMember);
+      //when
+      noticeService.createReportNotice(testNotice.getId(), requestDto, testMember);
 
 
-    //then
-    assertEquals("공지사항1", responseDto.title());
-    assertEquals("공지사항입니다1.", responseDto.content());
-    assertNotNull(responseDto.imageURL());
+      //then
+      List<ReportNotice> reportNoticeList = reportRepository.findAllByNoticeId(testNotice.getId());
+      assertEquals(1, reportNoticeList.size());
+
+    }
 
   }
-
-
 
 
 }
