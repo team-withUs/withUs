@@ -7,4 +7,7 @@ import com.withus.withus.member.entity.Member;
 public interface CommentService {
     CommentResponseDto createComment(Long noticeId, CommentRequestDto commentRequestDto, Member member);
 
+    CommentResponseDto updateComment(Long noticeId, Long commentId, CommentRequestDto commentRequestDto, Member member);
+
+
 }

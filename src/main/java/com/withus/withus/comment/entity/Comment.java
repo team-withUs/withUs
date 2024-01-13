@@ -49,6 +49,10 @@ public class Comment extends TimeStamp {
         this.member = loginMember;
     }
 
+    public void update(CommentRequestDto commentRequestDto){
+        this.content = commentRequestDto.content();
+    }
+
     public void inActive() {
         this.isActive = false;
     }

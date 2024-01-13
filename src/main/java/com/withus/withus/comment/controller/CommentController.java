@@ -28,4 +28,16 @@ public class CommentController {
                 .status(ResponseCode.SUCCESS_COMMENT_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_CREATE, commentResponseDto));
     }
+
+    @PatchMapping("/notice/{noticeId}/comment/{commentId}")
+    public ResponseEntity<CommonResponse<CommentResponseDto>> updateComment(
+            @PathVariable Long noticeId,
+            @PathVariable Long commentId,
+            @RequestBody CommentRequestDto commentRequestDto,
+            @AuthMember Member member
+    ) {
+        CommentResponseDto commentResponseDto = commentService.updateComment(noticeId, commentId, commentRequestDto, member);
+        return ResponseEntity.status(ResponseCode.SUCCESS_COMMENT_UPDATE.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_UPDATE, commentResponseDto));
+    }
 }

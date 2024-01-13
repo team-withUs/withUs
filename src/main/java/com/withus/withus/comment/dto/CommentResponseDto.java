@@ -3,7 +3,6 @@ package com.withus.withus.comment.dto;
 import com.withus.withus.comment.entity.Comment;
 import com.withus.withus.global.timestamp.TimeStamp;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +13,7 @@ public record CommentResponseDto (
 )
 {
     @Builder
-    private CommentResponseDto(String content,  String username, LocalDateTime created_at){
+    public CommentResponseDto(String content, String username, LocalDateTime created_at){
         this.content = content;
         this.username = username;
         this.created_at = created_at;
@@ -27,7 +26,7 @@ public record CommentResponseDto (
         return CommentResponseDto.builder()
                 .content(content)
                 .username(username)
-                .created_at(LocalDateTime)
+                .created_at(LocalDateTime.now())
                 .build();
     }
 }

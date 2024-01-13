@@ -59,6 +59,8 @@ public enum ResponseCode {
     /* 201 UPDATE*/
     SUCCESS_CLUB_UPDATE(201,"Club 업데이트 성공"),
 
+    SUCCESS_COMMENT_UPDATE(201, "Comment 업데이트 성공"),
+
     /* 201 DELETE*/
     SUCCESS_CLUB_DELETE(201,"Club 삭제 성공");
 

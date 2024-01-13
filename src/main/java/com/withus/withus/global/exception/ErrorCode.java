@@ -63,6 +63,8 @@ public enum ErrorCode {
 
     NOT_FOUND_CHATROOM(NOT_FOUND, "해당 채팅방을 찾을 수 없습니다."),
 
+    NOT_FOUND_COMMENT(NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
+
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
 
