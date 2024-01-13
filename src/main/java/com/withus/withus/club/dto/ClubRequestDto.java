@@ -2,6 +2,7 @@ package com.withus.withus.club.dto;
 
 import com.withus.withus.category.entity.ClubCategory;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +10,7 @@ public record ClubRequestDto(
         String clubTitle,
         String content,
         ClubCategory category,
-        String image,
+        MultipartFile imageFile,
         int maxMember,
         LocalDateTime startTime,
         LocalDateTime endTime
@@ -19,7 +20,7 @@ public record ClubRequestDto(
             String clubTitle,
             String content,
             ClubCategory category,
-            String image,
+            MultipartFile imageFile,
             int maxMember,
             LocalDateTime startTime,
             LocalDateTime endTime
@@ -27,9 +28,11 @@ public record ClubRequestDto(
         this.clubTitle = clubTitle;
         this.content = content;
         this.category = category;
-        this.image = image;
+        this.imageFile = imageFile;
         this.maxMember = maxMember;
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+
 }
