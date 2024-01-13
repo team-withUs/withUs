@@ -43,6 +43,11 @@ public enum ResponseCode {
 
     INVITE_MEMBER(200, "초대 성공"),
 
+    /* COMMENT */
+    SUCCESS_COMMENT_GET(200, "Comment 전체조회 성공"),
+
+    SUCCESS_COMMENT_DELETE(200, "Comment 삭제 성공"),
+
     /* 201 CREATED */
     SIGNUP(201, "회원가입 성공"),
 
