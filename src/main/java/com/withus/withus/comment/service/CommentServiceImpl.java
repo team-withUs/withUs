@@ -2,11 +2,13 @@ package com.withus.withus.comment.service;
 
 import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.comment.dto.CommentResponseDto;
+import com.withus.withus.comment.dto.ReportRequestDto;
 import com.withus.withus.comment.entity.Comment;
+import com.withus.withus.comment.entity.ReportComment;
 import com.withus.withus.comment.repository.CommentRepository;
+import com.withus.withus.comment.repository.ReportRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import com.withus.withus.notice.entity.Notice;
@@ -21,8 +23,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
-    private CommentRepository commentRepository;
-    private NoticeServiceImpl noticeService;
+    private final CommentRepository commentRepository;
+    private final NoticeServiceImpl noticeService;
+    private final ReportRepository reportRepository;
 
     @Override
     public CommentResponseDto createComment(Long noticeId, CommentRequestDto commentRequestDto, Member member){
@@ -70,6 +73,22 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = findByIsActiveAndCommentId(commentId);
         comment.inActive();
     }
+
+    @Transactional
+    @Override
+    public void createReportComment(Long commentId, ReportRequestDto requestDto, Member member){
+        Comment comment = findByIsActiveAndCommentId(commentId);
+        if(!reportRepository.existsByCommentIdAndMemberId(comment.getId(), member.getId())){
+            reportRepository.save(ReportComment.createReport(requestDto, member, comment));
+            if(reportRepository.countByCommentId(comment.getId()) > 5){
+                comment.inActive();
+            }
+        }
+        else {
+            throw new BisException(ErrorCode.COMMENT_EXIST_REPORT);
+        }
+    }
+
 
     private boolean existsByNoticeId(Long noticeId) {
         return noticeService.existByIsActiveAndClubId(noticeId);

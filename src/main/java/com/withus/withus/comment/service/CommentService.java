@@ -2,6 +2,7 @@ package com.withus.withus.comment.service;
 
 import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.comment.dto.CommentResponseDto;
+import com.withus.withus.comment.dto.ReportRequestDto;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 
@@ -15,4 +16,6 @@ public interface CommentService {
     List<CommentResponseDto> getComment(Long noticId, PageableDto pageableDto);
 
     void deleteComment(Long noticeId, Long commentId, Member member);
+
+    void createReportComment(Long commentId, ReportRequestDto RequestDto, Member member);
 }

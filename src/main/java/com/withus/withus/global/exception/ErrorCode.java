@@ -44,6 +44,8 @@ public enum ErrorCode {
 
     NOTICE_EXIST_REPORT(BAD_REQUEST,"이미 해당 게시판을 신고하셨습니다."),
 
+    COMMENT_EXIST_REPORT(BAD_REQUEST, "이미 해당 댓글을 신고하셨습니다."),
+
 
     /* 403 FORBIDDEN */
     YOUR_NOT_COME_IN(FORBIDDEN, "권한이 없습니다"), // 포괄적인 Forbidden 코드

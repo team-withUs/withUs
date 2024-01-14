@@ -2,6 +2,7 @@ package com.withus.withus.comment.controller;
 
 import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.comment.dto.CommentResponseDto;
+import com.withus.withus.comment.dto.ReportRequestDto;
 import com.withus.withus.comment.service.CommentService;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
@@ -21,7 +22,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/notice/{noticeId}/comment")
-    public ResponseEntity<CommonResponse<CommentResponseDto>> createComment(
+    public ResponseEntity<CommonResponse<CommentResponseDto>> createReportComment(
             @PathVariable Long noticeId,
             @RequestBody CommentRequestDto commentRequestDto,
             @AuthMember Member member
@@ -67,4 +68,17 @@ public class CommentController {
         return ResponseEntity.status(ResponseCode.SUCCESS_COMMENT_DELETE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_DELETE,""));
     }
+
+    @PostMapping("/comment/{commentId}/report")
+    public ResponseEntity<CommonResponse<String>> createReportComment(
+            @PathVariable Long commentId,
+            @RequestBody ReportRequestDto requestDto,
+            @AuthMember Member member
+    ){
+        commentService.createReportComment(commentId, requestDto, member);
+        return ResponseEntity.status(ResponseCode.SUCCESS_COMMENT_REPORT.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_REPORT,""));
+    }
+
+
 }

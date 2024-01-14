@@ -48,6 +48,8 @@ public enum ResponseCode {
 
     SUCCESS_COMMENT_DELETE(200, "Comment 삭제 성공"),
 
+    SUCCESS_COMMENT_REPORT(200, "Comment 신고 성공"),
+
     /* 201 CREATED */
     SIGNUP(201, "회원가입 성공"),
 
