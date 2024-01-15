@@ -134,7 +134,7 @@ public class NoticeServiceImpl implements NoticeService{
     return clubService.existByIsActiveAndClubId(clubId);
   }
 
-  public boolean existByIsActiveAndClubId(Long noticeId){
+  public boolean existByIsActiveAndNoticeId(Long noticeId){
     return noticeRepository.existsByIsActiveAndId(true,noticeId);
   }
 }

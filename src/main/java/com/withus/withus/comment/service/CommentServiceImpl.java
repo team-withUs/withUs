@@ -6,7 +6,7 @@ import com.withus.withus.comment.dto.ReportRequestDto;
 import com.withus.withus.comment.entity.Comment;
 import com.withus.withus.comment.entity.ReportComment;
 import com.withus.withus.comment.repository.CommentRepository;
-import com.withus.withus.comment.repository.ReportRepository;
+import com.withus.withus.comment.repository.CommentReportRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
@@ -25,10 +25,10 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final NoticeServiceImpl noticeService;
-    private final ReportRepository reportRepository;
+    private final CommentReportRepository commentReportRepository;
 
     @Override
-    public CommentResponseDto createComment(Long noticeId, CommentRequestDto commentRequestDto, Member member){
+    public CommentResponseDto createComment(Long noticeId, CommentRequestDto commentRequestDto, Member member) {
         Notice notice = noticeService.findByIsActiveAndNoticeId(noticeId);
         Comment savedComment = commentRepository.save(Comment.createComment(commentRequestDto, member, notice));
         return CommentResponseDto.createCommentResponseDto(savedComment);
@@ -36,19 +36,19 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public  CommentResponseDto updateComment(Long noticeId, Long commentId, CommentRequestDto commentRequestDto, Member member){
+    public CommentResponseDto updateComment(Long noticeId, Long commentId, CommentRequestDto commentRequestDto, Member member) {
         Comment comment = findByIsActiveAndCommentId(commentId);
         comment.update(commentRequestDto);
         return CommentResponseDto.createCommentResponseDto(comment);
     }
 
     @Override
-    public List<CommentResponseDto> getComment(Long noticeId, PageableDto pageableDto){
-        if(!existsByNoticeId(noticeId)){
+    public List<CommentResponseDto> getComment(Long noticeId, PageableDto pageableDto) {
+        if (!existsByNoticeId(noticeId)) {
             throw new BisException(ErrorCode.NOT_FOUND_NOTICE);
         }
         List<Comment> commentList = commentRepository
-                .findAllByIsActive(true,PageableDto
+                .findAllByIsActive(true, PageableDto
                         .getsPageableDto(
                                 pageableDto.page(),
                                 pageableDto.size(),
@@ -56,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
                         ).toPageable()
                 );
         List<CommentResponseDto> responseDtoList = new ArrayList<>();
-        for(Comment comment : commentList){
+        for (Comment comment : commentList) {
             responseDtoList.add(CommentResponseDto.createCommentResponseDto(comment));
         }
         return responseDtoList;
@@ -64,39 +64,40 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void deleteComment(Long noticeId, Long commentId, Member member){
-        if(!existsByNoticeId(noticeId)){
+    public void deleteComment(Long noticeId, Long commentId, Member loginMember) {
+        if (!existsByNoticeId(noticeId)) {
             throw new BisException(ErrorCode.NOT_FOUND_NOTICE);
         }
-        // 튜터님 및 팀원과 상의하기 -> 댓글 작성자만 삭제하려면 어떻게..?
-
         Comment comment = findByIsActiveAndCommentId(commentId);
+        Member writer = comment.getMember();
+        if (!writer.equals(loginMember)) {
+            throw new BisException(ErrorCode.YOUR_NOT_THE_AUTHOR);
+        }
         comment.inActive();
     }
 
     @Transactional
     @Override
-    public void createReportComment(Long commentId, ReportRequestDto requestDto, Member member){
+    public void createReportComment(Long commentId, ReportRequestDto requestDto, Member member) {
         Comment comment = findByIsActiveAndCommentId(commentId);
-        if(!reportRepository.existsByCommentIdAndMemberId(comment.getId(), member.getId())){
-            reportRepository.save(ReportComment.createReport(requestDto, member, comment));
-            if(reportRepository.countByCommentId(comment.getId()) > 5){
+        if (!commentReportRepository.existsByCommentIdAndMemberId(comment.getId(), member.getId())) {
+            commentReportRepository.save(ReportComment.createReport(requestDto, member, comment));
+            if (commentReportRepository.countByCommentId(comment.getId()) > 5) {
                 comment.inActive();
             }
-        }
-        else {
+        } else {
             throw new BisException(ErrorCode.COMMENT_EXIST_REPORT);
         }
     }
 
 
     private boolean existsByNoticeId(Long noticeId) {
-        return noticeService.existByIsActiveAndClubId(noticeId);
+        return noticeService.existByIsActiveAndNoticeId(noticeId);
     }
 
     private Comment findByIsActiveAndCommentId(Long commentId) {
         Comment comment = commentRepository.findByIsActiveAndId(true, commentId)
-                .orElseThrow(()->
+                .orElseThrow(() ->
                         new BisException(ErrorCode.NOT_FOUND_COMMENT)
                 );
         return comment;

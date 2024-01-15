@@ -52,6 +52,8 @@ public enum ErrorCode {
 
     REJECT_SEND_CHAT_SELF(FORBIDDEN, "자기 자신에게 채팅을 할수 없습니다."),
 
+    YOUR_NOT_THE_AUTHOR(FORBIDDEN, "작성자가 아닙니다."),
+
     /* 404 NOT_FOUND */
     NOT_FOUND_CLUB(NOT_FOUND, "존재하지 않는 클럽입니다."),
 
