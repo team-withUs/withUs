@@ -17,7 +17,7 @@ public class MessageDto implements Serializable {
   private String content;
 
   @Builder
-  public MessageDto(Long senderId, String content) {
+  private MessageDto(Long senderId, String content) {
     this.senderId = senderId;
     this.content = content;
   }

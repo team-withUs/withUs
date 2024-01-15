@@ -37,7 +37,7 @@ public class ChatMessage  {
   private ChatRoom chatRoom;
 
   @Builder
-  public ChatMessage(String content, LocalDateTime sendTime, Member sender, ChatRoom chatRoom) {
+  private ChatMessage(String content, LocalDateTime sendTime, Member sender, ChatRoom chatRoom) {
     this.content = content;
     this.sendTime = sendTime;
     this.sender = sender;

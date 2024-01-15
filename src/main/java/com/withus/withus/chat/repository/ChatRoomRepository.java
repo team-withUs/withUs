@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
+
+  Optional<ChatRoom> findChatRoomByIdAndIsActive(Long roomId, boolean isActive);
   Optional<ChatRoom> findBySenderAndReceiver(Member sender, Member receiver);
   Page<ChatRoom> findAllBySenderOrReceiver(Pageable pageable, Member sender, Member receiver);
 }

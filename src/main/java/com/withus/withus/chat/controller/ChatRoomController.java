@@ -13,6 +13,7 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class ChatRoomController {
 
   //  채팅방 열기
   @GetMapping("/api/chat/{roomId}")
-  public ResponseEntity<CommonResponse<ChatRoomResponseDto>> openChatRoom(
+  public ResponseEntity<CommonResponse<ChatRoomResponseDto>> getChatRoom(
       @PathVariable("roomId") Long roomId,
       @AuthMember Member member
   ) {
@@ -54,8 +55,18 @@ public class ChatRoomController {
       @RequestParam(defaultValue = "10") int size,
       @AuthMember Member member
   ) {
-
     ChatRoomPageListResponseDto chatRoomPageListResponseDto = chatRoomService.getsChatRoom(page, size, member);
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, chatRoomPageListResponseDto));
   }
+
+  @DeleteMapping("/api/chat/{roomId}")
+  public ResponseEntity<CommonResponse<String>> deleteChatRoom(
+      @PathVariable("roomId") Long roomId,
+      @AuthMember Member member
+  ) {
+    chatRoomService.deleteChatRoom(roomId, member);
+    return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, ""));
+
+  }
+
 }
