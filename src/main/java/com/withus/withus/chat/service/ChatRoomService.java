@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
@@ -32,10 +33,6 @@ public class ChatRoomService {
   private final ChatRoomRepository chatRoomRepository;
 
   public URI getOrCreateRoom(ChatPostDto chatPostDto, Member member) {
-    if(member == null) {
-      log.info("인증되지 않은 회원으로 채팅방을 생성할 수 없음");
-      throw new BisException(ErrorCode.ACCESS_DENIED);
-    }
     Member sender = memberService.findMemberByMemberId(member.getId());
 
     // 탈퇴한 회원 확인
@@ -72,10 +69,6 @@ public class ChatRoomService {
   }
 
   public ChatRoomResponseDto openChatRoom(Long roomId, Member member) {
-    if (member == null) {
-      log.info("인증되지 않은 회원으로 채팅방을 가져올 수 없음");
-      throw new BisException(ErrorCode.ACCESS_DENIED);
-    }
     ChatRoom chatRoom = findChatRoom(roomId);
 
     return ChatRoomResponseDto.createChatRoomResponseDto(
@@ -87,12 +80,8 @@ public class ChatRoomService {
 
   // 유저의 채팅 목록 가져오기
   public ChatRoomPageListResponseDto getsChatRoom(int page, int size, Member member) {
-    if(member == null) {
-      log.info("인증되지 않은 회원의 접근으로 채팅 목록을 가져올 수 없음");
-      throw new BisException(ErrorCode.ACCESS_DENIED);
-    }
-
     Member sender = memberService.findMemberByLoginname(member.getLoginname());
+
     Pageable pageable = PageRequest.of(page-1 , size, Sort.by("id").descending());
     Page<ChatRoom> chatRoomPage = chatRoomRepository.findAllBySenderOrReceiver(pageable, sender, sender);
 
@@ -109,11 +98,24 @@ public class ChatRoomService {
     return ChatRoomPageListResponseDto.createChatPageListResponseDto(chatRoomResponseDtos, pageInfo);
   }
 
+  @Transactional
+  public void deleteChatRoom(Long roomId, Member member) {
+    ChatRoom chatRoom = findChatRoom(roomId);
+
+    if (!(chatRoom.getSender().equals(member) || chatRoom.getReceiver().equals(member))) {
+      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+    }
+
+    chatRoom.chatRoomTransform();
+  }
+
   // 채팅방 존재 검증
   public ChatRoom findChatRoom(Long roomId) {
-    ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElseThrow(
+    ChatRoom chatRoom = chatRoomRepository.findChatRoomByIdAndIsActive(roomId, true).orElseThrow(
         () -> new BisException(ErrorCode.NOT_FOUND_CHATROOM)
     );
     return chatRoom;
   }
+
+
 }

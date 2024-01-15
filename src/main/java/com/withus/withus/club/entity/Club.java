@@ -4,13 +4,15 @@ import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
+import com.withus.withus.notice.entity.Notice;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,8 +28,11 @@ public class Club extends TimeStamp {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
+    @Column
     private String filename;
+
+    @Column
+    private String imageURL;
 
     @Column
     private int MaxMember = 0;
@@ -43,6 +48,11 @@ public class Club extends TimeStamp {
 
     @Column(nullable = false)
     private String username;
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    private List<ClubMember> clubMemberList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    private List<Notice> noticeList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -54,13 +64,14 @@ public class Club extends TimeStamp {
     private boolean isActive = true;
 
     @Builder
-    public Club(
+    private Club(
             String clubTitle,
             String content,
             ClubCategory category,
             int maxMember,
             Member member,
             String filename,
+            String imageURL,
             LocalDateTime startTime,
             LocalDateTime endTime
     ) {
@@ -68,6 +79,7 @@ public class Club extends TimeStamp {
         this.content = content;
         this.category = category;
         this.filename = filename;
+        this.imageURL = imageURL;
         this.member = member;
         this.MaxMember = maxMember;
         this.startTime = startTime;
@@ -106,12 +118,18 @@ public class Club extends TimeStamp {
         this.startTime = clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
     }
-
+    public void inActive() {
+        isActive = false;
+    }
     public void delete() {
         this.isActive=false;
     }
 
     public String setImageUrl(String imageUrl) {
         return imageUrl;
+    }
+
+    public String getImageUrl() {
+        return this.imageURL;
     }
 }

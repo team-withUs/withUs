@@ -32,7 +32,7 @@ public class ChatRoom extends TimeStamp {
   private Member receiver;
 
   @Builder
-  public ChatRoom(Member sender, Member receiver) {
+  private ChatRoom(Member sender, Member receiver) {
     this.sender = sender;
     this.receiver = receiver;
   }
@@ -44,7 +44,7 @@ public class ChatRoom extends TimeStamp {
         .build();
   }
 
-  public void ChatRoomTransform() {
+  public void chatRoomTransform() {
     this.isActive = !isActive;
   }
 }

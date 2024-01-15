@@ -1,11 +1,14 @@
 package com.withus.withus.notice.service;
 
 
+import static com.withus.withus.global.s3.S3Const.S3_DIR_NOTICE;
+
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.service.ClubMemberServiceImpl;
 import com.withus.withus.club.service.ClubServiceImpl;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.global.s3.S3Util;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
@@ -29,6 +32,7 @@ public class NoticeServiceImpl implements NoticeService{
   private final ReportRepository reportRepository;
   private final ClubServiceImpl clubService;
   private final ClubMemberServiceImpl clubMemberService;
+  private final S3Util s3Util;
 
 
   @Override
@@ -37,14 +41,23 @@ public class NoticeServiceImpl implements NoticeService{
     if(!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)){
       throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
     }
-    NoticeCategory category;
+
+    NoticeCategory category=NoticeCategory.BOARD;
     if(requestDto.category().equals("공지사항")){
       category=NoticeCategory.NOTICE;
     }
-    else {
-      category=NoticeCategory.BOARD;
+
+    Notice createNotice;
+    if(requestDto.imageFile()==null){
+      createNotice = Notice.createNotice(requestDto, member, club, category);
     }
-    Notice saveNotice = noticeRepository.save(Notice.createNotice(requestDto, member, club, category));
+    else {
+      String filename = s3Util.uploadFile(requestDto.imageFile(), S3_DIR_NOTICE);
+      createNotice = Notice.createNoticePlusImage(requestDto, member, club, category,
+          s3Util.getFileURL(filename, S3_DIR_NOTICE), filename);
+    }
+
+    Notice saveNotice = noticeRepository.save(createNotice);
     return NoticeResponseDto.createNoticeResponseDto(saveNotice);
   }
 
@@ -54,11 +67,31 @@ public class NoticeServiceImpl implements NoticeService{
     if(!existsByClubId(clubId)){
       throw new BisException(ErrorCode.NOT_FOUND_CLUB);
     }
+
     if(!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)){
       throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
     }
+
     Notice notice = findByIsActiveAndNoticeId(noticeId);
-    notice.update(requestDto);
+
+    NoticeCategory category=NoticeCategory.BOARD;
+    if(requestDto.category().equals("공지사항")){
+      category=NoticeCategory.NOTICE;
+    }
+
+    if(requestDto.imageFile() != null){
+      if(notice.getFilename() != null){
+        s3Util.deleteFile(notice.getFilename(), S3_DIR_NOTICE);
+      }
+      String filename = s3Util.uploadFile(requestDto.imageFile(), S3_DIR_NOTICE);
+      notice.updatePlusImage(requestDto, category,
+          s3Util.getFileURL(filename, S3_DIR_NOTICE), filename
+      );
+    }
+    else {
+      notice.update(requestDto,category);
+    }
+
     return NoticeResponseDto.createNoticeResponseDto(notice);
   }
 

@@ -48,7 +48,7 @@ public class Member extends TimeStamp {
     private List<ClubMember> clubMemberList = new ArrayList<>();
 
     @Builder
-    public Member(String loginname, String password, String email, String username) {
+    private Member(String loginname, String password, String email, String username) {
         this.loginname = loginname;
         this.password = password;
         this.email = email;

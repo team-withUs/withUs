@@ -5,21 +5,13 @@ import com.withus.withus.member.entity.Member;
 import java.util.List;
 import lombok.Builder;
 
+@Builder
 public record MemberResponseDto(
     String username,
     String email,
     String introduction,
     String imageURL
 ) {
-
-
-  @Builder
-  public MemberResponseDto(String username, String email, String introduction, String imageURL) {
-    this.username = username;
-    this.email = email;
-    this.introduction = introduction;
-    this.imageURL = imageURL;
-  }
 
   public static MemberResponseDto createMemberResponseDto(Member member){
     String username = member.getUsername();
@@ -34,4 +26,5 @@ public record MemberResponseDto(
         .imageURL(imageURL)
         .build();
   }
+
 }
