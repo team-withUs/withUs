@@ -57,8 +57,8 @@ public class Comment extends TimeStamp {
         this.isActive = false;
     }
 
-    public static Comment createComment(CommentRequestDto commentReportRequestDto, Member member, Notice notice) {
-        String content = commentReportRequestDto.content();
+    public static Comment createComment(CommentRequestDto commentRequestDto, Member member, Notice notice) {
+        String content = commentRequestDto.content();
 
         return Comment.builder()
                 .content(content)
