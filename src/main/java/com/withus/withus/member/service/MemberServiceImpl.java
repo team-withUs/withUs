@@ -154,6 +154,9 @@ public class MemberServiceImpl implements MemberService{
     if(!memberId.equals(member.getId())){
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
+    if(!member.getIsActive()){
+      throw new BisException(ErrorCode.DELETED_MEMBER);
+    }
 
     Member deletedMember = findMemberByMemberId(memberId);
     deletedMember.inactive();
@@ -204,7 +207,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Member invitedMember = findMemberByMemberId(memberId);
-    if(!clubMemberService.existsClubMemberByMemberIdAndClubId(memberId,clubId)){
+    if(clubMemberService.existsClubMemberByMemberIdAndClubId(memberId,clubId)){
       throw new BisException(ErrorCode.DUPLICATE_MEMBER);
     }
 
