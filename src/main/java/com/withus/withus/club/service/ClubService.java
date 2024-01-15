@@ -21,12 +21,11 @@ public interface ClubService {
 
     ClubResponseDto getClub(Long clubId);
 
-    ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member);
+    ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member, MultipartFile image);
 
 
     String deleteClub(Long clubId, Member member);
 
-    void updateReportClub(Long clubId);
 
     Club findClubById(Long clubId);
 

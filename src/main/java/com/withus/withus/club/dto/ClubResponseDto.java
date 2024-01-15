@@ -1,16 +1,17 @@
 package com.withus.withus.club.dto;
 
+import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.global.s3.S3Const;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
-
+@Builder
 public record ClubResponseDto(
         Long clubId,
         String clubTitle,
         String content,
-        String category,
+        ClubCategory category,
         String imageURL,
         String username,
         int maxMember,
@@ -19,33 +20,6 @@ public record ClubResponseDto(
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
-    @Builder
-    public ClubResponseDto(
-            Long clubId,
-            String clubTitle,
-            String content,
-            String category,
-            String imageURL,
-            String username,
-            int maxMember,
-            LocalDateTime startTime,
-            LocalDateTime endTime,
-            LocalDateTime createdAt,
-            LocalDateTime modifiedAt
-    ) {
-        this.clubId = clubId;
-        this.clubTitle = clubTitle;
-        this.content = content;
-        this.category = category;
-        this.imageURL = imageURL;
-        this.username = username;
-        this.maxMember = maxMember;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-    }
-
     public static ClubResponseDto createClubResponseDto(
             Club club,
             String imageURL
@@ -55,7 +29,7 @@ public record ClubResponseDto(
                 .clubId(club.getId())
                 .clubTitle(club.getClubTitle())
                 .content(club.getContent())
-                .category(club.getCategory().name())
+                .category(club.getCategory())
                 .imageURL(imageUrl)
                 .username(club.getUsername())
                 .maxMember(club.getMaxMember())

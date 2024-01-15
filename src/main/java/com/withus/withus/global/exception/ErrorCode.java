@@ -62,7 +62,11 @@ public enum ErrorCode {
 
     NOT_FOUND_CLUB_MEMBER_EXIST(NOT_FOUND,"클럽멤버가 아닙니다"),
 
+
+    NOT_FOUND_CLUB_TITLE_EXIST(NOT_FOUND,"클럽제목이 없습니다."),
+
     NOT_FOUND_CHATROOM(NOT_FOUND, "해당 채팅방을 찾을 수 없습니다."),
+
 
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
