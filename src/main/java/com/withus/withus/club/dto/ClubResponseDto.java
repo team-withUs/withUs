@@ -21,16 +21,14 @@ public record ClubResponseDto(
         LocalDateTime modifiedAt
 ) {
     public static ClubResponseDto createClubResponseDto(
-            Club club,
-            String imageURL
+            Club club
     ) {
-        String imageUrl = imageURL;
         return ClubResponseDto.builder()
                 .clubId(club.getId())
                 .clubTitle(club.getClubTitle())
                 .content(club.getContent())
                 .category(club.getCategory())
-                .imageURL(imageUrl)
+                .imageURL(club.getImageUrl())
                 .username(club.getUsername())
                 .maxMember(club.getMaxMember())
                 .startTime(club.getStartTime())
@@ -38,9 +36,5 @@ public record ClubResponseDto(
                 .createdAt(club.getCreatedAt())
                 .modifiedAt(club.getModifiedAt())
                 .build();
-    }
-
-    public static ClubResponseDto createClubResponseDto(Club club) {
-        return createClubResponseDto(club, S3Const.S3_DIR_CLUB);
     }
 }

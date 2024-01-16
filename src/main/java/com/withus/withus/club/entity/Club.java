@@ -43,9 +43,6 @@ public class Club extends TimeStamp {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
     @Column(nullable = false)
     private String username;
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
@@ -87,7 +84,7 @@ public class Club extends TimeStamp {
         this.username = member.getUsername();
     }
 
-    public static Club createClub(ClubRequestDto clubRequestDto,Member member,String filename,LocalDateTime startTime, LocalDateTime endTime
+    public static Club createClub(ClubRequestDto clubRequestDto,Member member,String filename,String imageURL,LocalDateTime startTime, LocalDateTime endTime
     ) {
         String clubTitle = clubRequestDto.clubTitle();
         String content = clubRequestDto.content();
@@ -98,6 +95,7 @@ public class Club extends TimeStamp {
                 .content(content)
                 .category(category)
                 .filename(filename)
+                .imageURL(imageURL)
                 .member(member)
                 .maxMember(maxMember)
                 .startTime(startTime)
@@ -107,13 +105,15 @@ public class Club extends TimeStamp {
 
     public void update(
             ClubRequestDto clubrequestDto,
-            String filename
+            String filename,
+            String imageURL
     ) {
         ClubCategory category = clubrequestDto.category();
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();
         this.category = category;
         this.filename = filename;
+        this.imageURL = imageURL;
         this.MaxMember = clubrequestDto.maxMember();
         this.startTime = clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
@@ -125,7 +125,7 @@ public class Club extends TimeStamp {
         this.isActive=false;
     }
 
-    public String setImageUrl(String imageUrl) {
+    public String setImgUrl(String imageUrl) {
         return imageUrl;
     }
 
