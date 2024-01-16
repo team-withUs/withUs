@@ -9,15 +9,17 @@ import com.withus.withus.club.service.ClubService;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
+import com.withus.withus.global.s3.S3Util;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/club")
 public class ClubController {
@@ -34,6 +36,7 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE, responseDto));
     }
+
     @GetMapping("/{clubId}")
     public ResponseEntity<CommonResponse<ClubResponseDto>> getClub(
             @PathVariable("clubId") Long clubId
@@ -43,18 +46,19 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
     }
-    //수정
+    // 수정
     @PatchMapping("/{clubId}")
     public ResponseEntity<CommonResponse> updateClub(
             @PathVariable("clubId") Long clubId,
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member,clubRequestDto.imageFile());
+        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member, clubRequestDto.imageFile());
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_UPDATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_UPDATE, responseDto));
     }
+
     //삭제
     @DeleteMapping("/{clubId}")
     public ResponseEntity<CommonResponse<String>> deleteClub(
@@ -66,6 +70,7 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
     }
+
     // 신고
     @PostMapping("/{clubId}/report")
     public ResponseEntity<CommonResponse<ReportClubResponseDto>> reportClub(
@@ -85,7 +90,7 @@ public class ClubController {
             @PathVariable("category") ClubCategory category,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdDate") String sortBy
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
 
