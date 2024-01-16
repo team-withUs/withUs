@@ -70,9 +70,9 @@ public class CommentServiceImpl implements CommentService {
         }
         Comment comment = findByIsActiveAndCommentId(commentId);
         Member writer = comment.getMember();
-    /*    if (!writer.equals(loginMember)) {
+        if (!(writer.getId() == loginMember.getId())) {
             throw new BisException(ErrorCode.YOUR_NOT_THE_AUTHOR);
-        }*/
+        }
         comment.inActive();
     }
 
