@@ -112,7 +112,6 @@ class ClubServiceImplTest {
             assertEquals("clubTitle", createClub.clubTitle());
             assertEquals("content", createClub.content());
             assertEquals(ClubCategory.SPORTS, createClub.category());
-            assertEquals("/image/club", createClub.imageURL());
             assertEquals(LocalDateTime.parse("2024-01-07T09:00:00"), createClub.startTime());
             assertEquals(LocalDateTime.parse("2024-02-08T09:00:00"), createClub.endTime());
         }

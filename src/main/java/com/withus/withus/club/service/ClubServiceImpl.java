@@ -49,15 +49,15 @@ public class ClubServiceImpl implements ClubService {
                 throw new BisException(ErrorCode.INVALID_VALUE);
             }
             String imageFile = null;
-
+            String imageUrl = null;
             if (image != null) {
-                // S3에 이미지 업로드
                 imageFile = s3Util.uploadFile(image, S3Const.S3_DIR_CLUB);
                 System.out.println(imageFile);
+                imageUrl = s3Util.getFileURL(imageFile, S3Const.S3_DIR_CLUB);
             }
-            Club club = Club.createClub(clubRequestDto, member, imageFile, startTime, endTime);
+            Club club = Club.createClub(clubRequestDto, member, imageFile, imageUrl,startTime, endTime);
             if (imageFile != null) {
-                club.setImageUrl(imageFile);
+                club.setImgUrl(imageFile);
             }
             Club savedClub = clubRepository.save(club);
             ClubMember clubMember = ClubMember.createClubMember(club, member, ClubMemberRole.HOST);
@@ -70,9 +70,10 @@ public class ClubServiceImpl implements ClubService {
     }
 
     //조회
-    @Override
     public ClubResponseDto getClub(Long clubId) {
-        Club club = findClubById(clubId);
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
+
         return ClubResponseDto.createClubResponseDto(club);
     }
 
@@ -82,25 +83,31 @@ public class ClubServiceImpl implements ClubService {
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
         Club club = verifyMember(clubId);
 
-        if (image != null) {
-            try {
+        try {
+            String imageUrl = null;
+            String filename = null;
+
+            if (image != null) {
                 String newImageFile = s3Util.uploadFile(image, S3Const.S3_DIR_CLUB);
+
                 if (club.getImageUrl() != null) {
                     s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
                 }
-                club.setImageUrl(newImageFile);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new BisException(ErrorCode.INVALID_VALUE);
+                club.setImgUrl(newImageFile);
+                imageUrl = s3Util.getFileURL(newImageFile, S3Const.S3_DIR_CLUB);
+                filename = newImageFile;
+            } else {
+                if (club.getImageUrl() != null) {
+                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
+                }
+                club.setImgUrl(null);
             }
-        } else {
-            if (club.getImageUrl() != null) {
-                s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
-            }
-            club.setImageUrl(null);
+            club.update(clubRequestDto, filename, imageUrl);
+            return ClubResponseDto.createClubResponseDto(club);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BisException(ErrorCode.INVALID_VALUE);
         }
-        club.update(clubRequestDto, club.getFilename());
-        return ClubResponseDto.createClubResponseDto(club);
     }
 
     @Override

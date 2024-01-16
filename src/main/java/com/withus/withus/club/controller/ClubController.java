@@ -13,8 +13,6 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +34,7 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE, responseDto));
     }
+
     @GetMapping("/{clubId}")
     public ResponseEntity<CommonResponse<ClubResponseDto>> getClub(
             @PathVariable("clubId") Long clubId
@@ -45,18 +44,19 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
     }
-    //수정
+    // 수정
     @PatchMapping("/{clubId}")
     public ResponseEntity<CommonResponse> updateClub(
             @PathVariable("clubId") Long clubId,
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member,clubRequestDto.imageFile());
+        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member, clubRequestDto.imageFile());
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_UPDATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_UPDATE, responseDto));
     }
+
     //삭제
     @DeleteMapping("/{clubId}")
     public ResponseEntity<CommonResponse<String>> deleteClub(
@@ -68,6 +68,7 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
     }
+
     // 신고
     @PostMapping("/{clubId}/report")
     public ResponseEntity<CommonResponse<ReportClubResponseDto>> reportClub(
@@ -89,7 +90,7 @@ public class ClubController {
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sortBy") String sortBy,
-        Model model
+             Model model
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
 //        ResponseEntity.status(ResponseCode.OK.getHttpStatus())
