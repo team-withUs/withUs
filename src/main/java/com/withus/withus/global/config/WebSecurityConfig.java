@@ -79,6 +79,8 @@ public class WebSecurityConfig {
         authorizeHttpRequests
             .requestMatchers("/api/member/signup/**", "/api/member/login")
             .permitAll()// 회원가입, 로그인요청 인증허가
+            .requestMatchers("/ws/**", "/**")
+            .permitAll()
             .requestMatchers(HttpMethod.GET,"/api/member/**")
             .permitAll()
             .anyRequest().authenticated() // 그 외 모든 요청 인증처리

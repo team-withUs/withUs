@@ -138,16 +138,27 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto) {
-        List<Club> clubList = clubRepository.
+        List<Club> clubList;
+        if(category.equals(ClubCategory.ALL)){
+            clubList = clubRepository.
+                findAllByIsActive(true, PageableDto.getsPageableDto(
+                    pageableDto.page(),
+                    pageableDto.size(),
+                    pageableDto.sortBy()
+                ).toPageable()
+            );
+        }
+        else {
+            clubList = clubRepository.
                 findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
-                                pageableDto.page(),
-                                pageableDto.size(),
-                                pageableDto.sortBy()
-                        ).toPageable()
+                        pageableDto.page(),
+                        pageableDto.size(),
+                        pageableDto.sortBy()
+                    ).toPageable()
                 );
+        }
 
         if (clubList == null || clubList.isEmpty()) {
-            System.out.println("test");
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
         return clubList.stream()
@@ -179,5 +190,10 @@ public class ClubServiceImpl implements ClubService {
 
     public boolean existByIsActiveAndClubId(Long clubId) {
         return clubRepository.existsByIsActiveAndId(true, clubId);
+    }
+
+    @Override
+    public Integer count(){
+        return clubRepository.countByIsActive(true);
     }
 }

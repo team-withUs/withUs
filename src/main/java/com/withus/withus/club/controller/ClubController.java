@@ -13,6 +13,8 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,18 +82,22 @@ public class ClubController {
     }
 
     // 카테고리
+
     @GetMapping("/{category}/club")
-    public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
+    public String getsClub(
             @PathVariable("category") ClubCategory category,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdDate") String sortBy
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sortBy") String sortBy,
+        Model model
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
+//        ResponseEntity.status(ResponseCode.OK.getHttpStatus())
+//            .body(CommonResponse.of(ResponseCode.OK,
+//                clubService.getsClubByCategory(category, pageableDto)));
+        model.addAttribute("list",clubService.getsClubByCategory(category, pageableDto));
 
-        return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
-                .body(CommonResponse.of(ResponseCode.OK,
-                        clubService.getsClubByCategory(category, pageableDto)));
+        return "redirect:/";
     }
 
 }
