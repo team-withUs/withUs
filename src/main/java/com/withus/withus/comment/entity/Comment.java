@@ -1,5 +1,7 @@
 package com.withus.withus.comment.entity;
 
+
+import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.entity.Notice;
@@ -35,20 +37,33 @@ public class Comment extends TimeStamp {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    // report를 entity로 분리하던지, 걍 빼버리던가.
     @Column
-    private int report = 0;
-
-    @Column
-    private Boolean isActive;
+    private Boolean isActive = true;
 
     // shift+f6 = 같은 이름을 쓰는 파라미터를 한 번에 수정 가능 !! 배움 !!
+    // pubic -> private로 변경 / 생성자는 Entity 내부에서만 사용하기 위함. (@Builder 관련)
     @Builder
-    public Comment(String content, Notice findNotice, Member loginMember, Boolean isActive){
+    private Comment(String content, Notice findNotice, Member loginMember){
         this.content = content;
         this.notice = findNotice;
         this.member = loginMember;
-        this.isActive = isActive;
     }
 
+    public void update(CommentRequestDto commentRequestDto){
+        this.content = commentRequestDto.content();
+    }
+
+    public void inActive() {
+        this.isActive = false;
+    }
+
+    public static Comment createComment(CommentRequestDto commentRequestDto, Member member, Notice notice) {
+        String content = commentRequestDto.content();
+
+        return Comment.builder()
+                .content(content)
+                .findNotice(notice)
+                .loginMember(member)
+                .build();
+    }
 }
