@@ -173,6 +173,11 @@ public class ClubServiceImpl implements ClubService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Integer count(){
+        return clubRepository.countByIsActive(true);
+    }
+
     public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
