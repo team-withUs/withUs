@@ -11,4 +11,6 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
   Optional<Notice> findByIsActiveAndId(Boolean isActive,Long noticeId);
 
   List<Notice> findAllByIsActive(Boolean isActive,Pageable pageable);
+
+  boolean existsByIsActiveAndId(boolean isActive, Long noticeId);
 }

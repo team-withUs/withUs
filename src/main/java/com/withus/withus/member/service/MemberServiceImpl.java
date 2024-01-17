@@ -49,7 +49,7 @@ public class MemberServiceImpl implements MemberService{
 
   private final EmailService emailService;
 
-  private final RedisService redisService;
+  private final RedisService redisService;  // redis설정, s3 환경변수 설정, 어플리케이션 실행, 포스트맨 테스트
 
   private final EmailConfig emailConfig;
 
