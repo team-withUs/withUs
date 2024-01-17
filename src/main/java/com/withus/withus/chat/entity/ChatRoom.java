@@ -2,7 +2,9 @@ package com.withus.withus.chat.entity;
 
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.member.entity.Member;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,15 +21,20 @@ public class ChatRoom extends TimeStamp {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long Id;
+  private Long id;
 
-  private boolean isActive = true;
+  @Column
+  private String title;
 
-  @ManyToOne
+  @Column
+  private Boolean isActive = true;
+
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sender_id")
   private Member sender;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "receiver_id")
   private Member receiver;
 
@@ -35,6 +42,7 @@ public class ChatRoom extends TimeStamp {
   private ChatRoom(Member sender, Member receiver) {
     this.sender = sender;
     this.receiver = receiver;
+    this.title = sender.getUsername() + ", " + receiver.getUsername() + " : 채팅방";
   }
 
   public static ChatRoom createChatRomm(Member sender, Member receiver) {
@@ -42,9 +50,14 @@ public class ChatRoom extends TimeStamp {
         .sender(sender)
         .receiver(receiver)
         .build();
+
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   public void chatRoomTransform() {
-    this.isActive = !isActive;
+    this.isActive = false;
   }
 }

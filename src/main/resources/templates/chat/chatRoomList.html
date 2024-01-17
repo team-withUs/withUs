@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>참여중인 채팅방 목록</title>
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      background-image: url('/img/background.jpg'); /* Replace with the actual URL of your background image */
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif; /* Choose an appropriate font */
+    }
+
+  </style>
+
+  <script th:inline="javascript">
+    $(document).ready(function() {
+      // 토큰 인증
+      var atk = localStorage.getItem("accessToken");
+      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28iLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcwNTQ3NjQ0OSwiaWF0IjoxNzA1NDc0NjQ5fQ.bBLCXInj7y4gn6YIL0kRJA7ew4qgxbxwKKSWUdPt65A';
+
+      // 엑세스 토큰이 없을시 로그인페이지로 이동
+      if (atk === undefined || atk === '') {
+        window.location.href = 'http://' + window.location.host + '/api/member/loginPage';
+        return;
+      }
+
+      var memberId = /*[[${memberId}]]*/ '';
+      var chatRoomList;
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/chat',
+        contentType: 'application/json',
+        headers: {
+          'Authorization': atk
+        },
+      })
+        .done(function (res, status, xhr) {
+        chatRoomList = res.data;
+        })
+        .fail(function (xhr, status, error) {
+          console.error('채팅방 목록 요청 API 에러', error);
+        })
+
+
+
+    })
+
+    function getchatRoomList(chatRoomList) {
+
+      if (chatRoomList) {
+        console.log("채팅방 불러오는 중")
+        chatRoomList.forEach(function (chatRoomResponseDto) {
+          var roomId = chatRoomResponseDto.roomId;
+          var title = chatRoomResponseDto.title;
+
+          console.info(roomId, title);
+
+          var chatRoomDiv = $('<div class="chatlist">')
+          chatRoomDiv.append('<div><a href=""')
+
+        });
+      }
+    }
+
+
+  </script>
+
+</head>
+
+<body>
+
+<div class="name">
+  <h5>채팅방리스트</h5>
+</div>
+
+
+<div class="listBox">
+  <div class="inbox_chat">
+    <div class="chatlist">
+        <div><a th:href="@{api/chat/{roomId}(roomId=${room.roomId})}" th:text="${room.title}"></a></div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+
+</html>

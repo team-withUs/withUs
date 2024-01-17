@@ -1,24 +1,16 @@
 package com.withus.withus.chat.service;
 
-import com.withus.withus.chat.dto.ChatMessagePageListResponseDto;
+import com.withus.withus.chat.dto.ChatMessageResponseDto;
 import com.withus.withus.chat.dto.MessageDto;
 import com.withus.withus.chat.entity.ChatMessage;
 import com.withus.withus.chat.entity.ChatRoom;
 import com.withus.withus.chat.repository.ChatMessageRepository;
-import com.withus.withus.chat.dto.ChatMessageResponseDto;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.response.PageInfo;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberServiceImpl;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -49,33 +41,25 @@ public class ChatMessageService {
     log.info("메세지 저장 완료");
   }
 
-  public ChatMessagePageListResponseDto getsMessage(long roomId, int page, int size, Member member) {
-    // 해당 채팅방의 메세지를 가져와야 함
-    Page<ChatMessage> messages = findMessages(roomId, page, size);
-    PageInfo pageInfo = new PageInfo(page, size, (int) messages.getTotalElements(),
-        messages.getTotalPages());
+  public List<ChatMessageResponseDto> getsMessage(long roomId) {
 
-    List<ChatMessage> messageList = messages.getContent();
-    List<ChatMessageResponseDto> messageResponses =
+    List<ChatMessage> messageList = findMessages(roomId);
+
+    List<ChatMessageResponseDto> messageResponseDtoList =
         messageList.stream().map(
             chatMessage -> ChatMessageResponseDto.createChatMessageResponseDto(
                 chatMessage.getId(),
-                chatMessage.getSender().getUsername(),
+                chatMessage.getSender(),
                 chatMessage.getContent(),
                 chatMessage.getSendTime())
             ).toList();
 
-    return ChatMessagePageListResponseDto.createChatMessagePageListResponseDto(messageResponses,
-        pageInfo);
+    return messageResponseDtoList;
   }
 
-  public Page<ChatMessage> findMessages(Long roomId, int page, int size) {
+  public List<ChatMessage> findMessages(Long roomId) {
     ChatRoom chatRoom = chatRoomService.findChatRoom(roomId);
-
-    Pageable pageable = PageRequest.of(page-1, size, Sort.by("id").descending());
-    Page<ChatMessage> messages = chatMessageRepository.findByChatRoom(pageable, chatRoom);
-
-    return messages;
+    return chatMessageRepository.findAllByChatRoomOrderBySendTimeAsc(chatRoom);
   }
 
 
