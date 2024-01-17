@@ -85,20 +85,18 @@ public class ClubController {
     // 카테고리
 
     @GetMapping("/{category}/club")
-    public String getsClub(
+    public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
             @PathVariable("category") ClubCategory category,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
-            @RequestParam(value = "sortBy") String sortBy,
-             Model model
+            @RequestParam(value = "sortBy") String sortBy
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
-//        ResponseEntity.status(ResponseCode.OK.getHttpStatus())
-//            .body(CommonResponse.of(ResponseCode.OK,
-//                clubService.getsClubByCategory(category, pageableDto)));
-        model.addAttribute("list",clubService.getsClubByCategory(category, pageableDto));
 
-        return "redirect:/";
+
+        return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
+            .body(CommonResponse.of(ResponseCode.OK,
+                clubService.getsClubByCategory(category, pageableDto)));
     }
 
 }
