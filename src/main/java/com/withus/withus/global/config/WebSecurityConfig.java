@@ -7,10 +7,8 @@ import com.withus.withus.global.security.UserDetailsServiceImpl;
 import com.withus.withus.global.security.jwt.JwtAuthenticationFilter;
 import com.withus.withus.global.security.jwt.JwtAuthorizationFilter;
 import com.withus.withus.global.security.jwt.JwtUtil;
-import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -21,9 +19,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 @Configuration
@@ -77,11 +72,7 @@ public class WebSecurityConfig {
 
     http.authorizeHttpRequests((authorizeHttpRequests) ->
         authorizeHttpRequests
-            .requestMatchers("/api/member/signup/**", "/api/member/login")
-            .permitAll()// 회원가입, 로그인요청 인증허가
-            .requestMatchers(HttpMethod.GET,"/api/member/**")
-            .permitAll()
-            .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+            .anyRequest().permitAll() // 그 외 모든 요청 인증처리
     );
 
     http.logout()
