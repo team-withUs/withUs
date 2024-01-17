@@ -33,4 +33,6 @@ public interface ClubService {
 
     List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto);
 
+    Integer count();
+
 }
