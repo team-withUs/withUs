@@ -48,7 +48,6 @@ public class ChatMessageService {
     List<ChatMessageResponseDto> messageResponseDtoList =
         messageList.stream().map(
             chatMessage -> ChatMessageResponseDto.createChatMessageResponseDto(
-                chatMessage.getId(),
                 chatMessage.getSender(),
                 chatMessage.getContent(),
                 chatMessage.getSendTime())

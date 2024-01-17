@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/api/chat")
 @AllArgsConstructor
-public class chatViewController {
+public class ChatViewController {
 
   private final MemberServiceImpl memberService;
 
@@ -33,7 +33,7 @@ public class chatViewController {
 
   @GetMapping("/chatRoomList/{memberId}")
   public String chatRoomListPage(
-      @PathVariable("memberID") Long memberId,
+      @PathVariable("memberId") Long memberId,
       Model model
   ) {
     model.addAttribute("memberId", memberId);

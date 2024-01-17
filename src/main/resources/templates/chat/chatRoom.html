@@ -156,7 +156,7 @@
     $(document).ready(function() {
       // 토큰 인증
       var atk = localStorage.getItem("accessToken");
-      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28iLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcwNTQ4NDYwMCwiaWF0IjoxNzA1NDgyODAwfQ.PTJ5Ykb2vs0dw23dPjVycTreFuzc8xm-M2mCILyCHps';
+      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28iLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcwNTQ4OTA4OSwiaWF0IjoxNzA1NDg3Mjg5fQ.L_ogkjcuqRbfe4lM77ewovv9CkQGtLi9j94lM0raTTI';
       // 엑세스 토큰이 없을시 로그인페이지로 이동
       if (atk === undefined || atk === '') {
         window.location.href = 'http://' + window.location.host + '/api/member/loginPage';

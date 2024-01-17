@@ -44,6 +44,8 @@ public class ChatRoomController {
       @AuthMember Member member
   ) {
     member = memberService.findMemberByLoginname("junwoo");
+
+
     ChatRoomResponseDto chatRoomResponseDto = chatRoomService.getChatRoom(roomId, member);
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, chatRoomResponseDto));
   }
@@ -53,6 +55,9 @@ public class ChatRoomController {
   public ResponseEntity<CommonResponse<List<ChatRoomResponseDto>>> getsChatRoom(
       @AuthMember Member member
   ) {
+    member = memberService.findMemberByLoginname("junwoo");
+
+
 
     List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomService.getsChatRoom(member);
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, chatRoomResponseDtoList));
