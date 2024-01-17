@@ -17,11 +17,11 @@ import com.withus.withus.global.s3.S3Const;
 import com.withus.withus.global.s3.S3Util;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
+import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,58 +42,100 @@ public class ClubServiceImpl implements ClubService {
         LocalDateTime startTime = clubRequestDto.startTime();
         LocalDateTime endTime = clubRequestDto.endTime();
         try {
-            // S3에 이미지 업로드
-            String imageFile = s3Util.uploadFile(image, S3Const.S3_DIR_CLUB);
-            // 클럽 생성
-            System.out.println(imageFile);
-            Club club = Club.createClub(clubRequestDto, member, imageFile, startTime, endTime);
-            club.setImageUrl(imageFile); // 이미지 URL 설정
+            if (StringUtils.isBlank(clubRequestDto.clubTitle())) {
+                throw new BisException(ErrorCode.INVALID_VALUE);
+            }
+            if (startTime == null || endTime == null) {
+                throw new BisException(ErrorCode.INVALID_VALUE);
+            }
+            String imageFile = null;
+            String imageUrl = null;
+            if (image != null) {
+                imageFile = s3Util.uploadFile(image, S3Const.S3_DIR_CLUB);
+                System.out.println(imageFile);
+                imageUrl = s3Util.getFileURL(imageFile, S3Const.S3_DIR_CLUB);
+            }
+            Club club = Club.createClub(clubRequestDto, member, imageFile, imageUrl,startTime, endTime);
+            if (imageFile != null) {
+                club.setImgUrl(imageFile);
+            }
             Club savedClub = clubRepository.save(club);
-
-            ClubMember clubMember = ClubMember.createClubMember(club,member,ClubMemberRole.HOST);
+            ClubMember clubMember = ClubMember.createClubMember(club, member, ClubMemberRole.HOST);
             clubMemberService.createClubMember(clubMember);
             return ClubResponseDto.createClubResponseDto(savedClub);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+            throw new BisException(ErrorCode.INVALID_VALUE);
         }
     }
 
     //조회
-    @Override
     public ClubResponseDto getClub(Long clubId) {
-        Club club = findClubById(clubId);
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
+
         return ClubResponseDto.createClubResponseDto(club);
     }
 
+    /// 수정
     @Transactional
-    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member) {
+    @Override
+    public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
         Club club = verifyMember(clubId);
-        club.update(clubRequestDto, club.getFilename());
-        return ClubResponseDto.createClubResponseDto(club);
+
+        try {
+            String imageUrl = null;
+            String filename = null;
+
+            if (image != null) {
+                String newImageFile = s3Util.uploadFile(image, S3Const.S3_DIR_CLUB);
+
+                if (club.getImageUrl() != null) {
+                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
+                }
+                club.setImgUrl(newImageFile);
+                imageUrl = s3Util.getFileURL(newImageFile, S3Const.S3_DIR_CLUB);
+                filename = newImageFile;
+            } else {
+                if (club.getImageUrl() != null) {
+                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
+                }
+                club.setImgUrl(null);
+            }
+            club.update(clubRequestDto, filename, imageUrl);
+            return ClubResponseDto.createClubResponseDto(club);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
     }
 
     @Override
     @Transactional
     public String deleteClub(Long clubId, Member member) {
+        if (!existByClubId(clubId)) {
+            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+        }
         Club club = verifyMember(clubId);
         club.delete();
         return "Club delete successfully";
     }
 
-    @Override
-    public void updateReportClub(Long clubId) {
-
+    private boolean existByClubId(Long clubId) {
+        return clubRepository.existsById(clubId);
     }
 
     @Override
     public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
+        if (StringUtils.isBlank(reportClubRequestDto.content())) {
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
         Club club = verifyMember(clubId);
         ReportClub reportClub = ReportClub.createReport(reportClubRequestDto, member, club);
         if (!reportClubRepository.existsByClubIdAndMemberId(club.getId(), member.getId())) {
             reportClubRepository.save(reportClub);
             if (reportClubRepository.countByClubId(club.getId()) > 5) {
-                club.isActive();
+                club.inActive();
             }
             return ReportClubResponseDto.createReportClubResponseDto(club, reportClub);
         } else {
@@ -103,17 +145,34 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto) {
-        List<Club> clubList = clubRepository.
+        List<Club> clubList;
+        if(category.equals(ClubCategory.ALL)){
+            clubList = clubRepository.
+                findAllByIsActive(true, PageableDto.getsPageableDto(
+                    pageableDto.page(),
+                    pageableDto.size(),
+                    pageableDto.sortBy()
+                ).toPageable()
+            );
+        }
+        else {
+            clubList = clubRepository.
                 findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
-                                pageableDto.page(),
-                                pageableDto.size(),
-                                pageableDto.sortBy()
-                        ).toPageable()
+                        pageableDto.page(),
+                        pageableDto.size(),
+                        pageableDto.sortBy()
+                    ).toPageable()
                 );
+        }
+
+        if (clubList == null || clubList.isEmpty()) {
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
         return clubList.stream()
                 .map(ClubResponseDto::createClubResponseDto)
                 .collect(Collectors.toList());
     }
+
     public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
@@ -136,7 +195,12 @@ public class ClubServiceImpl implements ClubService {
         return club;
     }
 
-    public boolean existByIsActiveAndClubId(Long clubId){
-        return clubRepository.existsByIsActiveAndId(true,clubId);
+    public boolean existByIsActiveAndClubId(Long clubId) {
+        return clubRepository.existsByIsActiveAndId(true, clubId);
+    }
+
+    @Override
+    public Integer count(){
+        return clubRepository.countByIsActive(true);
     }
 }

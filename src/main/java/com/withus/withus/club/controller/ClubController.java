@@ -44,15 +44,14 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
     }
-
-    //수정
+    // 수정
     @PatchMapping("/{clubId}")
     public ResponseEntity<CommonResponse> updateClub(
             @PathVariable("clubId") Long clubId,
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member);
+        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member, clubRequestDto.imageFile());
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_UPDATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_UPDATE, responseDto));
@@ -77,24 +76,27 @@ public class ClubController {
             @RequestBody ReportClubRequestDto reportClubRequestDto,
             @AuthMember Member member
     ) {
-        ReportClubResponseDto reportClubResponse = clubService.createReportClub(clubId, reportClubRequestDto, member); // 수정된 부분
+        ReportClubResponseDto reportClubResponse = clubService.createReportClub(clubId, reportClubRequestDto, member);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT, reportClubResponse));
     }
+
     // 카테고리
+
     @GetMapping("/{category}/club")
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
             @PathVariable("category") ClubCategory category,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdDate") String sortBy
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size") int size,
+            @RequestParam(value = "sortBy") String sortBy
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
 
+
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
-                .body(CommonResponse.of(ResponseCode.OK,
-                        clubService.getsClubByCategory(category, pageableDto)));
+            .body(CommonResponse.of(ResponseCode.OK,
+                clubService.getsClubByCategory(category, pageableDto)));
     }
 
 }

@@ -49,7 +49,7 @@ public class MemberServiceImpl implements MemberService{
 
   private final EmailService emailService;
 
-  private final RedisService redisService;
+  private final RedisService redisService;  // redis설정, s3 환경변수 설정, 어플리케이션 실행, 포스트맨 테스트
 
   private final EmailConfig emailConfig;
 
@@ -154,6 +154,9 @@ public class MemberServiceImpl implements MemberService{
     if(!memberId.equals(member.getId())){
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
+    if(!member.getIsActive()){
+      throw new BisException(ErrorCode.DELETED_MEMBER);
+    }
 
     Member deletedMember = findMemberByMemberId(memberId);
     deletedMember.inactive();
@@ -204,7 +207,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Member invitedMember = findMemberByMemberId(memberId);
-    if(!clubMemberService.existsClubMemberByMemberIdAndClubId(memberId,clubId)){
+    if(clubMemberService.existsClubMemberByMemberIdAndClubId(memberId,clubId)){
       throw new BisException(ErrorCode.DUPLICATE_MEMBER);
     }
 
