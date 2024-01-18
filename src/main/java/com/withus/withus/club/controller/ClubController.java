@@ -88,15 +88,16 @@ public class ClubController {
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
             @PathVariable("category") ClubCategory category,
             @RequestParam(value = "page") int page,
-            @RequestParam(value = "size") int size,
-            @RequestParam(value = "sortBy") String sortBy
+            @RequestParam(value = "size", defaultValue = "4") int size,
+            @RequestParam(value = "sortBy",defaultValue = "CreatedAt") String sortBy,
+            @RequestParam(value = "keyWord" ,defaultValue = "ace245") String keyWord
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
 
 
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
             .body(CommonResponse.of(ResponseCode.OK,
-                clubService.getsClubByCategory(category, pageableDto)));
+                clubService.getsClubByCategory(category, pageableDto, keyWord)));
     }
 
 }

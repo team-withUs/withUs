@@ -19,6 +19,7 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -144,26 +145,39 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto) {
+    public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto, String keyWord) {
         List<Club> clubList;
-        if(category.equals(ClubCategory.ALL)){
-            clubList = clubRepository.
-                findAllByIsActive(true, PageableDto.getsPageableDto(
-                    pageableDto.page(),
-                    pageableDto.size(),
-                    pageableDto.sortBy()
-                ).toPageable()
-            );
+        if(keyWord.equals("ace245")){
+            if(category.equals(ClubCategory.ALL)){
+                clubList = clubRepository.
+                    findAllByIsActive(true, PageableDto.getsPageableDto(
+                            pageableDto.page(),
+                            pageableDto.size(),
+                            pageableDto.sortBy()
+                        ).toPageable()
+                    );
+            }
+            else {
+                clubList = clubRepository.
+                    findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
+                            pageableDto.page(),
+                            pageableDto.size(),
+                            pageableDto.sortBy()
+                        ).toPageable()
+                    );
+            }
         }
         else {
-            clubList = clubRepository.
-                findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
-                        pageableDto.page(),
-                        pageableDto.size(),
-                        pageableDto.sortBy()
-                    ).toPageable()
-                );
+            clubList = clubRepository.search(keyWord, true,
+                PageableDto.getsPageableDto(
+                pageableDto.page(),
+                pageableDto.size(),
+                pageableDto.sortBy()
+            ).toPageable(),
+                category);
+
         }
+
 
         if (clubList == null || clubList.isEmpty()) {
             throw new BisException(ErrorCode.INVALID_VALUE);
@@ -204,8 +218,4 @@ public class ClubServiceImpl implements ClubService {
         return clubRepository.existsByIsActiveAndId(true, clubId);
     }
 
-    @Override
-    public Integer count(){
-        return clubRepository.countByIsActive(true);
-    }
 }
