@@ -56,10 +56,7 @@
       data: JSON.stringify({loginname: loginname, password: password}),
     })
     .done(function (res, textStatus, xhr) {
-      let accessToken = xhr.getResponseHeader('Authorization');
-      localStorage.setItem("accessToken", accessToken);
-      // window.location.href = '/templates/profile'
-      window.location.href = host + '/api/member/profilePage/' + memberId;
+      window.location.href = host + '/api/member/profilePage/1';
     //
     //   // test용 코드 추후에 메인페이지 이동 ajax로 변경
     //   $.ajax({

@@ -77,12 +77,11 @@ public class WebSecurityConfig {
             .permitAll()// 회원가입, 로그인요청 인증허가
             .requestMatchers("/css/**", "/js/**", "/img/**")
             .permitAll()
-            .requestMatchers("/ws/**", "/api/**")
+            .requestMatchers("/ws/**")
             .permitAll()
-            .requestMatchers(HttpMethod.GET,"/api/member/**")
-            .permitAll()
-            .anyRequest().permitAll()
-//            .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+//            .requestMatchers(HttpMethod.GET,"/api/member/**")
+//            .permitAll()
+            .anyRequest().authenticated() // 그 외 모든 요청 인증처리
     );
 
     http.logout()

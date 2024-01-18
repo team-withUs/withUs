@@ -35,9 +35,15 @@
       padding: 0 20px; /* 좌우 여백 추가 */
     }
 
-    .title{
+    .titleContainer .title {
       font-size: 50px;
-      margin-left: 40%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .titleContainer i.fa-x {
+      cursor: pointer;
+      margin-right: 30px;
     }
 
 
@@ -344,14 +350,8 @@
 
 <div class="titleContainer">
   <div class="title">채팅방</div>
-  <i class="fa-solid fa-x"></i>
+  <i class="fa-solid fa-x" onclick="history.back()"></i>
 </div>
-
-
-<!--<div class="titleContainer" >-->
-<!--  <div class="title" id="title">title</div>-->
-<!--</div>-->
-
 
 <div class="background">
   <div class="wrap" id="msgArea">
