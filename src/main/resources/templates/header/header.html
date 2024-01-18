@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Title</title>
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+ <style>
+   body {
+     background-image: url('/img/background.jpg'); /* 이미지 URL로 설정 */
+     background-size: cover; /* 배경 이미지를 창에 맞추기 */
+     background-position: center center; /* 배경 이미지 중앙 정렬 */
+     font-family: Arial, sans-serif;
+     margin: 0;
+     padding: 0;
+     height: 100vh; /* 뷰포트의 높이만큼 전체 화면 높이로 설정 */
+     display: flex;
+     align-items: center;
+     justify-content: center;
+   }
+
+   header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 10px;
+     background-color: rgba(255, 255, 255, 0.8);
+     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+     position: fixed;
+     width: 80%; /* 전체 너비로 조절 */
+     top: 0;
+     margin-left: 10%;
+   }
+
+   .title {
+     margin-left: 30px;
+   }
+
+   .title2 {
+     display: flex;
+     align-items: center;
+     margin-right: 120px;
+   }
+
+   .withUs {
+     margin-top: 5px;
+     margin-bottom: 5px; /* 아래쪽 여백 5px 추가 */
+   }
+
+   .icon, .arrow-icon {
+     cursor: pointer;
+     font-size: 20px;
+     margin-left: 50%; /* 좌측 여백 15% 추가 */
+     margin-right: 40px; /* 우측 여백 15px 추가 */
+   }
+ </style>
+</head>
+<body>
+
+<div>
+  <header>
+    <div class="title">
+      <h2 class="withUs">withUs</h2>
+    </div>
+    <div class="title2">
+      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>
+      <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
+    </div>
+  </header>
+</div>
+
+</body>
+</html>

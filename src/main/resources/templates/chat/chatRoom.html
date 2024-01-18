@@ -156,7 +156,8 @@
     $(document).ready(function() {
       // 토큰 인증
       var atk = localStorage.getItem("accessToken");
-      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28iLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcwNTQ4OTA4OSwiaWF0IjoxNzA1NDg3Mjg5fQ.L_ogkjcuqRbfe4lM77ewovv9CkQGtLi9j94lM0raTTI';
+      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28xIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDU1NDU5ODEsImlhdCI6MTcwNTU0NDE4MX0.QQAfPCx3SPY4sdPymPRp6B2NbFEUFrUnl2qjL7xeY-0';
+
       // 엑세스 토큰이 없을시 로그인페이지로 이동
       if (atk === undefined || atk === '') {
         window.location.href = 'http://' + window.location.host + '/api/member/loginPage';
@@ -177,7 +178,7 @@
         contentType: 'application/json',
         headers: {
           'Authorization': atk
-        },
+        }
       })
         .done(function (res, status, xhr) {
           roomName = res.data.title;
@@ -225,21 +226,6 @@
           var sentTime = {value: new Date()};
           dateFormatting(sentTime)
 
-          // var str = '';
-          // if(sender === username){
-          //   str += '<div class="chat ch1">';
-          // }
-          // else {
-          //   str += '<div class="chat ch2">';
-          // }
-          // str += '<div class="icon"><i class="fa-solid fa-user"></i></div>';
-          // str += '<div class="textbox">' + message + '</div>';
-          // str += '<div class="sent-time">' + sentTime.value + '</div>';
-          // str += '</div>';
-          // str += '</div>';
-
-          // $("#msgArea").append(str);
-
           var chatDiv = $('<div class="chat">');
           chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
           chatDiv.append('<div class="textbox">' + message + '</div>');
@@ -257,12 +243,12 @@
           scrollChatToBottom();
         })
 
-        // //3. send(path, header, message)로 메세지를 보낼 수 있음
-        // stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
-        //   senderId: senderId,
-        //   senderName: username,
-        //   content : username + '님이 입장하였습니다.'
-        // }))
+        //3. send(path, header, message)로 메세지를 보낼 수 있음
+        stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
+          senderId: senderId,
+          senderName: username,
+          content : username + '님이 입장하였습니다.'
+        }))
       })
 
       $("#button-send").on("click", function(e) {

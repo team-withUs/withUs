@@ -23,6 +23,42 @@
       justify-content: center;
     }
 
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 80%; /* 전체 너비로 조절 */
+      top: 0;
+      margin-left: 10%;
+    }
+
+    .title {
+      margin-left: 30px;
+    }
+
+    .title2 {
+      display: flex;
+      align-items: center;
+      margin-right: 120px;
+    }
+
+    .withUs {
+      margin-top: 5px;
+      margin-bottom: 5px; /* 아래쪽 여백 5px 추가 */
+    }
+
+    .icon, .arrow-icon {
+      cursor: pointer;
+      font-size: 20px;
+      margin-left: 50%; /* 좌측 여백 15% 추가 */
+      margin-right: 40px; /* 우측 여백 15px 추가 */
+    }
+
+
     .chat-list-container {
       width: 80%;
       height: calc(100% - 100px);
@@ -33,6 +69,9 @@
       flex-direction: column; /* 세로 정렬을 위해 컨테이너의 방향을 세로로 설정 */
       align-items: center; /* 가로 정렬을 위해 중앙 정렬 */
       padding: 20px; /* 여백 추가 */
+      margin-top: 50px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     h3 {
@@ -69,7 +108,12 @@
     }
 
     .chat-room-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       flex: 1;
+      text-align: center;
+      margin-left: -130px;
     }
 
     .chat-room-info h4 {
@@ -86,18 +130,20 @@
   </style>
 
   <script th:inline="javascript">
+    const host = 'http://' + window.location.host;
+    const memberId = /*[[${memberId}]]*/ '';
+
+
     $(document).ready(function() {
       // 토큰 인증
       var atk = localStorage.getItem("accessToken");
-      atk = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28iLCJhdXRoIjoiVVNFUiIsImV4cCI6MTcwNTQ5MjM4MCwiaWF0IjoxNzA1NDkwNTgwfQ.jMYq19seFFdH9gSZ03QyPMapceL2vCMWXgt50fNcPY4';
-
+      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28xIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDU1NTgzMjUsImlhdCI6MTcwNTU1NjUyNX0.pUAsNdNaJCcZL-iwyEO3Ar5ljz7KdFQTJ3FFyi8RWH0';
       // 엑세스 토큰이 없을시 로그인페이지로 이동
       if (atk === undefined || atk === '') {
-        window.location.href = 'http://' + window.location.host + '/api/member/loginPage';
+        window.location.href = host + '/api/member/loginPage';
         return;
       }
 
-      var memberId = /*[[${memberId}]]*/ '';
       var chatRoomList;
 
       $.ajax({
@@ -134,8 +180,7 @@
           console.info(roomId, title);
           console.info(img);
 
-          var chatRoomDiv = $('<a href="http://localhost:8080/api/chat/chatRoom/' + roomId + '" class="chat-room">');
-
+          var chatRoomDiv = $('<a href="' + host + '/api/chat/chatRoom/' + roomId + '" class="chat-room">');
 
           if (img) {
             chatRoomDiv.append('<img src="' + img + '" alt="채팅방 이미지">');
@@ -147,7 +192,8 @@
               'height': '50px',
               'display': 'flex',
               'align-items': 'center',
-              'justify-content': 'center'
+              'justify-content': 'center',
+              'margin-left': '30px'
             }); // 크기 조절 및 가운데 정렬
             chatRoomDiv.append(iconDiv);
           }
@@ -168,39 +214,21 @@
 
 <body>
 
-<div class="chat-list-container">
-  <h3>채팅목록</h3>
-
-<!--  <a href="http://localhost:8080/api/chat/chatRoom/1" class="chat-room">-->
-<!--    <img src="/img/cat.jpg" alt="채팅방1 이미지">-->
-<!--    <div class="chat-room-info">-->
-<!--      <h4>채팅방1 이름</h4>-->
-<!--    </div>-->
-<!--  </a>-->
+<div>
+  <header>
+    <div class="title">
+      <h2 class="withUs">withUs</h2>
+    </div>
+    <div class="title2">
+      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>
+      <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
+    </div>
+  </header>
 </div>
 
-
-
-
-
-
-
-
-
-<!--<div class="name">-->
-<!--  <h5>채팅방리스트</h5>-->
-<!--</div>-->
-
-
-<!--<div class="listBox">-->
-<!--  <div class="inbox_chat">-->
-<!--    <div class="chatlist">-->
-<!--        <div><a th:href="@{api/chat/{roomId}(roomId=${room.roomId})}" th:text="${room.title}"></a></div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-
+<div class="chat-list-container">
+  <h3>채팅목록</h3>
+</div>
 
 
 </body>

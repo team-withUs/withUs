@@ -42,7 +42,7 @@ public class ChatRoom extends TimeStamp {
   private ChatRoom(Member sender, Member receiver) {
     this.sender = sender;
     this.receiver = receiver;
-    this.title = sender.getUsername() + ", " + receiver.getUsername() + " : 채팅방";
+    this.title = sender.getUsername() + ", " + receiver.getUsername() + " 채팅방";
   }
 
   public static ChatRoom createChatRomm(Member sender, Member receiver) {

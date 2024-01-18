@@ -23,7 +23,8 @@ public class ChatViewController {
       Model model,
       @AuthMember Member member
   ) {
-    member = memberService.findMemberByLoginname("junwoo");
+    member = memberService.findMemberByLoginname("junwoo1");
+
 
     model.addAttribute("roomId", roomId);
     model.addAttribute("memberName", member.getUsername());
@@ -36,6 +37,7 @@ public class ChatViewController {
       @PathVariable("memberId") Long memberId,
       Model model
   ) {
+
     model.addAttribute("memberId", memberId);
     return "/chat/chatRoomList";
   }

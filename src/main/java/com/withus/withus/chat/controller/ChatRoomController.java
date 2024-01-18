@@ -6,7 +6,6 @@ import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.service.MemberServiceImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatRoomController {
 
   private final ChatRoomService chatRoomService;
-  private final MemberServiceImpl memberService;
 
   // 채팅방 생성
   @PostMapping("/{memberId}")
@@ -43,9 +41,6 @@ public class ChatRoomController {
       @PathVariable("roomId") Long roomId,
       @AuthMember Member member
   ) {
-    member = memberService.findMemberByLoginname("junwoo");
-
-
     ChatRoomResponseDto chatRoomResponseDto = chatRoomService.getChatRoom(roomId, member);
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, chatRoomResponseDto));
   }
@@ -55,10 +50,6 @@ public class ChatRoomController {
   public ResponseEntity<CommonResponse<List<ChatRoomResponseDto>>> getsChatRoom(
       @AuthMember Member member
   ) {
-    member = memberService.findMemberByLoginname("junwoo");
-
-
-
     List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomService.getsChatRoom(member);
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, chatRoomResponseDtoList));
   }
@@ -69,7 +60,6 @@ public class ChatRoomController {
       @PathVariable("roomId") Long roomId,
       @AuthMember Member member
   ) {
-
     chatRoomService.deleteChatRoom(roomId, member);
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, ""));
   }
