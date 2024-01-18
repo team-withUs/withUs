@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <link th:href="@{/css/Bootstrap.min.css}"
+        href="/css/Bootstrap.min.css" rel="stylesheet">
+  <title>withUs</title>
+</head>
+<body>
+<div style="text-align: center">
+  <h1 style="font-size: 60px; padding-top: 40px">withUs</h1>
+  <form id="loginForm" action ="/api/member/login" method="post">
+    <div style="padding: 50px 35% 0px 35%; ">
+      <div style="padding: 5px 0 5px 0 ">
+        <input class="form-control form-control-lg"
+               type="text"
+               id="loginname"
+               placeholder="아이디를 입력해주세요.">
+      </div>
+      <div style="padding: 5px 0 5px 0 ">
+        <input class="form-control form-control-lg"
+               type="password"
+               id="password"
+               placeholder="비밀번호를 입력해주세요.">
+      </div>
+    </div>
+    <div class="d-grid col-3 mx-auto" style="padding: 15px 0 5px 0 ">
+      <button type="button"
+              class="btn btn-primary"
+              onclick="onLogin()">로그인
+      </button>
+    </div>
+  </form>
+  <form action ="/api/member/signup" method="get" >
+    <div>
+      <span style="color:#0b5ed7; cursor: pointer"
+            onclick="location.href='signupPage.html'"
+            th:onclick="|location.href='@{/api/member/signupPage}'|">회원가입</span>
+    </div>
+  </form>
+
+</div>
+<script th:inline="javascript">
+  function onLogin(){
+    let loginname = $('#loginname').val();
+    let password = $('#password').val();
+
+    $.ajax({
+      type: "POST",
+      url: `/api/member/login`,
+      contentType: "application/json",
+      data: JSON.stringify({loginname: loginname, password: password}),
+    })
+    .done(function (res, textStatus, xhr) {
+      let accessToken = xhr.getResponseHeader('Authorization');
+      localStorage.setItem("accessToken", accessToken);
+      window.location.href = 'profilePage';
+    })
+    .fail(function (res) {
+      alert("Login Fail" + res.getWriter());
+      window.location.href = '/api/member/loginPage'
+    });
+  }
+
+</script>
+</body>
+</html>

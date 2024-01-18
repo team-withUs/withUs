@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <link th:href="@{/css/Bootstrap.min.css}"
+        href="/css/Bootstrap.min.css" rel="stylesheet">
+  <title>withUs</title>
+</head>
+<body>
+<div style="text-align: center">
+  <h1 style="font-size: 60px; padding-top: 40px">Sign Up</h1>
+  <form method="post">
+  <div style="padding: 40px 35% 0px 35%;">
+    <div style="padding: 5px 0 5px 0 ">
+      <input class="form-control form-control-lg"
+             type="text"
+             id="loginname"
+             placeholder="아이디를 입력해주세요.">
+    </div>
+    <div style="padding: 5px 0 5px 0 ">
+      <input class="form-control form-control-lg"
+             type="password"
+             id="password"
+             placeholder="비밀번호를 입력해주세요.">
+    </div>
+    <div style="padding: 5px 0 5px 0 ">
+      <input class="form-control form-control-lg"
+             type="text"
+             id="username"
+             placeholder="닉네임을 입력해주세요.">
+    </div>
+    <div>
+      <form class="row g-2" method="post" onsubmit="return false">
+        <div class="col-lg-9" style="float:left">
+          <input type="text"
+                 class="form-control form-control-lg"
+                 name="email"
+                 id="email"
+                 placeholder="이메일을 입력해 주세요">
+        </div>
+        <div>
+          <button type="button"
+                  class="btn btn-primary mb-3 btn-lg" onclick="authenticationEmail()">인증
+          </button>
+        </div>
+      </form>
+    </div>
+    <div style="padding: 5px 0 5px 0 ">
+      <input class="form-control form-control-lg"
+             type="text"
+             id="code"
+             placeholder="인증번호를 입력해주세요.">
+    </div>
+    <div class="d-grid col-4 mx-auto" style="padding: 15px 0 5px 0 ">
+      <button type="button" class="btn btn-primary" onclick="sendSignupRequest()">회원가입
+      </button>
+    </div>
+  </div>
+  </form>
+</div>
+<script th:inline="javascript">
+  function authenticationEmail(){
+    let email = jQuery('#email').val();
+
+    $.ajax({
+      type:"POST",
+      url:`/api/member/signup/email`,
+      contentType:"application/json",
+      dataType:"json",
+      data : JSON.stringify({email}),
+      success: function (response) {
+        console.log(response);
+      }
+    })
+
+  }
+
+  function sendSignupRequest(){
+    let loginname = $('#loginname').val();
+    let password = $('#password').val();
+    let username = $('#username').val();
+    let email = $('#email').val();
+    let code = $('#code').val();
+
+
+    $.ajax({
+      type:"POST",
+      url:`/api/member/signup`,
+      contentType:"application/json",
+      dataType:"json",
+      data : JSON.stringify({
+        "loginname": loginname,
+        "password": password,
+        "email":email,
+        "username":username,
+        "code":code,}),
+      success: function (response){
+        if(response.msg === '회원가입 성공'){
+          window.location.href = 'loginPage';
+        } else{
+          console.error('회원가입 실패 :', response);
+        }
+      },
+      error: function (error){
+        console.error('에러 :', error);
+      }
+    })
+
+  }
+</script>
+</body>
+</html>
