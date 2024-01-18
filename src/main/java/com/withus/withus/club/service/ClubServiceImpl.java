@@ -218,8 +218,4 @@ public class ClubServiceImpl implements ClubService {
         return clubRepository.existsByIsActiveAndId(true, clubId);
     }
 
-    @Override
-    public Integer count(){
-        return clubRepository.countByIsActive(true);
-    }
 }
