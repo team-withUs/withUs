@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface ClubRepository extends JpaRepository<Club, Long> {
+public interface ClubRepository extends JpaRepository<Club, Long>, ClubRepositoryQuery{
 
     Optional<Club> findByIsActiveAndId(boolean isActive, Long clubId);
   
