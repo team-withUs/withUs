@@ -99,8 +99,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 Claims user = jwtUtil.getUserInfoFromToken(refreshToken);
                 String accessToken = jwtUtil.createAccessToken(user.getSubject());
 
-//                // accessToken 헤더에 저장
-//                res.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
 
                 // accessToken 쿠키에 저장
                 jwtUtil.addJwtToCookie("accessToken", accessToken, res);

@@ -27,12 +27,12 @@
     .titleContainer {
       width: 100%;
       height: 100px;
-      background: #333; /* 어두운 배경색 */
-      color: white; /* 흰색 글씨 */
+      background: #333;
+      color: white;
       display: flex;
-      justify-content: space-between; /* 오른쪽 정렬을 위한 설정 */
-      align-items: center; /* 세로 중앙 정렬을 위한 설정 */
-      padding: 0 20px; /* 좌우 여백 추가 */
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
     }
 
     .titleContainer .title {
@@ -46,17 +46,15 @@
       margin-right: 30px;
     }
 
-
-
     .background {
       margin-bottom: 15%;
       position: relative;
     }
 
-
     .wrap {
       padding: 0 0;
-      position: relative;
+      overflow-y: auto;
+      max-height: 87.5vh;
     }
 
     .wrap .chat {
@@ -160,15 +158,6 @@
 
   <script th:inline="javascript">
     $(document).ready(function() {
-      // 토큰 인증
-      var atk = localStorage.getItem("accessToken");
-      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28xIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDU1NDU5ODEsImlhdCI6MTcwNTU0NDE4MX0.QQAfPCx3SPY4sdPymPRp6B2NbFEUFrUnl2qjL7xeY-0';
-
-      // 엑세스 토큰이 없을시 로그인페이지로 이동
-      if (atk === undefined || atk === '') {
-        window.location.href = 'http://' + window.location.host + '/api/member/loginPage';
-        return;
-      }
 
       var roomId = /*[[${roomId}]]*/ '';
       var roomName;
@@ -182,9 +171,6 @@
         type: 'GET',
         url: '/api/chat/' + roomId,
         contentType: 'application/json',
-        headers: {
-          'Authorization': atk
-        }
       })
         .done(function (res, status, xhr) {
           roomName = res.data.title;
@@ -198,9 +184,6 @@
         type: 'GET',
         url: '/api/chatMessage/' + roomId,
         contentType: 'application/json',
-        headers: {
-          'Authorization': atk
-        },
       })
         .done(function (res, status, xhr) {
           chatList = res.data;
@@ -211,8 +194,6 @@
         .fail(function (xhr, status, error) {
           console.error('채팅내역 요청 API 에러', error);
         })
-
-
 
 
       var sockJs = new SockJS("/ws");
@@ -244,8 +225,6 @@
           }
 
           $("#msgArea").append(chatDiv);
-
-
           scrollChatToBottom();
         })
 
@@ -312,22 +291,10 @@
       var minutes = dateObject.getMinutes();
       var period = (hours < 12) ? '오전' : '오후';
 
-      if (hours > 12) {
-        hours -= 12;
-      }
-
-      if (hours === 0) {
-        hours = 12;
-      }
+      if (hours > 12) { hours -= 12; }
+      if (hours === 0) { hours = 12; }
 
       timeObject.value = period + ' ' + ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
-    }
-
-    function disconnect() {
-      if (stompClient !== null) {
-        stompClient.disconnect();
-      }
-      console.log("Disconnected");
     }
 
     function enterkey() {
@@ -339,7 +306,7 @@
 
     function scrollChatToBottom() {
       console.log('scrolling to bottom');
-      let chatContainer = document.getElementById('body');
+      let chatContainer = document.getElementById('msgArea');
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   </script>
@@ -360,7 +327,7 @@
 </div>
 
 
-  <div class="input-group mb-3">
+<div class="input-group mb-3">
     <input type="text" id="msg" class="form-control" placeholder="채팅메시지를 입력하세요." aria-label="Recipient's username" aria-describedby="button-addon2" onkeypress="enterkey(event)">
     <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
   </div>

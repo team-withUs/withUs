@@ -5,6 +5,31 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <link th:href="@{/css/Bootstrap.min.css}" rel="stylesheet">
   <title>withUs</title>
+
+  <script th:inline="javascript">
+    const host = 'http://' + window.location.host;
+
+    function onLogin(){
+      let loginname = $('#loginname').val();
+      let password = $('#password').val();
+
+      $.ajax({
+        type: "POST",
+        url: `/api/member/login`,
+        contentType: "application/json",
+        data: JSON.stringify({loginname: loginname, password: password}),
+      })
+      .done(function (res, textStatus, xhr) {
+        window.location.href = host + '/api/member/profilePage/1';
+        // 추후에 메인페이지로 이동으로 변경
+      })
+      .fail(function (res) {
+        alert("Login Fail" + res.getWriter());
+        window.location.href = '/api/member/loginPage'
+      });
+    }
+  </script>
+
 </head>
 <body>
 <div style="text-align: center">
@@ -41,55 +66,6 @@
   </form>
 
 </div>
-<script th:inline="javascript">
-  const host = 'http://' + window.location.host;
 
-
-  function onLogin(){
-    let loginname = $('#loginname').val();
-    let password = $('#password').val();
-
-    $.ajax({
-      type: "POST",
-      url: `/api/member/login`,
-      contentType: "application/json",
-      data: JSON.stringify({loginname: loginname, password: password}),
-    })
-    .done(function (res, textStatus, xhr) {
-      window.location.href = host + '/api/member/profilePage/1';
-    //
-    //   // test용 코드 추후에 메인페이지 이동 ajax로 변경
-    //   $.ajax({
-    //     type: 'GET',
-    //     url: host + '/api/member/profilePage/1',
-    //     headers: {
-    //       'Authorization': accessToken
-    //     },
-    //   })
-    //   .done(function(response) {
-    //     window.location.href = host + '/api/member/profilePage/1';
-    //   })
-    //   .fail(function(error) {
-    //     // 실패한 경우의 동작
-    //     console.error('프로필 페이지 로딩 에러', error);
-    //
-    //   });
-    //
-    // })
-    // .fail(function (res) {
-    //   alert("Login Fail" + res.getWriter());
-    //   window.location.href = '/api/member/loginPage'
-    //
-      // window.location.href = host + '/api/member/profilePage/1';
-
-      // 추후에 메인페이지로 이동으로 변경
-    })
-    .fail(function (res) {
-      alert("Login Fail" + res.getWriter());
-      window.location.href = '/api/member/loginPage'
-    });
-  }
-
-</script>
 </body>
 </html>

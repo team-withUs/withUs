@@ -10,16 +10,8 @@
   <script th:inline="javascript">
     const host = 'http://' + window.location.host;
 
-
     $(document).ready(function(){
-      // 토큰 인증
-      var atk = localStorage.getItem("accessToken");
 
-      // 엑세스 토큰이 없을시 로그인페이지로 이동
-      if (atk === undefined || atk === '') {
-        window.location.href = 'http://' + window.location.host + '/api/member/loginPage';
-        return;
-      }
       const isSameMember = /*[[${isSameMember}]]*/ '';
       const membmerId = /*[[${memberId}]]*/ '';
 
@@ -32,9 +24,6 @@
         type:'GET',
         url:`/api/member/getMember/` + membmerId,
         contentType: 'application/json',
-        headers: {
-          'Authorization': atk
-        }
       })
       .done(function (res){
         const username = res.username;
@@ -53,9 +42,6 @@
         type: 'POST',
         url: '/api/chat/' + memberId,
         contentType: 'application/json',
-        headers: {
-          'Authorization': atk
-        }
       })
       .done(function (res) {
         // 성공적으로 처리된 경우의 동작
@@ -65,9 +51,6 @@
           type: 'GET',
           url: '/api/chat/chatRoom/' + roomId,
           contentType: 'application/json',
-          headers: {
-            'Authorization': atk
-          }
         })
         .done(function (res, status, xhr) {
           window.location.href = host + '/api/chat/chatRoom/' + roomId;
@@ -85,7 +68,7 @@
 
   </script>
 </head>
-<body>
+<body style="background-image: url('/img/background.jpg'); background-size: cover; background-position: center;">
 <div style="margin: 40px 35% 200px 35%">
   <div>
     <img src="/img/default.png"

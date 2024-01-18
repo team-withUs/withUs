@@ -36,8 +36,8 @@ public class ChatRoomService {
     }
 
     // 둘의 채팅이 있는 지 확인
-    Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findBySenderAndReceiver(sender, receiver);
-    Optional<ChatRoom> optionalChatRoom2 = chatRoomRepository.findBySenderAndReceiver(receiver, sender);
+    Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findBySenderAndReceiverAndIsActive(sender, receiver, true);
+    Optional<ChatRoom> optionalChatRoom2 = chatRoomRepository.findBySenderAndReceiverAndIsActive(receiver, sender, true);
 
     ChatRoom chatRoom = null;
 
@@ -71,7 +71,7 @@ public class ChatRoomService {
     Member sender = memberService.findMemberByLoginname(member.getLoginname());
 
 
-    List<ChatRoom> chatRoomList = chatRoomRepository.findAllBySenderOrReceiverAndIsActiveOrderByModifiedAtDesc(sender, sender, true);
+    List<ChatRoom> chatRoomList = chatRoomRepository.findActiveChatRoomsBySenderOrReceiver(sender, sender, true);
 
     List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomList.stream()
         .map(chatRoom -> ChatRoomResponseDto.createChatRoomResponseDto(
@@ -88,7 +88,7 @@ public class ChatRoomService {
   public void deleteChatRoom(Long roomId, Member member) {
     ChatRoom chatRoom = findChatRoom(roomId);
 
-    if (!(chatRoom.getSender().equals(member) || chatRoom.getReceiver().equals(member))) {
+    if (!(chatRoom.getSender().getId().equals(member.getId()) || chatRoom.getReceiver().getId().equals(member.getId()))) {
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
 

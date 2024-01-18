@@ -121,6 +121,18 @@
       margin: 0;
     }
 
+    .close-icon {
+      margin-left: auto;
+      margin-right: 30px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .close-icon i {
+      font-size: 20px;
+    }
+
     .chat-room-divider {
       width: 100%;
       height: 1px;
@@ -133,26 +145,13 @@
     const host = 'http://' + window.location.host;
     const memberId = /*[[${memberId}]]*/ '';
 
-
     $(document).ready(function() {
-      // 토큰 인증
-      var atk = localStorage.getItem("accessToken");
-      atk = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdW53b28xIiwiYXV0aCI6IlVTRVIiLCJleHAiOjE3MDU1NTgzMjUsImlhdCI6MTcwNTU1NjUyNX0.pUAsNdNaJCcZL-iwyEO3Ar5ljz7KdFQTJ3FFyi8RWH0';
-      // 엑세스 토큰이 없을시 로그인페이지로 이동
-      if (atk === undefined || atk === '') {
-        window.location.href = host + '/api/member/loginPage';
-        return;
-      }
-
       var chatRoomList;
 
       $.ajax({
         type: 'GET',
         url: '/api/chat',
         contentType: 'application/json',
-        headers: {
-          'Authorization': atk
-        },
       })
         .done(function (res, status, xhr) {
         chatRoomList = res.data;
@@ -201,11 +200,40 @@
           var chatRoomInfoDiv = $('<div class="chat-room-info">');
           chatRoomInfoDiv.append('<h4>' + title + '</h4>');
           chatRoomDiv.append(chatRoomInfoDiv);
+
+          var closeIconDiv = $('<div class="close-icon" data-room-id="' + roomId + '"><i class="fa-solid fa-times"></i></div>');
+          chatRoomDiv.append(closeIconDiv);
+
           $('.chat-list-container').append(chatRoomDiv);
           $('.chat-list-container').append('<div class="chat-room-divider"></div>'); /* 구분선 추가 */
+
+          closeIconDiv.on('click', function () {
+            event.preventDefault(); // 기본 동작 중지
+            event.stopPropagation(); // 이벤트 전파 중지
+            var roomIdToDelete = $(this).data('room-id');
+            deleteChatRoom(roomIdToDelete);
+          });
         });
       }
     }
+    function deleteChatRoom(roomId) {
+
+      // Make the DELETE request
+      $.ajax({
+        type: 'DELETE',
+        url: '/api/chat/' + roomId,
+        contentType: 'application/json',
+      })
+      .done(function (res, status, xhr) {
+        console.log('Chat room deleted successfully');
+        location.reload();
+      })
+      .fail(function (xhr, status, error) {
+        console.error('Chat room deletion error', error);
+      });
+    }
+
+
 
 
   </script>
