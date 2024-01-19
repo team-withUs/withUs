@@ -39,7 +39,6 @@ public class NoticeController {
       @RequestBody NoticeRequestDto requestDto,
       @AuthMember Member member
   ) {
-    member = memberService.findMemberByMemberId(1L);
     NoticeResponseDto responseDto = noticeService.createNotice(clubId, requestDto, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_CREATE.getHttpStatus())
             .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_CREATE,responseDto));
@@ -52,7 +51,6 @@ public class NoticeController {
       @RequestBody NoticeRequestDto requestDto,
       @AuthMember Member member
   ) {
-    member = memberService.findMemberByMemberId(1L);
     NoticeResponseDto responseDto = noticeService.updateNotice(clubId, noticeId, requestDto, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE, responseDto));
