@@ -28,7 +28,7 @@ public interface MemberService {
 
     void reportMember(Long memberId, ReportRequestDto reportRequestDto, Member member);
 
-    List<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
+//    List<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
 
 
     void inviteMember(Long memberId, Long clubId, Member member);
