@@ -1,16 +1,14 @@
 package com.withus.withus.member.repository;
 
 import com.withus.withus.member.entity.Member;
-
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-  Optional<Member> findMemberByLoginnameAndIsActive(String loginname, boolean isActive);
+  Optional<Member> findByLoginnameAndIsActive(String loginname, boolean isActive);
 
-  Optional<Member> findMemberByIdAndIsActive(Long id, boolean isActive);
+  Optional<Member> findByIdAndIsActive(Long id, boolean isActive);
 
   boolean existsUserByEmail(String email);
 

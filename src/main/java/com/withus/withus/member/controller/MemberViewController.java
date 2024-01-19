@@ -2,7 +2,6 @@ package com.withus.withus.member.controller;
 
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

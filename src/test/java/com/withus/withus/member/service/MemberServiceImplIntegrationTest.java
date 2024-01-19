@@ -164,7 +164,7 @@ class MemberServiceImplIntegrationTest {
 
       // then
       assertNotNull(memberRepository);
-      assertEquals(email, memberRepository.findMemberByLoginnameAndIsActive(loginname,true).get().getEmail());
+      assertEquals(email, memberRepository.findByLoginnameAndIsActive(loginname, true).get().getEmail());
     }
 
     @Test

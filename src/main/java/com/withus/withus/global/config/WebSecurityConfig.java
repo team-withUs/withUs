@@ -84,7 +84,8 @@ public class WebSecurityConfig {
 
     http.logout()
         .logoutUrl("/api/member/logout")
-        .deleteCookies("refreshtoken")
+        .deleteCookies("refreshToken")
+        .deleteCookies("accessToken")
         .addLogoutHandler(logoutHandler)
         .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK ));
 

@@ -91,7 +91,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setCharacterEncoding("utf-8");
         PrintWriter writer = response.getWriter();
         writer.println(" 400 : Bad Request");
-        writer.println("username 또는 password를 확인해주세요.");
+        writer.println("loginname 또는 password를 확인해주세요.");
 
     }
 }
