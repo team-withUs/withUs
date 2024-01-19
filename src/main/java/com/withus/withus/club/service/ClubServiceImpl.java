@@ -180,7 +180,7 @@ public class ClubServiceImpl implements ClubService {
 
 
         if (clubList == null || clubList.isEmpty()) {
-            throw new BisException(ErrorCode.INVALID_VALUE);
+            return null;
         }
         return clubList.stream()
                 .map(ClubResponseDto::createClubResponseDto)

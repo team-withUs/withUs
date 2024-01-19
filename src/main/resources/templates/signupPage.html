@@ -7,6 +7,55 @@
         href="/css/Bootstrap.min.css" rel="stylesheet">
   <title>withUs</title>
 </head>
+<script th:inline="javascript">
+  function authenticationEmail(){
+    let email = jQuery('#email').val();
+    $.ajax({
+      type:"POST",
+      url:`/api/member/signup/email`,
+      contentType:"application/json",
+      dataType:"json",
+      data : JSON.stringify({email}),
+      success: function (response) {
+        console.log(response);
+      }
+    })
+
+  }
+
+  function sendSignupRequest(){
+    let loginname = $('#loginname').val();
+    let password = $('#password').val();
+    let username = $('#username').val();
+    let email = $('#email').val();
+    let code = $('#code').val();
+
+
+    $.ajax({
+      type:"POST",
+      url:`/api/member/signup`,
+      contentType:"application/json",
+      dataType:"json",
+      data : JSON.stringify({
+        "loginname": loginname,
+        "password": password,
+        "email":email,
+        "username":username,
+        "code":code,}),
+      success: function (response){
+        if(response.msg === '회원가입 성공'){
+          window.location.href = 'loginPage';
+        } else{
+          console.error('회원가입 실패 :', response);
+        }
+      },
+      error: function (error){
+        console.error('에러 :', error);
+      }
+    })
+
+  }
+</script>
 <body>
 <div style="text-align: center">
   <h1 style="font-size: 60px; padding-top: 40px">Sign Up</h1>
@@ -59,55 +108,5 @@
   </div>
   </form>
 </div>
-<script th:inline="javascript">
-  function authenticationEmail(){
-    let email = jQuery('#email').val();
-
-    $.ajax({
-      type:"POST",
-      url:`/api/member/signup/email`,
-      contentType:"application/json",
-      dataType:"json",
-      data : JSON.stringify({email}),
-      success: function (response) {
-        console.log(response);
-      }
-    })
-
-  }
-
-  function sendSignupRequest(){
-    let loginname = $('#loginname').val();
-    let password = $('#password').val();
-    let username = $('#username').val();
-    let email = $('#email').val();
-    let code = $('#code').val();
-
-
-    $.ajax({
-      type:"POST",
-      url:`/api/member/signup`,
-      contentType:"application/json",
-      dataType:"json",
-      data : JSON.stringify({
-        "loginname": loginname,
-        "password": password,
-        "email":email,
-        "username":username,
-        "code":code,}),
-      success: function (response){
-        if(response.msg === '회원가입 성공'){
-          window.location.href = 'loginPage';
-        } else{
-          console.error('회원가입 실패 :', response);
-        }
-      },
-      error: function (error){
-        console.error('에러 :', error);
-      }
-    })
-
-  }
-</script>
 </body>
 </html>

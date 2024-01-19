@@ -10,7 +10,8 @@ public record MemberResponseDto(
     String username,
     String email,
     String introduction,
-    String imageURL
+    String imageURL,
+    String tag
 ) {
 
   public static MemberResponseDto createMemberResponseDto(Member member){
@@ -18,12 +19,14 @@ public record MemberResponseDto(
     String email = member.getEmail();
     String introduction = member.getIntroduction();
     String imageURL = member.getImageURL();
+    String tag = member.getTag();
 
     return MemberResponseDto.builder()
         .username(username)
         .email(email)
         .introduction(introduction)
         .imageURL(imageURL)
+        .tag(tag)
         .build();
   }
 
