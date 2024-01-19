@@ -8,6 +8,7 @@ import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.member.entity.Member;
+import com.withus.withus.member.service.MemberServiceImpl;
 import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class CommentController {
     private final CommentService commentService;
+    private final MemberServiceImpl memberService;
 
     @PostMapping("/notice/{noticeId}/comment")
     public ResponseEntity<CommonResponse<CommentResponseDto>> createReportComment(
@@ -27,6 +29,7 @@ public class CommentController {
             @RequestBody CommentRequestDto commentRequestDto,
             @AuthMember Member member
     ) {
+        member = memberService.findMemberByMemberId(1L);
         CommentResponseDto commentResponseDto = commentService.createComment(noticeId, commentRequestDto, member);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_COMMENT_CREATE.getHttpStatus())
@@ -45,13 +48,14 @@ public class CommentController {
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_UPDATE, commentResponseDto));
     }
 
-    @GetMapping("/noice/{noticeId}/comment")
+    @GetMapping("/notice/{noticeId}/comment")
     public ResponseEntity<CommonResponse<List<CommentResponseDto>>> getsComment(
             @PathVariable Long noticeId,
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdDate") String sortBy
+            @RequestParam(value = "size", defaultValue = "4") int size,
+            @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy
     ){
+        System.out.println("=========================");
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
         return ResponseEntity.status(ResponseCode.SUCCESS_COMMENT_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_GET,
