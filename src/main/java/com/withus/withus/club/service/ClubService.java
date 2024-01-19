@@ -33,4 +33,5 @@ public interface ClubService {
 
     List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto);
 
+    List<ClubResponseDto> getAllClubs();
 }

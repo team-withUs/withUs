@@ -69,6 +69,17 @@ public class ClubServiceImpl implements ClubService {
         }
     }
 
+    @Override
+    public List<ClubResponseDto> getAllClubs() {
+        List<Club> clubList = clubRepository.findAll();
+        if (clubList == null || clubList.isEmpty()) {
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
+        return clubList.stream()
+                .map(ClubResponseDto::createClubResponseDto)
+                .collect(Collectors.toList());
+    }
+
     //조회
     public ClubResponseDto getClub(Long clubId) {
         Club club = clubRepository.findById(clubId)
@@ -82,7 +93,7 @@ public class ClubServiceImpl implements ClubService {
     @Override
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
         Club club = verifyMember(clubId);
-
+        System.out.println(image);
         try {
             String imageUrl = null;
             String filename = null;
@@ -102,6 +113,7 @@ public class ClubServiceImpl implements ClubService {
                 }
                 club.setImgUrl(null);
             }
+            System.out.println("test"+ imageUrl);
             club.update(clubRequestDto, filename, imageUrl);
             return ClubResponseDto.createClubResponseDto(club);
         } catch (Exception e) {
@@ -161,6 +173,8 @@ public class ClubServiceImpl implements ClubService {
                 .map(ClubResponseDto::createClubResponseDto)
                 .collect(Collectors.toList());
     }
+
+
 
     public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).

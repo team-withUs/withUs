@@ -1,0 +1,127 @@
+@font-face {
+    font-family: "Cafe24Supermagic-Bold-v1.0";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    font-family: "Cafe24Supermagic-Bold-v1.0", cursive;
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.all-container{
+    border-radius: 15px;
+    border: 3px solid grey;
+    background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896) ;
+    width: 1400px;
+    height: 950px;
+    margin: 0 auto;
+}
+
+/*클럽 이름*/
+#club-name {
+    margin: 30px;
+    font-size: 40px;
+}
+
+#club-title {
+    text-align: left;
+    margin-left: 250px;
+}
+.title-item{
+    font-size: 30px;
+}
+.button-item {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 15px;
+    margin-right: 40px;
+}
+
+#deleteButton{
+    margin-left: auto;
+}
+
+/*notice*/
+
+#notice-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    width: 760px;
+    border-radius: 10px;
+    margin: auto;
+}
+.board-box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.board-button{
+    float: right;
+    background: none;
+    border: none;
+}
+.board-button:hover {
+    background: #b6d4fe;
+}
+.notice-box {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.notice-button{
+    border-radius: 10px;
+    float: right;
+    background: none;
+    border: none;
+}
+.notice-button:hover {
+    background: #b6d4fe;
+}
+
+/*club*/
+#club-container {
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 760px;
+    height: 400px;
+}
+
+.item1 {
+    margin: 20px;
+    width: 400px;
+    height: 350px;
+    border-radius: 15px;
+    background-color: white;
+    float: left;
+}
+.item2 {
+    margin: 20px;
+    width: 275px;
+    height: 180px;
+    border-radius: 15px;
+    background-color: white;
+    float: right;
+}
+.item3{
+    margin: 20px;
+    width: 275px;
+    height: 130px;
+    border-radius: 15px;
+    background-color: white;
+    float: right;
+}
+
+

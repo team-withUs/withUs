@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>withUs</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:src="@{/js/clubpost.js}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/clubrevise.css}">
+</head>
+
+<body>
+<nav>
+    <section id="club-name">
+        <div class="title-container">
+            <h1 class="main-title">withUs</h1>
+        </div>
+    </section>
+</nav>
+<main>
+    <div class="all-container">
+        <section id="club-title">
+            <div class="title-item">
+                <article class="club-title-container">
+                    <div class="title-category">
+                        <h2 class="club-title-name">
+                            제목 작성 : <input type="text" class = "club-title-post" id="clubTitleInput" name="newTitle" placeholder="새로운 제목">
+                        </h2>
+                    </div>
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            category
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="club-category">
+                            <li><a class="dropdown-item" href="#">SPORTS</a></li>
+                            <li><a class="dropdown-item" href="#">GAME</a></li>
+                            <li><a class="dropdown-item" href="#">TODAY</a></li>
+                            <li><a class="dropdown-item" href="#">FOOD</a></li>
+                            <li><a class="dropdown-item" href="#">STUDY</a></li>
+                            <li><a class="dropdown-item" href="#">ETC</a></li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+
+            <div class="button-item">
+                <button id = "imgBtn1" class="header_btn1">
+                    <input type="file" id="fileInput" onchange="handleFileSelect()">
+                </button>
+                <button id="imgBtn2" class="header_btn2">
+                    <img src="/icons/comment-check_5068752.png">
+                </button>
+                <button id="imgBtn3" class="header_btn3">
+                    <img src="/icons/icons8-취소-30.png">
+                </button>
+
+            </div>
+
+        </section>
+
+        <section id="club-container">
+            <div class="search-item">
+                <article class="club-search-container">
+                    <div class="class-search">
+                        <h2>초대</h2>
+                    </div>
+                    <div>
+                        <input id="searchInput" class="search-input" type="text" placeholder="초대할 사람">
+                        <button id="search-image" class="search-btn" onclick="inviteMember()">
+                            초대
+                        </button>
+                        <h5>초대 목록</h5>
+                        <div id = "invite-container">
+                            초대 이름:
+                        </div>
+                        <div>
+                            <label for="totalInviteesInput">Total Invitees:</label>
+                            <input type="number" id="totalInviteesInput" min="0" value="0">
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="Date-item">
+                <article class="date-container">
+                    <div class="club-date-container">
+                        <h2>날짜</h2>
+                        <p>
+                            Start Date: <input type="datetime-local" id="startDate" name="startDate"><br>
+                        </p>
+                        <p>
+                            End date: <input type="datetime-local" id="endDate" name="endDate"><br>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="club-introduce">
+            <div class="club-revise-item">
+                <article class="club-introduce-container">
+                    <div class="club-box">
+                        <h2>내용 작성</h2>
+                        <textarea id="club-content"class="text-box" rows="4" cols="50" placeholder="내용을 입력하세요..."></textarea>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>
