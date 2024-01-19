@@ -13,13 +13,10 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberService;
 import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/club")
@@ -70,7 +67,6 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_UPDATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_UPDATE, responseDto));
     }
-
     //삭제
     @DeleteMapping("/{clubId}")
     public ResponseEntity<CommonResponse<String>> deleteClub(
@@ -82,7 +78,6 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
     }
-
     // 신고
     @PostMapping("/{clubId}/report")
     public ResponseEntity<CommonResponse<ReportClubResponseDto>> reportClub(
@@ -95,22 +90,18 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT, reportClubResponse));
     }
-
     // 카테고리
-
     @GetMapping("/{category}/club")
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
-        @PathVariable("category") ClubCategory category,
-        @RequestParam(value = "page", defaultValue = "1") int page,
-        @RequestParam(value = "size", defaultValue = "4") int size,
-        @RequestParam(value = "sortBy",defaultValue = "CreatedAt") String sortBy,
-        @RequestParam(value = "keyWord" ,defaultValue = "ace245") String keyWord
+            @PathVariable("category") ClubCategory category,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "4") int size,
+            @RequestParam(value = "sortBy",defaultValue = "CreatedAt") String sortBy,
+            @RequestParam(value = "keyWord" ,defaultValue = "ace245") String keyWord
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
-
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
-            .body(CommonResponse.of(ResponseCode.OK,
-                clubService.getsClubByCategory(category, pageableDto, keyWord)));
+                .body(CommonResponse.of(ResponseCode.OK,
+                        clubService.getsClubByCategory(category, pageableDto, keyWord)));
     }
-
 }

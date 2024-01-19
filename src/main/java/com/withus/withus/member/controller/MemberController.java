@@ -69,29 +69,6 @@ public class MemberController {
             .body(CommonResponse.of(ResponseCode.OK, memberResponseDto));
   }
 
-//  @PostMapping("email/{emailId}/club/{clubId}")
-//  public ResponseEntity<CommonResponse<String>> inviteEmailMember(
-//          @PathVariable("emailId") Long emailId,
-//          @PathVariable("clubId") Long clubId,
-//          @AuthMember Member member
-//  ){
-//    memberService.inviteEmailMember(emailId, )
-//  }
-
-//  @PostMapping("/{memberId}/club/{clubId}")
-//  public ResponseEntity<CommonResponse<String>> inviteMember(
-//          @PathVariable("memberId") Long memberId,
-//          @PathVariable("clubId") Long clubId,
-//          @AuthMember Member member
-//  ) {
-//    memberService.inviteMember(memberId,clubId,member);
-//
-//    return ResponseEntity.status(ResponseCode.INVITE_MEMBER.getHttpStatus())
-//            .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""));
-//  }
-
-
-
   @PatchMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
       @PathVariable("memberId") Long memberId,

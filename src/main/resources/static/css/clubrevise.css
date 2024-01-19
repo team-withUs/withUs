@@ -14,7 +14,8 @@ body {
 .all-container {
     border-radius: 15px;
     border: 3px solid grey;
-    background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896);
+    /*background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896);*/
+    background-color: #98a9bc;
     width: 1400px;
     height: 950px;
     margin: 0 auto;

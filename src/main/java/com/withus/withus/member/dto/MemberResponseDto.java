@@ -16,14 +16,12 @@ public record MemberResponseDto(
         String imageURL,
         String tag
 ) {
-
-    public static MemberResponseDto createMemberResponseDto(Member member) {
+    public static MemberResponseDto createMemberResponseDto(Member member){
         String username = member.getUsername();
         String email = member.getEmail();
         String introduction = member.getIntroduction();
         String imageURL = member.getImageURL();
         String tag = member.getTag();
-
         return MemberResponseDto.builder()
                 .username(username)
                 .email(email)
@@ -32,6 +30,7 @@ public record MemberResponseDto(
                 .tag(tag)
                 .build();
     }
+
 
     public static MemberResponseDto searchEmail(Member member) {
         String email = member.getEmail();

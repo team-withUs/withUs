@@ -24,20 +24,11 @@ $(document).ready(function () {
             if (imageURL) {
                 $('.all-container').css('background-image', 'url(' + imageURL + ')');
             }
+            //클럽 참가자 정보
+            $.ajax({
+                type: "GET",
 
-            var clubMembers = response.data.members;
-            if (clubMembers && clubMembers.length > 0) {
-                var inviteesText = clubMembers.map(function (member) {
-                    return member.member.username;
-                }).join(", ");
-
-                $(".invite").text("클럽 참가자: " + inviteesText);
-            }
-            // location.reload();
-
-            else {
-                $(".invite").text("클럽 참가자: 없음");
-            }
+            })
         },
         error: function (xhr, status, error) {
             console.error("에러상태: " + status + ", 에러: " + error);
