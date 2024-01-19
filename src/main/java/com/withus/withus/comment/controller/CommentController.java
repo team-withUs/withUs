@@ -29,7 +29,6 @@ public class CommentController {
             @RequestBody CommentRequestDto commentRequestDto,
             @AuthMember Member member
     ) {
-        member = memberService.findMemberByMemberId(1L);
         CommentResponseDto commentResponseDto = commentService.createComment(noticeId, commentRequestDto, member);
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_COMMENT_CREATE.getHttpStatus())
