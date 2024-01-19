@@ -18,4 +18,6 @@ public interface CommentService {
     void deleteComment(Long noticeId, Long commentId, Member member);
 
     void createReportComment(Long commentId, ReportRequestDto RequestDto, Member member);
+
+    Integer count(Long noticeId);
 }
