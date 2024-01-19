@@ -41,7 +41,6 @@ public class S3Util {
           filename,
           file.getInputStream(),metadata
       );
-
       return filename;
     } catch(IOException e){
       throw new BisException(ErrorCode.FAILED_UPLOAD_IMAGE);

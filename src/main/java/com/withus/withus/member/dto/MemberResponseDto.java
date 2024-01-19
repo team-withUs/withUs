@@ -2,11 +2,14 @@ package com.withus.withus.member.dto;
 
 import com.withus.withus.global.s3.S3Util;
 import com.withus.withus.member.entity.Member;
+
 import java.util.List;
+
 import lombok.Builder;
 
 @Builder
 public record MemberResponseDto(
+
     String username,
     String email,
     String introduction,
@@ -30,4 +33,13 @@ public record MemberResponseDto(
         .build();
   }
 
+
+    public static MemberResponseDto searchEmail(Member member) {
+        String email = member.getEmail();
+        Long id = member.getId();
+        return MemberResponseDto.builder()
+                .id(id)
+                .email(email)
+                .build();
+    }
 }

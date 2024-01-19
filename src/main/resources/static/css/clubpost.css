@@ -1,0 +1,152 @@
+@font-face {
+    font-family: "Cafe24Supermagic-Bold-v1.0";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    font-family: "Cafe24Supermagic-Bold-v1.0", cursive;
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.all-container {
+    border-radius: 15px;
+    /*background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896);*/
+    width: 1600px;
+    height: 950px;
+    margin: 0 auto;
+}
+
+/*클럽 이름*/
+#club-name {
+    margin: 30px;
+    font-size: 40px;
+
+}
+
+#club-title {
+    text-align: left;
+    margin-left: 200px;
+}
+
+.title-item {
+    font-size: 30px;
+}
+
+/* 카테고리 드롭다운 */
+.dropdown {
+    display: flex;
+}
+
+.title-category {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+}
+
+.button-item {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 15px;
+    margin-right: 40px;
+}
+.header_btn1{
+    background: none;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+}
+
+.header_btn2{
+    background: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+}
+.header_btn3{
+    background: none;
+    border: none;
+    padding: 10PX;
+    margin: 5px;
+}
+.search-btn{
+    width: 5px;
+    height: 5px;
+    background: none;
+    border: none;
+    padding: 10PX;
+    margin: 5px;
+}
+
+/*club*/
+#club-container {
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 760px;
+    height: 320px;
+}
+
+.search-item {
+    margin: 10px;
+    width: 340px;
+    height: 250px;
+    border-radius: 15px;
+    background-color: white;
+    float: left;
+}
+
+.Date-item {
+    margin: 10px;
+    width: 340px;
+    height: 250px;
+    border-radius: 15px;
+    background-color: white;
+    float: right;
+}
+
+#club-introduce {
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 760px;
+    height: 400px;
+}
+
+.club-revise-item {
+    width: 700px;
+    height: 350px;
+    border-radius: 15px;
+    background-color: white;
+    margin: 5px auto;
+    align-items: center;
+}
+
+#club-content {
+    width: 100%;
+    height: 250px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.revise-success-button button {
+    background-color: grey;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: grey;
+    cursor: pointer;
+}
+
+.revise-success-button button:hover {
+    background-color: cornflowerblue;
+}
+
+
