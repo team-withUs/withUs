@@ -35,4 +35,5 @@ public interface ClubService {
 
     Integer count();
 
+    List<ClubResponseDto> getAllClubs();
 }

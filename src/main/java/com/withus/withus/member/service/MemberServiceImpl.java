@@ -5,15 +5,12 @@ import static com.withus.withus.global.s3.S3Const.S3_DIR_MEMBER;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
-import com.withus.withus.club.service.ClubMemberService;
 import com.withus.withus.club.service.ClubMemberServiceImpl;
-import com.withus.withus.club.service.ClubService;
 import com.withus.withus.club.service.ClubServiceImpl;
 import com.withus.withus.global.config.EmailConfig;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.global.s3.S3Util;
-import com.withus.withus.global.security.jwt.RefreshTokenRepository;
 import com.withus.withus.global.utils.EmailService;
 import com.withus.withus.global.utils.RedisService;
 import com.withus.withus.member.dto.EmailRequestDto;
@@ -28,6 +25,7 @@ import com.withus.withus.member.repository.MemberRepository;
 import com.withus.withus.member.repository.ReportMemberRepository;
 import java.time.Duration;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -117,18 +115,19 @@ public class MemberServiceImpl implements MemberService{
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
 
-    if(passwordEncoder.matches(updateRequestDto.password(), member.getPassword())){
-      throw new BisException(ErrorCode.NOT_CHANGED_PASSWORD);
+    if(!updateRequestDto.username().equals(member.getUsername())){
+      sameMemberInDBByUsername(updateRequestDto.username());
     }
-    sameMemberInDBByUsername(updateRequestDto.username());
-    sameMemberInDBByEmail(updateRequestDto.email());
+    if(!updateRequestDto.email().equals(member.getEmail())){
+      sameMemberInDBByEmail(updateRequestDto.email());
+    }
 
     Member updatedMember = findMemberByMemberId(memberId);
     if(updatedMember.getFilename() != null){
       s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
     }
 
-    if(!updateRequestDto.imageFile().getName().isEmpty()) {
+    if(updateRequestDto.imageFile()!=null) {
       String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
       updatedMember.update(
           updateRequestDto,
@@ -161,7 +160,6 @@ public class MemberServiceImpl implements MemberService{
     Member deletedMember = findMemberByMemberId(memberId);
     deletedMember.inactive();
   }
-
   @Transactional
   @Override
   public void reportMember(Long memberId, ReportRequestDto reportRequestDto, Member member) {
@@ -186,13 +184,12 @@ public class MemberServiceImpl implements MemberService{
   }
 
   @Override
-  public List<ClubResponseDto> getMyClubList(Pageable pageable, Member member) {
+  public Page<ClubResponseDto> getMyClubList(Pageable pageable, Member member) {
     Page<ClubMember> myClubMemberPage = clubMemberService.findAllByMemberId(member,pageable);
-    List<ClubResponseDto> clubResponseDtoList = myClubMemberPage
-        .map(clubMember -> ClubResponseDto.createClubResponseDto(clubMember.getClub()))
-        .getContent();
+    Page<ClubResponseDto> clubResponseDtoPage = myClubMemberPage
+        .map(clubMember -> ClubResponseDto.createClubResponseDto(clubMember.getClub()));
 
-    return clubResponseDtoList;
+    return clubResponseDtoPage;
   }
 
   @Override
@@ -216,6 +213,19 @@ public class MemberServiceImpl implements MemberService{
     clubMemberService.createClubMember(invitedclubMember);
   }
 
+  //추가
+  @Override
+  public MemberResponseDto getMemberEmail(String email) {
+    Member member = findMemberByMemberEmail(email);
+    return MemberResponseDto.searchEmail(member);
+  }
+
+  public Member findMemberByMemberEmail(String email) {
+    return memberRepository.findMemberByEmail(email).orElseThrow(
+            () -> new BisException(ErrorCode.NOT_FOUND_MEMBER)
+    );
+  }
+
   public boolean existMemberByIsActiveAndId(Long memberId){
     return memberRepository.existsByIsActiveAndId(true, memberId);
   }
@@ -225,6 +235,8 @@ public class MemberServiceImpl implements MemberService{
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }
+
+
 
   public Member findMemberByLoginname(String loginname){
     return memberRepository.findMemberByLoginnameAndIsActive(loginname, true).orElseThrow(

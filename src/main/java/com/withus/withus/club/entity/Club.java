@@ -35,7 +35,7 @@ public class Club extends TimeStamp {
     private String imageURL;
 
     @Column
-    private int MaxMember = 0;
+    private Integer MaxMember = 0;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
@@ -65,7 +65,7 @@ public class Club extends TimeStamp {
             String clubTitle,
             String content,
             ClubCategory category,
-            int maxMember,
+            Integer maxMember,
             Member member,
             String filename,
             String imageURL,
