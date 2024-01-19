@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService{
 
   private final EmailService emailService;
 
-  private final RedisService redisService;
+  private final RedisService redisService;  // redis설정, s3 환경변수 설정, 어플리케이션 실행, 포스트맨 테스트
 
   private final EmailConfig emailConfig;
 
@@ -115,18 +115,19 @@ public class MemberServiceImpl implements MemberService{
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
 
-    if(passwordEncoder.matches(updateRequestDto.password(), member.getPassword())){
-      throw new BisException(ErrorCode.NOT_CHANGED_PASSWORD);
+    if(!updateRequestDto.username().equals(member.getUsername())){
+      sameMemberInDBByUsername(updateRequestDto.username());
     }
-    sameMemberInDBByUsername(updateRequestDto.username());
-    sameMemberInDBByEmail(updateRequestDto.email());
+    if(!updateRequestDto.email().equals(member.getEmail())){
+      sameMemberInDBByEmail(updateRequestDto.email());
+    }
 
     Member updatedMember = findMemberByMemberId(memberId);
     if(updatedMember.getFilename() != null){
       s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
     }
 
-    if(!updateRequestDto.imageFile().getName().isEmpty()) {
+    if(updateRequestDto.imageFile()!=null) {
       String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
       updatedMember.update(
           updateRequestDto,
@@ -183,13 +184,12 @@ public class MemberServiceImpl implements MemberService{
   }
 
   @Override
-  public List<ClubResponseDto> getMyClubList(Pageable pageable, Member member) {
+  public Page<ClubResponseDto> getMyClubList(Pageable pageable, Member member) {
     Page<ClubMember> myClubMemberPage = clubMemberService.findAllByMemberId(member,pageable);
-    List<ClubResponseDto> clubResponseDtoList = myClubMemberPage
-        .map(clubMember -> ClubResponseDto.createClubResponseDto(clubMember.getClub()))
-        .getContent();
+    Page<ClubResponseDto> clubResponseDtoPage = myClubMemberPage
+        .map(clubMember -> ClubResponseDto.createClubResponseDto(clubMember.getClub()));
 
-    return clubResponseDtoList;
+    return clubResponseDtoPage;
   }
 
   @Override

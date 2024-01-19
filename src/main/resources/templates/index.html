@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>withUs</title>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <link href="/css/Bootstrap.min.css" rel="stylesheet">
+  <style>
+    .main{
+      padding-right: 20%;
+      padding-left: 20%;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .create{
+      margin-left: 15px;
+      font-weight: bolder;
+    }
+
+
+    .search-group{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .list-group{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .search {
+      position: relative;
+      width: 35%;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    .search>img {
+      position : absolute;
+      width: 17px;
+      top: 10px;
+      right: 12px;
+      margin: 0;
+    }
+
+
+    .white_space {
+      width: 100%;
+      height: 40px;
+    }
+
+
+    select {
+      position : absolute;
+      width: 70px;
+      top: 3px;
+      bottom: 3px;
+      right: 101%;
+      margin: 0;
+    }
+
+
+    .category{
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-group{
+      margin-right: 20px;
+      margin-left: 20px;
+    }
+
+    .btn{
+      margin-right: 10px;
+      border: 1px solid black;    border-radius: 10px;    display: inline-block;    font: inherit;    line-height: 1.5em;
+      padding: 0.5em 1.7em 0.6em 1.7em;
+    }
+    .cardGroup{
+      text-align: center;
+    }
+
+    .cardParent{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 40px;
+    }
+
+    .card{
+      width: 600px;
+      border: 1px solid black;
+      font-weight: bold;
+      border-radius: 20px;
+    }
+
+    .image{
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      float: left;
+    }
+
+
+    /*.img-fluid {*/
+    /*  display: flex;*/
+    /*  flex-direction: column;*/
+    /*  align-items: center;*/
+    /*  justify-content: center;*/
+    /*  border-radius: 20px;*/
+    /*}*/
+
+    .cardText{
+      padding-top: 15px;
+      padding-bottom: 10px;
+      text-align: center;
+      margin-right: 50px;
+    }
+
+
+
+
+    .twoImage{
+      padding-top: 5%;
+
+    }
+    .img-top{
+      margin-right: 20px;
+      width: 30px;
+    }
+    .paginationGroup{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    footer{
+      width: 60%;
+      position:absolute;
+      bottom:0;
+    }
+    .btn2{
+      border-radius: 24px;
+    }
+
+
+  </style>
+  <script th:inline="javascript">
+    let clubId = /*[[${clubId}]]*/ '';
+    let category = 'ALL';
+    let clubImage;
+    let clubName;
+    let clubContent;
+    let numberOfPeople;
+
+    $(document).ready(function (){
+
+      console.log("카테고리 : "+category)
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/club/'+category+'/club',
+        contentType: 'application/json',
+        success: function (response){
+          for(var i=0; i<response.data.length; i++){
+            var currentItem = response.data[i];
+            if(currentItem.imageURL !== null){
+              clubImage = currentItem.imageURL;
+            } else{
+              clubImage = '/img/default.png';
+            }
+            clubId = currentItem.clubId;
+            clubName = currentItem.clubTitle;
+            clubContent = currentItem.content;
+            numberOfPeople = currentItem.maxMember;
+            console.log("생성완료");
+            $('#cardGroup').append($('<div class="cardGroup" >\n'
+                + '    <tr>\n'
+                + '      <div class="cardParent">\n'
+                + '        <div id="'+clubId+'" class="card mb-3" onclick="getClub()">\n'
+                + '          <div>\n'
+                + '            <div>\n'
+                + '              <div class="image">\n'
+                + '                <img src="'+clubImage+'" class="img-fluid rounded-start" alt="...">\n'
+                + '              </div>\n'
+                + '            </div>\n'
+                + '            <div class="cardText">\n'
+                + '              <div>\n'
+                + '                <div class="card-body">\n'
+                + '                  <p class="card-title">'+clubName+'</p>\n'
+                + '                  <p class="card-text">'+clubContent+'</p>\n'
+                + '                  <p class="card-text">'+numberOfPeople+'</p>\n'
+                + '                </div>\n'
+                + '              </div>\n'
+                + '            </div>\n'
+                + '          </div>\n'
+                + '        </div>\n'
+                + '      </div>\n'
+                + '    </tr>\n'
+                + '  </div>'
+
+                )
+            );
+          }
+        }
+      });
+    });
+
+    function getClub(){
+      var clubId = this.clubId;
+      let url = '/api/club/clubPage/' + clubId;
+      location.href = url;
+    }
+
+    function changeCategory(button){
+      category = button.getAttribute('name');
+      console.log(category);
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/club/'+category+'/club',
+        contentType: 'application/json',
+        success: function (response){
+          if(response.data === null) {
+            $('#cardGroup').empty();
+            $('#cardGroup').append($('<p>검색된 클럽이 없습니다.</p>'))
+          }else {
+            $('#cardGroup').empty();
+            for (var i = 0; i < response.data.length; i++) {
+              var currentItem = response.data[i];
+              if (currentItem.imageURL !== null) {
+                clubImage = currentItem.imageURL;
+              } else {
+                clubImage = '/img/default.png';
+              }
+              clubId = currentItem.clubId;
+              clubName = currentItem.clubTitle;
+              clubContent = currentItem.content;
+              numberOfPeople = currentItem.maxMember;
+              console.log("생성완료");
+              $('#cardGroup').append($('<div class="cardGroup" >\n'
+                      + '    <tr>\n'
+                      + '      <div class="cardParent">\n'
+                      + '        <div id="' + clubId + '" class="card mb-3" onclick="getClub()">\n'
+                      + '          <div>\n'
+                      + '            <div>\n'
+                      + '              <div class="image">\n'
+                      + '                <img src="' + clubImage
+                      + '" class="img-fluid rounded-start" alt="...">\n'
+                      + '              </div>\n'
+                      + '            </div>\n'
+                      + '            <div class="cardText">\n'
+                      + '              <div>\n'
+                      + '                <div class="card-body">\n'
+                      + '                  <p class="card-title">' + clubName + '</p>\n'
+                      + '                  <p class="card-text">' + clubContent + '</p>\n'
+                      + '                  <p class="card-text">' + numberOfPeople + '</p>\n'
+                      + '                </div>\n'
+                      + '              </div>\n'
+                      + '            </div>\n'
+                      + '          </div>\n'
+                      + '        </div>\n'
+                      + '      </div>\n'
+                      + '    </tr>\n'
+                      + '  </div>'
+                  )
+              );
+            }
+          }
+        }
+      });
+    }
+
+    function searchKeyword(){
+
+    }
+  </script>
+</head>
+<body>
+<div class="main ">
+
+  <div class="title">
+    <header>
+      <div class="title-group" role="group">
+        <div class="title">
+          <h2 class="withUs" th:onclick="|location.href='@{/}'|" style="float: left">withUs</h2>
+        </div>
+        <div class="title2" style="float: right">
+          <h2 class="login" style="float: left" >login</h2>
+          <h2 class="create" style="float: right" >create</h2>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <div class="search-group">
+    <div class="list-group">
+      <div class="search" >
+        <select id="searchCategory">
+          <option value="All" selected>전체</option>
+          <option value="Sports">스포츠</option>
+          <option value="Game">게임</option>
+          <option value="Food">음식</option>
+          <option value="Today">일상</option>
+          <option value="Study">스터디</option>
+          <option value="Etc">기타</option>
+        </select>
+        <input type="text" id="searchText" placeholder="검색어 입력" onsubmit="searchKeyword()">
+        <img src="/img/icon-search.png" >
+      </div>
+    </div>
+  </div>
+
+  <div class="white_space">
+  </div>
+  <div class="category" >
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+      <button type="button" class="btn btn-outline-primary" name="SPORTS" onclick="changeCategory(this)">운동</button>
+      <button type="button" class="btn btn-outline-primary" name="TODAY" onclick="changeCategory(this)">일상</button>
+      <button type="button" class="btn btn-outline-primary" name="GAME" onclick="changeCategory(this)">게임</button>
+      <button type="button" class="btn btn-outline-primary" name="FOOD" onclick="changeCategory(this)">음식</button>
+      <button type="button" class="btn btn-outline-primary" name="STUDY" onclick="changeCategory(this)">스터디</button>
+      <button type="button" class="btn btn-outline-primary" name="ETC" onclick="changeCategory(this)">기타</button>
+    </div>
+  </div>
+
+
+  <div id="cardGroup">
+<!--    <tr>-->
+<!--      <div class="cardParent">-->
+<!--        <div class="card mb-3" >-->
+<!--          <div class="row g-0">-->
+<!--            <div class="col-md-4">-->
+<!--              <div class="image">-->
+<!--                <img id="clubImage" class="img-fluid rounded-start" alt="..." style="float: left" >-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="cardText">-->
+<!--              <div class="col-md-8">-->
+<!--                <div class="card-body">-->
+<!--                  <p class="card-title" id="clubName"></p>-->
+<!--                  <p class="card-text" id="clubContent"></p>-->
+<!--                  <p class="card-text" id="numberOfPeople"></p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </tr>-->
+  </div>
+
+  <footer>
+    <div class="paginationGroup" >
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" th:each="cnt : ${count}">
+        <div class="btn-group me-2" role="group" aria-label="First group">
+          <button type="button" class="btn2"  th:text="${cnt}" th:onclick="|location.href='@{/api/club/{category}(category=${cate})}'|"></button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

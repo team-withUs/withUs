@@ -40,29 +40,29 @@ public class CustomLogoutHandler implements LogoutHandler {
   @Transactional
   public void logout(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) {
-    String accessToken = jwtUtil.getJwtFromHeader(request);
+    String accessToken = jwtUtil.getTokenFromRequest("accessToken", request);
     try {
       if (!jwtUtil.validateToken(accessToken)) {
-        log.error("유효하지않은 AccesToken");
+        log.error("유효하지않은 accesToken");
         response.setStatus(403);
         response.setCharacterEncoding("utf-8");
         try {
           PrintWriter writer = response.getWriter();
           writer.println(" 403 : Forbidden");
-          writer.println("유효하지 않은 AccessToken입니다.");
+          writer.println("유효하지 않은 accessToken입니다.");
         } catch (IOException ex) {
           throw new RuntimeException(ex);
         }
         return;
       }
     } catch (ExpiredJwtException e) {
-      log.error("만료된 AccesToken");
+      log.error("만료된 accesToken");
       response.setStatus(403);
       response.setCharacterEncoding("utf-8");
       try {
         PrintWriter writer = response.getWriter();
         writer.println(" 403 : Forbidden");
-        writer.println("만료된 AccessToken입니다.");
+        writer.println("만료된 accessToken입니다.");
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }

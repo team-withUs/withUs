@@ -10,12 +10,16 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface ClubRepository extends JpaRepository<Club, Long> {
+public interface ClubRepository extends JpaRepository<Club, Long>, ClubRepositoryQuery{
 
     Optional<Club> findByIsActiveAndId(boolean isActive, Long clubId);
   
     boolean existsByIsActiveAndId(boolean isActive, Long clubId);
 
     List<Club> findByCategoryAndIsActive(ClubCategory category, boolean isActive, Pageable pageable);
+
+    List<Club> findAllByIsActive(boolean isActive, Pageable pageable);
+
+    Integer countByIsActive(boolean isActive);
 }
 

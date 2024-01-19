@@ -1,27 +1,18 @@
 package com.withus.withus.chat.service;
 
-import com.withus.withus.chat.dto.ChatRoomPageListResponseDto;
 import com.withus.withus.chat.entity.ChatRoom;
 import com.withus.withus.chat.repository.ChatRoomRepository;
-import com.withus.withus.chat.dto.ChatPostDto;
 import com.withus.withus.chat.dto.ChatRoomResponseDto;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.response.PageInfo;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberServiceImpl;
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -32,11 +23,11 @@ public class ChatRoomService {
 
   private final ChatRoomRepository chatRoomRepository;
 
-  public URI getOrCreateRoom(ChatPostDto chatPostDto, Member member) {
+  public Long getOrCreateChatRoom(Long memberId, Member member) {
     Member sender = memberService.findMemberByMemberId(member.getId());
 
     // 탈퇴한 회원 확인
-    Member receiver = memberService.findMemberByMemberId(chatPostDto.id());
+    Member receiver = memberService.findMemberByMemberId(memberId);
 
     // 자기 자신인지 검증
     if (sender.getId().equals(receiver.getId())) {
@@ -45,8 +36,8 @@ public class ChatRoomService {
     }
 
     // 둘의 채팅이 있는 지 확인
-    Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findBySenderAndReceiver(sender, receiver);
-    Optional<ChatRoom> optionalChatRoom2 = chatRoomRepository.findBySenderAndReceiver(receiver, sender);
+    Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findBySenderAndReceiverAndIsActive(sender, receiver, true);
+    Optional<ChatRoom> optionalChatRoom2 = chatRoomRepository.findBySenderAndReceiverAndIsActive(receiver, sender, true);
 
     ChatRoom chatRoom = null;
 
@@ -60,49 +51,44 @@ public class ChatRoomService {
       chatRoomRepository.save(chatRoom);
     }
 
-    URI location = UriComponentsBuilder.newInstance()
-        .path("ws/api/chat/{roomId}/message")
-        .buildAndExpand(chatRoom.getId())
-        .toUri();
-
-    return location;
+    return chatRoom.getId();
   }
 
-  public ChatRoomResponseDto openChatRoom(Long roomId, Member member) {
+  public ChatRoomResponseDto getChatRoom(Long roomId, Member member) {
+
+    memberService.findMemberByMemberId(member.getId());
     ChatRoom chatRoom = findChatRoom(roomId);
 
     return ChatRoomResponseDto.createChatRoomResponseDto(
         chatRoom.getId(),
-        chatRoom.getSender(),
-        chatRoom.getReceiver()
+        chatRoom.getTitle(),
+        chatRoom.getSender()
     );
   }
 
   // 유저의 채팅 목록 가져오기
-  public ChatRoomPageListResponseDto getsChatRoom(int page, int size, Member member) {
+  public List<ChatRoomResponseDto> getsChatRoom(Member member) {
     Member sender = memberService.findMemberByLoginname(member.getLoginname());
 
-    Pageable pageable = PageRequest.of(page-1 , size, Sort.by("id").descending());
-    Page<ChatRoom> chatRoomPage = chatRoomRepository.findAllBySenderOrReceiver(pageable, sender, sender);
 
-    PageInfo pageInfo = new PageInfo(page, size, (int) chatRoomPage.getTotalElements(), chatRoomPage.getTotalPages());
+    List<ChatRoom> chatRoomList = chatRoomRepository.findActiveChatRoomsBySenderOrReceiver(sender, sender, true);
 
-    List<ChatRoom> chatRooms = chatRoomPage.getContent();
-    List<ChatRoomResponseDto> chatRoomResponseDtos = chatRooms.stream()
+    List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomList.stream()
         .map(chatRoom -> ChatRoomResponseDto.createChatRoomResponseDto(
             chatRoom.getId(),
-            chatRoom.getSender(),
-            chatRoom.getReceiver()
-            )).toList();
+            chatRoom.getTitle(),
+            chatRoom.getSender()
+            ))
+        .toList();
 
-    return ChatRoomPageListResponseDto.createChatPageListResponseDto(chatRoomResponseDtos, pageInfo);
+    return chatRoomResponseDtoList;
   }
 
   @Transactional
   public void deleteChatRoom(Long roomId, Member member) {
     ChatRoom chatRoom = findChatRoom(roomId);
 
-    if (!(chatRoom.getSender().equals(member) || chatRoom.getReceiver().equals(member))) {
+    if (!(chatRoom.getSender().getId().equals(member.getId()) || chatRoom.getReceiver().getId().equals(member.getId()))) {
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
 

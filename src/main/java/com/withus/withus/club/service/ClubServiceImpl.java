@@ -19,6 +19,7 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -156,24 +157,52 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto) {
-        List<Club> clubList = clubRepository.
-                findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
-                                pageableDto.page(),
-                                pageableDto.size(),
-                                pageableDto.sortBy()
+    public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto, String keyWord) {
+        List<Club> clubList;
+        if(keyWord.equals("ace245")){
+            if(category.equals(ClubCategory.ALL)){
+                clubList = clubRepository.
+                    findAllByIsActive(true, PageableDto.getsPageableDto(
+                            pageableDto.page(),
+                            pageableDto.size(),
+                            pageableDto.sortBy()
                         ).toPageable()
-                );
+                    );
+            }
+            else {
+                clubList = clubRepository.
+                    findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
+                            pageableDto.page(),
+                            pageableDto.size(),
+                            pageableDto.sortBy()
+                        ).toPageable()
+                    );
+            }
+        }
+        else {
+            clubList = clubRepository.search(keyWord, true,
+                PageableDto.getsPageableDto(
+                pageableDto.page(),
+                pageableDto.size(),
+                pageableDto.sortBy()
+            ).toPageable(),
+                category);
+
+        }
+
 
         if (clubList == null || clubList.isEmpty()) {
-            System.out.println("test");
-            throw new BisException(ErrorCode.INVALID_VALUE);
+            return null;
         }
         return clubList.stream()
                 .map(ClubResponseDto::createClubResponseDto)
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Integer count(){
+        return clubRepository.countByIsActive(true);
+    }
 
 
     public Club findClubById(Long clubId) {
@@ -201,4 +230,5 @@ public class ClubServiceImpl implements ClubService {
     public boolean existByIsActiveAndClubId(Long clubId) {
         return clubRepository.existsByIsActiveAndId(true, clubId);
     }
+
 }

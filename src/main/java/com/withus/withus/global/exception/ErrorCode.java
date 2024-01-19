@@ -44,11 +44,15 @@ public enum ErrorCode {
 
     NOTICE_EXIST_REPORT(BAD_REQUEST,"이미 해당 게시판을 신고하셨습니다."),
 
+    COMMENT_EXIST_REPORT(BAD_REQUEST, "이미 해당 댓글을 신고하셨습니다."),
+
 
     /* 403 FORBIDDEN */
     YOUR_NOT_COME_IN(FORBIDDEN, "권한이 없습니다"), // 포괄적인 Forbidden 코드
 
     REJECT_SEND_CHAT_SELF(FORBIDDEN, "자기 자신에게 채팅을 할수 없습니다."),
+
+    YOUR_NOT_THE_AUTHOR(FORBIDDEN, "작성자가 아닙니다."),
 
 
     /* 404 NOT_FOUND */
@@ -66,6 +70,8 @@ public enum ErrorCode {
     NOT_FOUND_CLUB_TITLE_EXIST(NOT_FOUND,"클럽제목이 없습니다."),
 
     NOT_FOUND_CHATROOM(NOT_FOUND, "해당 채팅방을 찾을 수 없습니다."),
+
+    NOT_FOUND_COMMENT(NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
 
 
     /* 409 CONFLICT */

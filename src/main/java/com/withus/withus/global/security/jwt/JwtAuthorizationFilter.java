@@ -41,13 +41,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
             FilterChain filterChain) throws ServletException, IOException {
 
-        String accessTokenValue = jwtUtil.getJwtFromHeader(req);
+        String accessTokenValue = jwtUtil.getTokenFromRequest("accessToken", req);
         if (StringUtils.hasText(accessTokenValue)) {
             log.info(accessTokenValue);
 
             try {
                 if (!jwtUtil.validateToken(accessTokenValue)) {
-                    log.error("유효하지않은 AccesToken");
+                    log.error("유효하지않은 accesToken");
                     setResponse(res, ErrorCode.ACCESS_DENIED);
 
                     return;
@@ -62,17 +62,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             } catch (ExpiredJwtException e) {
                 // 만료된 accessToken 일경우 accessToken 재발급
-                // 쿠키에서 리프레시 토큰가져와서 유효성 검사후  발급
-                String refreshToken = jwtUtil.getTokenFromRequest(req);
+                // 쿠키에서 refreshToken 가져와서 유효성 검사 후  발급
+                String refreshToken = jwtUtil.getTokenFromRequest("refreshToken", req);
                 log.info(refreshToken);
                 if (refreshToken == null) {
-                    log.error("쿠키에 RereshToken이 존재하지 않습니다.");
+                    log.error("쿠키에 refreshToken이 존재하지 않습니다.");
                     setResponse(res, ErrorCode.NOT_EXIST_REFRESH_TOKEN);
 
                     return;
                 }
 
-                // refrshToken 검증
+                // refreshToken 검증
                 try {
                     if (!jwtUtil.validateToken(refreshToken)) {
                         log.error("유효하지않은 RefreshToken");
@@ -87,7 +87,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     return;
                 }
 
-                // refreshToken DB조회
+                // refreshToken DB 조회
                 if (!jwtUtil.checkTokenDBByToken(refreshToken)) {
                     log.error("DB에 해당 RefreshToken이 존재하지 않습니다.");
                     setResponse(res,ErrorCode.NOT_EXIST_REFRESH_TOKEN);
@@ -99,18 +99,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 Claims user = jwtUtil.getUserInfoFromToken(refreshToken);
                 String accessToken = jwtUtil.createAccessToken(user.getSubject());
 
-                // AccessToken 헤더에 저장
-                res.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+
+                // accessToken 쿠키에 저장
+                jwtUtil.addJwtToCookie("accessToken", accessToken, res);
 
                 res.setStatus(200);
                 res.setCharacterEncoding("utf-8");
                 PrintWriter writer = res.getWriter();
-                writer.println("AccessToken이 재발급되었습니다. 다시 시도 해주세요.");
+                writer.println("accessToken이 재발급되었습니다. 다시 시도 해주세요.");
 
                 return;
             }
 
-            // 정상 동작일때
             Claims info = jwtUtil.getUserInfoFromToken(accessTokenValue);
 
             try {

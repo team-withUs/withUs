@@ -28,12 +28,8 @@ import org.springframework.util.StringUtils;
 @Component
 public class JwtUtil {
 
-    // Header KEY 값
-    public static final String AUTHORIZATION_HEADER = "Authorization";
     // 사용자 권한 값의 KEY
     public static final String AUTHORIZATION_KEY = "auth";
-    // access token 식별자
-    public static final String BEARER_PREFIX = "Bearer ";
 
     // 토큰 만료시간
     private final long ACCESS_TOKEN_TIME = 30 * 60 * 1000L; // 30분
@@ -68,8 +64,7 @@ public class JwtUtil {
     public String createAccessToken(String loginname) {
         Date date = new Date();
 
-        return BEARER_PREFIX +
-                Jwts.builder()
+        return Jwts.builder()
                         .setSubject(loginname) // 사용자 식별자값(ID)
                         .claim(AUTHORIZATION_KEY, "USER")
                         .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료 시간
@@ -92,12 +87,10 @@ public class JwtUtil {
     }
 
 
-    // RefreshToken Cookie 에 저장
-    public void addJwtToCookie(String refreshToken, HttpServletResponse res) {
+    // JWT Cookie 에 저장
+    public void addJwtToCookie(String tokenName, String JWT, HttpServletResponse res) {
 
-        String cookieName = "refreshtoken";
-
-        Cookie cookie = new Cookie(cookieName, refreshToken); // Name-Value
+        Cookie cookie = new Cookie(tokenName, JWT); // Name-Value
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24); // 쿠키 유효기간 1일
 
@@ -144,14 +137,6 @@ public class JwtUtil {
     }
 
 
-    // header 에서 JWT 가져오기
-    public String getJwtFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
 
     // 토큰 검증
     public boolean validateToken(String token) throws ExpiredJwtException {
@@ -177,11 +162,11 @@ public class JwtUtil {
     }
 
     // HttpServletRequest 에서 Cookie Value : JWT 가져오기
-    public String getTokenFromRequest(HttpServletRequest req) {
+    public String getTokenFromRequest(String tokenName, HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("refreshtoken")) {
+                if (cookie.getName().equals(tokenName)) {
                     try {
                         return URLDecoder.decode(cookie.getValue(),
                                 "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode

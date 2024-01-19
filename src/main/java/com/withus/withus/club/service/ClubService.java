@@ -31,7 +31,9 @@ public interface ClubService {
 
     ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member);
 
-    List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto);
+    List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto, String keyWord);
+
+    Integer count();
 
     List<ClubResponseDto> getAllClubs();
 }

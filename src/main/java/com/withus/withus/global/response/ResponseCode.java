@@ -43,6 +43,13 @@ public enum ResponseCode {
 
     INVITE_MEMBER(200, "초대 성공"),
 
+    /* COMMENT */
+    SUCCESS_COMMENT_GET(200, "Comment 전체조회 성공"),
+
+    SUCCESS_COMMENT_DELETE(200, "Comment 삭제 성공"),
+
+    SUCCESS_COMMENT_REPORT(200, "Comment 신고 성공"),
+
     /* 201 CREATED */
     SIGNUP(201, "회원가입 성공"),
 
@@ -50,12 +57,16 @@ public enum ResponseCode {
 
     SUCCESS_CLUB_CREATE(201,"Club 생성 성공"),
 
+    SUCCESS_COMMENT_CREATE(201, "Comment 생성 성공"),
+
     SUCCESS_CLUB_REPORT(201, "Club 신고 성공"),
 
     SUCCESS_CLUB_GET(200,"Club 조회 성공"),
 
     /* 201 UPDATE*/
     SUCCESS_CLUB_UPDATE(201,"Club 업데이트 성공"),
+
+    SUCCESS_COMMENT_UPDATE(201, "Comment 업데이트 성공"),
 
     /* 201 DELETE*/
     SUCCESS_CLUB_DELETE(201,"Club 삭제 성공");

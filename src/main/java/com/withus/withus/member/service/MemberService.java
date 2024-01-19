@@ -10,6 +10,8 @@ import com.withus.withus.member.entity.Member;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import org.springframework.data.domain.Pageable;
 
 public interface MemberService {
@@ -28,7 +30,11 @@ public interface MemberService {
 
     List<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
 
+
     void inviteMember(Long memberId, Long clubId, Member member);
+
+    Page<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
+
 
     MemberResponseDto getMemberEmail(String email);
 
