@@ -1,10 +1,17 @@
 package com.withus.withus.member.controller;
 
+import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.member.entity.Member;
+import com.withus.withus.member.service.MemberServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/api/member")
 public class MemberViewController {
 
@@ -18,8 +25,18 @@ public class MemberViewController {
     return "loginPage";
   }
 
-  @GetMapping("/profilePage")
-  public String getProfilePage(){
+  @GetMapping("/profilePage/{memberId}")
+  public String getProfilePage(
+      @PathVariable("memberId") Long memberId,
+      Model model,
+      @AuthMember Member loginMember
+  ){
+    if (loginMember.getId().equals(memberId)) {
+      model.addAttribute("isSameMember", true);
+    } else {
+      model.addAttribute("isSameMember", false);
+    }
+    model.addAttribute("memberId", memberId);
     return "profile";
   }
 
