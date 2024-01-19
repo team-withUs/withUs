@@ -127,4 +127,13 @@ public class MemberController {
     return ResponseEntity.status(ResponseCode.INVITE_MEMBER.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""));
   }
+
+//  @GetMapping("/{memberId}/search")
+//  public ResponseEntity<CommonResponse<String>> searchMember(
+//      @PathVariable("memberId") Long memberId,
+//      @RequestBody
+//  ){
+//
+//  }
+
 }

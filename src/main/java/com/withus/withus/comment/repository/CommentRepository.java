@@ -11,4 +11,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> findByIsActiveAndId(Boolean isActive, Long commentId);
 
     List<Comment> findAllByIsActive(boolean IsActive, Pageable pageable);
+
+    Integer countByIsActiveAndNoticeId(boolean isActive, Long noticeId);
 }

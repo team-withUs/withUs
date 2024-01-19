@@ -6,6 +6,7 @@ import com.withus.withus.global.response.ResponseCode;
 
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.member.entity.Member;
+import com.withus.withus.member.service.MemberServiceImpl;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.dto.PageableDto;
@@ -29,14 +30,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class NoticeController {
   private final NoticeService noticeService;
+  private final MemberServiceImpl memberService;
 
 
   @PostMapping("/club/{clubId}/notice")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> createNotice(
       @PathVariable("clubId") Long clubId,
-      @ModelAttribute NoticeRequestDto requestDto,
+      @RequestBody NoticeRequestDto requestDto,
       @AuthMember Member member
   ) {
+    member = memberService.findMemberByMemberId(1L);
     NoticeResponseDto responseDto = noticeService.createNotice(clubId, requestDto, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_CREATE.getHttpStatus())
             .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_CREATE,responseDto));
@@ -46,9 +49,10 @@ public class NoticeController {
   public ResponseEntity<CommonResponse<NoticeResponseDto>> updateNotice(
       @PathVariable("clubId") Long clubId,
       @PathVariable("noticeId") Long noticeId,
-      @ModelAttribute NoticeRequestDto requestDto,
+      @RequestBody NoticeRequestDto requestDto,
       @AuthMember Member member
   ) {
+    member = memberService.findMemberByMemberId(1L);
     NoticeResponseDto responseDto = noticeService.updateNotice(clubId, noticeId, requestDto, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE, responseDto));

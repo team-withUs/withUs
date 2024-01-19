@@ -90,6 +90,11 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Override
+    public Integer count(Long noticeId) {
+        return commentRepository.countByIsActiveAndNoticeId(true, noticeId);
+    }
+
 
     private boolean existsByNoticeId(Long noticeId) {
         return noticeService.existByIsActiveAndNoticeId(noticeId);
