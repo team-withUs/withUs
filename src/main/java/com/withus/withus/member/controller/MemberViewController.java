@@ -40,4 +40,15 @@ public class MemberViewController {
     return "profile";
   }
 
+  @GetMapping("/updateProfilePage/{memberId}")
+  public String getUpdateProfilePage(
+      @PathVariable("memberId") Long memberId,
+      Model model,
+      @AuthMember Member loginMember
+  ) {
+    model.addAttribute("memberId",loginMember.getId());
+    return "updateProfile";
+
+  }
+
 }

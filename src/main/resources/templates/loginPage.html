@@ -20,7 +20,8 @@
         data: JSON.stringify({loginname: loginname, password: password}),
       })
       .done(function (res, textStatus, xhr) {
-        window.location.href = host + '/api/member/profilePage/1';
+
+        window.location.href = host + '/';
         // 추후에 메인페이지로 이동으로 변경
       })
       .fail(function (res) {

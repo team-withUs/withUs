@@ -10,9 +10,12 @@ import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.member.entity.Member;
+import com.withus.withus.member.service.MemberService;
 import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,19 +25,29 @@ import java.util.List;
 @RequestMapping("/api/club")
 public class ClubController {
     private final ClubService clubService;
+    private final MemberService memberService;
 
     @PostMapping
     public ResponseEntity<CommonResponse<ClubResponseDto>> createClub(
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        System.out.println(clubRequestDto);
         ClubResponseDto responseDto = clubService.createClub(clubRequestDto, member, clubRequestDto.imageFile());
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE, responseDto));
     }
 
+
+    @GetMapping
+    public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getAllClubs() {
+        List<ClubResponseDto> responseDtoList = clubService.getAllClubs();
+        return ResponseEntity
+                .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDtoList));
+    }
+
+    //조회
     @GetMapping("/{clubId}")
     public ResponseEntity<CommonResponse<ClubResponseDto>> getClub(
             @PathVariable("clubId") Long clubId
@@ -44,6 +57,7 @@ public class ClubController {
                 .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
     }
+
     // 수정
     @PatchMapping("/{clubId}")
     public ResponseEntity<CommonResponse> updateClub(
@@ -86,14 +100,13 @@ public class ClubController {
 
     @GetMapping("/{category}/club")
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
-            @PathVariable("category") ClubCategory category,
-            @RequestParam(value = "page") int page,
-            @RequestParam(value = "size", defaultValue = "4") int size,
-            @RequestParam(value = "sortBy",defaultValue = "CreatedAt") String sortBy,
-            @RequestParam(value = "keyWord" ,defaultValue = "ace245") String keyWord
+        @PathVariable("category") ClubCategory category,
+        @RequestParam(value = "page", defaultValue = "1") int page,
+        @RequestParam(value = "size", defaultValue = "4") int size,
+        @RequestParam(value = "sortBy",defaultValue = "CreatedAt") String sortBy,
+        @RequestParam(value = "keyWord" ,defaultValue = "ace245") String keyWord
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
-
 
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
             .body(CommonResponse.of(ResponseCode.OK,

@@ -6,40 +6,193 @@
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <title>withUs</title>
 </head>
+<style>
+  .tag-item {
+    display: inline-block;
+    margin-right: 5px;
+    background-color: #f0f0f0;
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+  .tag-item button {
+    background-color: #0c63e4;
+    color: #fff;
+    border: none;
+    padding: 3px 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+</style>
+<script th:inline="javascript">
+  let memberId = /*[[${memberId}]]*/ '';
+
+  $(document).ready(function(){
+
+    $.ajax({
+      type:'GET',
+      url:`/api/member/`+ memberId,
+      contentType: 'application/json',
+      success: function(response){
+        if(response.data.imageURL !== null){
+          $('#profileImage').attr('src', response.data.imageURL);
+        } else{
+          $('#profileImage').attr('src', '/img/default.png');
+        }
+
+        $('#username').val(response.data.username);
+        $('#email').val(response.data.email);
+        $('#introduction').val(response.data.introduction);
+        let tagArray = JSON.parse(response.data.tag);
+        console.log(tagArray);
+        tagArray.forEach(function(tag) {
+          $('#tagList').append( $('<span class="tag-item" style="margin-right: 5px">'
+              + tag.trim()
+              + ' <button onclick="removeTag(this)">x</button></span>'));
+          console.log(tag);
+        });
+      },
+      error: function(error){
+        console.error("에러 :", error)
+      }
+    });
+  });
+
+  function submitUpdate(){
+    let formData = new FormData();
+    let tagList = $('#tagList .tag-item');
+    let tags = [];
+    tagList.each(function () {
+      let tag = $(this).text().trim().replace('x', '');
+      tags.push(tag);
+      console.log(tag);
+    });
+
+    formData.append('password', $('#password').val());
+    formData.append('passwordCheck', $('#passwordCheck').val());
+    formData.append('username', $('#username').val());
+    formData.append('email', $('#email').val());
+    formData.append('introduction', $('#introduction').val());
+    formData.append('tag', JSON.stringify(tags));
+    if($('#formFileSm')[0].files[0]){
+      formData.append('imageFile', $('#formFileSm')[0].files[0]);
+    }
+
+    $.ajax({
+      method:'PATCH',
+      url:'/api/member/'+memberId,
+      contentType: false,
+      processData: false,
+      data : formData,
+      success:function (response){
+        if(response.msg === '프로필 수정 성공'){
+          window.location.href = 'profilePage';
+        } else{
+          console.error('프로필 수정 실패', response);
+        }
+      },
+      error: function(error){
+        console.error('에러 :', error);
+      }
+    })
+  }
+
+  function checkInput() {
+    if ($('#tag').val().trim().length >= 1 && $('#tag').val().trim().length <=4) {
+      $('#addButton').prop('disabled',false);
+    } else{
+      $('#addButton').prop('disabled',true);
+    }
+  }
+
+  function addTag() {
+    if($('#tagList .tag-item').length<5){
+      let tagValue = $('#tag').val().trim();
+      let tagListItem = $('<span class="tag-item" style="margin-right: 5px">'
+          + tagValue
+          + ' <button onclick="removeTag(this)">x</button></span>'
+      );
+      $('#tagList').append(tagListItem);
+      $('#tag').val('');
+      checkInput();
+    } else{
+      alert("태그는 최대 5개까지 등록 가능합니다.")
+    }
+  }
+
+  function removeTag(button) {
+    // x 버튼을 눌렀을 때 실행되는 함수
+    $(button).parent().remove();
+  }
+</script>
 <body>
-<form action="/api/member/updateMember" method="post">
   <div style="margin: 40px 35% 0 35%">
     <div>
-      <img src="../static/img/default.png"
-           style="border-radius: 100%; height: 200px; width: 200px; float:left">
+      <img id="profileImage"
+           style="border-radius: 100%; height: 150px; width: 150px; float:left">
     </div>
     <div class="mb-3">
       <input class="form-control form-control-sm" id="formFileSm" type="file">
     </div>
     <div style="margin-top: 10px; width: 200px">
-      <input class="form-control form-control" type="text" placeholder="이름을 입력해주세요.">
+      <input class="form-control form-control"
+             type="text"
+             id="username"
+             minlength="3" maxlength="8"
+             placeholder="이름을 입력해주세요.">
     </div>
     <div style="margin-top: 20px;">
-      <input class="form-control form-control" type="text" placeholder="이메일을 입력해주세요.">
+      <input class="form-control form-control"
+             type="text"
+             id="email"
+             maxlength="255"
+             placeholder="이메일을 입력해주세요.">
     </div>
     <div style="padding: 20px 0 5px 0 ">
-      <input class="form-control form-control" type="password" placeholder="비밀번호를 입력해주세요.">
+      <input class="form-control form-control"
+             type="password"
+             id="password"
+             minlength="4" maxlength="16"
+             placeholder="비밀번호를 입력해주세요.">
     </div>
     <div style="padding: 20px 0 5px 0 ">
-      <input class="form-control form-control" type="password" placeholder="비밀번호를 다시 입력해주세요.">
+      <input class="form-control form-control"
+             type="password"
+             id="passwordCheck"
+             minlength="4" maxlength="16"
+             placeholder="비밀번호를 다시 입력해주세요.">
     </div>
-    <div style="margin-top:50px; background-color: beige">
-      <input class="form-control form-control" type="text" placeholder="태그를 입력해주세요.">
+    <div>
+      <p id="tagList">태그 : </p>
+    </div>
+    <div style="margin-top:50px;" class="row g-2" id="tagFormat">
+      <div class="col-lg-9">
+        <input class="form-control form-control"
+               type="text"
+               id="tag"
+               oninput="checkInput()"
+               placeholder="태그를 입력해주세요.(최대4글자)">
+      </div>
+      <div class="col-auto">
+        <button type="button" class="btn btn-primary" id="addButton" disabled
+                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .4rem;"
+                onclick="addTag()">추가
+        </button>
+      </div>
     </div>
     <div style="margin-top:50px; margin-bottom: 30px; background-color: beige">
-      <input class="form-control form-control" type="text" placeholder="자기소개를 입력해주세요.">
+      <input class="form-control form-control"
+             type="text"
+             id="introduction"
+             maxlength="100"
+             placeholder="자기소개를 입력해주세요.">
     </div>
     <div style="text-align: center; margin-bottom: 30px">
       <button type="submit"
-              class="btn btn-primary">수정 완료
+              class="btn btn-primary" onclick="submitUpdate()">수정 완료
       </button>
     </div>
   </div>
-</form>
 </body>
 </html>

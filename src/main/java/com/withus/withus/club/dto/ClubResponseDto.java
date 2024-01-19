@@ -14,7 +14,7 @@ public record ClubResponseDto(
         ClubCategory category,
         String imageURL,
         String username,
-        int maxMember,
+        Integer maxMember,
         LocalDateTime startTime,
         LocalDateTime endTime,
         LocalDateTime createdAt,

@@ -32,6 +32,7 @@ public class WebSecurityConfig {
   private final AuthenticationConfiguration authenticationConfiguration;
 
   private final ObjectMapper objectMapper;
+
   private final CustomLogoutHandler logoutHandler;
 
   public WebSecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService, AuthenticationConfiguration authenticationConfiguration, ObjectMapper objectMapper,
@@ -72,13 +73,13 @@ public class WebSecurityConfig {
 
     http.authorizeHttpRequests((authorizeHttpRequests) ->
         authorizeHttpRequests
-            .requestMatchers("/api/member/signup/**", "/api/member/login")
-            .permitAll()// 회원가입, 로그인요청 인증허가
-            .requestMatchers("/css/**", "/js/**", "/img/**", "/ws/**")
-            .permitAll()
-            .requestMatchers(HttpMethod.GET, "/api/club/**")
-            .permitAll()
-            .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+                .requestMatchers("/api/member/signup/**", "/api/member/login", "/api/member/loginPage")
+                .permitAll()// 회원가입, 로그인요청 인증허가
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/ws/**" , "/")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/club/**")
+                .permitAll()
+                .anyRequest().authenticated() // 그 외 모든 요청 인증처리
     );
 
     http.logout()
