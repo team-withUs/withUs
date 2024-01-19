@@ -82,6 +82,7 @@ public class WebSecurityConfig {
             .requestMatchers(HttpMethod.GET,"/api/member/**")
             .permitAll()
             .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+            .anyRequest().permitAll() // 그 외 모든 요청 인증처리
     );
 
     http.logout()
