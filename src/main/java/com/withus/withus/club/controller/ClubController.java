@@ -87,7 +87,7 @@ public class ClubController {
     @GetMapping("/{category}/club")
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
             @PathVariable("category") ClubCategory category,
-            @RequestParam(value = "page") int page,
+            @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "4") int size,
             @RequestParam(value = "sortBy",defaultValue = "CreatedAt") String sortBy,
             @RequestParam(value = "keyWord" ,defaultValue = "ace245") String keyWord

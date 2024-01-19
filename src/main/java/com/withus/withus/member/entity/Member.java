@@ -33,6 +33,9 @@ public class Member extends TimeStamp {
     private String username;
 
     @Column
+    private String tag;
+
+    @Column
     private String introduction;
 
     @Column
@@ -79,6 +82,7 @@ public class Member extends TimeStamp {
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
+        this.tag = updateRequestDto.tag();
         this.imageURL = imageURL;
         this.filename = filename;
     }
@@ -91,6 +95,9 @@ public class Member extends TimeStamp {
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
+        this.tag = updateRequestDto.tag();
+        this.imageURL = null;
+        this.filename = null;
     }
 
     public void inactive() {

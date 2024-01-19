@@ -19,24 +19,25 @@ public class HomeController {
 
   @GetMapping("")
   public String home(Model model) {
-    Integer totalListCnt = clubService.count();
-    int count;
-    if(totalListCnt >= 4){
-      count=totalListCnt/4+1;
-    }
-    else {
-      count=1;
-    }
-    List<Integer> countList = new ArrayList<>();
-    for(int i=0; i<count; i++){
-      countList.add(i+1);
-    }
+//    Integer totalListCnt = clubService.count();
+//    int count;
+//    if(totalListCnt >= 4){
+//      count=totalListCnt/4+1;
+//    }
+//    else {
+//      count=1;
+//    }
+//    List<Integer> countList = new ArrayList<>();
+//    for(int i=0; i<count; i++){
+//      countList.add(i+1);
+//    }
+//
+//    String keyWord="";
+//    PageableDto pageableDto = new PageableDto(1, 4, "CreatedAt");
+//    model.addAttribute("list", clubService.getsClubByCategory(ClubCategory.ALL,pageableDto, keyWord));
+//    model.addAttribute("count",countList);
+//    model.addAttribute("cate","ALL");
 
-    String keyWord="";
-    PageableDto pageableDto = new PageableDto(1, 4, "CreatedAt");
-    model.addAttribute("list", clubService.getsClubByCategory(ClubCategory.ALL,pageableDto, keyWord));
-    model.addAttribute("count",countList);
-    model.addAttribute("cate","ALL");
     return "index";
   }
 }
