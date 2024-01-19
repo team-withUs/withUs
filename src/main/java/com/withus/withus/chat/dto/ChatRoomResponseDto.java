@@ -6,26 +6,20 @@ import lombok.Builder;
 @Builder
 public record ChatRoomResponseDto(
     Long roomId,
-    String sender,
-    String receiver
+    String title,
+    String senderImg
 
 ) {
-//  @Builder
-//  public ChatRoomResponseDto(Long roomId, String sender, String receiver) {
-//    this.roomId = roomId;
-//    this.sender = sender;
-//    this.receiver =receiver;
-//  }
 
   public static ChatRoomResponseDto createChatRoomResponseDto(
       Long roomId,
-      Member sender,
-      Member receiver
+      String title,
+      Member sender
   ) {
     return ChatRoomResponseDto.builder()
         .roomId(roomId)
-        .sender(sender.getUsername())
-        .receiver(receiver.getUsername())
+        .title(title)
+        .senderImg(sender.getImageURL())
         .build();
   }
 

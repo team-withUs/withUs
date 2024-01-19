@@ -3,12 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <link th:href="@{/css/Bootstrap.min.css}"
-        href="/css/Bootstrap.min.css" rel="stylesheet">
+  <link th:href="@{/css/Bootstrap.min.css}" rel="stylesheet">
   <title>withUs</title>
+
+  <script th:inline="javascript">
+    const host = 'http://' + window.location.host;
+
+    function onLogin(){
+      let loginname = $('#loginname').val();
+      let password = $('#password').val();
+
+      $.ajax({
+        type: "POST",
+        url: `/api/member/login`,
+        contentType: "application/json",
+        data: JSON.stringify({loginname: loginname, password: password}),
+      })
+      .done(function (res, textStatus, xhr) {
+        window.location.href = host + '/api/member/profilePage/1';
+        // 추후에 메인페이지로 이동으로 변경
+      })
+      .fail(function (res) {
+        alert("Login Fail" + res.getWriter());
+        window.location.href = '/api/member/loginPage'
+      });
+    }
+  </script>
+
 </head>
 <body>
 <div style="text-align: center">
+
   <h1 style="font-size: 60px; padding-top: 40px">withUs</h1>
   <form id="loginForm" action ="/api/member/login" method="post">
     <div style="padding: 50px 35% 0px 35%; ">
@@ -41,28 +66,6 @@
   </form>
 
 </div>
-<script th:inline="javascript">
-  function onLogin(){
-    let loginname = $('#loginname').val();
-    let password = $('#password').val();
 
-    $.ajax({
-      type: "POST",
-      url: `/api/member/login`,
-      contentType: "application/json",
-      data: JSON.stringify({loginname: loginname, password: password}),
-    })
-    .done(function (res, textStatus, xhr) {
-      let accessToken = xhr.getResponseHeader('Authorization');
-      localStorage.setItem("accessToken", accessToken);
-      window.location.href = 'profilePage';
-    })
-    .fail(function (res) {
-      alert("Login Fail" + res.getWriter());
-      window.location.href = '/api/member/loginPage'
-    });
-  }
-
-</script>
 </body>
 </html>

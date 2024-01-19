@@ -69,10 +69,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
 
         // RefreshToken 쿠키에 저장
-        jwtUtil.addJwtToCookie(refreshToken, response);
+        jwtUtil.addJwtToCookie("refreshToken", refreshToken, response);
 
-        // AccessToken 헤더에 저장
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, accessToken);
+        // AccessToken 쿠키에 저장
+        jwtUtil.addJwtToCookie("accessToken", accessToken, response);
 
         response.setStatus(200);
         response.setCharacterEncoding("utf-8");
