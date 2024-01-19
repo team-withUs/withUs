@@ -3,11 +3,19 @@
 
 <head>
   <meta charset="UTF-8">
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!--  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
+  <title>게시글 상세 페이지</title>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+
   <link th:href="@{/css/Bootstrap.min.css}" href="/css/Bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <title>게시글 상세 페이지</title>
+
   <style>
     header {
       display: flex;
@@ -77,6 +85,9 @@
       margin-top: 10px;
       justify-content: center;
     }
+    .page{
+      justify-content: center;
+    }
 
 
 
@@ -98,7 +109,7 @@
 </div>
 <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
 <div class="noticename">
-  <p style="font-size: 150%;" ><textarea id="noticeTitle" disabled></textarea></p>
+  <p style="font-size: 150%;" id="noticeTitle"></p>
   <p><textarea style="width: 1000px;height:300px;font-size:20px;" disabled id="noticeContent"></textarea></p>
   <p style="font-size: 300%;">Comment</p>
   <p><textarea id="commentContent" placeholder="내용 입력" style="width: 1000px;height:100px;font-size:20px;"></textarea></p>
@@ -107,41 +118,47 @@
   </div>
 
   <div class="card" id="comment">
-    <div>
-      <div class="card-header">
-        <p id="username">작성자</p>
-      </div>
-      <div class="card-body">
-        <blockquote class="blockquote mb-0">
-          <p>댓글 내용</p>
-        </blockquote>
-      </div>
-    </div>
+<!--    <div>-->
+<!--      <div class="card-header">-->
+<!--        <p id="username">작성자</p>-->
+<!--      </div>-->
+<!--      <div class="card-body">-->
+<!--        <blockquote class="blockquote mb-0">-->
+<!--          <p>댓글 내용</p>-->
+<!--        </blockquote>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
+<!--      <li class="page-item">-->
+<!--        <a class="page-link" href="#" aria-label="Previous">-->
+<!--          <span aria-hidden="true">&laquo;</span>-->
+<!--        </a>-->
       </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">4</a></li>
-      <li class="page-item"><a class="page-link" href="#">5</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
+      <div class="page" id="page">
+      </div>
+<!--      <li class="page-item">-->
+<!--        <a class="page-link" href="#" aria-label="Next">-->
+<!--          <span aria-hidden="true">&raquo;</span>-->
+<!--        </a>-->
       </li>
     </ul>
   </nav>
+
+
+<!--  <div class="pagination">-->
+<!--  </div>-->
+
 </div>
 
 <script th:inline="javascript">
   /*<![CDATA[*/
+
+
+
+
   $(document).ready(function (){
     const clubId = [[${clubId}]];
     const noticeId = [[${noticeId}]];
@@ -154,8 +171,9 @@
         let dto=  result.data;
         let title = dto.title;
         let content = dto.content;
-        $("#noticeTitle").val(title);
+        $("#noticeTitle").text(title);
         $("#noticeContent").val(content);
+
 
 
         $.ajax({
@@ -163,25 +181,25 @@
           url:'/api/notice/'+noticeId+'/comment',
           contentType: 'application/json',
           success:function (result){
-            let list =result.data
+            list =result.data;
+
             $(list).each(function (index,res){
               console.log(index+" : "+res.username);
               let name = res.username;
               let comment = res.content;
               let id = res.id;
-              const a = '<div id="' + id + '">\n'
+              const card = '<div id="' + id + '">\n'
                   + '      <div class="card-header">\n'
-                  + '        <p ></p>\n'
+                  + '        <p >'+name+'</p>\n'
                   + '      </div>\n'
                   + '      <div class="card-body">\n'
                   + '        <blockquote class="blockquote mb-0">\n'
-                  + '          <p>댓글 내용</p>\n'
+                  + '          <p>'+comment+'</p>\n'
                   + '        </blockquote>\n'
                   + '      </div>\n'
                   + '    </div>';
-              $('#comment').append(a);
+              $('#comment').append(card);
               // $("#username").text(name)
-
 
 
             });
@@ -192,13 +210,156 @@
         })
 
 
+
+
+
+
+
+
+
+
+
       }
+    })
+
+
+    const cntList = [[${countList}]];
+    $(cntList).each(function (index,res){
+      // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
+      const card = '<li class="page-item"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
+      $('#page').append(card);
     })
 
 
 
 
+
+
   })
+
+
+  function showComment(){
+    let dataSource = null;
+    const noticeId = [[${noticeId}]];
+    const count = [[${count}]];
+    console.log(noticeId);
+
+
+
+
+
+
+
+    // dataSource = `/api/notice/${noticeId}/comment`;
+    //
+    // console.log(dataSource)
+
+
+
+    // $('#comment').empty();
+    // $('#pagination').pagination({
+    //   dataSource,
+    //   locator: 'content',
+    //   alias:{
+    //     pageNumber: 'page',
+    //     pageSize: 'size'
+    //   },
+    //   totalNumberLocator: (response) =>{
+    //     return response.totalElements;
+    //   },
+    //   pageSize: 10,
+    //   showPrevious: true,
+    //   showNext: true,
+    //   ajax:{
+    //     beforeSend: function (){
+    //       $('#comment').html('상품 불러오는 중...');
+    //     },
+    //     error(error, status, request) {
+    //       if (error.status === 403) {
+    //         console.log(error);
+    //         $('html').html(error.responseText);
+    //         return;
+    //       }
+    //     }
+    //   },
+    //   callback: function (response, pagination) {
+    //     $('#comment').empty();
+    //     for(let i = 0; i<response.length; i++){
+    //       let product = response[i];
+    //       let tempHtml = addItem(product)
+    //       $('#comment').append(tempHtml);
+    //     }
+    //   }
+    // })
+
+  }
+
+  // function addItem(product){
+  //
+  //   return '<div id="comment_'+ product.id +'">\n'
+  //       + '      <div class="card-header">\n'
+  //       + '        <p >${product.name}</p>\n'
+  //       + '      </div>\n'
+  //       + '      <div class="card-body">\n'
+  //       + '        <blockquote class="blockquote mb-0">\n'
+  //       + '          <p>'+product.content+'</p>\n'
+  //       + '        </blockquote>\n'
+  //       + '      </div>\n'
+  //       + '    </div>';
+  // }
+
+
+
+
+
+
+
+
+
+
+  function sendPage(pageNumber){
+    const noticeId = [[${noticeId}]];
+    console.log(pageNumber);
+
+    $('#comment').empty();
+    $.ajax({
+      type:'GET',
+      url:'/api/notice/'+noticeId+'/comment?page='+pageNumber,
+      contentType: 'application/json',
+      success:function (result){
+        let list =result.data
+        $(list).each(function (index,res){
+          console.log(index+" : "+res.username+"테스트");
+          console.log(list+"xxxx");
+          let name = res.username;
+          let comment = res.content;
+          let id = res.id;
+          const card = '<div id="' + id + '">\n'
+              + '      <div class="card-header">\n'
+              + '        <p >'+name+'</p>\n'
+              + '      </div>\n'
+              + '      <div class="card-body">\n'
+              + '        <blockquote class="blockquote mb-0">\n'
+              + '          <p>'+comment+'</p>\n'
+              + '        </blockquote>\n'
+              + '      </div>\n'
+              + '    </div>';
+          $('#comment').append(card);
+          // $("#username").text(name)
+
+
+        });
+      },
+      error:function (){
+        alert("Error");
+      }
+    })
+
+
+
+  }
+
+
 
   function sendNoticeRequest(){
     const noticeId = [[${noticeId}]];
