@@ -8,6 +8,7 @@ import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.dto.UpdateRequestDto;
 import com.withus.withus.member.entity.Member;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MemberService {
@@ -24,7 +25,7 @@ public interface MemberService {
 
   void reportMember(Long memberId, ReportRequestDto reportRequestDto, Member member);
 
-  List<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
+  Page<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
 
   void inviteMember(Long memberId, Long clubId, Member member);
 

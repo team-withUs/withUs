@@ -15,9 +15,11 @@ import com.withus.withus.member.service.MemberServiceImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,9 +58,12 @@ public class MemberController {
 
   @GetMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> getMember(
-      @PathVariable("memberId") Long memberId
+      @PathVariable("memberId") Long memberId,
+      Model model
   ) {
     MemberResponseDto memberResponseDto = memberService.getMember(memberId);
+    model.addAttribute("memberResponse",memberResponseDto);
+
     return ResponseEntity
         .status(ResponseCode.GET_PROFILE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.GET_PROFILE, memberResponseDto));
@@ -67,9 +72,9 @@ public class MemberController {
   @PatchMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
       @PathVariable("memberId") Long memberId,
-      @Valid @ModelAttribute UpdateRequestDto updateRequestDto,
-      @AuthMember Member member
-  ) {
+      @AuthMember Member member,
+      @Valid @ModelAttribute UpdateRequestDto updateRequestDto
+      ) {
     MemberResponseDto memberResponseDto = memberService.updateMember(
         memberId,
         updateRequestDto,
@@ -105,11 +110,11 @@ public class MemberController {
   }
 
   @GetMapping("/club")
-  public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getMyClubList(
+  public ResponseEntity<CommonResponse<Page<ClubResponseDto>>> getMyClubList(
       Pageable pageable,
       @AuthMember Member member
   ) {
-    List<ClubResponseDto> clubResponseDtoList = memberService.getMyClubList(pageable,member);
+    Page<ClubResponseDto> clubResponseDtoList = memberService.getMyClubList(pageable,member);
 
     return ResponseEntity
         .status(ResponseCode.GET_MY_CLUBLIST.getHttpStatus())
