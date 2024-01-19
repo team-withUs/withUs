@@ -155,5 +155,4 @@ public class MemberController {
     return ResponseEntity.status(ResponseCode.INVITE_MEMBER.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""));
   }
-
 }

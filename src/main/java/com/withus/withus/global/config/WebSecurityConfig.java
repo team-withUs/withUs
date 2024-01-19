@@ -73,18 +73,13 @@ public class WebSecurityConfig {
 
     http.authorizeHttpRequests((authorizeHttpRequests) ->
         authorizeHttpRequests
-            .requestMatchers("/api/member/signup/**", "/api/member/login", "/api/member/loginPage")
-            .permitAll()// 회원가입, 로그인요청 인증허가
-            .requestMatchers("/")
-            .permitAll()
-
-            .requestMatchers("/css/**", "/js/**", "/img/**")
-            .permitAll()
-            .requestMatchers("/ws/**")
-            .permitAll()
-
-            .anyRequest().authenticated() // 그 외 모든 요청 인증처리
-
+                .requestMatchers("/api/member/signup/**", "/api/member/login", "/api/member/loginPage")
+                .permitAll()// 회원가입, 로그인요청 인증허가
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/ws/**" , "/")
+                .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/club/**")
+                .permitAll()
+                .anyRequest().authenticated() // 그 외 모든 요청 인증처리
     );
 
     http.logout()
