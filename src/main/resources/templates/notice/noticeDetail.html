@@ -81,11 +81,18 @@
       text-align: right;
     }
 
-    .pagination {
-      margin-top: 10px;
-      justify-content: center;
-    }
-    .page{
+
+    /*.pagination {*/
+    /*  margin-top: 10px;*/
+    /*  justify-content: center;*/
+    /*}*/
+    /*.page{*/
+    /*  justify-content: center;*/
+    /*}*/
+    .pageNav{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
     }
 
@@ -130,7 +137,7 @@
 <!--    </div>-->
   </div>
 
-  <nav aria-label="Page navigation example">
+  <nav aria-label="Page navigation example" class="pageNav">
     <ul class="pagination">
 <!--      <li class="page-item">-->
 <!--        <a class="page-link" href="#" aria-label="Previous">-->
@@ -181,7 +188,7 @@
           url:'/api/notice/'+noticeId+'/comment',
           contentType: 'application/json',
           success:function (result){
-            list =result.data;
+            const list = result.data;
 
             $(list).each(function (index,res){
               console.log(index+" : "+res.username);
