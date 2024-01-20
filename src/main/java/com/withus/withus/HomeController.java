@@ -48,35 +48,4 @@ public class HomeController {
     return "index";
   }
 
-  @GetMapping("/classification")
-  public String home(Model model,
-      @AuthMember Member member,
-      @PathVariable("category") ClubCategory category,
-      @RequestParam(value = "page", defaultValue = "1") int page,
-      @RequestParam(value = "size", defaultValue = "4") int size,
-      @RequestParam(value = "sortBy",defaultValue = "CreatedAt") String sortBy,
-      @RequestParam(value = "keyWord" ,defaultValue = "ace245") String keyWord
-  ){
-    PageableDto pageableDto = new PageableDto(page,size,sortBy);
-    List<ClubResponseDto> clubList = clubService.getsClubByCategory(category,pageableDto,keyWord );
-    Integer totalListCnt = clubList.size();
-    int count;
-    if(totalListCnt > 4){
-      count=totalListCnt/4+1;
-    }
-    else {
-      count=1;
-    }
-    List<Integer> countList = new ArrayList<>();
-    for(int i=0; i<count; i++){
-      countList.add(i+1);
-    }
-    if (member != null){
-      long memberId = member.getId();
-      model.addAttribute("memberId", memberId);
-    }
-    model.addAttribute("countList", countList);
-
-    return "index";
-  }
 }
