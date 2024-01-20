@@ -1,5 +1,7 @@
 package com.withus.withus.global.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.global.security.jwt.JwtUtil;
 import com.withus.withus.global.security.jwt.RefreshTokenRepository;
@@ -23,13 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomLogoutHandler implements LogoutHandler {
   private final RefreshTokenRepository refreshTokenRepository;
 
+  private final ObjectMapper objectMapper;
+
   private final RedisService redisService;
 
   private final JwtUtil jwtUtil;
 
   public CustomLogoutHandler(RefreshTokenRepository refreshTokenRepository,
-      RedisService redisService, JwtUtil jwtUtil) {
+      ObjectMapper objectMapper, RedisService redisService, JwtUtil jwtUtil) {
     this.refreshTokenRepository = refreshTokenRepository;
+    this.objectMapper = objectMapper;
     this.redisService = redisService;
     this.jwtUtil = jwtUtil;
   }
@@ -90,10 +95,12 @@ public class CustomLogoutHandler implements LogoutHandler {
     refreshTokenRepository.deleteByKeyLoginname(loginname);
 
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-    response.setStatus(ResponseCode.LOGOUT.getHttpStatus());
     response.setCharacterEncoding("utf-8");
+
     try {
-      response.getWriter().write("HttpStatus" + ":" + ResponseCode.LOGOUT.getHttpStatus() + "\n" + ResponseCode.LOGOUT.getMessage());
+      String jsonResponse = objectMapper.writeValueAsString(CommonResponse.of(ResponseCode.LOGOUT, ""));
+      response.getWriter().write(jsonResponse);
+
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

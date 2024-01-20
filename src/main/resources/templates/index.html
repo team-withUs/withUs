@@ -86,7 +86,6 @@
       margin: 0;
     }
 
-
     .category{
       width: 100%;
       display: flex;
@@ -94,6 +93,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .btn-group{
       margin-right: 20px;
       margin-left: 20px;
@@ -104,6 +104,7 @@
       border: 1px solid black;    border-radius: 10px;    display: inline-block;    font: inherit;    line-height: 1.5em;
       padding: 0.5em 1.7em 0.6em 1.7em;
     }
+
     .cardGroup{
       text-align: center;
     }
@@ -245,15 +246,18 @@
 
 
       if (memberId !== undefined && memberId !== null && memberId !== '') {
-        // memberId가 존재하면 로그인 버튼을 숨기고 채팅 이미지를 표시합니다.
         $('#loginBtn').hide();
         $('#chatting').show();
         $('#myInfo').show();
+        $('#create').show();
+        $('#logout').show();
       } else {
         // memberId가 존재하지 않으면 로그인 버튼을 표시하고 채팅 이미지를 숨깁니다.
         $('#loginBtn').show();
         $('#chatting').hide();
         $('#myInfo').hide();
+        $('#create').hide();
+        $('#logout').hide();
       }
 
       $("#loginBtn").on("click", function(e) {
@@ -266,6 +270,29 @@
 
       $("#myInfo").on("click", function(e) {
         window.location.href = host + '/api/member/profilePage/' + memberId;
+      });
+
+      $("#logout").on("click", function(e) {
+        var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+
+        if (confirmLogout) {
+
+          $.ajax({
+            type: 'Post',
+            url: '/api/member/logout',
+            contentType: ''
+          })
+          .done(function (res, status, xhr) {
+            window.location.href = host + '/'
+          })
+          .fail(function (xhr, status, error) {
+            console.error('로그아웃 요청 API 에러', error);
+          })
+
+        } else {
+          alert('로그아웃 취소');
+        }
+
       });
 
     });
@@ -353,8 +380,9 @@
         <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
           <img src="/img/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer; display: none; width: 35px; height: 35px; margin-right: 5px; margin-top: 5px">
           <h2 class="login" id="loginBtn" style="float: left; cursor: pointer; margin-top: 5px" >login</h2>
+          <img src="/img/create.png" id="create" class="create" style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
           <img src="/img/myInfo.png" id="myInfo" class="my-info" style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
-          <img src="/img/create.png"  class="create" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
+          <img src="/img/logout.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
         </div>
       </div>
     </header>
