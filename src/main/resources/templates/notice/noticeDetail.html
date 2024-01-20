@@ -96,6 +96,10 @@
       justify-content: center;
     }
 
+    page-item {
+      float: left;
+    }
+
 
 
   </style>
@@ -114,6 +118,12 @@
     </div>
   </header>
 </div>
+
+<div style="float: right; margin-right: 15%; margin-top: 5%">
+  <label style="float: left; font-size: large"><a href="/api/club/{clubId}/notice/noticeAddPage">수정</a></label>
+  <label style="float: left; margin-left: 10px; margin-right: 10px; font-size: large">/</label>
+  <label style="float: right; font-size: large">삭제</label>
+</div>>
 <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
 <div class="noticename">
   <p style="font-size: 150%;" id="noticeTitle"></p>
@@ -127,11 +137,15 @@
   <div class="card" id="comment">
 <!--    <div>-->
 <!--      <div class="card-header">-->
-<!--        <p id="username">작성자</p>-->
+<!--        <p>작성자</p>-->
 <!--      </div>-->
 <!--      <div class="card-body">-->
 <!--        <blockquote class="blockquote mb-0">-->
-<!--          <p>댓글 내용</p>-->
+<!--          <textarea style="float: left" disabled>댓글 내용</textarea>-->
+<!--          <div style="float: right">-->
+<!--            <button style="float: left" onclick="commentEdit()">수정</button>-->
+<!--            <button style="float: right" onclick="commentDelete()">삭제</button>-->
+<!--          </div>-->
 <!--        </blockquote>-->
 <!--      </div>-->
 <!--    </div>-->
@@ -195,16 +209,22 @@
               let name = res.username;
               let comment = res.content;
               let id = res.id;
-              const card = '<div id="' + id + '">\n'
+              const card = '<div style="margin-bottom: 15px">\n'
                   + '      <div class="card-header">\n'
                   + '        <p >'+name+'</p>\n'
                   + '      </div>\n'
                   + '      <div class="card-body">\n'
                   + '        <blockquote class="blockquote mb-0">\n'
-                  + '          <p>'+comment+'</p>\n'
+                  + '          <textarea style="float: left; width: 650px;height:60px;font-size:14px; margin-bottom: 10px" id="' + id + '" disabled>'+comment+'</textarea>\n'
+                  + '          <div style="float: right"> \n'
+                  + '             <button style="float: left; margin-right: 5px; font-size: small; display: none" id="Editr_'+id+'" onclick="commentEditRequest(\'' + id + '\')">수정 완료</button> \n'
+                  + '             <button style="float: left; margin-right: 5px; font-size: small" id="Edit_'+id+'" onclick="commentEdit(\'' + id + '\')">수정</button> \n'
+                  + '              <button style="float: right; margin-left: 5px; font-size: small" id="Delete_'+id+'" onclick="commentDelete(\'' + id + '\')">삭제</button> \n'
+                  + '           </div> \n'
                   + '        </blockquote>\n'
                   + '      </div>\n'
                   + '    </div>';
+
               $('#comment').append(card);
               // $("#username").text(name)
 
@@ -233,7 +253,7 @@
     const cntList = [[${countList}]];
     $(cntList).each(function (index,res){
       // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
-      const card = '<li class="page-item"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
+      const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
       $('#page').append(card);
     })
 
@@ -244,79 +264,65 @@
 
   })
 
+  function commentEditRequest(id){
+    console.log("수정Request",id);
+    const noticeId = [[${noticeId}]];
+    let content = $('#' + id).val();
+    $.ajax({
+      type:"PATCH",
+      url:'/api/notice/'+noticeId+'/comment/'+id,
+      contentType:"application/json",
+      dataType:"json",
+      data : JSON.stringify({
+        "content" : content
+      }),
+      success : function (response){
+        if(response.msg === 'Club 업데이트 성공'){
+          console.log('Club 업데이트 성공',response)
+        }
+        else {
+          console.error('Club 업데이트 실패 :',response)
+        }
+        location.reload();
+      },
+      error: function (error){
+        console.error('에러 :',error)
+      }
+    })
 
-  function showComment(){
+
+  }
+
+  function commentEdit(id){
+    let textarea = document.getElementById(''+id+'');
+    textarea.disabled = false;
+    let EditrButton = document.getElementById('Editr_'+id+'');
+    EditrButton.style.display = 'block';
+    let EditButton = document.getElementById('Edit_'+id+'');
+    EditButton.style.display = 'none';
+    let DeleteButton = document.getElementById('Delete_'+id+'');
+    DeleteButton.style.display = 'none';
+
+  }
+
+  function commentDelete(id){
+    console.log("삭제",id)
+    if(confirm("삭제 하시겠습니까?")){
+      alert("삭제 되었습니다.");
+    }
+    else {
+      alert("취소를 하셨습니다.");
+    }
+  }
+
+
+
+  function NoticeEdit(){
     let dataSource = null;
     const noticeId = [[${noticeId}]];
     const count = [[${count}]];
     console.log(noticeId);
-
-
-
-
-
-
-
-    // dataSource = `/api/notice/${noticeId}/comment`;
-    //
-    // console.log(dataSource)
-
-
-
-    // $('#comment').empty();
-    // $('#pagination').pagination({
-    //   dataSource,
-    //   locator: 'content',
-    //   alias:{
-    //     pageNumber: 'page',
-    //     pageSize: 'size'
-    //   },
-    //   totalNumberLocator: (response) =>{
-    //     return response.totalElements;
-    //   },
-    //   pageSize: 10,
-    //   showPrevious: true,
-    //   showNext: true,
-    //   ajax:{
-    //     beforeSend: function (){
-    //       $('#comment').html('상품 불러오는 중...');
-    //     },
-    //     error(error, status, request) {
-    //       if (error.status === 403) {
-    //         console.log(error);
-    //         $('html').html(error.responseText);
-    //         return;
-    //       }
-    //     }
-    //   },
-    //   callback: function (response, pagination) {
-    //     $('#comment').empty();
-    //     for(let i = 0; i<response.length; i++){
-    //       let product = response[i];
-    //       let tempHtml = addItem(product)
-    //       $('#comment').append(tempHtml);
-    //     }
-    //   }
-    // })
-
   }
-
-  // function addItem(product){
-  //
-  //   return '<div id="comment_'+ product.id +'">\n'
-  //       + '      <div class="card-header">\n'
-  //       + '        <p >${product.name}</p>\n'
-  //       + '      </div>\n'
-  //       + '      <div class="card-body">\n'
-  //       + '        <blockquote class="blockquote mb-0">\n'
-  //       + '          <p>'+product.content+'</p>\n'
-  //       + '        </blockquote>\n'
-  //       + '      </div>\n'
-  //       + '    </div>';
-  // }
-
-
-
 
 
 
@@ -341,13 +347,18 @@
           let name = res.username;
           let comment = res.content;
           let id = res.id;
-          const card = '<div id="' + id + '">\n'
+          const card = '<div style="margin-bottom: 15px">\n'
               + '      <div class="card-header">\n'
               + '        <p >'+name+'</p>\n'
               + '      </div>\n'
               + '      <div class="card-body">\n'
               + '        <blockquote class="blockquote mb-0">\n'
-              + '          <p>'+comment+'</p>\n'
+              + '          <textarea style="float: left; width: 650px;height:60px;font-size:14px; margin-bottom: 10px" id="' + id + '" disabled>'+comment+'</textarea>\n'
+              + '          <div style="float: right"> \n'
+              + '             <button style="float: left; margin-right: 5px; font-size: small; display: none" id="Editr_'+id+'" onclick="commentEditRequest(\'' + id + '\')">수정 완료</button> \n'
+              + '             <button style="float: left; margin-right: 5px; font-size: small" id="Edit_'+id+'" onclick="commentEdit(\'' + id + '\')">수정</button> \n'
+              + '              <button style="float: right; margin-left: 5px; font-size: small" id="Delete_'+id+'" onclick="commentDelete(\'' + id + '\')">삭제</button> \n'
+              + '           </div> \n'
               + '        </blockquote>\n'
               + '      </div>\n'
               + '    </div>';
@@ -361,9 +372,6 @@
         alert("Error");
       }
     })
-
-
-
   }
 
 
@@ -392,6 +400,7 @@
         console.error('에러 :',error)
       }
     })
+    location.reload();
 
   }
 
