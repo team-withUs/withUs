@@ -273,6 +273,10 @@
         window.location.href = host + '/api/member/profilePage/' + memberId;
       });
 
+      $("#create").on("click", function(e) {
+        window.location.href = host + '/api/club/post-club';
+      });
+
 
       const cntList = [[${countList}]];
       $(cntList).each(function (index,res){
@@ -526,6 +530,8 @@
       })
     }
   </script>
+
+
 </head>
 <body style="background-image: url('/img/background.jpg'); background-size: cover; ">
 <div class="main ">
