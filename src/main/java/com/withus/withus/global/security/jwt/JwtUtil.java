@@ -15,12 +15,14 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,12 +69,12 @@ public class JwtUtil {
         Date date = new Date();
 
         return Jwts.builder()
-                        .setSubject(loginname) // 사용자 식별자값(ID)
-                        .claim(AUTHORIZATION_KEY, "USER")
-                        .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료 시간
-                        .setIssuedAt(date) // 발급일
-                        .signWith(key, signatureAlgorithm) // 암호화 알고리즘
-                        .compact();
+                .setSubject(loginname) // 사용자 식별자값(ID)
+                .claim(AUTHORIZATION_KEY, "USER")
+                .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME)) // 만료 시간
+                .setIssuedAt(date) // 발급일
+                .signWith(key, signatureAlgorithm) // 암호화 알고리즘
+                .compact();
     }
 
     // RefreshToken 생성
@@ -141,7 +143,6 @@ public class JwtUtil {
             throw new NullPointerException();
         }
     }
-
 
 
     // 토큰 검증

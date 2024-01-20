@@ -2,6 +2,9 @@ $(document).ready(function () {
     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
     console.log(clubId)
 
+    // 초대된 목록 초기화
+    var inviteeList = [];
+
     $.ajax({
         type: "GET",
         url: "/api/club/" + clubId,
@@ -23,6 +26,8 @@ $(document).ready(function () {
                 $('.all-container').css('background-image', 'url(' + imageURL + ')');
             }
 
+            // 초대된 목록 불러오기
+            loadInviteeList();
         },
         error: function (xhr, status, error) {
             console.error("에러상태: " + status + ", 에러: " + error);
@@ -35,6 +40,7 @@ $(document).ready(function () {
         saveData();
         window.location.href = '/api/club/main-club/' + clubId;
     });
+
     // 취소 버튼 눌렀을 때 경로 이동
     $("#imgBtn3").on("click", function () {
         window.location.href = '/api/club/main-club/' + clubId;
@@ -52,7 +58,7 @@ $(document).ready(function () {
             type: "GET",
             url: "/api/member/email/" + email,
             success: function (inviteeResponse) {
-                var memberId = Number(window.location.pathname.split('member/').pop().replace(/[^0-9]/g, ''));
+                var memberId = inviteeResponse.data.id;
 
                 console.log(memberId)
                 var email = inviteeResponse.data.email;
@@ -82,6 +88,15 @@ $(document).ready(function () {
 
     function updateInviteContainer(email) {
         $("#invite-container").append("<div>초대 이름: " + email + "</div>");
+        // 초대된 목록에 추가
+        inviteeList.push(email);
+    }
+
+    function loadInviteeList() {
+        // 초대된 목록 불러와서 표시
+        inviteeList.forEach(function (email) {
+            updateInviteContainer(email);
+        });
     }
 
     function saveData() {
@@ -97,6 +112,10 @@ $(document).ready(function () {
         console.log(fileInput.files);
         if (fileInput.files.length > 0) {
             formData.append("imageFile", fileInput.files[0]);
+        } else {
+            // 선택한 파일이 없을 때, 기존 이미지의 URL을 추가
+            var imageURL = $("#uploadedImage").attr("src");
+            formData.append("imageURL", imageURL);
         }
 
         console.log("test", formData)
@@ -131,13 +150,19 @@ $(document).ready(function () {
 function handleFileSelect() {
     var input = document.getElementById('fileInput');
     var container = $('.all-container');
+
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
             container.css('background-image', 'url(' + e.target.result + ')');
         };
+
         reader.readAsDataURL(input.files[0]);
+    } else if (!input.value) {
+        // 파일을 선택하지 않은 경우, 기존 이미지를 다시 불러옴
+        var imageURL = $("#uploadedImage").attr("src");
+        container.css('background-image', 'url(' + imageURL + ')');
     }
 }
 
