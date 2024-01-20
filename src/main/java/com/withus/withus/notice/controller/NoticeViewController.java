@@ -30,6 +30,7 @@ public class NoticeViewController {
       @PathVariable("noticeId") Long noticeId, Model model){
     Integer totalListCnt = commentService.count(noticeId);
     int count;
+
     if(totalListCnt==0){
       count=0;
     }
