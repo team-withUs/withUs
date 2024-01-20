@@ -16,12 +16,12 @@ public class MemberViewController {
 
   @GetMapping("/signupPage")
   public String getSignupPage(){
-    return "/auth/signupPage";
+    return "auth/signupPage";
   }
 
   @GetMapping("/loginPage")
   public String getLoginPage(){
-    return "/auth/loginPage";
+    return "auth/loginPage";
   }
 
   @GetMapping("/profilePage/{memberId}")
