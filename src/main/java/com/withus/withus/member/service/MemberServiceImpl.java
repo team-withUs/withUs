@@ -231,7 +231,7 @@ public class MemberServiceImpl implements MemberService{
   }
 
   public Member findMemberByMemberId(Long memberId){
-    return memberRepository.findMemberByIdAndIsActive(memberId, true).orElseThrow(
+    return memberRepository.findByIdAndIsActive(memberId, true).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }
@@ -239,7 +239,7 @@ public class MemberServiceImpl implements MemberService{
 
 
   public Member findMemberByLoginname(String loginname){
-    return memberRepository.findMemberByLoginnameAndIsActive(loginname, true).orElseThrow(
+    return memberRepository.findByLoginnameAndIsActive(loginname, true).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }
