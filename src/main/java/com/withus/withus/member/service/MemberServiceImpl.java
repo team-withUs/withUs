@@ -123,11 +123,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Member updatedMember = findMemberByMemberId(memberId);
-    if(updatedMember.getFilename() != null){
-      s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
-    }
 
     if(updateRequestDto.imageFile()!=null) {
+      if(updatedMember.getFilename() != null){
+        s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
+      }
       String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
       updatedMember.update(
           updateRequestDto,
