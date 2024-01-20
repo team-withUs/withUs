@@ -2,7 +2,6 @@ package com.withus.withus.member.controller;
 
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +16,12 @@ public class MemberViewController {
 
   @GetMapping("/signupPage")
   public String getSignupPage(){
-    return "signupPage";
+    return "/auth/signupPage";
   }
 
   @GetMapping("/loginPage")
   public String getLoginPage(){
-    return "loginPage";
+    return "/auth/loginPage";
   }
 
   @GetMapping("/profilePage/{memberId}")

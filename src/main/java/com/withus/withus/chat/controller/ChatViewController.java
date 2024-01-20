@@ -1,8 +1,9 @@
 package com.withus.withus.chat.controller;
 
 import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.global.exception.BisException;
+import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,17 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 public class ChatViewController {
 
-  private final MemberServiceImpl memberService;
-
   @GetMapping("/chatRoom/{roomId}")
   public String chatRoomPage(
       @PathVariable("roomId") Long roomId,
       Model model,
       @AuthMember Member member
   ) {
-    member = memberService.findMemberByLoginname("junwoo1");
-
-
     model.addAttribute("roomId", roomId);
     model.addAttribute("memberName", member.getUsername());
     model.addAttribute("memberId", member.getId());
@@ -35,8 +31,12 @@ public class ChatViewController {
   @GetMapping("/chatRoomList/{memberId}")
   public String chatRoomListPage(
       @PathVariable("memberId") Long memberId,
-      Model model
+      Model model,
+      @AuthMember Member member
   ) {
+    if (!member.getId().equals(memberId)) {
+      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+    }
 
     model.addAttribute("memberId", memberId);
     return "/chat/chatRoomList";
