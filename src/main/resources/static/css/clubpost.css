@@ -16,17 +16,87 @@ body {
     border-radius: 15px;
     /*background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896);*/
     background-color: #98a9bc;
-    width: 1600px;
+    width: 100%;
     height: 950px;
     margin: 0 auto;
 }
 
 /*클럽 이름*/
-#club-name {
-    margin: 30px;
-    font-size: 40px;
-
+.main{
+    padding-right: 20%;
+    padding-left: 20%;
+    display: flex;
+    flex-direction: column;
 }
+
+.title-group {
+    margin-left: 10%;
+    margin-top: 10px;
+}
+
+.title1 {
+    margin-left: -5%;
+}
+
+
+.title2 {
+    float: right;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.title2 img {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin: 5px;
+}
+
+.chat-icon {
+    float: left;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.login {
+    float: left;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.my-info {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-top: 5px
+}
+
+.logout {
+    float: right;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-top: 5px;
+}
+
+.create {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-top: 5px
+}
+
+.withUs {
+    float: left;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 30px;
+}
+/* --------------------------제목 추가------------------------------*/
 
 #club-title {
     text-align: left;

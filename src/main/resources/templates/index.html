@@ -273,6 +273,10 @@
         window.location.href = host + '/api/member/profilePage/' + memberId;
       });
 
+      $("#create").on("click", function(e) {
+        window.location.href = host + '/api/club/post-club';
+      });
+
       $("#myclub").on("click", function(e){
         getMyClubs();
       });

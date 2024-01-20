@@ -1,5 +1,7 @@
 package com.withus.withus.club.controller;
 
+import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.dto.PageableDto;
 import com.withus.withus.notice.service.NoticeService;
@@ -18,12 +20,27 @@ public class ClubViewController {
     private final NoticeService noticeService;
 
     @GetMapping("/main-club/{clubId}")
-    public String getMainClub() {
+    public String getMainClub(
+        @AuthMember Member member,
+        Model model
+    ) {
+
+        if (member != null) {
+            model.addAttribute("isLogin", true);
+            model.addAttribute("memberId", member.getId());
+        } else {
+            model.addAttribute("isLogin", false);
+        }
+
         return "club/main-club";
     }
 
     @GetMapping("/{clubId}/revise-club")
-    public String getReviseClub() {
+    public String getReviseClub(
+        @AuthMember Member member,
+        Model model
+    ) {
+        model.addAttribute("memberId", member.getId());
         return "club/revise-club";
     }
 
@@ -38,7 +55,12 @@ public class ClubViewController {
     }
 
     @GetMapping("/post-club")
-    public String postClub() {
+    public String postClub(
+        @AuthMember Member member,
+        Model model
+    ) {
+
+        model.addAttribute("memberId", member.getId());
         return "club/post-club";
     }
     @PostMapping("/post-club")
