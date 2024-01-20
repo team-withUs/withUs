@@ -22,6 +22,7 @@ public class ClubViewController {
     @GetMapping("/main-club/{clubId}")
     public String getMainClub(
         @AuthMember Member member,
+        @PathVariable("clubId") Long clubId,
         Model model
     ) {
 
@@ -31,6 +32,21 @@ public class ClubViewController {
         } else {
             model.addAttribute("isLogin", false);
         }
+
+
+        Integer totalList = noticeService.count(clubId);
+        int count;
+        if (totalList > 3) {
+            count=totalList/3+1;
+        }else{
+            count=1;
+        }
+        List<Integer> countList = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            countList.add(i + 1);
+        }
+        model.addAttribute("clubId", clubId);
+        model.addAttribute("countList", countList);
 
         return "club/main-club";
     }

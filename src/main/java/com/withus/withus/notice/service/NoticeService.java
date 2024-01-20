@@ -20,4 +20,6 @@ public interface NoticeService {
   void createReportNotice(Long noticeId, ReportRequestDto requestDto, Member member);
 
   List<NoticeResponseDto> getsNotice(Long clubId, PageableDto pageableDto);
+
+  Integer count(Long clubId);
 }
