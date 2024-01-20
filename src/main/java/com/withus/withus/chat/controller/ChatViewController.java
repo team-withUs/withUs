@@ -25,7 +25,7 @@ public class ChatViewController {
     model.addAttribute("roomId", roomId);
     model.addAttribute("memberName", member.getUsername());
     model.addAttribute("memberId", member.getId());
-      return "/chat/chatRoom";
+      return "chat/chatRoom";
   }
 
   @GetMapping("/chatRoomList/{memberId}")
@@ -39,6 +39,6 @@ public class ChatViewController {
     }
 
     model.addAttribute("memberId", memberId);
-    return "/chat/chatRoomList";
+    return "chat/chatRoomList";
   }
 }
