@@ -10,6 +10,13 @@
     const host = 'http://' + window.location.host;
 
     function onLogin(){
+
+      // 쿠키 삭제
+      document.cookie.split(";").forEach(function(c) {
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+
+
       let loginname = $('#loginname').val();
       let password = $('#password').val();
 

@@ -10,7 +10,8 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> findByIsActiveAndId(Boolean isActive, Long commentId);
 
-    List<Comment> findAllByIsActive(boolean IsActive, Pageable pageable);
+
+    List<Comment> findAllByIsActiveAndNoticeId(boolean IsActive,Long noticeId, Pageable pageable);
 
     Integer countByIsActiveAndNoticeId(boolean isActive, Long noticeId);
 }

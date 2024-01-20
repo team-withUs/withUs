@@ -1,5 +1,7 @@
 package com.withus.withus.global.security.jwt;
 
+import com.withus.withus.global.exception.BisException;
+import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.global.utils.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -96,6 +98,10 @@ public class JwtUtil {
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24); // 쿠키 유효기간 1일
 
+        if (tokenName.equals("refreshToken")) {
+            cookie.setHttpOnly(true);
+        }
+
         // Response 객체에 Cookie 추가
         res.addCookie(cookie);
     }
@@ -120,7 +126,7 @@ public class JwtUtil {
             return false;
         }
 
-        throw new IllegalArgumentException("존재하지 않는 토큰입니다.");
+        throw new BisException(ErrorCode.NOT_EXIST_TOKEN);
     }
 
     // AccessToken 로그아웃 여부 검사

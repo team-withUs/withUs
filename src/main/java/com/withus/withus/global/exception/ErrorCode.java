@@ -54,6 +54,8 @@ public enum ErrorCode {
 
     NOT_EXIST_ACCESS_TOKEN(NOT_FOUND, "엑세스토큰이 존재하지 않슴니다."),
 
+    NOT_EXIST_TOKEN(NOT_FOUND, "토큰이 존재하지 않습니다"),
+
     NOT_FOUND_CLUB(NOT_FOUND, "존재하지 않는 클럽입니다."),
 
     NOT_FOUND_MEMBER(NOT_FOUND, "해당 멤버를 찾을 수 없습니다"),
