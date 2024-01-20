@@ -18,7 +18,24 @@ public class ClubViewController {
     private final NoticeService noticeService;
 
     @GetMapping("/main-club/{clubId}")
-    public String getMainClub() {
+    public String getMainClub(
+            @PathVariable("clubId") Long clubId,
+            Model model
+    ) {
+        Integer totalList = noticeService.count(clubId);
+        int count;
+        if (totalList > 3) {
+            count=totalList/3+1;
+        }else{
+            count=1;
+        }
+        List<Integer> countList = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            countList.add(i + 1);
+        }
+        model.addAttribute("clubId", clubId);
+        model.addAttribute("countList", countList);
+
         return "club/main-club";
     }
 
@@ -46,28 +63,27 @@ public class ClubViewController {
             return "club/post-club";
     }
 
-//    @GetMapping("/{clubId}/notice")
+//    @GetMapping("/main-club/{clubId}")
 //    public String getNotice(
 //            @PathVariable("clubId") Long clubId,
 //            Model model
 //    ) {
-//        List<NoticeResponseDto> noticeList = noticeService.getsNotice(clubId, PageableDto.getsPageableDto(1 , 2, "createdAt"));
-//
+//        Integer totalList = noticeService.count(clubId);
 //        int count;
-//        if (noticeList.size() > 3) {
-//            count = (noticeList.size() / 4) + 1;
-//        } else {
-//            count = 1;
+//        if (totalList > 4) {
+//            count=totalList/4+1;
+//        }else{
+//            count=1;
 //        }
 //        List<Integer> countList = new ArrayList<>();
 //        for (int i = 0; i < count; i++) {
 //            countList.add(i + 1);
 //        }
+//        System.out.println("===================================="+countList.size());
 //        model.addAttribute("clubId", clubId);
-//        model.addAttribute("noticeList", noticeList);
 //        model.addAttribute("countList", countList);
-//
-//        return "club/club-main/{clubId}/clubnotice";
+
+//        return "club/main-club";
 //    }
 
 }

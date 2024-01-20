@@ -45,7 +45,12 @@ body {
 #deleteButton{
     margin-left: auto;
 }
-
+.pageNav{
+    text-align: center;
+}
+.page-link{
+    text-align: center;
+}
 /*notice*/
 
 #notice-container {
@@ -58,11 +63,21 @@ body {
 .board-box {
     background-color: #fff;
     border: 1px solid #ddd;
+    height: 15px;
     border-radius: 8px;
     padding: 15px;
     margin-right: 10px;
     margin-bottom: 10px;
+    text-align:center;
 }
+#Notice-post{
+    float: right;
+    margin-bottom: 80px;
+}
+.page-itme{
+    text-align: center;
+}
+
 .board-button{
     float: right;
     background: none;

@@ -15,15 +15,7 @@ import com.withus.withus.notice.service.NoticeService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -69,9 +61,11 @@ public class NoticeController {
   @GetMapping("/club/{clubId}/notice")
   public ResponseEntity<CommonResponse<List<NoticeResponseDto>>> getsNotice(
       @PathVariable("clubId") Long clubId,
-      PageableDto pageableDto
-
+      @RequestParam(value = "page", defaultValue = "1") int page,
+      @RequestParam(value = "size", defaultValue = "4") int size,
+      @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy
   ) {
+    PageableDto pageableDto = new PageableDto(page,size,sortBy);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GETS.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GETS,
             noticeService.getsNotice(clubId, pageableDto)));
