@@ -96,8 +96,6 @@ public class Member extends TimeStamp {
         this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
         this.tag = updateRequestDto.tag();
-        this.imageURL = null;
-        this.filename = null;
     }
 
     public void inactive() {

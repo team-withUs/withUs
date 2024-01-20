@@ -1,5 +1,7 @@
 package com.withus.withus.club.controller;
 
+import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeResponseDto;
 import com.withus.withus.notice.dto.PageableDto;
 import com.withus.withus.notice.service.NoticeService;
@@ -19,9 +21,19 @@ public class ClubViewController {
 
     @GetMapping("/main-club/{clubId}")
     public String getMainClub(
-            @PathVariable("clubId") Long clubId,
-            Model model
+        @AuthMember Member member,
+        @PathVariable("clubId") Long clubId,
+        Model model
     ) {
+
+        if (member != null) {
+            model.addAttribute("isLogin", true);
+            model.addAttribute("memberId", member.getId());
+        } else {
+            model.addAttribute("isLogin", false);
+        }
+
+
         Integer totalList = noticeService.count(clubId);
         int count;
         if (totalList > 3) {
@@ -40,7 +52,11 @@ public class ClubViewController {
     }
 
     @GetMapping("/{clubId}/revise-club")
-    public String getReviseClub() {
+    public String getReviseClub(
+        @AuthMember Member member,
+        Model model
+    ) {
+        model.addAttribute("memberId", member.getId());
         return "club/revise-club";
     }
 
@@ -55,7 +71,12 @@ public class ClubViewController {
     }
 
     @GetMapping("/post-club")
-    public String postClub() {
+    public String postClub(
+        @AuthMember Member member,
+        Model model
+    ) {
+
+        model.addAttribute("memberId", member.getId());
         return "club/post-club";
     }
     @PostMapping("/post-club")
@@ -63,27 +84,28 @@ public class ClubViewController {
             return "club/post-club";
     }
 
-//    @GetMapping("/main-club/{clubId}")
+//    @GetMapping("/{clubId}/notice")
 //    public String getNotice(
 //            @PathVariable("clubId") Long clubId,
 //            Model model
 //    ) {
-//        Integer totalList = noticeService.count(clubId);
+//        List<NoticeResponseDto> noticeList = noticeService.getsNotice(clubId, PageableDto.getsPageableDto(1 , 2, "createdAt"));
+//
 //        int count;
-//        if (totalList > 4) {
-//            count=totalList/4+1;
-//        }else{
-//            count=1;
+//        if (noticeList.size() > 3) {
+//            count = (noticeList.size() / 4) + 1;
+//        } else {
+//            count = 1;
 //        }
 //        List<Integer> countList = new ArrayList<>();
 //        for (int i = 0; i < count; i++) {
 //            countList.add(i + 1);
 //        }
-//        System.out.println("===================================="+countList.size());
 //        model.addAttribute("clubId", clubId);
+//        model.addAttribute("noticeList", noticeList);
 //        model.addAttribute("countList", countList);
-
-//        return "club/main-club";
+//
+//        return "club/club-main/{clubId}/clubnotice";
 //    }
 
 }
