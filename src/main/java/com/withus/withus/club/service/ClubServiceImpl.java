@@ -120,6 +120,7 @@ public class ClubServiceImpl implements ClubService {
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
     }
+
     @Override
     @Transactional
     public String deleteClub(Long clubId, Member member) {
@@ -127,15 +128,13 @@ public class ClubServiceImpl implements ClubService {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
         Club club = verifyMember(clubId);
-        if(!club.getCreator().equals(member)){
-            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
-        }
         club.delete();
         return "Club delete successfully";
     }
     private boolean existByClubId(Long clubId) {
         return clubRepository.existsById(clubId);
     }
+
     @Override
     public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
         if (StringUtils.isBlank(reportClubRequestDto.content())) {
