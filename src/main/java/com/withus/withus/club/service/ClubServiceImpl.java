@@ -106,7 +106,9 @@ public class ClubServiceImpl implements ClubService {
                 filename = newImageFile;
             } else {
                 if (club.getImageUrl() != null) {
-                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
+//                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
+                    filename = club.getFilename();
+                    imageUrl = club.getImageUrl();
                 }
                 club.setImgUrl(null);
             }
@@ -125,6 +127,9 @@ public class ClubServiceImpl implements ClubService {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
         Club club = verifyMember(clubId);
+        if(!club.getCreator().equals(member)){
+            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+        }
         club.delete();
         return "Club delete successfully";
     }
