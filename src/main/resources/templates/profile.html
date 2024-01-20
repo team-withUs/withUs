@@ -7,6 +7,58 @@
   <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
   <title>회원 정보</title>
 
+  <style>
+    body {
+      background-image: url('/img/background.jpg'); /* 이미지 URL로 설정 */
+      background-size: cover; /* 배경 이미지를 창에 맞추기 */
+    }
+
+    .main{
+      padding-right: 20%;
+      padding-left: 20%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .title {
+      cursor: pointer;
+    }
+
+    .title img {
+      width: 35px;
+      height: 35px;
+      margin-right: 5px;
+    }
+
+    .icon {
+      display: flex;
+      flex-direction: row; /* 수정: 수평으로 나란히 표시 */
+      justify-content: space-between; /* 수정: 여백을 이용해 간격 조절 */
+      align-items: center;
+    }
+
+    .nameBlock {
+      text-align: center;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .emailBlock {
+      text-align: center;
+      padding: 10px;
+    }
+
+
+
+  </style>
+
   <script th:inline="javascript">
     const host = 'http://' + window.location.host;
 
@@ -17,8 +69,13 @@
       console.log(memberId);
 
       if (isSameMember) {
-        $('#chatting').hide();
+        $('#createChatting').hide();
         $('#inviting').hide();
+        $('#updateBtn').show();
+      } else {
+        $('#createChatting').show();
+        $('#inviting').show();
+        $('#updateBtn').hide();
       }
 
       $.ajax({
@@ -36,22 +93,55 @@
           $('#email').text(response.data.email);
           $('#introduction').text(response.data.introduction);
 
-          let tagArray = JSON.parse(response.data.tag);
-          tagArray.forEach(function(tag) {
-            $('#tag').append('#' + tag.trim()+'  ');
-          });
+          if (response.data.tag !== null) {
+            let tagArray = JSON.parse(response.data.tag);
+            tagArray.forEach(function(tag) {
+              $('#tag').append('#' + tag.trim()+'  ');
+            });
+          }
         },
         error: function(error){
           console.error("에러 :", error)
         }
       });
-    });
+
+      $("#chatting").on("click", function(e) {
+        window.location.href = host + '/api/chat/chatRoomList/' + memberId;
+      });
+
+      $("#logout").on("click", function(e) {
+        var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+
+        if (confirmLogout) {
+
+          $.ajax({
+            type: 'Post',
+            url: '/api/member/logout',
+            contentType: ''
+          })
+          .done(function (res, status, xhr) {
+            window.location.href = host + '/'
+          })
+          .fail(function (xhr, status, error) {
+            console.error('로그아웃 요청 API 에러', error);
+          })
+
+        } else {
+          alert('로그아웃 취소');
+        }
+      });
+
+
+      $("#createChatting").on("click", function(e) {
+        chattingClicked();
+      });
+    })
+
 
     function chattingClicked() {
-      // 클릭되었을 때 실행할 동작을 정의
-      var atk = localStorage.getItem("accessToken");
-      var memberId = /*[[${memberId}]]*/ '';
+      const memberId = /*[[${memberId}]]*/ '';
 
+      console.log(memberId);
       // 채팅방 생성 or 기존 roomId 가져오기
       $.ajax({
         type: 'POST',
@@ -59,8 +149,11 @@
         contentType: 'application/json',
       })
       .done(function (res) {
-        // 성공적으로 처리된 경우의 동작
-        var roomId = res.data.roomId;
+        console.log(res);
+        if (res && res.data && res.data) {
+          var roomId = res.data;
+        }
+        console.log(roomId);
         // 채팅방으로 이동
         $.ajax({
           type: 'GET',
@@ -70,9 +163,9 @@
         .done(function (res, status, xhr) {
           window.location.href = host + '/api/chat/chatRoom/' + roomId;
         })
-
-
-        console.log(roomId);
+        .fail(function (xhr, status, error) {
+            console.error('채팅방 요청 API 에러', error);
+        })
       })
       .fail(function (xhr, status, error) {
         // 실패한 경우의 동작
@@ -80,47 +173,84 @@
       });
     }
 
-    function updateProfile(){
+
+    function updateProfile() {
       var memberId = /*[[${memberId}]]*/ '';
       let url = '/api/member/updateProfilePage/' + memberId;
       location.href = url;
     }
   </script>
 </head>
-<body style="background-image: url('/img/background.jpg'); background-size: cover;">
+<body>
+<div class="main ">
+  <div class="title">
+    <header>
+      <div class="title-group" role="group">
+        <div class="title">
+          <h2 class="withUs" th:onclick="|location.href='@{/}'|" style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
+        </div>
+        <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
+          <img src="/img/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
+          <img src="/img/logout.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
+        </div>
+      </div>
+    </header>
+  </div>
+</div>
+
+
+
+
 <div style="margin: 40px 35% 200px 35%">
   <div>
     <img id="profileImage"
          style="border-radius: 100%; height: 170px; width: 170px; float:left"
          class="col-auto">
   </div>
+
   <div style="padding-top: 30px">
-    <h5 id="username"></h5>
-    <h5 style="margin-top: 50px" id="email"></h5>
-  </div>
-  <div style="margin-top:150px; background-color: beige">
-    <h5 id="tag"></h5>
-  </div>
-  <div style="margin-top:100px; background-color: beige; height: 200px">
-    <h5 id="introduction"></h5>
-  </div>
-  <div>
-    <div class="d-grid col-3 mx-auto" style="padding: 15px 0 5px 0 ">
-      <button type="button"
-              class="btn btn-primary" onclick="updateProfile()">수정하기
-      </button>
-      <div style="margin-top:50px; margin-left: 15%" id="chatting" onclick="chattingClicked()">
-        <img src="/img/message.png"
-             style="border-radius: 100%; height: 85px; width: 85px; float:left"
-             class="col-auto">
-      </div>
-      <div style="margin-top:50px; margin-left: 60% " id="inviting">
-        <img src="/img/invite.png"
-             style="border-radius: 100%; height: 100px; width: 100px; float:left"
-             class="col-auto">
-      </div>
+    <div class="nameBlock">
+      <h5 id="username"></h5>
+    </div>
+    <div class="emailBlock">
+      <h5 id="email"></h5>
     </div>
   </div>
+
+  <div style="margin-top:50px;">
+    <h4> Tag </h4>
+    <h5 id="tag" style="background-color: beige"> </h5>
+  </div>
+
+  <div style="margin-top: 50px;">
+    <h4> 자기소개 </h4>
+    <div style="background-color: beige; height: 100px">
+      <h5 id="introduction"> 자기소개 </h5>
+    </div>
+  </div>
+
+
+  <div class="icon">
+      <button type="button" id="updateBtn"
+              style="float: right; margin-top: 20px; margin-left: 83%"
+              class="btn btn-primary" onclick="updateProfile()">수정하기
+      </button>
+
+      <div id="createChatting">
+        <img src="/img/message.png"
+             style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; margin-top: 40px; cursor: pointer"
+             class="message">
+      </div>
+
+      <div style="  " id="inviting">
+        <img src="/img/invite.png"
+             style="border-radius: 100%; height: 80px; width: 80px; float:right; margin-right: 120px; margin-top: 40px; cursor: pointer"
+             class="invite">
+      </div>
+    </div>
+
 </div>
+
+
 </body>
 </html>
