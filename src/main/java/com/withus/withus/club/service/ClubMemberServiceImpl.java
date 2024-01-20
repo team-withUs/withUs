@@ -24,6 +24,11 @@ public class ClubMemberServiceImpl implements ClubMemberService {
     clubMemberRepository.save(clubMember);
   }
 
+  @Override
+  public List<ClubMember> getInvitedUserByClub(Long clubId) {
+    return clubMemberRepository.findByClubId(clubId);
+  }
+
 
   public ClubMember findClubMemberByMemberIdAndClubId(Member member, Long clubId){
     return clubMemberRepository.findClubMemberByMemberIdAndClubId(member.getId(), clubId)

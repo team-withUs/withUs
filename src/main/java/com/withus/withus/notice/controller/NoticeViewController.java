@@ -30,7 +30,11 @@ public class NoticeViewController {
       @PathVariable("noticeId") Long noticeId, Model model){
     Integer totalListCnt = commentService.count(noticeId);
     int count;
-    if(totalListCnt > 4){
+
+    if(totalListCnt==0){
+      count=0;
+    }
+    else if(totalListCnt > 4){
       count=totalListCnt/4+1;
     }
     else {

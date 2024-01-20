@@ -82,13 +82,7 @@
     }
 
 
-    /*.pagination {*/
-    /*  margin-top: 10px;*/
-    /*  justify-content: center;*/
-    /*}*/
-    /*.page{*/
-    /*  justify-content: center;*/
-    /*}*/
+
     .pageNav{
       display: flex;
       flex-direction: column;
@@ -120,10 +114,10 @@
 </div>
 
 <div style="float: right; margin-right: 15%; margin-top: 5%">
-  <label style="float: left; font-size: large"><a href="/api/club/{clubId}/notice/noticeAddPage">수정</a></label>
-  <label style="float: left; margin-left: 10px; margin-right: 10px; font-size: large">/</label>
-  <label style="float: right; font-size: large">삭제</label>
-</div>>
+  <label style="float: left; font-size: large" ><a onclick="editPage()">수정</a></label>
+  <label style="float: left; margin-left: 10px; margin-right: 10px; font-size: large" onclick="NoticeAddPage()"> / </label>
+  <label style="float: right; font-size: large"><a onclick="deletePage()">삭제</a></label>
+</div>
 <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
 <div class="noticename">
   <p style="font-size: 150%;" id="noticeTitle"></p>
@@ -177,6 +171,8 @@
 <script th:inline="javascript">
   /*<![CDATA[*/
 
+  const host = 'http://' + window.location.host;
+
 
 
 
@@ -226,7 +222,6 @@
                   + '    </div>';
 
               $('#comment').append(card);
-              // $("#username").text(name)
 
 
             });
@@ -249,7 +244,7 @@
       }
     })
 
-
+// 1~2 페이지
     const cntList = [[${countList}]];
     $(cntList).each(function (index,res){
       // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
@@ -263,6 +258,48 @@
 
 
   })
+
+  function NoticeAddPage(){
+    const clubId = [[${clubId}]];
+    window.location.href = host + '/api/club/'+clubId+'/notice/noticeAddPage';
+  }
+
+
+  function editPage(){
+    const clubId = [[${clubId}]];
+    const noticeId = [[${noticeId}]];
+    window.location.href = host + '/api/club/'+clubId+'/notice/'+noticeId+'/noticeEditPage';
+  }
+
+  function deletePage(){
+    const clubId = [[${clubId}]];
+    const noticeId = [[${noticeId}]];
+    if(confirm("삭제 하시겠습니까?")){
+      $.ajax({
+        type:"DELETE",
+        url:'/api/club/'+clubId+'/notice/'+noticeId,
+        contentType:"application/json",
+        dataType:"json",
+        success : function (response){
+          if(response.msg === 'Notice 삭제 성공'){
+            console.log('Notice 삭제 성공',response);
+            alert("삭제 되었습니다.");
+            // location.reload();  클럽디테일 페이지로
+            window.location.href = host + '/api/club/main-club/'+clubId;
+          }
+          else {
+            console.error('Notice 삭제  실패 :',response);
+          }
+        },
+        error: function (error){
+          console.error('에러 :',error);
+        }
+      })
+    }
+    else {
+      alert("취소를 하셨습니다.");
+    }
+  }
 
   function commentEditRequest(id){
     console.log("수정Request",id);
@@ -306,9 +343,29 @@
   }
 
   function commentDelete(id){
+    const noticeId = [[${noticeId}]];
     console.log("삭제",id)
     if(confirm("삭제 하시겠습니까?")){
-      alert("삭제 되었습니다.");
+
+      $.ajax({
+        type:"DELETE",
+        url:'/api/notice/'+noticeId+'/comment/'+id,
+        contentType:"application/json",
+        dataType:"json",
+        success : function (response){
+          if(response.msg === 'Comment 삭제 성공'){
+            console.log('Comment 삭제 성공',response);
+            alert("삭제 되었습니다.");
+            location.reload();
+          }
+          else {
+            console.error('Comment 삭제 실패 :',response);
+          }
+        },
+        error: function (error){
+          console.error('에러 :',error);
+        }
+      })
     }
     else {
       alert("취소를 하셨습니다.");
@@ -317,12 +374,6 @@
 
 
 
-  function NoticeEdit(){
-    let dataSource = null;
-    const noticeId = [[${noticeId}]];
-    const count = [[${count}]];
-    console.log(noticeId);
-  }
 
 
 
@@ -356,7 +407,7 @@
               + '          <textarea style="float: left; width: 650px;height:60px;font-size:14px; margin-bottom: 10px" id="' + id + '" disabled>'+comment+'</textarea>\n'
               + '          <div style="float: right"> \n'
               + '             <button style="float: left; margin-right: 5px; font-size: small; display: none" id="Editr_'+id+'" onclick="commentEditRequest(\'' + id + '\')">수정 완료</button> \n'
-              + '             <button style="float: left; margin-right: 5px; font-size: small" id="Edit_'+id+'" onclick="commentEdit(\'' + id + '\')">수정</button> \n'
+              + '             <button style="float: left; margin-right: 5px; font-size: small" id="Edit_'+id+'" >수정</button> \n'
               + '              <button style="float: right; margin-left: 5px; font-size: small" id="Delete_'+id+'" onclick="commentDelete(\'' + id + '\')">삭제</button> \n'
               + '           </div> \n'
               + '        </blockquote>\n'

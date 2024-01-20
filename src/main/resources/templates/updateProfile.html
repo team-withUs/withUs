@@ -7,6 +7,11 @@
   <title>withUs</title>
 </head>
 <style>
+  body {
+    background-image: url('/img/background.jpg'); /* 이미지 URL로 설정 */
+    background-size: cover; /* 배경 이미지를 창에 맞추기 */
+  }
+
   .tag-item {
     display: inline-block;
     margin-right: 5px;
@@ -24,8 +29,14 @@
     cursor: pointer;
     border-radius: 3px;
   }
+
+  .tag {
+    margin-top: 20px;
+    margin-bottom: -20px;
+  }
 </style>
 <script th:inline="javascript">
+  const host = 'http://' + window.location.host;
   let memberId = /*[[${memberId}]]*/ '';
   const host = 'http://' + window.location.host;
 
@@ -88,7 +99,9 @@
       data : formData,
       success:function (response){
         if(response.msg === '프로필 수정 성공'){
-          window.location.href = host + 'api/member/profilePage/' + memberId;
+
+          window.location.href = host + '/api/member/profilePage/' + memberId;
+
         } else{
           console.error('프로필 수정 실패', response);
         }
@@ -128,10 +141,10 @@
   }
 </script>
 <body>
-  <div style="margin: 40px 35% 0 35%">
+  <div style="margin: 50px 35% 0 35%">
     <div>
       <img id="profileImage"
-           style="border-radius: 100%; height: 150px; width: 150px; float:left">
+           style="border-radius: 100%; height: 150px; width: 150px; float:left; margin-bottom: 30px">
     </div>
     <div class="mb-3">
       <input class="form-control form-control-sm" id="formFileSm" type="file">
@@ -164,10 +177,10 @@
              minlength="4" maxlength="16"
              placeholder="비밀번호를 다시 입력해주세요.">
     </div>
-    <div>
+    <div class="tag">
       <p id="tagList">태그 : </p>
     </div>
-    <div style="margin-top:50px;" class="row g-2" id="tagFormat">
+    <div style="margin-top:30px;" class="row g-2" id="tagFormat">
       <div class="col-lg-9">
         <input class="form-control form-control"
                type="text"
@@ -182,7 +195,7 @@
         </button>
       </div>
     </div>
-    <div style="margin-top:50px; margin-bottom: 30px; background-color: beige">
+    <div style="margin-top:30px; margin-bottom: 30px; background-color: beige">
       <input class="form-control form-control"
              type="text"
              id="introduction"
