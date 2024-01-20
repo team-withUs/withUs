@@ -27,6 +27,7 @@
 </style>
 <script th:inline="javascript">
   let memberId = /*[[${memberId}]]*/ '';
+  const host = 'http://' + window.location.host;
 
   $(document).ready(function(){
 
@@ -87,7 +88,7 @@
       data : formData,
       success:function (response){
         if(response.msg === '프로필 수정 성공'){
-          window.location.href = 'profilePage';
+          window.location.href = host + 'api/member/profilePage/' + memberId;
         } else{
           console.error('프로필 수정 실패', response);
         }
