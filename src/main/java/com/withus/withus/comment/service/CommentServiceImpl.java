@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
             throw new BisException(ErrorCode.NOT_FOUND_NOTICE);
         }
         List<Comment> commentList = commentRepository
-                .findAllByIsActive(true, PageableDto
+                .findAllByIsActiveAndNoticeId(true,noticeId, PageableDto
                         .getsPageableDto(
                                 pageableDto.page(),
                                 pageableDto.size(),

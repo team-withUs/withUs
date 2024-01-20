@@ -13,7 +13,7 @@ public interface CommentService {
 
     CommentResponseDto updateComment(Long noticeId, Long commentId, CommentRequestDto commentRequestDto, Member member);
 
-    List<CommentResponseDto> getComment(Long noticId, PageableDto pageableDto);
+    List<CommentResponseDto> getComment(Long noticeId, PageableDto pageableDto);
 
     void deleteComment(Long noticeId, Long commentId, Member member);
 
