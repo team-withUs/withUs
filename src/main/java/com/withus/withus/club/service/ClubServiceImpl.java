@@ -9,6 +9,7 @@ import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.entity.ReportClub;
+import com.withus.withus.club.repository.ClubMemberRepository;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.club.repository.ReportClubRepository;
 import com.withus.withus.global.exception.BisException;
@@ -78,6 +79,7 @@ public class ClubServiceImpl implements ClubService {
                 .map(ClubResponseDto::createClubResponseDto)
                 .collect(Collectors.toList());
     }
+
 
     //조회
     public ClubResponseDto getClub(Long clubId) {

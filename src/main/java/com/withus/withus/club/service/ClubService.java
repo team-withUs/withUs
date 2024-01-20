@@ -8,6 +8,7 @@ import com.withus.withus.club.dto.ReportClubRequestDto;
 import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.entity.Club;
 
+import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import jakarta.transaction.Transactional;
@@ -36,4 +37,5 @@ public interface ClubService {
     Integer count();
 
     List<ClubResponseDto> getAllClubs();
+
 }
