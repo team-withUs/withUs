@@ -73,11 +73,6 @@ public class ClubMemberServiceImpl implements ClubMemberService {
         return false;
     }
 
-
-  public boolean existsClubMemberByMemberIdAndClubId(Long memberId, Long clubId){
-    return clubMemberRepository.existsByMemberIdAndClubId(memberId, clubId);
-  }
-
   public Page<ClubMember> findByMemberIdAndClubMemberRole(
       Long memberId,
       ClubMemberRole role,
