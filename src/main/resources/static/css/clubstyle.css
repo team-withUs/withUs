@@ -257,4 +257,29 @@ p {
     float: right;
 }
 
+.invite-member {
+    display: flex;
+    flex-wrap: wrap; /* 공간이 부족하면 항목을 다음 줄로 이동할 수 있도록 함 */
+    justify-content: flex-start; /* 디자인 요구에 따라 조정하세요 */
+}
+
+.memberDiv img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px; /* 디자인 요구에 따라 조정하세요 */
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.memberDiv {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 35px;
+    margin-right: 30px;
+}
+
+.invited-user {
+    text-align: center; /* 사용자 이름 텍스트를 가운데 정렬합니다 */
+}
 
