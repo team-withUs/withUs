@@ -193,6 +193,19 @@ public class MemberServiceImpl implements MemberService{
   }
 
   @Override
+  public Page<ClubResponseDto> getMyHostingClubList(Pageable pageable, Long memberId) {
+    Page<ClubMember> myClubMemberPage = clubMemberService.findByMemberIdAndClubMemberRole(
+        memberId,
+        ClubMemberRole.HOST,
+        pageable
+    );
+    Page<ClubResponseDto> clubResponseDtoPage = myClubMemberPage
+        .map(clubMember -> ClubResponseDto.createClubResponseDto(clubMember.getClub()));
+
+    return  clubResponseDtoPage;
+  }
+
+  @Override
   public void inviteMember(Long memberId, Long clubId, Member member) {
     ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member,clubId);
     if(!clubMember.getClubMemberRole().equals(ClubMemberRole.HOST)){

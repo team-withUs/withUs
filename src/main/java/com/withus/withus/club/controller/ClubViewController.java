@@ -36,7 +36,7 @@ public class ClubViewController {
 
         Integer totalList = noticeService.count(clubId);
         int count;
-        if (totalList > 3) {
+        if (totalList > 4) {
             count=totalList/3+1;
         }else{
             count=1;
@@ -83,29 +83,5 @@ public class ClubViewController {
     public String createpostClub(){
             return "club/post-club";
     }
-
-//    @GetMapping("/{clubId}/notice")
-//    public String getNotice(
-//            @PathVariable("clubId") Long clubId,
-//            Model model
-//    ) {
-//        List<NoticeResponseDto> noticeList = noticeService.getsNotice(clubId, PageableDto.getsPageableDto(1 , 2, "createdAt"));
-//
-//        int count;
-//        if (noticeList.size() > 3) {
-//            count = (noticeList.size() / 4) + 1;
-//        } else {
-//            count = 1;
-//        }
-//        List<Integer> countList = new ArrayList<>();
-//        for (int i = 0; i < count; i++) {
-//            countList.add(i + 1);
-//        }
-//        model.addAttribute("clubId", clubId);
-//        model.addAttribute("noticeList", noticeList);
-//        model.addAttribute("countList", countList);
-//
-//        return "club/club-main/{clubId}/clubnotice";
-//    }
 
 }

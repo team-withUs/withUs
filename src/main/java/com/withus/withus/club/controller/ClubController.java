@@ -3,6 +3,7 @@ package com.withus.withus.club.controller;
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
+import com.withus.withus.club.dto.InviteMemberResponseDto;
 import com.withus.withus.club.dto.ReportClubRequestDto;
 import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.entity.ClubMember;
@@ -47,12 +48,12 @@ public class ClubController {
 
     // 클럽에 초대된 유저조회
     @GetMapping("/{clubId}/inviteList")
-    public ResponseEntity<CommonResponse<List<String>>> getInvitedUserByClub(
-            @PathVariable Long clubId
+    public ResponseEntity<CommonResponse<List<InviteMemberResponseDto>>> getInvitedUserByClub(
+            @PathVariable("clubId") Long clubId
     ) {
         List<ClubMember> invitedClubMembers = clubMemberService.getInvitedUserByClub(clubId);
-        List<String> invitedUsernames = invitedClubMembers.stream()
-                .map(clubMember -> clubMember.getMember().getUsername())
+        List<InviteMemberResponseDto> invitedUsernames = invitedClubMembers.stream()
+                .map(InviteMemberResponseDto::createInviteMemberResponseDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity

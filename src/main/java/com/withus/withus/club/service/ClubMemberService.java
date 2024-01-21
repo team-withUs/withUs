@@ -12,4 +12,6 @@ public interface ClubMemberService {
     void createClubMember(ClubMember clubMember);
 
     List<ClubMember> getInvitedUserByClub(Long clubId);
+
+    boolean hasHostRole(Member member, Long clubId);
 }

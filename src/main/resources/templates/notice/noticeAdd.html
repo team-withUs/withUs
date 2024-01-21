@@ -4,9 +4,9 @@
     <title>게시판 작성</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!--  <link th:href="@{/css/Bootstrap.min.css}"-->
 <!--        href="/css/Bootstrap.min.css" rel="stylesheet">-->
     <style>
@@ -56,7 +56,7 @@
       <h2 class="withUs">withUs</h2>
     </div>
     <div class="title2">
-      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>
+<!--      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>-->
       <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
     </div>
   </header>
@@ -68,10 +68,10 @@
         <div class="col-sm-12">
             <h2>Notice</h2>
                 <div class="form-group">
-                    <select id="Category" onchange="selected()">
+                    <select id="Category">
 <!--                        <option value="Notice">공지 사항</option>-->
-                      <option value="zero" selected></option>
-                        <option value="Board">일반</option>
+<!--                      <option value="zero" selected></option>-->
+                        <option value="Board" selected>일반</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -90,14 +90,15 @@
 <script th:inline="javascript">
   /*<![CDATA[*/
 
-  let category;
+  // let category;
+  const host = 'http://' + window.location.host;
 
-  function selected(){
-    category={}
-    const select = document.getElementById('Category');
-    let seleted = select.options[select.selectedIndex];
-    category = seleted.text;
-  }
+  // function selected(){
+  //   category={}
+  //   const select = document.getElementById('Category');
+  //   let seleted = select.options[select.selectedIndex];
+  //   category = seleted.text;
+  // }
 
 
 
@@ -108,9 +109,11 @@
 
   function sendNoticeRequest(){
     const clubId = [[${clubId}]];
+    let category = $("Category option:selected").text();
+
     let title = $('#title').val();
     let content = $('#content').val();
-    window.location.href = "/api/club/main-club/" + clubId;
+
 
 
 
@@ -131,9 +134,10 @@
         else {
           console.error('Notice 생성 실패 :',response)
         }
+        window.location.href = host + "/api/club/main-club/" + clubId;
       },
       error: function (error){
-        console.error('에러 :',error)
+        alert("다시 작성해주세요");
       }
     })
 

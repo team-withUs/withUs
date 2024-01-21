@@ -136,11 +136,23 @@ body {
     padding: 10px;
     margin: 5px;
 }
+.header_btn2:hover{
+    border-radius: 10px;
+    background-color: #ddd;
+    border: none;
+    color: #333;
+}
 .header_btn3{
     background: none;
     border: none;
     padding: 10PX;
     margin: 5px;
+}
+.header_btn3:hover{
+    border-radius: 10px;
+    background-color: #ddd;
+    border: none;
+    color: #333;
 }
 .search-btn{
     width: 5px;
