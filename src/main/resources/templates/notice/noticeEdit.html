@@ -91,7 +91,7 @@
 <script th:inline="javascript">
   /*<![CDATA[*/
 
-
+  const host = 'http://' + window.location.host;
 
 
   $(document).ready(function (){
@@ -147,6 +147,8 @@
         else {
           console.error('Notice 수정 실패 :',response)
         }
+        window.location.href = host + "/api/club/"+clubId+"/notice/"+noticeId+"/noticeDetailPage";
+
       },
       error: function (error){
         console.error('에러 :',error)

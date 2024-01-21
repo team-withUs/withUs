@@ -91,6 +91,7 @@
   /*<![CDATA[*/
 
   let category;
+  const host = 'http://' + window.location.host;
 
   function selected(){
     category={}
@@ -131,7 +132,7 @@
         else {
           console.error('Notice 생성 실패 :',response)
         }
-        window.location.href = "/api/club/main-club/" + clubId;
+        window.location.href = host + "/api/club/main-club/" + clubId;
       },
       error: function (error){
         console.error('에러 :',error)
