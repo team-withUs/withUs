@@ -102,11 +102,14 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public NoticeResponseDto getNotice(Long clubId, Long noticeId) {
+    public NoticeResponseDto getNotice(Long clubId, Long noticeId, Member member) {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
         Notice notice = findByIsActiveAndNoticeId(noticeId);
+        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), notice.getClub().getId())) {
+            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
+        }
         return NoticeResponseDto.createNoticeResponseDto(notice);
     }
 

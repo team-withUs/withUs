@@ -22,6 +22,8 @@
 
     body {
       background-color: #A8C0D6;
+      margin: 0; /* Remove default body margin */
+      font-family: 'Arial', sans-serif; /* Add font-family for consistency */
     }
 
     .titleContainer {
@@ -47,14 +49,13 @@
     }
 
     .background {
-      margin-bottom: 15%;
-      position: relative;
+      height: 80%;
     }
 
     .wrap {
-      padding: 0 0;
+      padding: 20px;
+      max-height: calc(100vh - 215px); /* 130px는 입력창 및 기타 여백의 높이 합 */
       overflow-y: auto;
-      max-height: 87.5vh;
     }
 
     .wrap .chat {
@@ -234,11 +235,16 @@
           senderName: username,
           content : username + '님이 입장하였습니다.'
         }))
+
       })
+
+
+
 
       $("#button-send").on("click", function(e) {
         var msg = document.getElementById("msg");
-        if (msg !== null) {
+        console.log(msg);
+        if (msg.value !== null || msg.value.trim() !== '') {
           console.log(username + ":" + msg.value);
           stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
             senderId: senderId,
@@ -247,9 +253,9 @@
           }));
           msg.value = '';
         }
+      });
 
-      })
-    })
+    });
 
     function getChatList(chatList, username) {
       var chatContainer = $('#chatContainer');

@@ -131,7 +131,10 @@ public class ClubController {
             Model model
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
-        int cnt = clubService.getsClubByCategory(category, pageableDto, keyWord).size();
+        int cnt = 1;
+        if(clubService.getsClubByCategory(category,pageableDto,keyWord) != null){
+            cnt = clubService.getsClubByCategory(category, pageableDto, keyWord).size();
+        }
         model.addAttribute("cnt",cnt);
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.OK,
