@@ -226,7 +226,7 @@ class NoticeServiceImplTest {
 
 
       //then
-      assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+      assertEquals(ErrorCode.YOUR_NOT_COME_IN, exception.getErrorCode());
 
     }
 
@@ -282,7 +282,7 @@ class NoticeServiceImplTest {
 
 
       //then
-      assertEquals(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST, exception.getErrorCode());
+      assertEquals(ErrorCode.YOUR_NOT_COME_IN, exception.getErrorCode());
 
     }
 

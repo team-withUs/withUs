@@ -206,13 +206,17 @@
                 function sendPage(pageNumber) {
                     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
                     $('#notice-box').empty();
+                    const pageSize = 2;
                     $.ajax({
                         type: 'GET',
                         url: '/api/club/' + clubId + '/notice?page=' + pageNumber,
                         contentType: 'application/json',
                         success: function (result) {
                             const list = result.data;
-                            $(list).each(function (index, res) {
+                            const startIdx = (pageNumber - 1) * pageSize;
+                            const endIdx = startIdx + pageSize;
+                            const slicedList = list.slice(startIdx, endIdx)
+                            $(slicedList).each(function (index, res) {
                                 let title = res.title;
                                 let id = res.id;
                                 const card = '' +

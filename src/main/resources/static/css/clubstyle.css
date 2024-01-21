@@ -47,6 +47,7 @@ body {
     background: none;
     border: none;
 }
+
 #reviseButton:hover{
     background-color: #ddd;
     border-radius: 10px;
@@ -77,6 +78,7 @@ body {
     border: none;
     color: #333;
 }
+
 
 .title2 {
     float: right;

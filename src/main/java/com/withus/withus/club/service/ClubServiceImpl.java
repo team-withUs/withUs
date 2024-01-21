@@ -138,6 +138,7 @@ public class ClubServiceImpl implements ClubService {
 //    private boolean existByClubId(Long clubId) {
 //        return clubRepository.existsById(clubId);
 //    }
+
     @Override
     @Transactional
     public String deleteClub(Long clubId, Member member) {
