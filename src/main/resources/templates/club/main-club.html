@@ -155,31 +155,31 @@
                 </nav>
             </article>
 
+
             <script th:inline="javascript">
+
                 /*<![CDATA[*/
                 $(document).ready(function () {
                     fetchNotices();
                     function fetchNotices() {
                         var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
-
                         console.log(clubId)
                         $.ajax({
-                                type: 'GET',
-                                url: '/api/club/' + clubId + '/notice',
-                                contentType:'application/json',
-                                success:function (result){
-                                    const list = result.data;
-                                    const maxCards = 2;
-                                    const slicedList = list.slice(0, maxCards);
-                                    $(slicedList).each(function (index, res) {
-                                        let title = res.title;
-                                        const card =
-                                            '<div class="board-box">' +
-                                            '    <p>' + title + '</p>' +
-                                            '</div>';
-                                        $('#notice-box').append(card);
-                                    });
-                                }
+                            type: 'GET',
+                            url: '/api/club/' + clubId + '/notice',
+                            contentType:'application/json',
+                            success:function (result){
+                                const list = result.data;
+                                $(list).each(function (index, res) {
+                                    let title = res.title;
+                                    let id = res.id;
+                                    const card =
+                                        '<div class="board-box" onclick="noticePage(\'' + id + '\')">' +
+                                        '    <p>' + title + '</p>' +
+                                        '</div>';
+                                    $('#notice-box').append(card);
+                                });
+                            }
                         });
 
                     }
@@ -194,6 +194,14 @@
                     })
                 });
                 /*]]>*/
+
+                function noticePage(noticeId){
+                    var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
+                    window.location.href = "/api/club/" + clubId +"/notice/" + noticeId + "/noticeDetailPage"
+                    console.log(clubId)
+                    // var noticeId
+                    console.log(noticeId)
+                }
 
                 function sendPage(pageNumber) {
                     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
@@ -210,9 +218,9 @@
                             const slicedList = list.slice(startIdx, endIdx)
                             $(slicedList).each(function (index, res) {
                                 let title = res.title;
-
+                                let id = res.id;
                                 const card = '' +
-                                    '  <div class="board-box">\n' +
+                                    '  <div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
                                     '                     <p>' + title + '</p>\n' +
                                     '                    </div>';
                                 $('#notice-box').append(card);

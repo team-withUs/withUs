@@ -18,7 +18,7 @@ body {
     /*background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896) ;*/
     background-color: #98a9bc;
     width: 100%;
-    height: 950px;
+    height: 100%;
     margin: 0 auto;
 }
 
@@ -47,16 +47,38 @@ body {
     background: none;
     border: none;
 }
+
+#reviseButton:hover{
+    background-color: #ddd;
+    border-radius: 10px;
+    border: none;
+    color: #333;
+}
 /*삭제*/
 #deleteButton{
+    border-radius: 10px;
     background: none;
     border: none;
+}
+
+#deleteButton:hover{
+    background-color: #ddd;
+    border: none;
+    color: #333;
 }
 /*notice 작성*/
 #Notice-post{
+    border-radius: 10px;
     background: none;
     border: none;
 }
+#Notice-post:hover {
+    border-radius: 10px;
+    background-color: #ddd;
+    border: none;
+    color: #333;
+}
+
 
 .title2 {
     float: right;
