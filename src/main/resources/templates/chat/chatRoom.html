@@ -158,6 +158,9 @@
   </style>
 
   <script th:inline="javascript">
+    const host = 'http://' + window.location.host;
+    var receiverId;
+    var memberId = /*[[${memberId}]]*/ '';
     $(document).ready(function() {
 
       var roomId = /*[[${roomId}]]*/ '';
@@ -175,6 +178,7 @@
       })
         .done(function (res, status, xhr) {
           roomName = res.data.title;
+          receiverId = res.data.receiverId;
           $("#title").text(roomName);
         })
         .fail(function (xhr, status, error) {
@@ -215,15 +219,20 @@
           dateFormatting(sentTime)
 
           var chatDiv = $('<div class="chat">');
-          chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
-          chatDiv.append('<div class="textbox">' + message + '</div>');
-          chatDiv.append('<div class="sent-time">' + sentTime.value + '</div>');
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + memberId + '\'"><i class="fa-solid fa-user"></i></div>')
           } else {
             chatDiv.addClass('chat ch2');
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + receiverId + '\'"><i class="fa-solid fa-user"></i></div>')
+
           }
+
+          // chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
+          chatDiv.append('<div class="textbox">' + message + '</div>');
+          chatDiv.append('<div class="sent-time">' + sentTime.value + '</div>');
+
 
           $("#msgArea").append(chatDiv);
           scrollChatToBottom();
@@ -273,15 +282,17 @@
           console.info(senderName, content, sendTime);
 
           var chatDiv = $('<div class="chat">');
-          chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
-          chatDiv.append('<div class="textbox">' + content + '</div>');
-          chatDiv.append('<div class="sent-time">' + sendTime.value + '</div>');
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + memberId + '\'"><i class="fa-solid fa-user"></i></div>')
           } else {
             chatDiv.addClass('chat ch2');
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + receiverId + '\'"><i class="fa-solid fa-user"></i></div>')
           }
+          // chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
+          chatDiv.append('<div class="textbox">' + content + '</div>');
+          chatDiv.append('<div class="sent-time">' + sendTime.value + '</div>');
 
           $("#msgArea").append(chatDiv);
 
