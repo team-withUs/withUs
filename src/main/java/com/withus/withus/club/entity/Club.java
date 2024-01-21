@@ -124,4 +124,8 @@ public class Club extends TimeStamp {
     public String getImageUrl() {
         return this.imageURL;
     }
+
+    public Member getCreator() {
+        return this.member;
+    }
 }

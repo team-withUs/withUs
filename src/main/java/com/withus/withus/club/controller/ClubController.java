@@ -19,6 +19,7 @@ import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -125,9 +126,12 @@ public class ClubController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "4") int size,
             @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy,
-            @RequestParam(value = "keyWord", defaultValue = "ace245") String keyWord
+            @RequestParam(value = "keyWord", defaultValue = "ace245") String keyWord,
+            Model model
     ) {
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
+        int cnt = clubService.getsClubByCategory(category, pageableDto, keyWord).size();
+        model.addAttribute("cnt",cnt);
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.OK,
                         clubService.getsClubByCategory(category, pageableDto, keyWord)));
