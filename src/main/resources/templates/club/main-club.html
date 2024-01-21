@@ -117,27 +117,31 @@
                 </article>
             </div>
 
-            <button id="Notice-post" onclick="navigateToNoticeAddPage()">
-                작성
-            </button>
+
             <div class="button-item">
                 <article class="club-button-container1">
                     <button id="reviseButton">
-                        수정
+                        <img src="/icons/수정.png">
                     </button>
 
                 </article>
                 <article class="club-button-container2">
                     <button id="deleteButton">
-                        삭제
+                        <img src = "/icons/icons8-취소-30.png">
                     </button>
                 </article>
             </div>
         </section>
 
         <section id="notice-container">
-
-            <h1 class="Noitce"> Notice </h1>
+            <div>
+                <button id="Notice-post" onclick="navigateToNoticeAddPage()">
+                    <img src="/icons/noties.png"/>
+                </button>
+                <div>
+                    <h1 class="Noitce"> Notice </h1>
+                </div>
+            </div>
             <article class="Notice-container">
                 <div class="category-list" id = "notice-box">
                 </div>
@@ -194,13 +198,17 @@
                 function sendPage(pageNumber) {
                     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
                     $('#notice-box').empty();
+                    const pageSize = 2;
                     $.ajax({
                         type: 'GET',
                         url: '/api/club/' + clubId + '/notice?page=' + pageNumber,
                         contentType: 'application/json',
                         success: function (result) {
                             const list = result.data;
-                            $(list).each(function (index, res) {
+                            const startIdx = (pageNumber - 1) * pageSize;
+                            const endIdx = startIdx + pageSize;
+                            const slicedList = list.slice(startIdx, endIdx)
+                            $(slicedList).each(function (index, res) {
                                 let title = res.title;
 
                                 const card = '' +

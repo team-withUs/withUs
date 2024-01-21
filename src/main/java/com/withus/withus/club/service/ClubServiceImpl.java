@@ -106,7 +106,9 @@ public class ClubServiceImpl implements ClubService {
                 filename = newImageFile;
             } else {
                 if (club.getImageUrl() != null) {
-                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
+//                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
+                    filename = club.getFilename();
+                    imageUrl = club.getImageUrl();
                 }
                 club.setImgUrl(null);
             }
@@ -118,6 +120,7 @@ public class ClubServiceImpl implements ClubService {
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
     }
+
     @Override
     @Transactional
     public String deleteClub(Long clubId, Member member) {
@@ -131,6 +134,7 @@ public class ClubServiceImpl implements ClubService {
     private boolean existByClubId(Long clubId) {
         return clubRepository.existsById(clubId);
     }
+
     @Override
     public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
         if (StringUtils.isBlank(reportClubRequestDto.content())) {
