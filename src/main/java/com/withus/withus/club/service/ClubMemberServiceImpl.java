@@ -2,6 +2,7 @@ package com.withus.withus.club.service;
 
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.repository.ClubMemberRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
@@ -41,5 +42,13 @@ public class ClubMemberServiceImpl implements ClubMemberService {
 
   public boolean existsClubMemberByMemberIdAndClubId(Long memberId, Long clubId){
     return clubMemberRepository.existsByMemberIdAndClubId(memberId, clubId);
+  }
+
+  public Page<ClubMember> findByMemberIdAndClubMemberRole(
+      Long memberId,
+      ClubMemberRole role,
+      Pageable pageable
+  ) {
+    return clubMemberRepository.findByMemberIdAndClubMemberRole(memberId, role, pageable);
   }
 }

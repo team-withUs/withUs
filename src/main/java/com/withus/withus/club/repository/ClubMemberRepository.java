@@ -2,6 +2,7 @@ package com.withus.withus.club.repository;
 
 import com.withus.withus.club.entity.ClubMember;
 
+import com.withus.withus.club.entity.ClubMemberRole;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,8 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
     Optional<ClubMember> findClubMemberByMemberIdAndClubId(Long memberId, Long clubId);
 
     Page<ClubMember> findByMemberId(Long member_id, Pageable pageable);
+
+    Page<ClubMember> findByMemberIdAndClubMemberRole(Long memberId, ClubMemberRole role, Pageable pageable);
 
     boolean existsByMemberIdAndClubId(Long memberId, Long clubId);
 
