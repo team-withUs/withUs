@@ -18,7 +18,7 @@ body {
     /*background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896) ;*/
     background-color: #98a9bc;
     width: 100%;
-    height: 950px;
+    height: 100%;
     margin: 0 auto;
 }
 
@@ -47,16 +47,38 @@ body {
     background: none;
     border: none;
 }
+
+#reviseButton:hover{
+    background-color: #ddd;
+    border-radius: 10px;
+    border: none;
+    color: #333;
+}
 /*삭제*/
 #deleteButton{
+    border-radius: 10px;
     background: none;
     border: none;
+}
+
+#deleteButton:hover{
+    background-color: #ddd;
+    border: none;
+    color: #333;
 }
 /*notice 작성*/
 #Notice-post{
+    border-radius: 10px;
     background: none;
     border: none;
 }
+#Notice-post:hover {
+    border-radius: 10px;
+    background-color: #ddd;
+    border: none;
+    color: #333;
+}
+
 
 .title2 {
     float: right;
@@ -257,4 +279,29 @@ p {
     float: right;
 }
 
+.invite-member {
+    display: flex;
+    flex-wrap: wrap; /* 공간이 부족하면 항목을 다음 줄로 이동할 수 있도록 함 */
+    justify-content: flex-start; /* 디자인 요구에 따라 조정하세요 */
+}
+
+.memberDiv img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px; /* 디자인 요구에 따라 조정하세요 */
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.memberDiv {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 35px;
+    margin-right: 30px;
+}
+
+.invited-user {
+    text-align: center; /* 사용자 이름 텍스트를 가운데 정렬합니다 */
+}
 

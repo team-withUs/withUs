@@ -20,7 +20,9 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.PageableDto;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
+
 import java.util.ArrayList;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +38,7 @@ public class ClubServiceImpl implements ClubService {
     private final ReportClubRepository reportClubRepository;
     private final S3Util s3Util;
     private final ClubMemberService clubMemberService;
+
     @Override
     @Transactional
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
@@ -55,7 +58,7 @@ public class ClubServiceImpl implements ClubService {
                 System.out.println(imageFile);
                 imageUrl = s3Util.getFileURL(imageFile, S3Const.S3_DIR_CLUB);
             }
-            Club club = Club.createClub(clubRequestDto, member, imageFile, imageUrl,startTime, endTime);
+            Club club = Club.createClub(clubRequestDto, member, imageFile, imageUrl, startTime, endTime);
             if (imageFile != null) {
                 club.setImgUrl(imageFile);
             }
@@ -87,6 +90,7 @@ public class ClubServiceImpl implements ClubService {
                 .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
         return ClubResponseDto.createClubResponseDto(club);
     }
+
     /// 수정
     @Transactional
     @Override
@@ -112,7 +116,7 @@ public class ClubServiceImpl implements ClubService {
                 }
                 club.setImgUrl(null);
             }
-            System.out.println("test"+ imageUrl);
+            System.out.println("test" + imageUrl);
             club.update(clubRequestDto, filename, imageUrl);
             return ClubResponseDto.createClubResponseDto(club);
         } catch (Exception e) {
@@ -121,16 +125,42 @@ public class ClubServiceImpl implements ClubService {
         }
     }
 
+    //    @Override
+//    @Transactional
+//    public String deleteClub(Long clubId, Member member) {
+//        if (!existByClubId(clubId)) {
+//            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+//        }
+//        Club club = verifyMember(clubId);
+//        club.delete();
+//        return "Club delete successfully";
+//    }
+//    private boolean existByClubId(Long clubId) {
+//        return clubRepository.existsById(clubId);
+//    }
+
     @Override
     @Transactional
     public String deleteClub(Long clubId, Member member) {
-        if (!existByClubId(clubId)) {
-            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
-        }
+        validateClub(clubId, member);
+
         Club club = verifyMember(clubId);
+
+        // 클럽을 삭제할 수 있는 권한을 가진 멤버인지 확인
+        if (!clubMemberService.hasHostRole(member, clubId)) {
+            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+        }
+
         club.delete();
         return "Club delete successfully";
     }
+
+    private void validateClub(Long clubId, Member member) {
+        if (!existByClubId(clubId)) {
+            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
+        }
+    }
+
     private boolean existByClubId(Long clubId) {
         return clubRepository.existsById(clubId);
     }
@@ -152,11 +182,12 @@ public class ClubServiceImpl implements ClubService {
             throw new BisException(ErrorCode.CLUB_EXIST_REPORT);
         }
     }
+
     @Override
     public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto, String keyWord) {
         List<Club> clubList;
-        if(keyWord.equals("ace245")){
-            if(category.equals(ClubCategory.ALL)){
+        if (keyWord.equals("ace245")) {
+            if (category.equals(ClubCategory.ALL)) {
                 clubList = clubRepository.
                         findAllByIsActive(true, PageableDto.getsPageableDto(
                                         pageableDto.page(),
@@ -164,8 +195,7 @@ public class ClubServiceImpl implements ClubService {
                                         pageableDto.sortBy()
                                 ).toPageable()
                         );
-            }
-            else {
+            } else {
                 clubList = clubRepository.
                         findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
                                         pageableDto.page(),
@@ -174,8 +204,7 @@ public class ClubServiceImpl implements ClubService {
                                 ).toPageable()
                         );
             }
-        }
-        else {
+        } else {
             clubList = clubRepository.search(keyWord, true,
                     PageableDto.getsPageableDto(
                             pageableDto.page(),
@@ -191,8 +220,9 @@ public class ClubServiceImpl implements ClubService {
                 .map(ClubResponseDto::createClubResponseDto)
                 .collect(Collectors.toList());
     }
+
     @Override
-    public Integer count(){
+    public Integer count() {
         return clubRepository.countByIsActive(true);
     }
 
@@ -201,6 +231,7 @@ public class ClubServiceImpl implements ClubService {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
     }
+
     private Club verifyMember(Long clubId) {
         Club club = clubRepository.findByIsActiveAndId(true, clubId)
                 .orElseThrow(() ->
@@ -208,6 +239,7 @@ public class ClubServiceImpl implements ClubService {
                 );
         return club;
     }
+
     public Club findByIsActiveAndClubId(Long clubId) {
         Club club = clubRepository.findByIsActiveAndId(true, clubId)
                 .orElseThrow(() ->
@@ -215,6 +247,7 @@ public class ClubServiceImpl implements ClubService {
                 );
         return club;
     }
+
     public boolean existByIsActiveAndClubId(Long clubId) {
         return clubRepository.existsByIsActiveAndId(true, clubId);
     }

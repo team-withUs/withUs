@@ -47,13 +47,48 @@ $(document).ready(function () {
         success: function (response) {
             console.log(response);
 
-
-            var invitedUsers = response.data;
+            var invitedList = response.data;
             var inviteContainer = $(".invite-member");
 
-            invitedUsers.forEach(function (username) {
-                inviteContainer.append("<div class='invited-user'>" + username + "</div>");
+
+            invitedList.forEach(function (InviteMemberResponseDto) {
+                var memberId = InviteMemberResponseDto.id;
+                var username = InviteMemberResponseDto.username;
+                var imageURL = InviteMemberResponseDto.imageURL;
+                var role = InviteMemberResponseDto.clubMemberRole;
+
+                var inviteMemberDiv = $('<div class="memberDiv">')
+
+                if (role === "HOST") {
+                    var hostDiv = $('<div class="host">host</div>');
+                } else {
+                    var hostDiv = $('<div class="host">guest</div>');
+                }
+                inviteMemberDiv.append(hostDiv);
+
+                if (imageURL === null) {
+                    var iconDiv = $('<img src="/img/myInfo.png" alt="멤버 이미지">')
+                } else {
+                    var iconDiv = $('<img src="' + imageURL + '" alt="멤버 이미지">')
+                }
+
+                inviteMemberDiv.append(iconDiv);
+
+                var usernameDiv = $('<div class="invited-user">' + username + '</div>');
+                inviteMemberDiv.append(usernameDiv);
+
+                inviteContainer.append(inviteMemberDiv);
+
+                iconDiv.on('click', function () {
+                    window.location.href = host + '/api/member/profilePage/' + memberId;
+                })
+
+
             });
+
+
+
+
         },
         error: function (xhr, status, error) {
             console.error("에러상태: " + status + ", 에러: " + error);

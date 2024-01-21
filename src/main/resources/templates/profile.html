@@ -136,6 +136,10 @@
         chattingClicked();
       });
 
+      $("#inviting").on("click", function(e){
+        invitingClicked();
+      });
+
     })
 
 
@@ -178,6 +182,12 @@
     function updateProfile() {
       var memberId = /*[[${memberId}]]*/ '';
       let url = '/api/member/updateProfilePage/' + memberId;
+      location.href = url;
+    }
+
+    function invitingClicked(){
+      var memberId = /*[[${memberId}]]*/ '';
+      let url = '/api/member/myClub/'+memberId;
       location.href = url;
     }
 

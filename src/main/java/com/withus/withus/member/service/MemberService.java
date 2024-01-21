@@ -35,7 +35,7 @@ public interface MemberService {
 
     Page<ClubResponseDto> getMyClubList(Pageable pageable, Member member);
 
-
+    Page<ClubResponseDto> getMyHostingClubList(Pageable pageable, Long memberId);
     MemberResponseDto getMemberEmail(String email);
 
 }
