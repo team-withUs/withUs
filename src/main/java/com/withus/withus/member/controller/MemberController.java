@@ -48,11 +48,9 @@ public class MemberController {
 
   @GetMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> getMember(
-      @PathVariable("memberId") Long memberId,
-      Model model
+      @PathVariable("memberId") Long memberId
   ) {
     MemberResponseDto memberResponseDto = memberService.getMember(memberId);
-    model.addAttribute("memberResponse",memberResponseDto);
 
     return ResponseEntity
         .status(ResponseCode.GET_PROFILE.getHttpStatus())

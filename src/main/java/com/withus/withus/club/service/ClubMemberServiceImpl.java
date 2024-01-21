@@ -2,6 +2,7 @@ package com.withus.withus.club.service;
 
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.repository.ClubMemberRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
@@ -27,6 +28,15 @@ public class ClubMemberServiceImpl implements ClubMemberService {
   @Override
   public List<ClubMember> getInvitedUserByClub(Long clubId) {
     return clubMemberRepository.findByClubId(clubId);
+  }
+
+  //추가
+  @Override
+  public boolean hasHostRole(Member member, Long clubId) {
+    ClubMember clubMember = clubMemberRepository.findClubMemberByMemberIdAndClubId(member.getId(), clubId)
+            .orElseThrow(() -> new BisException(ErrorCode.YOUR_NOT_COME_IN));
+
+    return clubMember.getClubMemberRole() == ClubMemberRole.HOST;
   }
 
 
