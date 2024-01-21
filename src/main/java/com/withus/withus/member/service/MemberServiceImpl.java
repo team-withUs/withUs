@@ -276,10 +276,6 @@ public class MemberServiceImpl implements MemberService{
   }
 
   public void emailVerification(String email, String authCode) {
-    //관리자용 테스트 인증번호 추후에 테스트완료 후 삭제 예정
-    if (authCode.equals("777777")) {
-      return;
-    }
 
     String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
     if (!(redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode))) {
