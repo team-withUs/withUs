@@ -119,6 +119,21 @@ public class MemberController {
         .body(CommonResponse.of(ResponseCode.GET_MY_CLUBLIST,clubResponseDtoList));
   }
 
+  @GetMapping("/myHostingClub")
+  public ResponseEntity<CommonResponse<Page<ClubResponseDto>>> getMyHostingClubList(
+      Pageable pageable,
+      @AuthMember Member member
+  ) {
+    Page<ClubResponseDto> clubResponseDtoPage = memberService.getMyHostingClubList(
+        pageable,
+        member.getId()
+    );
+
+    return ResponseEntity
+        .status(ResponseCode.GET_MY_CLUBLIST.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.GET_MY_CLUBLIST,clubResponseDtoPage));
+  }
+
   @PostMapping("/{memberId}/club/{clubId}")
   public ResponseEntity<CommonResponse<String>> inviteMember(
       @PathVariable("memberId") Long memberId,
