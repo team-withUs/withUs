@@ -269,6 +269,7 @@ class MemberServiceImplIntegrationTest {
           "123456",
           "username33",
           "user33@email.com",
+          "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
           "소개",
           file
       );
@@ -299,7 +300,8 @@ class MemberServiceImplIntegrationTest {
             "1234567",
             "username33",
             "user33@email.com",
-            "소개",
+            "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
+            "자기소개",
             file
         );
         memberService.updateMember(
@@ -331,6 +333,7 @@ class MemberServiceImplIntegrationTest {
           "123456",
           "username33",
           "user33@email.com",
+          "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
           "소개",
           file
       );
@@ -680,12 +683,12 @@ class MemberServiceImplIntegrationTest {
       clubService.createClub(clubRequestDto2, host, clubRequestDto.imageFile());
 
       //when
-      List<ClubResponseDto> clubResponseDtoList = memberService.getMyClubList(pageable, host);
+      Page<ClubResponseDto> clubResponseDtoPage = memberService.getMyClubList(pageable, host);
 
       //then
-      Assertions.assertEquals(clubResponseDtoList.size(), 2);
-      Assertions.assertEquals(clubResponseDtoList.get(0).clubTitle(), clubRequestDto.clubTitle());
-      Assertions.assertEquals(clubResponseDtoList.get(1).clubTitle(), clubRequestDto2.clubTitle());
+      Assertions.assertEquals(clubResponseDtoPage.getContent().size(), 2);
+      Assertions.assertEquals(clubResponseDtoPage.getContent().get(0).clubTitle(), clubRequestDto.clubTitle());
+      Assertions.assertEquals(clubResponseDtoPage.getContent().get(1).clubTitle(), clubRequestDto2.clubTitle());
     }
   }
 }
