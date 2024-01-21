@@ -34,6 +34,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentResponseDto createComment(Long noticeId, CommentRequestDto commentRequestDto, Member member) {
         Notice notice = noticeService.findByIsActiveAndNoticeId(noticeId);
+        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), notice.getClub().getId())) {
+            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
+        }
         Comment savedComment = commentRepository.save(Comment.createComment(commentRequestDto, member, notice));
         return CommentResponseDto.createCommentResponseDto(savedComment);
     }
