@@ -25,7 +25,7 @@ public class CommentController {
 
     @PostMapping("/notice/{noticeId}/comment")
     public ResponseEntity<CommonResponse<CommentResponseDto>> createReportComment(
-            @PathVariable Long noticeId,
+            @PathVariable("noticeId") Long noticeId,
             @RequestBody CommentRequestDto commentRequestDto,
             @AuthMember Member member
     ) {
@@ -37,8 +37,8 @@ public class CommentController {
 
     @PatchMapping("/notice/{noticeId}/comment/{commentId}")
     public ResponseEntity<CommonResponse<CommentResponseDto>> updateComment(
-            @PathVariable Long noticeId,
-            @PathVariable Long commentId,
+            @PathVariable("noticeId") Long noticeId,
+            @PathVariable("commentId") Long commentId,
             @RequestBody CommentRequestDto commentRequestDto,
             @AuthMember Member member
     ) {
@@ -63,8 +63,8 @@ public class CommentController {
 
     @DeleteMapping("/notice/{noticeId}/comment/{commentId}")
     public ResponseEntity<CommonResponse<String>> deleteComment(
-            @PathVariable Long noticeId,
-            @PathVariable Long commentId,
+            @PathVariable("noticeId") Long noticeId,
+            @PathVariable("commentId") Long commentId,
             @AuthMember Member member
     ) {
         commentService.deleteComment(noticeId, commentId, member);
@@ -74,7 +74,7 @@ public class CommentController {
 
     @PostMapping("/comment/{commentId}/report")
     public ResponseEntity<CommonResponse<String>> createReportComment(
-            @PathVariable Long commentId,
+            @PathVariable("commentId") Long commentId,
             @RequestBody ReportRequestDto requestDto,
             @AuthMember Member member
     ){
