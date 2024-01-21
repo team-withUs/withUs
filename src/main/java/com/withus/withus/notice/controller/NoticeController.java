@@ -51,9 +51,10 @@ public class NoticeController {
   @GetMapping("/club/{clubId}/notice/{noticeId}")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> getNotice(
       @PathVariable("clubId") Long clubId,
-      @PathVariable("noticeId") Long noticeId
+      @PathVariable("noticeId") Long noticeId,
+      @AuthMember Member member
   ) {
-    NoticeResponseDto responseDto = noticeService.getNotice(clubId, noticeId);
+    NoticeResponseDto responseDto = noticeService.getNotice(clubId, noticeId, member);
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GET.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GET,responseDto));
   }

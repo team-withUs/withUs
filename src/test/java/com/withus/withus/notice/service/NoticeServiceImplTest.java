@@ -315,7 +315,7 @@ class NoticeServiceImplTest {
 
       //given
       //when
-      NoticeResponseDto responseDto = noticeService.getNotice(testClub.getId(), testNotice.getId());
+      NoticeResponseDto responseDto = noticeService.getNotice(testClub.getId(), testNotice.getId(), testMember);
 
 
       //then
@@ -330,7 +330,7 @@ class NoticeServiceImplTest {
       //given
       //when
       BisException exception = assertThrows(BisException.class, ()-> {
-        noticeService.getNotice(10L, testNotice.getId());
+        noticeService.getNotice(10L, testNotice.getId(), testMember);
       });
 
       //then

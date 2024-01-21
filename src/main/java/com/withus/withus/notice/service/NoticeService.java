@@ -13,7 +13,7 @@ public interface NoticeService {
 
   NoticeResponseDto updateNotice(Long clubId, Long noticeId, NoticeRequestDto requestDto, Member member);
 
-  NoticeResponseDto getNotice(Long clubId, Long noticeId);
+  NoticeResponseDto getNotice(Long clubId, Long noticeId, Member member);
 
   void deleteNotice(Long clubId, Long noticeId, Member member);
 
