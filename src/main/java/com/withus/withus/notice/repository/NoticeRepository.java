@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface NoticeRepository extends JpaRepository<Notice,Long> {
   Optional<Notice> findByIsActiveAndId(Boolean isActive,Long noticeId);
 
-  List<Notice> findAllByIsActive(Boolean isActive,Pageable pageable);
+  List<Notice> findAllByIsActiveAndClubId(Boolean isActive,Long clubId, Pageable pageable);
 
   boolean existsByIsActiveAndId(boolean isActive, Long noticeId);
 
