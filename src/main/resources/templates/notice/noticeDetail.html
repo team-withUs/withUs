@@ -115,7 +115,7 @@
 
 <div style="float: right; margin-right: 15%; margin-top: 5%">
   <label style="float: left; font-size: large" ><a onclick="editPage()">수정</a></label>
-  <label style="float: left; margin-left: 10px; margin-right: 10px; font-size: large" onclick="NoticeAddPage()"> / </label>
+  <label style="float: left; margin-left: 10px; margin-right: 10px; font-size: large"> / </label>
   <label style="float: right; font-size: large"><a onclick="deletePage()">삭제</a></label>
 </div>
 <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
@@ -261,10 +261,6 @@
 
   })
 
-  function NoticeAddPage(){
-    const clubId = [[${clubId}]];
-    window.location.href = host + '/api/club/'+clubId+'/notice/noticeAddPage';
-  }
 
 
   function editPage(){
