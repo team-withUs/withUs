@@ -4,6 +4,8 @@ package com.withus.withus.notice.service;
 import static com.withus.withus.global.s3.S3Const.S3_DIR_NOTICE;
 
 import com.withus.withus.club.entity.Club;
+import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.service.ClubMemberServiceImpl;
 import com.withus.withus.club.service.ClubServiceImpl;
 import com.withus.withus.global.exception.BisException;
@@ -69,30 +71,34 @@ public class NoticeServiceImpl implements NoticeService {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
 
-        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
-            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
-        }
-
+//        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
+//            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
+//        }
         Notice notice = findByIsActiveAndNoticeId(noticeId);
-
-        NoticeCategory category = NoticeCategory.BOARD;
-        if (requestDto.category().equals("공지사항")) {
-            category = NoticeCategory.NOTICE;
-        }
-
-        if (requestDto.imageFile() != null) {
-            if (notice.getFilename() != null) {
-                s3Util.deleteFile(notice.getFilename(), S3_DIR_NOTICE);
+        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member, clubId);
+        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || notice.getMember().getId().equals(member.getId())){
+            NoticeCategory category = NoticeCategory.BOARD;
+            if (requestDto.category().equals("공지사항")) {
+                category = NoticeCategory.NOTICE;
             }
-            String filename = s3Util.uploadFile(requestDto.imageFile(), S3_DIR_NOTICE);
-            notice.updatePlusImage(requestDto, category,
+
+            if (requestDto.imageFile() != null) {
+                if (notice.getFilename() != null) {
+                    s3Util.deleteFile(notice.getFilename(), S3_DIR_NOTICE);
+                }
+                String filename = s3Util.uploadFile(requestDto.imageFile(), S3_DIR_NOTICE);
+                notice.updatePlusImage(requestDto, category,
                     s3Util.getFileURL(filename, S3_DIR_NOTICE), filename
-            );
-        } else {
-            notice.update(requestDto, category);
+                );
+            } else {
+                notice.update(requestDto, category);
+            }
+            return NoticeResponseDto.createNoticeResponseDto(notice);
+        }
+        else {
+            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
         }
 
-        return NoticeResponseDto.createNoticeResponseDto(notice);
     }
 
     @Override
@@ -110,7 +116,7 @@ public class NoticeServiceImpl implements NoticeService {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
         List<Notice> noticeList = noticeRepository
-                .findAllByIsActive(true, PageableDto.
+                .findAllByIsActiveAndClubId(true,clubId, PageableDto.
                         getsPageableDto(
                                 pageableDto.page(),
                                 pageableDto.size(),
@@ -135,11 +141,18 @@ public class NoticeServiceImpl implements NoticeService {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
-        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
-            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
-        }
+//        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
+//            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
+//        }
+        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member, clubId);
         Notice notice = findByIsActiveAndNoticeId(noticeId);
-        notice.inActive();
+        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || notice.getMember().getId().equals(member.getId())){
+            notice.inActive();
+        }
+        else {
+            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+        }
+
     }
 
     @Transactional

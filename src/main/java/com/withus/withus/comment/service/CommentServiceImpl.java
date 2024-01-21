@@ -1,5 +1,8 @@
 package com.withus.withus.comment.service;
 
+import com.withus.withus.club.entity.ClubMember;
+import com.withus.withus.club.entity.ClubMemberRole;
+import com.withus.withus.club.service.ClubMemberServiceImpl;
 import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.comment.dto.CommentResponseDto;
 import com.withus.withus.comment.dto.ReportRequestDto;
@@ -25,6 +28,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final NoticeServiceImpl noticeService;
+    private final ClubMemberServiceImpl clubMemberService;
     private final CommentReportRepository commentReportRepository;
 
     @Override
@@ -37,9 +41,17 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public CommentResponseDto updateComment(Long noticeId, Long commentId, CommentRequestDto commentRequestDto, Member member) {
+        Notice notice = noticeService.findByIsActiveAndNoticeId(noticeId);
         Comment comment = findByIsActiveAndCommentId(commentId);
-        comment.update(commentRequestDto);
-        return CommentResponseDto.createCommentResponseDto(comment);
+        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member, notice.getClub().getId());
+        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || comment.getMember().getId().equals(member.getId())){
+            comment.update(commentRequestDto);
+            return CommentResponseDto.createCommentResponseDto(comment);
+        }
+        else {
+            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+        }
+
     }
 
     @Override
@@ -65,15 +77,16 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public void deleteComment(Long noticeId, Long commentId, Member loginMember) {
-        if (!existsByNoticeId(noticeId)) {
-            throw new BisException(ErrorCode.NOT_FOUND_NOTICE);
-        }
+        Notice notice = noticeService.findByIsActiveAndNoticeId(noticeId);
         Comment comment = findByIsActiveAndCommentId(commentId);
-        Member writer = comment.getMember();
-        if (!(writer.getId() == loginMember.getId())) {
-            throw new BisException(ErrorCode.YOUR_NOT_THE_AUTHOR);
+        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(loginMember, notice.getClub().getId());
+        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || comment.getMember().getId().equals(loginMember.getId())){
+            comment.inActive();
         }
-        comment.inActive();
+        else {
+            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+        }
+
     }
 
     @Transactional
