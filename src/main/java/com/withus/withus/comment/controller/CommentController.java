@@ -25,7 +25,7 @@ public class CommentController {
 
     @PostMapping("/notice/{noticeId}/comment")
     public ResponseEntity<CommonResponse<CommentResponseDto>> createReportComment(
-            @PathVariable Long noticeId,
+            @PathVariable("noticeId") Long noticeId,
             @RequestBody CommentRequestDto commentRequestDto,
             @AuthMember Member member
     ) {
@@ -37,8 +37,8 @@ public class CommentController {
 
     @PatchMapping("/notice/{noticeId}/comment/{commentId}")
     public ResponseEntity<CommonResponse<CommentResponseDto>> updateComment(
-            @PathVariable Long noticeId,
-            @PathVariable Long commentId,
+            @PathVariable("noticeId") Long noticeId,
+            @PathVariable("commentId") Long commentId,
             @RequestBody CommentRequestDto commentRequestDto,
             @AuthMember Member member
     ) {
@@ -49,12 +49,14 @@ public class CommentController {
 
     @GetMapping("/notice/{noticeId}/comment")
     public ResponseEntity<CommonResponse<List<CommentResponseDto>>> getsComment(
-            @PathVariable("noticeId")Long noticeId,
+
+            @PathVariable("noticeId") Long noticeId,
+
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "4") int size,
             @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy
     ){
-        System.out.println("=========================");
+        System.out.println("====================");
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
         return ResponseEntity.status(ResponseCode.SUCCESS_COMMENT_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_GET,
@@ -63,8 +65,8 @@ public class CommentController {
 
     @DeleteMapping("/notice/{noticeId}/comment/{commentId}")
     public ResponseEntity<CommonResponse<String>> deleteComment(
-            @PathVariable Long noticeId,
-            @PathVariable Long commentId,
+            @PathVariable("noticeId") Long noticeId,
+            @PathVariable("commentId") Long commentId,
             @AuthMember Member member
     ) {
         commentService.deleteComment(noticeId, commentId, member);
@@ -74,7 +76,7 @@ public class CommentController {
 
     @PostMapping("/comment/{commentId}/report")
     public ResponseEntity<CommonResponse<String>> createReportComment(
-            @PathVariable Long commentId,
+            @PathVariable("commentId") Long commentId,
             @RequestBody ReportRequestDto requestDto,
             @AuthMember Member member
     ){

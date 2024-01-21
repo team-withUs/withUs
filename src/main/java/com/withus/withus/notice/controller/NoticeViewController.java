@@ -35,7 +35,12 @@ public class NoticeViewController {
       count=0;
     }
     else if(totalListCnt > 4){
-      count=totalListCnt/4+1;
+      if(totalListCnt%4==0){
+        count=totalListCnt/4;
+      }
+      else {
+        count=totalListCnt/4+1;
+      }
     }
     else {
       count=1;
