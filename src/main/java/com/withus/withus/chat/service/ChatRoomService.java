@@ -62,7 +62,8 @@ public class ChatRoomService {
     return ChatRoomResponseDto.createChatRoomResponseDto(
         chatRoom.getId(),
         chatRoom.getTitle(),
-        chatRoom.getSender()
+        chatRoom.getSender(),
+        chatRoom.getReceiver()
     );
   }
 
@@ -77,7 +78,8 @@ public class ChatRoomService {
         .map(chatRoom -> ChatRoomResponseDto.createChatRoomResponseDto(
             chatRoom.getId(),
             chatRoom.getTitle(),
-            chatRoom.getSender()
+            chatRoom.getSender(),
+            chatRoom.getReceiver()
             ))
         .toList();
 

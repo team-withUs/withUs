@@ -16,12 +16,16 @@
         const host = 'http://' + window.location.host;
         var memberId;
         var isLogin;
+        var isClubMember;
+        var isHost;
 
         $(document).ready(function () {
             memberId = /*[[${memberId}]]*/ '';
             isLogin = /*[[${isLogin}]]*/ '';
             console.log(isLogin);
             console.log(memberId);
+            isClubMember = /*[[${isClubMember}]]*/ '';
+            isHost = /*[[${isHost}]]*/ '';
 
             if (isLogin === true) {
                 $('#loginBtn').hide();
@@ -36,6 +40,21 @@
                 $('#myInfo').hide();
                 $('#logout').hide();
                 $('#create').hide();
+            }
+
+            if(isClubMember === true){
+                $('#Notice-post').show();
+            }else{
+                $('#Notice-post').hide();
+            }
+
+            console.log(isHost);
+            if (isHost === true) {
+                $('#reviseButton').show();
+                $('#deleteButton').show();
+            }else{
+                $('#reviseButton').hide();
+                $('#deleteButton').hide();
             }
 
             $("#loginBtn").on("click", function(e) {
@@ -127,7 +146,7 @@
                 </article>
                 <article class="club-button-container2">
                     <button id="deleteButton">
-                        <img src = "/icons/icons8-취소-30.png">
+                        <img src="/icons/icons8-취소-30.png">
                     </button>
                 </article>
             </div>
@@ -175,13 +194,12 @@
                                     let id = res.id;
                                     const card =
                                         '<div class="board-box" onclick="noticePage(\'' + id + '\')">' +
-                                        '    <p>' + title + '</p>' +
+                                        '    <div style="font-weight: bold; padding-bottom: 100px;">' + title + '</div>' +
                                         '</div>';
                                     $('#notice-box').append(card);
                                 });
                             }
                         });
-
                     }
                     // var clubList = window.location.pathname.split('club/').pop().replace()
                     const cntList = [[${countList}]];

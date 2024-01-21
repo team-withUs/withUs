@@ -1,9 +1,9 @@
 package com.withus.withus.club.controller;
 
+import com.withus.withus.club.service.ClubMemberService;
+import com.withus.withus.club.service.ClubMemberServiceImpl;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.member.entity.Member;
-import com.withus.withus.notice.dto.NoticeResponseDto;
-import com.withus.withus.notice.dto.PageableDto;
 import com.withus.withus.notice.service.NoticeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,8 @@ import java.util.List;
 @RequestMapping("api/club")
 public class ClubViewController {
     private final NoticeService noticeService;
+    private final ClubMemberService clubMemberService;
+    private final ClubMemberServiceImpl clubMemberServiceimpl;
 
     @GetMapping("/main-club/{clubId}")
     public String getMainClub(
@@ -29,9 +31,18 @@ public class ClubViewController {
         if (member != null) {
             model.addAttribute("isLogin", true);
             model.addAttribute("memberId", member.getId());
+            model.addAttribute("isClubMember", clubMemberServiceimpl.existsClubMemberByMemberIdAndClubId(member.getId(), clubId));
+            model.addAttribute("isHost", clubMemberServiceimpl.isHostMember(member.getId(), clubId));
+
+
         } else {
             model.addAttribute("isLogin", false);
+            model.addAttribute("isHost",false);
+            model.addAttribute("isClubMember", false);
+
+
         }
+
 
 
         Integer totalList = noticeService.count(clubId);
