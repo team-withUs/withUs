@@ -16,12 +16,16 @@
         const host = 'http://' + window.location.host;
         var memberId;
         var isLogin;
+        var isClubMember;
+        var isHost;
 
         $(document).ready(function () {
             memberId = /*[[${memberId}]]*/ '';
             isLogin = /*[[${isLogin}]]*/ '';
             console.log(isLogin);
             console.log(memberId);
+            isClubMember = /*[[${isClubMember}]]*/ '';
+            isHost = /*[[${isHost}]]*/ '';
 
             if (isLogin === true) {
                 $('#loginBtn').hide();
@@ -36,6 +40,21 @@
                 $('#myInfo').hide();
                 $('#logout').hide();
                 $('#create').hide();
+            }
+
+            if(isClubMember === true){
+                $('#Notice-post').show();
+            }else{
+                $('#Notice-post').hide();
+            }
+
+            console.log(isHost);
+            if (isHost === true) {
+                $('#reviseButton').show();
+                $('#deleteButton').show();
+            }else{
+                $('#reviseButton').hide();
+                $('#deleteButton').hide();
             }
 
             $("#loginBtn").on("click", function(e) {
@@ -118,14 +137,14 @@
             </div>
 
 
-            <div class="button-item" th:if="${isHost == true or isGuest == true}">
+            <div class="button-item">
                 <article class="club-button-container1">
                     <button id="reviseButton">
                         <img src="/icons/수정.png">
                     </button>
 
                 </article>
-                <article class="club-button-container2" th:if="${isHost == true or isGuest == true}">
+                <article class="club-button-container2">
                     <button id="deleteButton">
                         <img src="/icons/icons8-취소-30.png">
                     </button>
@@ -135,7 +154,7 @@
 
         <section id="notice-container">
             <div>
-                <button id="Notice-post" th:if="${{isHost == true or isGuest == true}}" onclick="navigateToNoticeAddPage()">
+                <button id="Notice-post" onclick="navigateToNoticeAddPage()">
                     <img src="/icons/noties.png"/>
                 </button>
                 <div>
