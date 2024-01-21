@@ -333,8 +333,8 @@ class MemberServiceImplIntegrationTest {
           "123456",
           "username33",
           "user33@email.com",
-          "소개",
           "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
+          "소개",
           file
       );
 
