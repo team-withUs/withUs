@@ -229,7 +229,7 @@
             });
           },
           error:function (){
-            alert("Error");
+            alert("로그인을 해주세요");
           }
         })
 
@@ -243,6 +243,9 @@
 
 
 
+      },
+      error:function (){
+        alert("로그인을 해주세요");
       }
     })
 
@@ -253,6 +256,10 @@
       const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
       $('#page').append(card);
     })
+
+
+
+
 
 
 
