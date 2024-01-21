@@ -23,7 +23,7 @@ public class Scheduler {
     List<RefreshToken> expiredRefreshTokenList = refreshTokenRepository.findAll();
     if (!expiredRefreshTokenList.isEmpty()) {
       for (RefreshToken refreshToken : expiredRefreshTokenList) {
-        LocalDateTime endTime = refreshToken.getCreatedAt().plusDays(14);
+        LocalDateTime endTime = refreshToken.getCreatedAt().plusDays(7);
         if (LocalDateTime.now().isAfter(endTime)) {
           refreshTokenRepository.delete(refreshToken);
         }
