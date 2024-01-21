@@ -14,4 +14,6 @@ public interface ClubMemberService {
     List<ClubMember> getInvitedUserByClub(Long clubId);
 
     boolean hasHostRole(Member member, Long clubId);
+
+    boolean isAuthorOrHost(Member member, Long clubId);
 }

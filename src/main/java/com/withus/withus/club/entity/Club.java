@@ -128,4 +128,8 @@ public class Club extends TimeStamp {
     public Member getCreator() {
         return this.member;
     }
+
+    public Member getAuthor() {
+        return this.member;
+    }
 }
