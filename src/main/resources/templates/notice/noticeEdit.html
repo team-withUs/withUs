@@ -108,6 +108,10 @@
         let content = dto.content;
         $("#title").val(title);
         $("#content").val(content);
+      },
+      error: function (error){
+        alert("호스트나 작성자가 아닙니다")
+
       }
     })
   })

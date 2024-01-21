@@ -227,6 +227,12 @@
 
 
             });
+            const cntList = [[${countList}]];
+            $(cntList).each(function (index,res){
+              // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
+              const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
+              $('#page').append(card);
+            })
           },
           error:function (){
             alert("해당 멤버가 아닙니다.");
@@ -249,13 +255,8 @@
       }
     })
 
-// 1~2 페이지
-    const cntList = [[${countList}]];
-    $(cntList).each(function (index,res){
-      // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
-      const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
-      $('#page').append(card);
-    })
+
+
 
 
 
