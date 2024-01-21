@@ -49,7 +49,7 @@ public class ClubController {
     // 클럽에 초대된 유저조회
     @GetMapping("/{clubId}/inviteList")
     public ResponseEntity<CommonResponse<List<InviteMemberResponseDto>>> getInvitedUserByClub(
-            @PathVariable Long clubId
+            @PathVariable("clubId") Long clubId
     ) {
         List<ClubMember> invitedClubMembers = clubMemberService.getInvitedUserByClub(clubId);
         List<InviteMemberResponseDto> invitedUsernames = invitedClubMembers.stream()

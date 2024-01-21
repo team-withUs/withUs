@@ -106,8 +106,8 @@
       <h2 class="withUs">withUs</h2>
     </div>
     <div class="title2">
-      <i class="icon fa-solid fa-user"
-         onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>
+<!--      <i class="icon fa-solid fa-user"-->
+<!--         onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>-->
       <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
     </div>
   </header>
@@ -115,7 +115,7 @@
 
 <div style="float: right; margin-right: 15%; margin-top: 5%">
   <label style="float: left; font-size: large" ><a onclick="editPage()">수정</a></label>
-  <label style="float: left; margin-left: 10px; margin-right: 10px; font-size: large" onclick="NoticeAddPage()"> / </label>
+  <label style="float: left; margin-left: 10px; margin-right: 10px; font-size: large"> / </label>
   <label style="float: right; font-size: large"><a onclick="deletePage()">삭제</a></label>
 </div>
 <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
@@ -179,6 +179,8 @@
   $(document).ready(function (){
     const clubId = [[${clubId}]];
     const noticeId = [[${noticeId}]];
+    console.log(clubId);
+    console.log(noticeId);
 
     $.ajax({
       type:'GET',
@@ -227,7 +229,7 @@
             });
           },
           error:function (){
-            alert("Error");
+            alert("로그인을 해주세요");
           }
         })
 
@@ -241,6 +243,9 @@
 
 
 
+      },
+      error:function (){
+        alert("로그인을 해주세요");
       }
     })
 
@@ -257,12 +262,12 @@
 
 
 
+
+
+
+
   })
 
-  function NoticeAddPage(){
-    const clubId = [[${clubId}]];
-    window.location.href = host + '/api/club/'+clubId+'/notice/noticeAddPage';
-  }
 
 
   function editPage(){
