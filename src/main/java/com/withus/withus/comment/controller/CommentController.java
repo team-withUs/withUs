@@ -49,7 +49,7 @@ public class CommentController {
 
     @GetMapping("/notice/{noticeId}/comment")
     public ResponseEntity<CommonResponse<List<CommentResponseDto>>> getsComment(
-            @PathVariable Long noticeId,
+            @PathVariable("noticeId")Long noticeId,
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "4") int size,
             @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy
