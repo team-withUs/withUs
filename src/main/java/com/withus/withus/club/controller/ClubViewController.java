@@ -1,5 +1,6 @@
 package com.withus.withus.club.controller;
 
+import com.withus.withus.club.service.ClubMemberService;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeResponseDto;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequestMapping("api/club")
 public class ClubViewController {
     private final NoticeService noticeService;
+    private final ClubMemberService clubMemberService;
 
     @GetMapping("/main-club/{clubId}")
     public String getMainClub(
@@ -29,6 +31,8 @@ public class ClubViewController {
         if (member != null) {
             model.addAttribute("isLogin", true);
             model.addAttribute("memberId", member.getId());
+            model.addAttribute("isHost", clubMemberService.hasHostRole(member, clubId));
+            model.addAttribute("isGuest", clubMemberService.isGuest(member, clubId));
         } else {
             model.addAttribute("isLogin", false);
         }

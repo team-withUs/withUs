@@ -83,7 +83,6 @@ public class ClubServiceImpl implements ClubService {
                 .collect(Collectors.toList());
     }
 
-
     //조회
     public ClubResponseDto getClub(Long clubId) {
         Club club = clubRepository.findById(clubId)
@@ -91,12 +90,15 @@ public class ClubServiceImpl implements ClubService {
         return ClubResponseDto.createClubResponseDto(club);
     }
 
-    /// 수정
     @Transactional
     @Override
     public ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
         Club club = verifyMember(clubId);
-        System.out.println(image);
+
+        if (!clubMemberService.isAuthorOrHost(member, clubId)) {
+            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
+        }
+
         try {
             String imageUrl = null;
             String filename = null;
@@ -110,13 +112,11 @@ public class ClubServiceImpl implements ClubService {
                 filename = newImageFile;
             } else {
                 if (club.getImageUrl() != null) {
-//                    s3Util.deleteFile(club.getImageUrl(), S3Const.S3_DIR_CLUB);
                     filename = club.getFilename();
                     imageUrl = club.getImageUrl();
                 }
                 club.setImgUrl(null);
             }
-            System.out.println("test" + imageUrl);
             club.update(clubRequestDto, filename, imageUrl);
             return ClubResponseDto.createClubResponseDto(club);
         } catch (Exception e) {
@@ -124,20 +124,6 @@ public class ClubServiceImpl implements ClubService {
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
     }
-
-    //    @Override
-//    @Transactional
-//    public String deleteClub(Long clubId, Member member) {
-//        if (!existByClubId(clubId)) {
-//            throw new BisException(ErrorCode.NOT_FOUND_CLUB);
-//        }
-//        Club club = verifyMember(clubId);
-//        club.delete();
-//        return "Club delete successfully";
-//    }
-//    private boolean existByClubId(Long clubId) {
-//        return clubRepository.existsById(clubId);
-//    }
 
     @Override
     @Transactional

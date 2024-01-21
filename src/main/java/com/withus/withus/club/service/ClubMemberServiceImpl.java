@@ -1,13 +1,12 @@
 package com.withus.withus.club.service;
 
-import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.repository.ClubMemberRepository;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
-import jakarta.persistence.PreUpdate;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,6 +36,27 @@ public class ClubMemberServiceImpl implements ClubMemberService {
             .orElseThrow(() -> new BisException(ErrorCode.YOUR_NOT_COME_IN));
 
     return clubMember.getClubMemberRole() == ClubMemberRole.HOST;
+  }
+
+  @Override
+  public boolean isGuest(Member member, Long clubId) {
+    ClubMember clubMember = getClubMemberByMemberIdAndClubId(member.getId(), clubId);
+
+    return clubMember.getClubMemberRole() == ClubMemberRole.GUEST;
+  }
+
+  private ClubMember getClubMemberByMemberIdAndClubId(Long memberId, Long clubId) {
+    return clubMemberRepository.findClubMemberByMemberIdAndClubId(memberId, clubId)
+            .orElseThrow(() -> new BisException(ErrorCode.YOUR_NOT_COME_IN));
+  }
+
+  @Override
+  public boolean isAuthorOrHost(Member member, Long clubId) {
+    ClubMember clubMember = clubMemberRepository.findClubMemberByMemberIdAndClubId(member.getId(), clubId)
+            .orElseThrow(() -> new BisException(ErrorCode.YOUR_NOT_COME_IN));
+
+    // Check if the member is the author or has the host role
+    return clubMember.getClub().getAuthor().equals(member) || clubMember.getClubMemberRole() == ClubMemberRole.HOST;
   }
 
 

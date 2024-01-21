@@ -118,16 +118,16 @@
             </div>
 
 
-            <div class="button-item">
+            <div class="button-item" th:if="${isHost == true or isGuest == true}">
                 <article class="club-button-container1">
                     <button id="reviseButton">
                         <img src="/icons/수정.png">
                     </button>
 
                 </article>
-                <article class="club-button-container2">
+                <article class="club-button-container2" th:if="${isHost == true or isGuest == true}">
                     <button id="deleteButton">
-                        <img src = "/icons/icons8-취소-30.png">
+                        <img src="/icons/icons8-취소-30.png">
                     </button>
                 </article>
             </div>
@@ -135,7 +135,7 @@
 
         <section id="notice-container">
             <div>
-                <button id="Notice-post" onclick="navigateToNoticeAddPage()">
+                <button id="Notice-post" th:if="${{isHost == true or isGuest == true}}" onclick="navigateToNoticeAddPage()">
                     <img src="/icons/noties.png"/>
                 </button>
                 <div>
