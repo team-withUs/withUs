@@ -78,13 +78,13 @@
       cursor: pointer;
     }
 
-    .image{
+    .img-fluid{
       width: 150px;
       height: 150px;
-      border-radius: 50%;
+      border-radius: 1%;
+      margin-left: 10px;
       float: left;
     }
-
 
     /*.img-fluid {*/
     /*  display: flex;*/
@@ -159,8 +159,9 @@
             }
           }
         },
-        error: function(error){
-          console.error("에러 :", error)
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       });
     })

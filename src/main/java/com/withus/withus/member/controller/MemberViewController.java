@@ -2,6 +2,8 @@ package com.withus.withus.member.controller;
 
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.global.exception.BisException;
+import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
@@ -52,7 +54,9 @@ public class MemberViewController {
       Model model,
       @AuthMember Member loginMember
   ) {
-    model.addAttribute("memberId",loginMember.getId());
+
+    model.addAttribute("memberId",memberId);
+    model.addAttribute("loginMemberId",loginMember.getId());
     return "updateProfile";
 
   }
