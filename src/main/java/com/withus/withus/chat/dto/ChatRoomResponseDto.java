@@ -8,6 +8,7 @@ public record ChatRoomResponseDto(
     Long roomId,
     String title,
     String senderImg,
+    Long senderId,
     Long receiverId
 
 ) {
@@ -22,6 +23,7 @@ public record ChatRoomResponseDto(
         .roomId(roomId)
         .title(title)
         .senderImg(sender.getImageURL())
+        .senderId(sender.getId())
         .receiverId(receiver.getId())
         .build();
   }
