@@ -393,7 +393,7 @@
             let cnt;
             const cntArray = [];
             if(response.data.length >= 4){
-              cnt = response.data.length/4 + 1;
+              cnt = response.data.length/4;
             } else{
               cnt = 1;
             }
@@ -478,7 +478,7 @@
             let cnt;
             let cntArray = [];
             if(response.data.length >= 4){
-              cnt = response.data.length/4 + 1;
+              cnt = response.data.length/4;
             } else{
               cnt = 1;
             }
@@ -615,7 +615,7 @@
             const cntArray = [];
             console.log(response.data.totalElements)
             if(response.data.totalElements > 4){
-              cnt = Math.floor(response.data.totalElements/4) + 1;
+              cnt = response.data.totalElements/4;
             } else{
               cnt = 1;
             }
