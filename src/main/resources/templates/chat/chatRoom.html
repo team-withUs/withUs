@@ -159,17 +159,17 @@
 
   <script th:inline="javascript">
     const host = 'http://' + window.location.host;
-    var receiverId;
-    var memberId = /*[[${memberId}]]*/ '';
+    var roomId = /*[[${roomId}]]*/ '';
+    var roomName;
+    var chatList;
+    var username = /*[[${memberName}]]*/ '';
+    var loginId = /*[[${memberId}]]*/ '';
+    var hostId;
+    var guestId;
+    console.log(roomName + ", " + roomId + ", " + username + ", " + loginId);
+
+
     $(document).ready(function() {
-
-      var roomId = /*[[${roomId}]]*/ '';
-      var roomName;
-      var chatList;
-      var username = /*[[${memberName}]]*/ '';
-      var senderId = /*[[${memberId}]]*/ '';
-      console.log(roomName + ", " + roomId + ", " + username + ", " + senderId);
-
 
       $.ajax({
         type: 'GET',
@@ -178,7 +178,12 @@
       })
         .done(function (res, status, xhr) {
           roomName = res.data.title;
-          receiverId = res.data.receiverId;
+          hostId = res.data.senderId;
+          guestId = res.data.receiverId;
+          if (guestId === loginId) {
+            guestId = hostId;
+          }
+
           $("#title").text(roomName);
         })
         .fail(function (xhr, status, error) {
@@ -222,10 +227,10 @@
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + memberId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + loginId + '\'"><i class="fa-solid fa-user"></i></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + receiverId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + guestId + '\'"><i class="fa-solid fa-user"></i></div>')
 
           }
 
@@ -240,7 +245,7 @@
 
         //3. send(path, header, message)로 메세지를 보낼 수 있음
         stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
-          senderId: senderId,
+          senderId: loginId,
           senderName: username,
           content : username + '님이 입장하였습니다.'
         }))
@@ -256,7 +261,7 @@
         if (msg.value !== null || msg.value.trim() !== '') {
           console.log(username + ":" + msg.value);
           stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
-            senderId: senderId,
+            senderId: loginId,
             senderName: username,
             content: msg.value
           }));
@@ -285,10 +290,10 @@
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + memberId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + loginId + '\'"><i class="fa-solid fa-user"></i></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + receiverId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + guestId + '\'"><i class="fa-solid fa-user"></i></div>')
           }
           // chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
           chatDiv.append('<div class="textbox">' + content + '</div>');
@@ -333,7 +338,7 @@
 <body id="body">
 
 <div class="titleContainer">
-  <div class="title">채팅방</div>
+  <div class="title" id="title">채팅방</div>
   <i class="fa-solid fa-x" onclick="history.back()"></i>
 </div>
 
