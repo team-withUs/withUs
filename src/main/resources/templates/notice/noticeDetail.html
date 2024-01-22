@@ -438,6 +438,11 @@
     const noticeId = [[${noticeId}]];
     let content = $('#commentContent').val();
 
+    if(!content){
+      alert("내용을 입력해주세요");
+      return;
+    }
+
     $.ajax({
       type:"POST",
       url:'/api/notice/'+noticeId+'/comment',
