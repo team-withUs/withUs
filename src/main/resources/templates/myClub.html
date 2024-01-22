@@ -178,6 +178,10 @@
             alert("초대되었습니다.")
           }
           window.location.href = '/api/member/profilePage/'+memberId;
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       })
     }
