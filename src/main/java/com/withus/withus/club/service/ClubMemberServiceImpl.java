@@ -56,7 +56,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
     }
 
     public Page<ClubMember> findAllByMemberId(Member member, Pageable pageable) {
-        return clubMemberRepository.findByMemberId(member.getId(), pageable);
+        return clubMemberRepository.findByMemberIdAndClub_IsActive(member.getId(), pageable, true);
     }
 
     public boolean existsClubMemberByMemberIdAndClubId(Long memberId, Long clubId) {
