@@ -9,6 +9,15 @@ $(document).ready(function () {
         createDataAndConfirmInvitations();
     });
 
+    $("#imgBtn3").on("click", function () {
+        var userConfirmed = confirm("취소하시겠습니까?");
+        if (userConfirmed) {
+            alert("취소되었습니다.");
+            window.location.href = '/';
+        }
+    });
+
+
     function loadMemberInfo() {
         var email = $("#searchInput").val();
         console.log("멤버 Email:", email);
