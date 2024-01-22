@@ -41,10 +41,13 @@ $(document).ready(function () {
         window.location.href = '/api/club/main-club/' + clubId;
     });
 
-    // 취소 버튼 눌렀을 때 경로 이동
     $("#imgBtn3").on("click", function () {
-        window.location.href = '/api/club/main-club/' + clubId;
-    })
+        var userConfirmed = confirm("취소하시겠습니까?");
+        if (userConfirmed) {
+            alert("취소되었습니다.");
+            window.location.href = '/api/club/main-club/' + clubId;
+        }
+    });
 
     $("#search-image").on("click", function () {
         inviteMember();
