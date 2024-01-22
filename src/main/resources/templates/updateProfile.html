@@ -38,8 +38,16 @@
 <script th:inline="javascript">
   const host = 'http://' + window.location.host;
   let memberId = /*[[${memberId}]]*/ '';
-
+  console.log(memberId);
+  let loginMemberId = /*[[${loginMemberId}]]*/ '';
+  console.log(loginMemberId);
   $(document).ready(function(){
+    console.log(memberId);
+    console.log(loginMemberId);
+    if(memberId !== loginMemberId){
+      alert("권한이 없습니다.");
+      history.back();
+    }
 
     $.ajax({
       type:'GET',
@@ -105,8 +113,9 @@
           console.error('프로필 수정 실패', response);
         }
       },
-      error: function(error){
-        console.error('에러 :', error);
+      error: function (error){
+        console.error('에러 :', error.responseJSON.msg);
+        alert(error.responseJSON.msg);
       }
     })
   }
