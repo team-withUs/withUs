@@ -54,13 +54,25 @@ $(document).ready(function () {
 
     function createDataAndConfirmInvitations() {
 
+        var clubTitle = $("#clubTitleInput").val().trim();
+        var category = $(".btn-secondary.dropdown-toggle").text().trim();
+        var content = $("#club-content").val().trim();
+        var maxMember = $("#totalInviteesInput").val().trim();
+        var startTime = $("#startDate").val().trim();
+        var endTime = $("#endDate").val().trim();
+
+        if (!clubTitle || !category || !content || !maxMember || !startTime || !endTime) {
+            alert("필수 항목을 모두 입력하세요.");
+            return;
+        }
+
         var formData = new FormData();
-        formData.append("clubTitle", $("#clubTitleInput").val());
-        formData.append("category", $(".btn-secondary.dropdown-toggle").text());
-        formData.append("content", $("#club-content").val());
-        formData.append("maxMember", $("#totalInviteesInput").val());
-        formData.append("startTime", $("#startDate").val());
-        formData.append("endTime", $("#endDate").val());
+        formData.append("clubTitle", clubTitle);
+        formData.append("category", category);
+        formData.append("content", content);
+        formData.append("maxMember", maxMember);
+        formData.append("startTime", startTime);
+        formData.append("endTime", endTime);
 
         var fileInput = document.getElementById('fileInput');
         if (fileInput.files.length > 0) {
