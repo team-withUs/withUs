@@ -114,6 +114,15 @@
     let title = $('#title').val();
     let content = $('#content').val();
 
+    if(!title){
+      alert("제목을 입력해주세요");
+      return;
+    }
+    if(!content){
+      alert("내용을 입력해주세요");
+      return;
+    }
+
 
 
 
@@ -137,6 +146,7 @@
         window.location.href = host + "/api/club/main-club/" + clubId;
       },
       error: function (error){
+        console.log(error.msg)
         alert("클럽멤버가 아닙니다");
       }
     })
