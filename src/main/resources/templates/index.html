@@ -125,10 +125,11 @@
       cursor: pointer;
     }
 
-    .image{
+    .img-fluid{
       width: 150px;
       height: 150px;
-      border-radius: 50%;
+      border-radius: 1%;
+      margin-left: 10px;
       float: left;
     }
 
@@ -217,7 +218,8 @@
                 + '          <div>\n'
                 + '            <div>\n'
                 + '              <div class="image">\n'
-                + '                <img src="'+clubImage+'" class="img-fluid rounded-start" alt="...">\n'
+                + '                <img src="'+clubImage+'" '
+                + '                     class="img-fluid rounded-start" alt="...">\n'
                 + '              </div>\n'
                 + '            </div>\n'
                 + '            <div class="cardText">\n'
@@ -237,6 +239,10 @@
                 )
             );
           }
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
 
       });
@@ -321,11 +327,12 @@
 
     function changeCategory(button){
       category = button.getAttribute('name');
+      keyword = $('#searchText').val();
       console.log(category);
 
       $.ajax({
         type: 'GET',
-        url: '/api/club/'+category+'/club',
+        url: '/api/club/'+category+'/club?keyWord='+keyword,
         contentType: 'application/json',
         success: function (response){
           var buttons = document.getElementsByClassName('btn');
@@ -360,8 +367,8 @@
                       + '          <div>\n'
                       + '            <div>\n'
                       + '              <div class="image">\n'
-                      + '                <img src="' + clubImage
-                      + '" class="img-fluid rounded-start" alt="...">\n'
+                      + '                 <img src="'+clubImage+'" '
+                      + '                  class="img-fluid rounded-start" alt="...">\n'
                       + '              </div>\n'
                       + '            </div>\n'
                       + '            <div class="cardText">\n'
@@ -400,6 +407,10 @@
               $('#page').append(card);
             })
           }
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       });
     }
@@ -442,8 +453,8 @@
                       + '          <div>\n'
                       + '            <div>\n'
                       + '              <div class="image">\n'
-                      + '                <img src="' + clubImage
-                      + '" class="img-fluid rounded-start" alt="...">\n'
+                      + '                 <img src="'+clubImage+'" '
+                      + '                  class="img-fluid rounded-start" alt="...">\n'
                       + '              </div>\n'
                       + '            </div>\n'
                       + '            <div class="cardText">\n'
@@ -465,10 +476,9 @@
             }
             $('#page').empty();
             let cnt;
-            let totalCnt = /*[[${cnt}]]*/'';
-            const cntArray = [];
-            if(totalCnt> 4){
-              cnt = totalCnt/4 +1;
+            let cntArray = [];
+            if(response.data.length >= 4){
+              cnt = response.data.length/4 + 1;
             } else{
               cnt = 1;
             }
@@ -482,6 +492,10 @@
               $('#page').append(card);
             })
           }
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       });
     }
@@ -512,9 +526,8 @@
                     + '        <div id="'+clubId+'" class="card mb-3" onclick="getClub(this.id)">\n'
                     + '          <div>\n'
                     + '            <div>\n'
-                    + '              <div class="image">\n'
-                    + '                <img src="'+clubImage+'" class="img-fluid rounded-start" alt="...">\n'
-                    + '              </div>\n'
+                    + '               <img src="'+clubImage+'" '
+                    + '                  class="img-fluid rounded-start" alt="...">\n'
                     + '            </div>\n'
                     + '            <div class="cardText">\n'
                     + '              <div>\n'
@@ -533,6 +546,10 @@
                 )
             );
           }
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       })
     }
@@ -567,30 +584,28 @@
               numberOfPeople = currentItem.maxMember;
               console.log("생성완료");
               $('#cardGroup').append($('<div class="cardGroup" >\n'
-                      + '    <tr>\n'
-                      + '      <div class="cardParent">\n'
-                      + '        <div id="' + clubId + '" class="card mb-3" onclick="getClub(this.id)">\n'
-                      + '          <div>\n'
-                      + '            <div>\n'
-                      + '              <div class="image">\n'
-                      + '                <img src="' + clubImage
-                      + '" class="img-fluid rounded-start" alt="...">\n'
-                      + '              </div>\n'
-                      + '            </div>\n'
-                      + '            <div class="cardText">\n'
-                      + '              <div>\n'
-                      + '                <div class="card-body">\n'
-                      + '                  <p class="card-title">' + clubName + '</p>\n'
-                      + '                  <p class="card-text">' + clubContent + '</p>\n'
-                      + '                  <p class="card-text">' + numberOfPeople + '</p>\n'
-                      + '                </div>\n'
-                      + '              </div>\n'
-                      + '            </div>\n'
-                      + '          </div>\n'
-                      + '        </div>\n'
-                      + '      </div>\n'
-                      + '    </tr>\n'
-                      + '  </div>'
+                  + '    <tr>\n'
+                  + '      <div class="cardParent">\n'
+                  + '        <div id="'+clubId+'" class="card mb-3" onclick="getClub(this.id)">\n'
+                  + '          <div>\n'
+                  + '            <div>\n'
+                  + '              <img src="'+clubImage+'" '
+                  + '                  class="img-fluid rounded-start" alt="...">\n'
+                  + '            </div>\n'
+                  + '            <div class="cardText">\n'
+                  + '              <div>\n'
+                  + '                <div class="card-body">\n'
+                  + '                  <p class="card-title">'+clubName+'</p>\n'
+                  + '                  <p class="card-text">'+clubContent+'</p>\n'
+                  + '                  <p class="card-text">'+numberOfPeople+'</p>\n'
+                  + '                </div>\n'
+                  + '              </div>\n'
+                  + '            </div>\n'
+                  + '          </div>\n'
+                  + '        </div>\n'
+                  + '      </div>\n'
+                  + '    </tr>\n'
+                  + '  </div>'
                   )
               );
             }
@@ -614,6 +629,10 @@
               $('#page').append(card);
             })
           }
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       });
     }
@@ -644,9 +663,8 @@
                     + '        <div id="'+clubId+'" class="card mb-3" onclick="getClub(this.id)">\n'
                     + '          <div>\n'
                     + '            <div>\n'
-                    + '              <div class="image">\n'
-                    + '                <img src="'+clubImage+'" class="img-fluid rounded-start" alt="...">\n'
-                    + '              </div>\n'
+                    + '              <img src="'+clubImage+'" '
+                    + '                  class="img-fluid rounded-start" alt="...">\n'
                     + '            </div>\n'
                     + '            <div class="cardText">\n'
                     + '              <div>\n'
@@ -665,6 +683,10 @@
                 )
             );
           }
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       })
     }
