@@ -236,6 +236,7 @@
           },
           error:function (){
             alert("해당 멤버가 아닙니다.");
+            window.location.href = host + '/api/club/main-club/'+clubId;
           }
         })
 
@@ -460,7 +461,8 @@
         }
       },
       error: function (error){
-        alert("클럽 멤버가 아닙니다.")
+        alert("클럽 멤버가 아닙니다.");
+
         console.error('에러 :',error)
       }
     })
