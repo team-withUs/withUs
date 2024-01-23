@@ -46,6 +46,7 @@ public class ClubController {
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE, responseDto));
     }
 
+
     // 클럽에 초대된 유저조회
     @GetMapping("/{clubId}/inviteList")
     public ResponseEntity<CommonResponse<List<InviteMemberResponseDto>>> getInvitedUserByClub(
@@ -62,6 +63,16 @@ public class ClubController {
 
     }
 
+    @GetMapping("/{clubId}/memberCount")
+    public ResponseEntity<CommonResponse<Integer>> getClubMemberCount(
+            @PathVariable("clubId") Long clubId
+    ) {
+        int memberCount = clubMemberService.getClubMemberCount(clubId);
+
+        return ResponseEntity
+                .status(ResponseCode.OK.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.OK, memberCount));
+    }
 
     @GetMapping
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getAllClubs() {
