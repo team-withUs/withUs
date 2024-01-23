@@ -14,7 +14,7 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 
     Optional<ClubMember> findClubMemberByMemberIdAndClubId(Long memberId, Long clubId);
 
-    Page<ClubMember> findByMemberId(Long member_id, Pageable pageable);
+    Page<ClubMember> findByMemberIdAndClub_IsActive(Long member_id, Pageable pageable, boolean isActive);
 
     Page<ClubMember> findByMemberIdAndClubMemberRole(Long memberId, ClubMemberRole role, Pageable pageable);
 

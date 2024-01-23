@@ -236,6 +236,7 @@
           },
           error:function (){
             alert("해당 멤버가 아닙니다.");
+            window.location.href = host + '/api/club/main-club/'+clubId;
           }
         })
 
@@ -438,6 +439,11 @@
     const noticeId = [[${noticeId}]];
     let content = $('#commentContent').val();
 
+    if(!content){
+      alert("내용을 입력해주세요");
+      return;
+    }
+
     $.ajax({
       type:"POST",
       url:'/api/notice/'+noticeId+'/comment',
@@ -455,7 +461,8 @@
         }
       },
       error: function (error){
-        alert("클럽 멤버가 아닙니다.")
+        alert("클럽 멤버가 아닙니다.");
+
         console.error('에러 :',error)
       }
     })

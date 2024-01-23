@@ -55,7 +55,8 @@
         }
       },
       error: function (error){
-        console.error('에러 :', error);
+        console.error('에러 :', error.responseJSON.msg);
+        alert(error.responseJSON.msg);
       }
     })
 
