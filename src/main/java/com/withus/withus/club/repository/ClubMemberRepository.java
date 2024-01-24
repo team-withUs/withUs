@@ -22,4 +22,6 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 
     List<ClubMember> findByClubId(Long clubId);
 
+    //  추가
+    Integer countByClubId(Long clubId);
 }

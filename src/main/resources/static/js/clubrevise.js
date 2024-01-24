@@ -17,7 +17,6 @@ $(document).ready(function () {
             $("#club-content").val(club.content);
             $("#startDate").val(club.startTime);
             $("#endDate").val(club.endTime);
-            $("#totalInviteesInput").val(club.maxMember);
 
             var imageURL = club.imageURL;
             $("#uploadedImage").attr("src", imageURL);
@@ -107,7 +106,6 @@ $(document).ready(function () {
         formData.append("clubTitle", $("#clubTitleInput").val());
         formData.append("category", $(".btn-secondary.dropdown-toggle").text());
         formData.append("content", $("#club-content").val());
-        formData.append("maxMember", $("#totalInviteesInput").val())
         formData.append("startTime", $("#startDate").val());
         formData.append("endTime", $("#endDate").val());
 

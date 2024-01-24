@@ -13,7 +13,6 @@ public record ClubRequestDto(
         String content,
         ClubCategory category,
         MultipartFile imageFile,
-        Integer maxMember,
         LocalDateTime startTime,
         LocalDateTime endTime
 ) {

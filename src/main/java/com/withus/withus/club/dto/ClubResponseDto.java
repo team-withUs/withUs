@@ -14,7 +14,6 @@ public record ClubResponseDto(
         ClubCategory category,
         String imageURL,
         String username,
-        Integer maxMember,
         LocalDateTime startTime,
         LocalDateTime endTime,
         LocalDateTime createdAt,
@@ -30,7 +29,6 @@ public record ClubResponseDto(
                 .category(club.getCategory())
                 .imageURL(club.getImageUrl())
                 .username(club.getUsername())
-                .maxMember(club.getMaxMember())
                 .startTime(club.getStartTime())
                 .endTime(club.getEndTime())
                 .createdAt(club.getCreatedAt())
