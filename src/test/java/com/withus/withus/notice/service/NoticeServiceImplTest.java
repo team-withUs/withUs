@@ -94,7 +94,6 @@ class NoticeServiceImplTest {
         .category(ClubCategory.SPORTS)
         .member(testMember)
         .filename("c5c2ad5e-38c5-4971-bb65-432efa8c24ea.png")
-        .maxMember(4)
         .build();
     clubRepository.save(testClub);
 

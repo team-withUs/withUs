@@ -73,7 +73,6 @@ class ClubServiceImplTest {
                 "content",
                 ClubCategory.SPORTS,
                 mockMultipartFile,
-                4,
                 LocalDateTime.parse("2024-01-07T09:00:00"),
                 LocalDateTime.parse("2024-02-08T09:00:00"));
 
@@ -98,7 +97,6 @@ class ClubServiceImplTest {
                     "content",
                     ClubCategory.SPORTS,
                     mockMultipartFile,
-                    4,
                     LocalDateTime.parse("2024-01-07T09:00:00"),
                     LocalDateTime.parse("2024-02-08T09:00:00"));
 
@@ -127,7 +125,6 @@ class ClubServiceImplTest {
                     "content",
                     ClubCategory.SPORTS,
                     mockMultipartFile,
-                    4,
                     LocalDateTime.parse("2024-01-07T09:00:00"),
                     LocalDateTime.parse("2024-02-08T09:00:00"));
 
@@ -150,7 +147,6 @@ class ClubServiceImplTest {
                     "content",
                     ClubCategory.SPORTS,
                     mockMultipartFile,
-                    4,
                     null,
                     LocalDateTime.parse("2024-02-08T09:00:00"));
 
@@ -173,7 +169,6 @@ class ClubServiceImplTest {
                     "content",
                     ClubCategory.SPORTS,
                     mockMultipartFile,
-                    4,
                     LocalDateTime.parse("2024-02-08T09:00:00"),
             null);
 
@@ -239,7 +234,6 @@ class ClubServiceImplTest {
                     "UpdatedContent",
                     ClubCategory.ETC,
                     mockMultipartFile,
-                    5,
                     LocalDateTime.parse("2024-01-07T10:00:00"),
                     LocalDateTime.parse("2024-02-08T10:00:00"));
 
@@ -268,7 +262,6 @@ class ClubServiceImplTest {
                     "UpdatedContent",
                     ClubCategory.ETC,
                     mockMultipartFile,
-                    5,
                     LocalDateTime.parse("2024-01-07T10:00:00"),
                     LocalDateTime.parse("2024-02-08T10:00:00"));
             // WHEN & THEN
