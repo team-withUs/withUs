@@ -78,13 +78,13 @@
       cursor: pointer;
     }
 
-    .image{
+    .img-fluid{
       width: 150px;
       height: 150px;
-      border-radius: 50%;
+      border-radius: 1%;
+      margin-left: 10px;
       float: left;
     }
-
 
     /*.img-fluid {*/
     /*  display: flex;*/
@@ -145,7 +145,7 @@
                       + '                <div class="card-body">\n'
                       + '                  <p class="card-title">' + clubName + '</p>\n'
                       + '                  <p class="card-text">' + clubContent + '</p>\n'
-                      + '                  <p class="card-text">' + numberOfPeople + '</p>\n'
+                      + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
                       + '                </div>\n'
                       + '              </div>\n'
                       + '            </div>\n'
@@ -159,8 +159,9 @@
             }
           }
         },
-        error: function(error){
-          console.error("에러 :", error)
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       });
     })
@@ -177,6 +178,10 @@
             alert("초대되었습니다.")
           }
           window.location.href = '/api/member/profilePage/'+memberId;
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       })
     }
