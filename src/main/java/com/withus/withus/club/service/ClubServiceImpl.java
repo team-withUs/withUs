@@ -170,7 +170,7 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto, String keyWord) {
+    public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto, String keyWord, String searchCategory) {
         List<Club> clubList;
         if (keyWord.equals("ace245")) {
             if (category.equals(ClubCategory.ALL)) {
@@ -191,13 +191,14 @@ public class ClubServiceImpl implements ClubService {
                         );
             }
         } else {
-            clubList = clubRepository.search(keyWord, true,
+                clubList = clubRepository.search(keyWord, true, searchCategory,
                     PageableDto.getsPageableDto(
-                            pageableDto.page(),
-                            pageableDto.size(),
-                            pageableDto.sortBy()
+                        pageableDto.page(),
+                        pageableDto.size(),
+                        pageableDto.sortBy()
                     ).toPageable(),
                     category);
+
         }
         if (clubList == null || clubList.isEmpty()) {
             return null;

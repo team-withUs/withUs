@@ -769,6 +769,9 @@
     <div class="search-group">
         <div class="list-group">
             <div class="search">
+                <select id="searchCategory">
+                    <option value="title" selected>제목</option>
+                    <option value="content">내용</option>
                 <input type="text" id="searchText" placeholder="검색어 입력" onkeyup="handleKeyUp(event)">
                 <img src="/img/icon-search.png" onclick="searchKeyword()">
             </div>
