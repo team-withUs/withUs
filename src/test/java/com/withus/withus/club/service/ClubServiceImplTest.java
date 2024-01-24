@@ -321,7 +321,8 @@ class ClubServiceImplTest {
 
             // WHEN
             String keyWord = "ace245";
-            List<ClubResponseDto> clubList = clubService.getsClubByCategory(category, pageableDto, keyWord);
+            String searchCategory = "";
+            List<ClubResponseDto> clubList = clubService.getsClubByCategory(category, pageableDto, keyWord, searchCategory);
 
             // THEN
             assertNotNull(clubList);
@@ -338,10 +339,11 @@ class ClubServiceImplTest {
                     .sortBy("createdAt")
                     .build();
             String keyWord = "ace245";
+            String searchCategory="";
 
             // WHEN & THEN
             assertThrows(IllegalArgumentException.class, () -> {
-                List<ClubResponseDto> clubList = clubService.getsClubByCategory(category, pageableDto, keyWord);
+                List<ClubResponseDto> clubList = clubService.getsClubByCategory(category, pageableDto, keyWord, searchCategory);
             });
         }
     }

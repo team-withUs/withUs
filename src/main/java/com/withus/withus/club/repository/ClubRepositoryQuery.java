@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ClubRepositoryQuery {
 
-  List<Club> search(String keyWord, boolean isActive, Pageable pageable, ClubCategory category);
+  List<Club> search(String keyWord, boolean isActive,String searchCategory, Pageable pageable, ClubCategory category);
 
 }
