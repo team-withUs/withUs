@@ -18,6 +18,8 @@ import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberService;
 import com.withus.withus.notice.dto.PageableDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -133,18 +135,15 @@ public class ClubController {
 
     // 카테고리
     @GetMapping("/{category}/club")
-    public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getsClub(
+    public ResponseEntity<CommonResponse<Page<ClubResponseDto>>> getsClub(
             @PathVariable("category") ClubCategory category,
-            @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "size", defaultValue = "4") int size,
-            @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy,
+            Pageable pageable,
             @RequestParam(value = "keyWord", defaultValue = "ace245") String keyWord,
             @RequestParam(value = "searchCategory", defaultValue = "all") String searchCategory
     ) {
         System.out.println("==================================="+searchCategory);
-        PageableDto pageableDto = new PageableDto(page, size, sortBy);
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.OK,
-                        clubService.getsClubByCategory(category, pageableDto, keyWord,searchCategory)));
+                        clubService.getsClubByCategory(category, pageable, keyWord,searchCategory)));
     }
 }

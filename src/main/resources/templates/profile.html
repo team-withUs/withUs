@@ -182,13 +182,13 @@
 
     function updateProfile() {
       var memberId = /*[[${memberId}]]*/ '';
-      let url = '/api/member/updateProfilePage/' + memberId;
+      let url = '/api/member/' + memberId + '/updateProfilePage';
       location.href = url;
     }
 
     function invitingClicked(){
       var memberId = /*[[${memberId}]]*/ '';
-      let url = '/api/member/myHostingClubPage/'+memberId;
+      let url = '/api/member/' + memberId + '/myHostingClubPage'
       location.href = url;
     }
 
