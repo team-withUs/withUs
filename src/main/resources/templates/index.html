@@ -437,6 +437,7 @@
         function searchKeyword() {
             $('.category').show();
             keyword = document.getElementById('searchText').value;
+
             $.ajax({
                 type: 'GET',
                 url: '/api/club/' + category + '/club?keyWord=' + keyword,
@@ -501,7 +502,8 @@
                         }
                         $('#page').empty();
                         let cnt;
-                        let totalCnt = /*[[${cnt}]]*/'';
+                        let totalCnt = /*[[${totalCnt}]]*/'';
+                        console.log(totalCnt);
                         const cntArray = [];
                         if (totalCnt > 4) {
                             cnt = totalCnt / 4 + 1;
