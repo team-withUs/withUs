@@ -173,7 +173,7 @@
 
       $.ajax({
         type: 'GET',
-        url: '/api/chat/' + roomId,
+        url: '/api/chat/chatRoom/' + roomId,
         contentType: 'application/json',
       })
         .done(function (res, status, xhr) {
@@ -192,7 +192,7 @@
 
       $.ajax({
         type: 'GET',
-        url: '/api/chatMessage/' + roomId,
+        url: '/api/chat/chatRoom/' + roomId + '/message',
         contentType: 'application/json',
       })
         .done(function (res, status, xhr) {
@@ -206,7 +206,7 @@
         })
 
 
-      var sockJs = new SockJS("/ws");
+      var sockJs = new SockJS('/ws');
       //1. SockJS를 내부에 들고있는 stomp를 내어줌
       var stomp = Stomp.over(sockJs);
 
@@ -215,7 +215,7 @@
         console.log("STOMP Connection")
 
         //4. subscribe(path, callback)으로 메세지를 받을 수 있음
-        stomp.subscribe("/room/api/chatMessage/" + roomId, function (messageDto) {
+        stomp.subscribe('/room/api/chat/chatRoom/' + roomId + '/message', function (messageDto) {
           var content = JSON.parse(messageDto.body);
 
           var sender = content.senderName;
@@ -244,7 +244,7 @@
         })
 
         //3. send(path, header, message)로 메세지를 보낼 수 있음
-        stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
+        stomp.send('/send/api/chat/chatRoom/' + roomId + '/message', {}, JSON.stringify({
           senderId: loginId,
           senderName: username,
           content : username + '님이 입장하였습니다.'
@@ -260,7 +260,7 @@
         console.log(msg);
         if (msg.value !== null || msg.value.trim() !== '') {
           console.log(username + ":" + msg.value);
-          stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
+          stomp.send('/send/api/chat/chatRoom/' + roomId + '/message', {}, JSON.stringify({
             senderId: loginId,
             senderName: username,
             content: msg.value

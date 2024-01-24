@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @AllArgsConstructor
 public class ChatViewController {
 
-  @GetMapping("/chatRoom/{roomId}")
+  @GetMapping("/chatRoom/{roomId}/chatRoomPage")
   public String chatRoomPage(
       @PathVariable("roomId") Long roomId,
       Model model,
@@ -28,7 +28,7 @@ public class ChatViewController {
       return "chat/chatRoom";
   }
 
-  @GetMapping("/chatRoomList/{memberId}")
+  @GetMapping("/member/{memberId}/chatRoomListPage")
   public String chatRoomListPage(
       @PathVariable("memberId") Long memberId,
       Model model,

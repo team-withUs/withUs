@@ -28,16 +28,16 @@ public class ChatMessageController {
   //Client가 SEND할 수 있는 경로
   //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
   //대상 roomId를 구독하고있는 구독자 대상에게 메세지를 전달함
-  //"/send/api/chatMessage/{roomId}"
-  @MessageMapping("/api/chatMessage/{roomId}")
+  //"/send/api/chat/chatRoom/{roomId}/message"
+  @MessageMapping("/api/chat/chatRoom/{roomId}/message")
   public void message(@DestinationVariable("roomId") Long roomId, MessageDto messageDto) {
-    simpMessagingTemplate.convertAndSend("/room/api/chatMessage/" + roomId, messageDto);
+    simpMessagingTemplate.convertAndSend("/room/api/chat/chatRoom/" + roomId + "/message", messageDto);
     chatMessageService.saveMessage(roomId, messageDto);
     log.info("Message [{}] send by member: {} to chatting room: {}", messageDto.getContent(),
         messageDto.getSenderId(), roomId);
   }
 
-  @GetMapping("/api/chatMessage/{roomId}")
+  @GetMapping("/api/chat/chatRoom/{roomId}/message")
   public ResponseEntity<CommonResponse<List<ChatMessageResponseDto>>> getMessage(
       @PathVariable("roomId") Long roomId
   ) {
