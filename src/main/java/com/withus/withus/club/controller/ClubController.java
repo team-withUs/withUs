@@ -139,8 +139,9 @@ public class ClubController {
             @RequestParam(value = "size", defaultValue = "4") int size,
             @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy,
             @RequestParam(value = "keyWord", defaultValue = "ace245") String keyWord,
-            @RequestParam(value = "searchCategory") String searchCategory
+            @RequestParam(value = "searchCategory", defaultValue = "all") String searchCategory
     ) {
+        System.out.println("==================================="+searchCategory);
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
         return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.OK,
