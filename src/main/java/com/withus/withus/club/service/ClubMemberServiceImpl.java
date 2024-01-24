@@ -82,7 +82,12 @@ public class ClubMemberServiceImpl implements ClubMemberService {
       ClubMemberRole role,
       Pageable pageable
   ) {
-    return clubMemberRepository.findByMemberIdAndClubMemberRole(memberId, role, pageable);
+    return clubMemberRepository.findByMemberIdAndClubMemberRoleAndClub_IsActive(
+        memberId,
+        role,
+        pageable,
+        true
+    );
   }
 }
 

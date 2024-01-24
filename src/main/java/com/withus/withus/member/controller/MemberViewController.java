@@ -61,7 +61,7 @@ public class MemberViewController {
 
   }
 
-  @GetMapping("/myClub/{memberId}")
+  @GetMapping("/myHostingClubPage/{memberId}")
   public String myHostingClub(
       @PathVariable("memberId") Long memberId,
       Model model
