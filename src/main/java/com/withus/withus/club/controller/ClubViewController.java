@@ -45,11 +45,21 @@ public class ClubViewController {
 
         Integer totalList = noticeService.count(clubId);
         int count;
-        if (totalList > 4) {
-            count=totalList/3+1;
-        }else{
+        if(totalList==0){
+            count=0;
+        }
+        else if(totalList > 4){
+            if(totalList%4==0){
+                count=totalList/4;
+            }
+            else {
+                count=totalList/4+1;
+            }
+        }
+        else {
             count=1;
         }
+
         List<Integer> countList = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             countList.add(i + 1);
