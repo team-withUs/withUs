@@ -115,7 +115,7 @@
                     <h2 class="login" id="loginBtn">login</h2>
                     <img src="/img/create.png" id="create" class="create">
                     <img src="/img/myInfo.png" id="myInfo" class="my-info">
-                    <img src="/img/logout.png" id="logout" class="logout">
+                    <img src="/img/arrow_10940959.png" id="logout" class="logout">
                 </div>
             </div>
         </header>
@@ -224,17 +224,17 @@
                 function sendPage(pageNumber) {
                     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
                     $('#notice-box').empty();
-                    const pageSize = 2;
+                    // const pageSize = 2;
                     $.ajax({
                         type: 'GET',
                         url: '/api/club/' + clubId + '/notice?page=' + pageNumber,
                         contentType: 'application/json',
                         success: function (result) {
                             const list = result.data;
-                            const startIdx = (pageNumber - 1) * pageSize;
-                            const endIdx = startIdx + pageSize;
-                            const slicedList = list.slice(startIdx, endIdx)
-                            $(slicedList).each(function (index, res) {
+                            // const startIdx = (pageNumber - 1) * pageSize;
+                            // const endIdx = startIdx + pageSize;
+                            // const slicedList = list.slice(startIdx, endIdx)
+                            $(list).each(function (index, res) {
                                 let title = res.title;
                                 let id = res.id;
                                 const card = '' +
