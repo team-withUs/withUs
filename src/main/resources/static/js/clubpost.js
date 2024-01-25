@@ -56,13 +56,14 @@ $(document).ready(function () {
 
         var clubTitle = $("#clubTitleInput").val().trim();
         var category = $(".btn-secondary.dropdown-toggle").text().trim();
+        console.log(category)
         var content = $("#club-content").val().trim();
-        var maxMember = $("#totalInviteesInput").val().trim();
+        // var maxMember = $("#totalInviteesInput").val().trim();
         var startTime = $("#startDate").val().trim();
         var endTime = $("#endDate").val().trim();
 
-        if (!clubTitle || !category || !content || !maxMember || !startTime || !endTime) {
-            alert("필수 항목을 모두 입력하세요.");
+        if (!clubTitle || !category || !content || !startTime || !endTime) {
+            alert("필수항목(제목, 카테고리, 내용, 시작시간, 마감시간)이 입력되지 않았습니다.");
             return;
         }
 
@@ -70,7 +71,7 @@ $(document).ready(function () {
         formData.append("clubTitle", clubTitle);
         formData.append("category", category);
         formData.append("content", content);
-        formData.append("maxMember", maxMember);
+        // formData.append("maxMember", maxMember);
         formData.append("startTime", startTime);
         formData.append("endTime", endTime);
 

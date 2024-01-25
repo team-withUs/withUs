@@ -45,8 +45,12 @@ public class ClubMemberServiceImpl implements ClubMemberService {
         ClubMember clubMember = clubMemberRepository.findClubMemberByMemberIdAndClubId(member.getId(), clubId)
                 .orElseThrow(() -> new BisException(ErrorCode.YOUR_NOT_COME_IN));
 
-        // Check if the member is the author or has the host role
         return clubMember.getClub().getAuthor().equals(member) || clubMember.getClubMemberRole() == ClubMemberRole.HOST;
+    }
+
+    @Override
+    public Integer getClubMemberCount(Long clubId) {
+        return clubMemberRepository.countByClubId(clubId);
     }
 
 
@@ -78,7 +82,12 @@ public class ClubMemberServiceImpl implements ClubMemberService {
       ClubMemberRole role,
       Pageable pageable
   ) {
-    return clubMemberRepository.findByMemberIdAndClubMemberRoleAndClub_IsActive(memberId, role, pageable, true);
+    return clubMemberRepository.findByMemberIdAndClubMemberRoleAndClub_IsActive(
+        memberId,
+        role,
+        pageable,
+        true
+    );
   }
 }
 
