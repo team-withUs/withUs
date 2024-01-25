@@ -9,14 +9,14 @@ services:
     environment:
       SPRING_REDIS_HOST: redis-server-withUs
       SPRING_REDIS_PORT: 6379
-      WEB_DB_URL: jdbc:mysql://withus.c92sig4iwc48.ap-northeast-2.rds.amazonaws.com:3306/WITHUS
-      WEB_DB_USERNAME: WITHUS
-      WEB_DB_PASSWORD: 01050355253
-      S3_ACCESSKEY: AKIAYC4QB6WUYIRO2YTX
-      S3_BUCKET_NAME: sparta-withus
-      S3_REGION: ap-northeast-2
-      S3_SECRETKEY: iAxUIlkkrdExoBjI1NZIp4XS3leKa4dGpw0bCgeK
-      S3_STACK_AUTO: false
+      WEB_DB_URL: ${{ secrets.WEB_DB_URL }}
+      WEB_DB_USERNAME: ${{ secrets.WEB_DB_USERNAME }}
+      WEB_DB_PASSWORD: ${{ secrets.WEB_DB_PASSWORD }}
+      S3_ACCESSKEY: ${{ secrets.S3_ACCESSKEY }}
+      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+      S3_REGION: ${{ secrets.S3_REGION }}
+      S3_SECRETKEY: ${{ secrets.S3_SECRETKEY }}
+      S3_STACK_AUTO: ${{ secrets.S3_STACK_AUTO }}
 
     depends_on:
       - redis
