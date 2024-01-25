@@ -101,6 +101,17 @@
             align-items: center;
         }
 
+    .nameBlock {
+      text-align: center;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .emailBlock {
+      text-align: center;
+      padding: 10px;
+    }
+
 
 
     </style>
@@ -154,9 +165,9 @@
                 }
             });
 
-            $("#chatting").on("click", function (e) {
-                window.location.href = host + '/api/chat/chatRoomList/' + memberId;
-            });
+      $("#chatting").on("click", function(e) {
+        window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
+      });
 
             $("#logout").on("click", function (e) {
                 var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
@@ -199,27 +210,16 @@
             // 채팅방 생성 or 기존 roomId 가져오기
             $.ajax({
                 type: 'POST',
-                url: '/api/chat/' + memberId,
+                url: '/api/chat/member/' + memberId,
                 contentType: 'application/json',
             })
                 .done(function (res) {
-                    console.log(res);
-                    if (res && res.data && res.data) {
-                        var roomId = res.data;
-                    }
-                    console.log(roomId);
-                    // 채팅방으로 이동
-                    $.ajax({
-                        type: 'GET',
-                        url: '/api/chat/chatRoom/' + roomId,
-                        contentType: 'application/json',
-                    })
-                        .done(function (res, status, xhr) {
-                            window.location.href = host + '/api/chat/chatRoom/' + roomId;
-                        })
-                        .fail(function (xhr, status, error) {
-                            console.error('채팅방 요청 API 에러', error);
-                        })
+                  console.log(res);
+                  if (res && res.data) {
+                    var roomId = res.data;
+                  }
+                  console.log(roomId);
+                  window.location.href = host + '/api/chat/chatRoom/' + roomId;
                 })
                 .fail(function (xhr, status, error) {
                     // 실패한 경우의 동작

@@ -345,8 +345,8 @@
                 window.location.href = host + '/api/member/loginPage';
             });
 
-            $("#chatting").on("click", function (e) {
-                window.location.href = host + '/api/chat/chatRoomList/' + memberId;
+            $("#chatting").on("click", function(e) {
+              window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function (e) {
