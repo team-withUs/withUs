@@ -3,7 +3,7 @@ version: '3'
 services:
   spring-app:
     container_name: spring-app-withUs
-    image: minseok588098/withUs
+    image: minseok588098/withus
     ports:
       - "8080:8080"
     environment:

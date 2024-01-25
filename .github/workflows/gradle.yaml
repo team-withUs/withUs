@@ -41,5 +41,5 @@ jobs:
       - name: Build and push Docker image
         run: |
           sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          sudo docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/withUs .
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/withUs
+          sudo docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/withus .
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/withus
