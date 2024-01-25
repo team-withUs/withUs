@@ -97,6 +97,21 @@ public class ChatRoomService {
     chatRoom.chatRoomTransform();
   }
 
+  public Long findReceiverId(Long roomId, Long loginId ) {
+    ChatRoom chatRoom = findChatRoom(roomId);
+    Long senderId = chatRoom.getSender().getId();
+    Long receiverId = chatRoom.getReceiver().getId();
+
+    if (senderId.equals(loginId)) {
+      return receiverId;
+    } else {
+      return senderId;
+    }
+  }
+
+
+
+
   // 채팅방 존재 검증
   public ChatRoom findChatRoom(Long roomId) {
     ChatRoom chatRoom = chatRoomRepository.findChatRoomByIdAndIsActive(roomId, true).orElseThrow(

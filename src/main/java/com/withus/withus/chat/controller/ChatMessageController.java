@@ -3,6 +3,7 @@ package com.withus.withus.chat.controller;
 import com.withus.withus.chat.dto.ChatMessageResponseDto;
 import com.withus.withus.chat.dto.MessageDto;
 import com.withus.withus.chat.service.ChatMessageService;
+import com.withus.withus.chat.service.ChatRoomService;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import java.util.List;
@@ -23,6 +24,8 @@ public class ChatMessageController {
 
   private final ChatMessageService chatMessageService;
 
+  private final ChatRoomService chatRoomService;
+
   private final SimpMessagingTemplate simpMessagingTemplate;
 
   //Client가 SEND할 수 있는 경로
@@ -38,10 +41,15 @@ public class ChatMessageController {
   }
 
   @MessageMapping("/api/chat/chatRoom/{roomId}/message/enter")
-  public void messageEnter(@DestinationVariable("roomId") Long roomId, MessageDto messageDto) {
+  public void messageEnter(@DestinationVariable("roomId") Long roomId, MessageDto messageDto
+  ) {
     simpMessagingTemplate.convertAndSend("/room/api/chat/chatRoom/" + roomId + "/message", messageDto);
-    log.info("Message [{}] send by member: {} to chatting room: {}", messageDto.getContent(),
-        messageDto.getSenderId(), roomId);
+    Long receiverId = chatRoomService.findReceiverId(roomId, messageDto.getSenderId());
+    /// 알람기능 추가
+
+
+
+    log.info("{} enter chatting room: {}", messageDto.getSenderName(), roomId);
 
   }
 
