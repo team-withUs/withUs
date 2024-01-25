@@ -89,7 +89,6 @@ public class MemberController {
       @AuthMember Member member
   ) {
       memberService.deleteMember(memberId, member);
-
       return ResponseEntity
           .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
           .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,""));

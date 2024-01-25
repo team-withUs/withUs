@@ -21,7 +21,7 @@ public class NotificationService {
     try{
       sseEmitter.send(SseEmitter.event().name("connect"));
     } catch (IOException e) {
-      throw new BisException(ErrorCode.FAILED_UPLOAD_IMAGE);
+      throw new BisException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
     NotificationController.sseEmitters.put(memberId, sseEmitter);
