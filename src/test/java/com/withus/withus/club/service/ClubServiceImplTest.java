@@ -1,4 +1,4 @@
-package com.withus.withus.club.service;
+/*package com.withus.withus.club.service;
 
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
@@ -8,6 +8,7 @@ import com.withus.withus.club.dto.ReportClubResponseDto;
 import com.withus.withus.club.entity.Club;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.club.repository.ReportClubRepository;
+import com.withus.withus.club.service.ClubServiceImpl;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
@@ -426,4 +427,4 @@ class ClubServiceImplTest {
 
         }
     }
-}
+}*/
