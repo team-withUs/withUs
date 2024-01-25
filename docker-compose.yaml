@@ -6,6 +6,8 @@ services:
     image: minseok588098/withus
     ports:
       - "8080:8080"
+    expose:
+      - "8080"
     environment:
       SPRING_REDIS_HOST: redis-server-withUs
       SPRING_REDIS_PORT: 6379
