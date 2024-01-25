@@ -37,6 +37,17 @@ public class ChatMessageController {
         messageDto.getSenderId(), roomId);
   }
 
+  @MessageMapping("/api/chat/chatRoom/{roomId}/message/enter")
+  public void messageEnter(@DestinationVariable("roomId") Long roomId, MessageDto messageDto) {
+    simpMessagingTemplate.convertAndSend("/room/api/chat/chatRoom/" + roomId + "/message", messageDto);
+    log.info("Message [{}] send by member: {} to chatting room: {}", messageDto.getContent(),
+        messageDto.getSenderId(), roomId);
+
+  }
+
+
+
+
   @GetMapping("/api/chat/chatRoom/{roomId}/message")
   public ResponseEntity<CommonResponse<List<ChatMessageResponseDto>>> getMessage(
       @PathVariable("roomId") Long roomId

@@ -46,7 +46,7 @@ public class ChatRoomService {
       log.info("find chat room");
 
     } else {
-      chatRoom = ChatRoom.createChatRomm(sender,receiver);
+      chatRoom = ChatRoom.createChatRoom(sender,receiver);
       log.info("create chat room");
       chatRoomRepository.save(chatRoom);
     }
