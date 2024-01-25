@@ -9,7 +9,7 @@ services:
     expose:
       - "8080"
     environment:
-      SPRING_REDIS_HOST: redis-server-withUs
+      DB_REDIS_HOST: ${{ secrets.DB_REDIS_HOST }}
       SPRING_REDIS_PORT: 6379
       WEB_DB_URL: ${{ secrets.WEB_DB_URL }}
       WEB_DB_USERNAME: ${{ secrets.WEB_DB_USERNAME }}
@@ -21,7 +21,6 @@ services:
       S3_STACK_AUTO: ${{ secrets.S3_STACK_AUTO }}
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-      DB_REDIS_HOST: ${{ secrets.DB_REDIS_HOST }}
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
       DEV_DB_USERNAME: ${{ secrets.DEV_DB_USERNAME }}
