@@ -2,23 +2,27 @@ version: '3'
 
 services:
   spring-app:
-    image: # kim588097/image:태그(이미지를 어떻게 해야하는지 모름:latest)
+    container_name: spring-app-withUs
+    image: minseok588098/withUs
     ports:
       - "8080:8080"
     environment:
-      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_HOST: redis-server-withUs
       SPRING_REDIS_PORT: 6379
-      SPRING_DATASOURCE_URL: jdbc:mysql://withus.c92sig4iwc48.ap-northeast-2.rds.amazonaws.com:3306/WITHUS
-      SPRING_DATASOURCE_USERNAME: WITHUS
-      SPRING_DATASOURCE_PASSWORD: 01050355253
+      WEB_DB_URL: jdbc:mysql://withus.c92sig4iwc48.ap-northeast-2.rds.amazonaws.com:3306/WITHUS
+      WEB_DB_USERNAME: WITHUS
+      WEB_DB_PASSWORD: 01050355253
+      S3_ACCESSKEY: AKIAYC4QB6WUYIRO2YTX
+      S3_BUCKET_NAME: sparta-withus
+      S3_REGION: ap-northeast-2
+      S3_SECRETKEY: iAxUIlkkrdExoBjI1NZIp4XS3leKa4dGpw0bCgeK
+      S3_STACK_AUTO: false
 
     depends_on:
       - redis
-    volumes:
-      - C:\Users\alstj\Desktop\withUs\build\libs\withUs-0.0.1-SNAPSHOT:/app/app.jar
-    command: ["java", "-jar", "/app/app.jar"]
 
   redis:
+    container_name: redis-server-withUs
     image: redis:latest
     ports:
       - "6379:6379"
