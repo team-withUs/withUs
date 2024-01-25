@@ -123,6 +123,8 @@
 
             const isSameMember = /*[[${isSameMember}]]*/ '';
             const memberId = /*[[${memberId}]]*/ '';
+            const loginMemberId = /*[[${loginMemberId}]]*/ '';
+
             console.log(memberId);
 
             if (isSameMember) {
@@ -166,7 +168,7 @@
             });
 
       $("#chatting").on("click", function(e) {
-        window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
+        window.location.href = host + '/api/chat/member/' + loginMemberId + '/chatRoomListPage';
       });
 
             $("#logout").on("click", function (e) {
@@ -295,7 +297,6 @@
     </div>
 </div>
 
-
 <div id="profileContainer">
     <div  class="sectionBox">
         <img id="profileImage" class="col-auto">
@@ -325,6 +326,7 @@
     <div style="display: flex; margin-left: 70%">
         <button type="button"
                 class="btn btn-danger"
+                id="deleteBtn"
                 onclick="resign()">탈퇴하기
         </button>
         <button type="button" id="updateBtn"
