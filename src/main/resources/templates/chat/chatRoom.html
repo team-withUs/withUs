@@ -252,10 +252,10 @@
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + hostId + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + guestId + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + message + '</div>');
@@ -313,10 +313,10 @@
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + hostId + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + guestId + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + content + '</div>');

@@ -1,66 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-  <meta charset="UTF-8">
-  <title>withUs</title>
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-  <style>
-    .main{
-      padding-right: 20%;
-      padding-left: 20%;
-      display: flex;
-      flex-direction: column;
-    }
+    <meta charset="UTF-8">
+    <title>withUs</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
 
+        @font-face {
+            font-family: "Cafe24Supermagic-Bold-v1.0";
+            src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
+            font-weight: 700;
+            font-style: normal;
+        }
 
-    .create{
-      margin-left: 15px;
-      font-weight: bolder;
-    }
+        /*전체*/
+        .main {
+            font-family: "Cafe24Supermagic-Bold-v1.0";
+            padding-right: 20%;
+            padding-left: 20%;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .title2 {
-      float: right;
-      display: flex;
-      align-items: center;
-    }
+        /*박스 카드*/
+        .card{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            transition: border-width 0.3s;
+        }
+        .card:hover {
+            border: 2px solid #556976; /* 테두리 두께와 색상 설정 */
+        }
 
-    .title2 img {
-      cursor: pointer;
-      width: 35px;
-      height: 35px;
-      margin: 5px;
-    }
+        .create {
+            margin-left: 15px;
+            font-weight: bolder;
+        }
 
+        .title2 {
+            float: right;
+            display: flex;
+            align-items: center;
+        }
+        .page{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .title2 img {
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            margin: 5px;
+        }
 
-    .search-group{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .list-group{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
+        .list-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .search {
-      position: relative;
-      width: 35%;
-    }
+        .search {
+            display: flex;
+            align-items: center;
+        }
 
-    input {
-      width: 100%;
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-size: 14px;
-    }
+        #searchCategory,
+        #searchText {
+            border-radius: 10px;
+            border: none;
+            margin-right: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .list-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .search {
+            position: relative;
+            width: 35%;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+        }
 
         .search > img {
             position: absolute;
@@ -99,10 +138,14 @@
             margin-left: 20px;
         }
 
+        .btn-group .btn {
+            color: black;
+        }
+
         .btn {
             margin-right: 10px;
-            border: 1px solid black;
-            border-radius: 10px;
+            border: 0px;
+            /*border-radius: 10px;*/
             display: inline-block;
             font: inherit;
             line-height: 1.5em;
@@ -129,13 +172,13 @@
             cursor: pointer;
         }
 
-    .img-fluid{
-      width: 150px;
-      height: 150px;
-      border-radius: 1%;
-      margin-left: 10px;
-      float: left;
-    }
+        .img-fluid {
+            width: 150px;
+            height: 150px;
+            border-radius: 1%;
+            margin-left: 10px;
+            float: left;
+        }
 
 
         /*.img-fluid {*/
@@ -185,6 +228,9 @@
         const host = 'http://' + window.location.host;
         let clubId = /*[[${clubId}]]*/ '';
         let category = 'ALL';
+        let size = 4;
+        let search = '';
+        console.log(search)
         let clubImage;
         let clubName;
         let clubContent;
@@ -198,11 +244,13 @@
 
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club',
+                url: '/api/club/' + category
+                    + '/club?size='+ size
+                    + '&sortBy=CreatedAt',
                 contentType: 'application/json',
                 success: function (response) {
-                    for (var i = 0; i < response.data.length; i++) {
-                        var currentItem = response.data[i];
+                    for (var i = 0; i < response.data.content.length; i++) {
+                        var currentItem = response.data.content[i];
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
@@ -212,6 +260,8 @@
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
+
+                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
 
                         $.ajax({
                             type: 'GET',
@@ -239,9 +289,8 @@
                                 + '              <div>\n'
                                 + '                <div class="card-body">\n'
                                 + '                  <p class="card-title">' + clubName + '</p>\n'
-                                + '                  <p class="card-text">' + clubContent + '</p>\n'
-                                + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
-
+                                + '                  <p class="card-text">' + truncatedContent + '</p>\n'
+                                + '                  <p class="card-text">참가자 ' + memberCount + '명</p>\n'
                                 + '                </div>\n'
                                 + '              </div>\n'
                                 + '            </div>\n'
@@ -253,6 +302,22 @@
                             )
                         );
                     }
+                    let cnt;
+                    const cntArray = [];
+                    if (response.data.totalElements > 4) {
+                        cnt = response.data.totalElements / 4;
+                    } else {
+                        cnt = 1;
+                    }
+                    for (var i = 0; i < cnt; i++) {
+                        cntArray.push(i + 1);
+                    }
+                    $(cntArray).each(function (index, res) {
+                        // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
+                        const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\''
+                            + res + '\')">' + res + '</a></li>';
+                        $('#page').append(card);
+                    })
                 }
 
             });
@@ -284,7 +349,7 @@
             });
 
             $("#myInfo").on("click", function (e) {
-                window.location.href = host + '/api/member/profilePage/' + memberId;
+                window.location.href = host + '/api/member/' + memberId + '/profilePage';
             });
 
             $("#create").on("click", function (e) {
@@ -294,14 +359,6 @@
             $("#myclub").on("click", function (e) {
                 getMyClubs();
             });
-
-
-            const cntList = [[${countList}]];
-            $(cntList).each(function (index, res) {
-                // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
-                const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">' + res + '</a></li>';
-                $('#page').append(card);
-            })
 
             $("#logout").on("click", function (e) {
                 var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
@@ -333,12 +390,30 @@
         }
 
         function changeCategory(button) {
-            category = button.getAttribute('name');
+            search = document.getElementById('searchCategory').value;
+            console.log(search);
+            keyword = document.getElementById('searchText').value;
+            console.log(keyword);
+
+            if(category === 'ALL'){
+                category = button.getAttribute('name');
+            } else{
+                if(category === button.getAttribute('name')){
+                    category = 'ALL';
+                } else{
+                    category = button.getAttribute('name');
+                }
+            }
+
             console.log(category);
 
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club',
+                url: '/api/club/' + category
+                    + '/club?size='+ size
+                    + '&keyWord='+ keyword
+                    + '&category=' + category,
+
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
@@ -346,16 +421,19 @@
                         buttons[i].classList.remove('active');
                     }
                     // 클릭된 버튼에 활성 상태 추가
-                    button.classList.add('active');
+                    if(category !== 'ALL'){
+                        button.classList.add('active');
+                    }
 
-                    if (response.data === null) {
+
+                    if (response.data.totalElements === 0) {
                         $('#cardGroup').empty();
                         $('#page').empty();
                         $('#cardGroup').append($('<p>검색된 클럽이 없습니다.</p>'))
                     } else {
                         $('#cardGroup').empty();
-                        for (var i = 0; i < response.data.length; i++) {
-                            var currentItem = response.data[i];
+                        for (var i = 0; i < response.data.content.length; i++) {
+                            var currentItem = response.data.content[i];
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
@@ -365,6 +443,8 @@
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
+                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+
                             $.ajax({
                                 type: 'GET',
                                 url: '/api/club/' + clubId + '/memberCount',
@@ -392,8 +472,8 @@
                                     + '              <div>\n'
                                     + '                <div class="card-body">\n'
                                     + '                  <p class="card-title">' + clubName + '</p>\n'
-                                    + '                  <p class="card-text">' + clubContent + '</p>\n'
-                                    + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
+                                    + '                  <p class="card-text">' + truncatedContent + '</p>\n'
+                                    + '                  <p class="card-text">참가자 ' + memberCount + '명</p>\n'
                                     + '                </div>\n'
                                     + '              </div>\n'
                                     + '            </div>\n'
@@ -409,8 +489,8 @@
                         $('#page').empty();
                         let cnt;
                         const cntArray = [];
-                        if (response.data.length >= 4) {
-                            cnt = response.data.length / 4 + 1;
+                        if (response.data.totalElements > 4) {
+                            cnt = response.data.totalElements / 4;
                         } else {
                             cnt = 1;
                         }
@@ -436,20 +516,29 @@
 
         function searchKeyword() {
             $('.category').show();
+            // search = $("searchCategory option:selected").val();
+            // console.log(search)
+            search = document.getElementById('searchCategory').value;
             keyword = document.getElementById('searchText').value;
+
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club?keyWord=' + keyword,
+                url: '/api/club/'
+                    + category
+                    + '/club?size=' + size
+                    + '&page=' + 0
+                    + '&keyWord=' + keyword
+                    + '&searchCategory=' + search,
                 contentType: 'application/json',
                 success: function (response) {
-                    if (response.data === null) {
+                    if (response.data.totalElements === 0) {
                         $('#cardGroup').empty();
                         $('#page').empty();
                         $('#cardGroup').append($('<p>검색된 클럽이 없습니다.</p>'))
                     } else {
                         $('#cardGroup').empty();
-                        for (var i = 0; i < response.data.length; i++) {
-                            var currentItem = response.data[i];
+                        for (var i = 0; i < response.data.content.length; i++) {
+                            var currentItem = response.data.content[i];
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
@@ -459,6 +548,8 @@
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
+                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+
                             $.ajax({
                                 type: 'GET',
                                 url: '/api/club/' + clubId + '/memberCount',
@@ -486,8 +577,8 @@
                                     + '              <div>\n'
                                     + '                <div class="card-body">\n'
                                     + '                  <p class="card-title">' + clubName + '</p>\n'
-                                    + '                  <p class="card-text">' + clubContent + '</p>\n'
-                                    + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
+                                    + '                  <p class="card-text">' + truncatedContent + '</p>\n'
+                                    + '                  <p class="card-text">참가자 ' + memberCount + '명</p>\n'
                                     + '                </div>\n'
                                     + '              </div>\n'
                                     + '            </div>\n'
@@ -501,13 +592,13 @@
                         }
                         $('#page').empty();
                         let cnt;
-                        let totalCnt = /*[[${cnt}]]*/'';
                         const cntArray = [];
-                        if (totalCnt > 4) {
-                            cnt = totalCnt / 4 + 1;
+                        if (response.data.totalElements > 4) {
+                            cnt = response.data.totalElements / 4;
                         } else {
                             cnt = 1;
                         }
+                        console.log(cnt);
                         for (var i = 0; i < cnt; i++) {
                             cntArray.push(i + 1);
                         }
@@ -524,13 +615,20 @@
 
         function sendPage(pageNumber) {
             $('#cardGroup').empty();
+            search = document.getElementById('searchCategory').value;
+            keyword = document.getElementById('searchText').value;
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club?page=' + pageNumber + '&keyWord=' + keyword,
+                url: '/api/club/'
+                    + category
+                    + '/club?size='+ size
+                    + '&page=' + (pageNumber-1)
+                    + '&keyWord=' + keyword
+                    + '&searchCategory=' + search,
                 contentType: 'application/json',
                 success: function (response) {
-                    for (var i = 0; i < response.data.length; i++) {
-                        var currentItem = response.data[i];
+                    for (var i = 0; i < response.data.content.length; i++) {
+                        var currentItem = response.data.content[i];
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
@@ -540,8 +638,9 @@
                         console.log(clubId);
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
-
                         console.log("생성완료");
+                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+
                         $.ajax({
                             type: 'GET',
                             url: '/api/club/' + clubId + '/memberCount',
@@ -568,8 +667,8 @@
                                 + '              <div>\n'
                                 + '                <div class="card-body">\n'
                                 + '                  <p class="card-title">' + clubName + '</p>\n'
-                                + '                  <p class="card-text">' + clubContent + '</p>\n'
-                                + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
+                                + '                  <p class="card-text">' + truncatedContent + '</p>\n'
+                                + '                  <p class="card-text">참가자 ' + memberCount + '명</p>\n'
                                 + '                </div>\n'
                                 + '              </div>\n'
                                 + '            </div>\n'
@@ -589,14 +688,15 @@
             $('.category').hide();
             $.ajax({
                 type: 'GET',
-                url: '/api/member/club?size=4&sortBy=CreatedAt',
+                url: '/api/member/club?size='+ size
+                    +'&sortBy=CreatedAt',
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
                     for (var i = 0; i < buttons.length; i++) {
                         buttons[i].classList.remove('active');
                     }
-                    if (response.data === null) {
+                    if (response.data.totalElements === 0) {
                         $('#cardGroup').empty();
                         $('#page').empty();
                         $('#cardGroup').append($('<p>검색된 클럽이 없습니다.</p>'))
@@ -613,6 +713,8 @@
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
+                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+
                             $.ajax({
                                 type: 'GET',
                                 url: '/api/club/' + clubId + '/memberCount',
@@ -640,8 +742,8 @@
                                     + '              <div>\n'
                                     + '                <div class="card-body">\n'
                                     + '                  <p class="card-title">' + clubName + '</p>\n'
-                                    + '                  <p class="card-text">' + clubContent + '</p>\n'
-                                    + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
+                                    + '                  <p class="card-text">' + truncatedContent + '</p>\n'
+                                    + '                  <p class="card-text">참가자 ' + memberCount + '명</p>\n'
                                     + '                </div>\n'
                                     + '              </div>\n'
                                     + '            </div>\n'
@@ -681,7 +783,9 @@
             $('#cardGroup').empty();
             $.ajax({
                 type: 'GET',
-                url: '/api/member/club?size=4&page=' + (pageNumber - 1) + '&sortBy=CreatedAt',
+                url: '/api/member/club?size=' + size
+                    +'&page=' + (pageNumber - 1)
+                    + '&sortBy=CreatedAt',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
@@ -696,6 +800,8 @@
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
+                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+
                         $.ajax({
                             type: 'GET',
                             url: '/api/club/' + clubId + '/memberCount',
@@ -722,8 +828,8 @@
                                 + '              <div>\n'
                                 + '                <div class="card-body">\n'
                                 + '                  <p class="card-title">' + clubName + '</p>\n'
-                                + '                  <p class="card-text">' + clubContent + '</p>\n'
-                                + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
+                                + '                  <p class="card-text">' + truncatedContent + '</p>\n'
+                                + '                  <p class="card-text">참가자 ' + memberCount + '명</p>\n'
                                 + '                </div>\n'
                                 + '              </div>\n'
                                 + '            </div>\n'
@@ -740,7 +846,7 @@
         }
     </script>
 </head>
-<body style="background-image: url('/img/background.jpg'); background-size: cover; ">
+<body style="background-color: #98a9bc; background-size: cover; ">
 <div class="main ">
     <div class="title">
         <header>
@@ -759,7 +865,7 @@
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
                     <img src="/img/myInfo.png" id="myInfo" class="my-info"
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    <img src="/img/logout.png" id="logout" class="my-info"
+                    <img src="/img/arrow_10940959.png" id="logout" class="my-info"
                          style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
                 </div>
             </div>
@@ -769,6 +875,10 @@
     <div class="search-group">
         <div class="list-group">
             <div class="search">
+                <select id="searchCategory">
+                    <option value="title" selected>제목</option>
+                    <option value="content">내용</option>
+                </select>
                 <input type="text" id="searchText" placeholder="검색어 입력" onkeyup="handleKeyUp(event)">
                 <img src="/img/icon-search.png" onclick="searchKeyword()">
             </div>
