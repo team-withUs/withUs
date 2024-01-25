@@ -225,17 +225,17 @@
         }
 
 
-        function updateProfile() {
-            var memberId = /*[[${memberId}]]*/ '';
-            let url = '/api/member/updateProfilePage/' + memberId;
-            location.href = url;
-        }
+    function updateProfile() {
+      var memberId = /*[[${memberId}]]*/ '';
+      let url = '/api/member/' + memberId + '/updateProfilePage';
+      location.href = url;
+    }
 
-        function invitingClicked() {
-            var memberId = /*[[${memberId}]]*/ '';
-            let url = '/api/member/myClub/' + memberId;
-            location.href = url;
-        }
+    function invitingClicked(){
+      var memberId = /*[[${memberId}]]*/ '';
+      let url = '/api/member/' + memberId + '/myHostingClubPage'
+      location.href = url;
+    }
 
     </script>
 </head>

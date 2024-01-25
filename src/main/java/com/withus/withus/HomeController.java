@@ -28,9 +28,9 @@ public class HomeController {
   public String home(Model model, @AuthMember Member member) {
 
     Integer totalListCnt = clubService.count();
-    int count;
+    double count;
     if(totalListCnt > 4){
-      count=totalListCnt/4+1;
+      count= (double) totalListCnt /4 ;
     }
     else {
       count=1;
