@@ -29,10 +29,6 @@ public class Club extends TimeStamp {
     private String filename;
     @Column
     private String imageURL;
-//
-//    @Column
-//    private Integer MaxMember = 0;
-
     @Column(name = "start_time")
     private LocalDateTime startTime;
     @Column(name = "end_time")
@@ -55,7 +51,6 @@ public class Club extends TimeStamp {
             String clubTitle,
             String content,
             ClubCategory category,
-//            Integer maxMember,
             Member member,
             String filename,
             String imageURL,
@@ -79,7 +74,6 @@ public class Club extends TimeStamp {
         String clubTitle = clubRequestDto.clubTitle();
         String content = clubRequestDto.content();
         ClubCategory category = clubRequestDto.category();
-//        int maxMember = clubRequestDto.maxMember();
         return Club.builder()
                 .clubTitle(clubTitle)
                 .content(content)
@@ -87,7 +81,6 @@ public class Club extends TimeStamp {
                 .filename(filename)
                 .imageURL(imageURL)
                 .member(member)
-//                .maxMember(maxMember)
                 .startTime(startTime)
                 .endTime(endTime)
                 .build();

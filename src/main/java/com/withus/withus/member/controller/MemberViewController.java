@@ -32,7 +32,7 @@ public class MemberViewController {
     return "auth/loginPage";
   }
 
-  @GetMapping("/profilePage/{memberId}")
+  @GetMapping("/{memberId}/profilePage")
   public String getProfilePage(
       @PathVariable("memberId") Long memberId,
       Model model,
@@ -48,7 +48,7 @@ public class MemberViewController {
     return "profile";
   }
 
-  @GetMapping("/updateProfilePage/{memberId}")
+  @GetMapping("/{memberId}/updateProfilePage")
   public String getUpdateProfilePage(
       @PathVariable("memberId") Long memberId,
       Model model,
@@ -61,7 +61,7 @@ public class MemberViewController {
 
   }
 
-  @GetMapping("/myClub/{memberId}")
+  @GetMapping("/{memberId}/myHostingClubPage")
   public String myHostingClub(
       @PathVariable("memberId") Long memberId,
       Model model
