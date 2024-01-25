@@ -12,6 +12,10 @@ body {
     color: black;
 }
 
+/*.page{*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);*/
+/*}*/
+
 .all-container{
     border-radius: 15px;
     border: 3px solid grey;
@@ -170,6 +174,7 @@ body {
     width: 760px;
     border-radius: 10px;
     margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 .board-box {
     background-color: #fff;
@@ -252,6 +257,7 @@ p {
     margin: 10px auto;
     width: 760px;
     height: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 .item1 {
@@ -261,6 +267,8 @@ p {
     border-radius: 15px;
     background-color: white;
     float: left;
+    overflow-y: auto;
+    white-space: pre-line;
 }
 .item2 {
     margin: 20px;
@@ -281,10 +289,16 @@ p {
 
 .invite-member {
     display: flex;
-    flex-wrap: wrap; /* 공간이 부족하면 항목을 다음 줄로 이동할 수 있도록 함 */
+    white-space: nowrap;
     justify-content: flex-start; /* 디자인 요구에 따라 조정하세요 */
+    max-height: 200px;
+    overflow-x: auto;
 }
-
+/*.club-introduce-box{*/
+/*    !*overflow-x: auto;*!*/
+/*    overflow-y: auto;*/
+/*    margin-bottom: 10px;*/
+/*}*/
 .memberDiv img {
     width: 30px;
     height: 30px;

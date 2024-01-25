@@ -45,8 +45,6 @@ public class QClub extends EntityPathBase<Club> {
 
     public final BooleanPath isActive = createBoolean("isActive");
 
-    public final NumberPath<Integer> MaxMember = createNumber("MaxMember", Integer.class);
-
     public final com.withus.withus.member.entity.QMember member;
 
     //inherited
