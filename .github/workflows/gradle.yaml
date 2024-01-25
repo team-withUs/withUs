@@ -43,3 +43,16 @@ jobs:
           sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           sudo docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/withus .
           sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/withus
+
+      - name: Deploy to Product
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: 22
+          script: |
+            docker rm -f $(docker ps -qa)
+            docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/withus
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/withus
+            docker compose up -d
