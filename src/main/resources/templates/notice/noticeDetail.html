@@ -322,6 +322,7 @@
 
   function commentEditRequest(id){
     console.log("수정Request",id);
+    const clubId = [[${clubId}]];
     const noticeId = [[${noticeId}]];
     let content = $('#' + id).val();
     $.ajax({
@@ -330,6 +331,7 @@
       contentType:"application/json",
       dataType:"json",
       data : JSON.stringify({
+        "clubId" : clubId,
         "content" : content
       }),
       success : function (response){
@@ -364,6 +366,7 @@
 
   function commentDelete(id){
     const noticeId = [[${noticeId}]];
+    const clubId = [[${clubId}]];
     console.log("삭제",id)
     if(confirm("삭제 하시겠습니까?")){
 
@@ -372,6 +375,9 @@
         url:'/api/notice/'+noticeId+'/comment/'+id,
         contentType:"application/json",
         dataType:"json",
+        data : JSON.stringify({
+          "clubId" : clubId,
+        }),
         success : function (response){
           if(response.msg === 'Comment 삭제 성공'){
             console.log('Comment 삭제 성공',response);
