@@ -5,6 +5,7 @@ import com.withus.withus.chat.dto.MessageDto;
 import com.withus.withus.chat.service.ChatMessageService;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
+import com.withus.withus.notification.service.NotificationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
