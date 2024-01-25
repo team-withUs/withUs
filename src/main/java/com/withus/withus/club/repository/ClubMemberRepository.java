@@ -14,12 +14,19 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 
     Optional<ClubMember> findClubMemberByMemberIdAndClubId(Long memberId, Long clubId);
 
-    Page<ClubMember> findByMemberId(Long member_id, Pageable pageable);
+    Page<ClubMember> findByMemberIdAndClub_IsActive(Long member_id, Pageable pageable, boolean isActive);
 
-    Page<ClubMember> findByMemberIdAndClubMemberRole(Long memberId, ClubMemberRole role, Pageable pageable);
+    Page<ClubMember> findByMemberIdAndClubMemberRoleAndClub_IsActive(
+        Long memberId,
+        ClubMemberRole role,
+        Pageable pageable,
+        boolean isActive
+    );
 
     boolean existsByMemberIdAndClubId(Long memberId, Long clubId);
 
     List<ClubMember> findByClubId(Long clubId);
 
+    //  추가
+    Integer countByClubId(Long clubId);
 }

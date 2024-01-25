@@ -78,13 +78,13 @@
       cursor: pointer;
     }
 
-    .image{
+    .img-fluid{
       width: 150px;
       height: 150px;
-      border-radius: 50%;
+      border-radius: 1%;
+      margin-left: 10px;
       float: left;
     }
-
 
     /*.img-fluid {*/
     /*  display: flex;*/
@@ -129,6 +129,8 @@
               clubContent = currentItem.content;
               numberOfPeople = currentItem.maxMember;
               console.log("생성완료");
+              var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+
               $('#clubList').append($('<div class="cardGroup" >\n'
                       + '    <tr>\n'
                       + '      <div class="cardParent">\n'
@@ -144,8 +146,8 @@
                       + '              <div>\n'
                       + '                <div class="card-body">\n'
                       + '                  <p class="card-title">' + clubName + '</p>\n'
-                      + '                  <p class="card-text">' + clubContent + '</p>\n'
-                      + '                  <p class="card-text">' + numberOfPeople + '</p>\n'
+                      + '                  <p class="card-text">' + truncatedContent + '</p>\n'
+                      + '                  <p class="card-text">참가자' + memberCount + '명</p>\n'
                       + '                </div>\n'
                       + '              </div>\n'
                       + '            </div>\n'
@@ -159,8 +161,9 @@
             }
           }
         },
-        error: function(error){
-          console.error("에러 :", error)
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       });
     })
@@ -177,6 +180,10 @@
             alert("초대되었습니다.")
           }
           window.location.href = '/api/member/profilePage/'+memberId;
+        },
+        error: function (error){
+          console.error('에러 :', error.responseJSON.msg);
+          alert(error.responseJSON.msg);
         }
       })
     }
@@ -192,14 +199,14 @@
         </div>
         <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
           <img src="/img/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
-          <img src="/img/logout.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
+          <img src="/img/arrow_10940959.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
         </div>
       </div>
     </header>
   </div>
 </div>
 
-<div id="clubList">
+<div id="clubsList">
 </div>
 <nav aria-label="Page navigation example" class="pageNav">
   <ul class="pagination">

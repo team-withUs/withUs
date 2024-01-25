@@ -6,60 +6,72 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
-<!--  <link th:href="@{/css/Bootstrap.min.css}"-->
-<!--        href="/css/Bootstrap.min.css" rel="stylesheet">-->
+    <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
+    <!--  <link th:href="@{/css/Bootstrap.min.css}"-->
+    <!--        href="/css/Bootstrap.min.css" rel="stylesheet">-->
     <style>
+        @font-face {
+            font-family: "Cafe24Supermagic-Bold-v1.0";
+            src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        .container {
+            font-family: "Cafe24Supermagic-Bold-v1.0";
+        }
+
         header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 10px;
-          background-color: rgba(255, 255, 255, 0.8);
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-          position: fixed;
-          width: 80%; /* 전체 너비로 조절 */
-          top: 0;
-          margin-left: 10%;
+            font-family: "Cafe24Supermagic-Bold-v1.0";
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 80%; /* 전체 너비로 조절 */
+            top: 0;
+            margin-left: 10%;
         }
 
         .title {
-          margin-left: 30px;
+            margin-left: 30px;
         }
 
         .title2 {
-          display: flex;
-          align-items: center;
-          margin-right: 120px;
+            display: flex;
+            align-items: center;
+            margin-right: 120px;
         }
 
         .withUs {
-          margin-top: 5px;
-          margin-bottom: 5px; /* 아래쪽 여백 5px 추가 */
+            margin-top: 5px;
+            margin-bottom: 5px; /* 아래쪽 여백 5px 추가 */
         }
 
         .icon, .arrow-icon {
-          cursor: pointer;
-          font-size: 20px;
-          margin-left: 50%; /* 좌측 여백 15% 추가 */
-          margin-right: 40px; /* 우측 여백 15px 추가 */
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 50%; /* 좌측 여백 15% 추가 */
+            margin-right: 40px; /* 우측 여백 15px 추가 */
         }
-
 
 
     </style>
 </head>
 <body>
 <div>
-  <header>
-    <div class="title">
-      <h2 class="withUs" th:onclick="|location.href='@{/}'|" style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
-    </div>
-    <div class="title2">
-<!--      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>-->
-      <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
-    </div>
-  </header>
+    <header>
+        <div class="title">
+            <h2 class="withUs" th:onclick="|location.href='@{/}'|"
+                style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
+        </div>
+        <div class="title2">
+            <!--      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/profilePage/' + memberId"></i>-->
+            <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
+        </div>
+    </header>
 </div>
 
 
@@ -67,85 +79,85 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>Notice</h2>
-                <div class="form-group">
-                    <select id="Category">
-<!--                        <option value="Notice">공지 사항</option>-->
-<!--                      <option value="zero" selected></option>-->
-                        <option value="Board" selected>일반</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control"  id="title" name = "title" placeholder="제목" >
-                </div>
-<!--                <div class="form-group">-->
-<!--                    <input type="file" class="form-control-file border" name="file">-->
-<!--                </div>-->
-                <div class="form-group">
-                    <textarea class="form-control" rows="15" id="content" name = "content" placeholder="내용"></textarea>
-                </div>
-                <button type="button" class="btn btn-primary" onclick="sendNoticeRequest()">글쓰기</button>
+            <div class="form-group">
+                <select id="Category">
+                    <!--                        <option value="Notice">공지 사항</option>-->
+                    <!--                      <option value="zero" selected></option>-->
+                    <option value="Board" selected>일반</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="title" name="title" placeholder="제목">
+            </div>
+            <!--                <div class="form-group">-->
+            <!--                    <input type="file" class="form-control-file border" name="file">-->
+            <!--                </div>-->
+            <div class="form-group">
+                <textarea class="form-control" rows="15" id="content" name="content" placeholder="내용"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="sendNoticeRequest()">글쓰기</button>
         </div>
     </div>
 </div>
 <script th:inline="javascript">
-  /*<![CDATA[*/
+    /*<![CDATA[*/
 
-  // let category;
-  const host = 'http://' + window.location.host;
+    // let category;
+    const host = 'http://' + window.location.host;
 
-  // function selected(){
-  //   category={}
-  //   const select = document.getElementById('Category');
-  //   let seleted = select.options[select.selectedIndex];
-  //   category = seleted.text;
-  // }
-
-
+    // function selected(){
+    //   category={}
+    //   const select = document.getElementById('Category');
+    //   let seleted = select.options[select.selectedIndex];
+    //   category = seleted.text;
+    // }
 
 
+    function sendNoticeRequest() {
+        const clubId = [[${clubId}]];
+        let category = $("Category option:selected").text();
 
+        let title = $('#title').val();
+        let content = $('#content').val();
 
-
-
-  function sendNoticeRequest(){
-    const clubId = [[${clubId}]];
-    let category = $("Category option:selected").text();
-
-    let title = $('#title').val();
-    let content = $('#content').val();
-
-
-
-
-
-    $.ajax({
-      type:"POST",
-      url:'/api/club/'+clubId+'/notice',
-      contentType:"application/json",
-      dataType:"json",
-      data : JSON.stringify({
-        "category" : category,
-        "title" : title,
-        "content" : content}),
-      success : function (response){
-        if(response.msg === 'Notice 생성 성공'){
-          console.log('Notice 생성 성공',response)
+        if (!title) {
+            alert("제목을 입력해주세요");
+            return;
         }
-        else {
-          console.error('Notice 생성 실패 :',response)
+        if (!content) {
+            alert("내용을 입력해주세요");
+            return;
         }
-        window.location.href = host + "/api/club/main-club/" + clubId;
-      },
-      error: function (error){
-        alert("클럽멤버가 아닙니다");
-      }
-    })
 
 
+        $.ajax({
+            type: "POST",
+            url: '/api/club/' + clubId + '/notice',
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({
+                "category": category,
+                "title": title,
+                "content": content
+            }),
+            success: function (response) {
+                if (response.msg === 'Notice 생성 성공') {
+                    console.log('Notice 생성 성공', response)
+                } else {
+                    console.error('Notice 생성 실패 :', response)
+                }
+                window.location.href = host + "/api/club/main-club/" + clubId;
+            },
+            error: function (error) {
+                console.log(error.msg)
+                alert("클럽멤버가 아닙니다");
+            }
+        })
 
 
-  }
-  /*]]>*/
+    }
+
+    /*]]>*/
 </script>
 </body>
 </html>

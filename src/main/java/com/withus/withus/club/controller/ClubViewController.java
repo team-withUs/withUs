@@ -43,15 +43,23 @@ public class ClubViewController {
 
         }
 
-
-
         Integer totalList = noticeService.count(clubId);
         int count;
-        if (totalList > 4) {
-            count=totalList/3+1;
-        }else{
+        if(totalList==0){
+            count=0;
+        }
+        else if(totalList > 4){
+            if(totalList%4==0){
+                count=totalList/4;
+            }
+            else {
+                count=totalList/4+1;
+            }
+        }
+        else {
             count=1;
         }
+
         List<Integer> countList = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             countList.add(i + 1);
@@ -71,16 +79,6 @@ public class ClubViewController {
         return "club/revise-club";
     }
 
-    @PostMapping("/{clubId}/revise-club")
-    public String postReviseClub() {
-        return "club/revise-club";
-    }
-
-    @PatchMapping("/{clubId}/revise-club")
-    public String patchReviseClub(){
-        return "club/revise-club";
-    }
-
     @GetMapping("/post-club")
     public String postClub(
         @AuthMember Member member,
@@ -89,10 +87,6 @@ public class ClubViewController {
 
         model.addAttribute("memberId", member.getId());
         return "club/post-club";
-    }
-    @PostMapping("/post-club")
-    public String createpostClub(){
-            return "club/post-club";
     }
 
 }

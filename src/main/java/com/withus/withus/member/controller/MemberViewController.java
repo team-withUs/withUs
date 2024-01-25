@@ -2,6 +2,8 @@ package com.withus.withus.member.controller;
 
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.global.exception.BisException;
+import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
@@ -30,7 +32,7 @@ public class MemberViewController {
     return "auth/loginPage";
   }
 
-  @GetMapping("/profilePage/{memberId}")
+  @GetMapping("/{memberId}/profilePage")
   public String getProfilePage(
       @PathVariable("memberId") Long memberId,
       Model model,
@@ -46,18 +48,20 @@ public class MemberViewController {
     return "profile";
   }
 
-  @GetMapping("/updateProfilePage/{memberId}")
+  @GetMapping("/{memberId}/updateProfilePage")
   public String getUpdateProfilePage(
       @PathVariable("memberId") Long memberId,
       Model model,
       @AuthMember Member loginMember
   ) {
-    model.addAttribute("memberId",loginMember.getId());
+
+    model.addAttribute("memberId",memberId);
+    model.addAttribute("loginMemberId",loginMember.getId());
     return "updateProfile";
 
   }
 
-  @GetMapping("/myClub/{memberId}")
+  @GetMapping("/{memberId}/myHostingClubPage")
   public String myHostingClub(
       @PathVariable("memberId") Long memberId,
       Model model

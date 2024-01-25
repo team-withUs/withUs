@@ -227,10 +227,10 @@
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + loginId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + loginId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + guestId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
 
           }
 
@@ -290,10 +290,10 @@
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + loginId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + loginId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/profilePage/' + guestId + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
           }
           // chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
           chatDiv.append('<div class="textbox">' + content + '</div>');
