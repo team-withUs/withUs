@@ -10,7 +10,6 @@ services:
       - "8080"
     environment:
       DB_REDIS_HOST: ${{ secrets.DB_REDIS_HOST }}
-      SPRING_REDIS_PORT: 6379
       WEB_DB_URL: ${{ secrets.WEB_DB_URL }}
       WEB_DB_USERNAME: ${{ secrets.WEB_DB_USERNAME }}
       WEB_DB_PASSWORD: ${{ secrets.WEB_DB_PASSWORD }}
