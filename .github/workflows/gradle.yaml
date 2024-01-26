@@ -2,9 +2,9 @@ name: withUs
 
 on:
   push:
-    branches: [ feature/distribute ]
+    branches: [ main ]
   pull_request:
-    branches: [ feature/distribute ]
+    branches: [ main ]
 
 permissions:
   contents: read
