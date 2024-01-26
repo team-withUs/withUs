@@ -1,4 +1,4 @@
-/*package com.withus.withus;
+package com.withus.withus;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,4 +11,3 @@ class WithUsApplicationTests {
     }
 
 }
-*/

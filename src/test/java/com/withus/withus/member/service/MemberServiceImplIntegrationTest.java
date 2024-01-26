@@ -1,4 +1,4 @@
-/* package com.withus.withus.member.service;
+package com.withus.withus.member.service;
 
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
@@ -682,4 +682,4 @@ class MemberServiceImplIntegrationTest {
     }
 }
 
-*/
+
