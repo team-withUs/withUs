@@ -318,4 +318,10 @@ p {
 .invited-user {
     text-align: center; /* 사용자 이름 텍스트를 가운데 정렬합니다 */
 }
-
+.leaveClubButton{
+    border-radius: 10px;
+    border:1px none;
+}
+.leaveClubButton:hover {
+    background: #b6d4fe;
+}

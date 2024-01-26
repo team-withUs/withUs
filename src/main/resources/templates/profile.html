@@ -25,7 +25,7 @@
         #profileContainer {
             text-align: center;
             background-color: #98a9bc;
-            height: 650px;
+            height: 700px;
             width: 800px;
             border: 4px solid rgba(255, 255, 255, 0.5);
             margin: 60px auto;
@@ -98,6 +98,14 @@
             flex-direction: row; /* 수정: 수평으로 나란히 표시 */
             justify-content: space-between; /* 수정: 여백을 이용해 간격 조절 */
             align-items: center;
+        }
+
+        #createChatting{
+            margin-bottom: auto;
+        }
+
+        #inviting{
+            margin-bottom: auto;
         }
 
 
@@ -292,299 +300,19 @@
                 class="btn btn-primary" onclick="updateProfile()">수정하기
         </button>
     </div>
+    <div class="icon">
 
-</div>
+        <div id="createChatting">
+            <img src="/img/message.png"
+                 style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; margin-top: 40px; cursor: pointer"
+                 class="message">
+        </div>
 
-<div class="icon">
-
-    <div id="createChatting">
-        <img src="/img/message.png"
-             style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; margin-top: 40px; cursor: pointer"
-             class="message">
+        <div style="  " id="inviting">
+            <img src="/img/invite.png"
+                 style="border-radius: 100%; height: 70px; width: 70px; float:right; margin-right: 120px; margin-top: 40px; cursor: pointer"
+                 class="invite">
+        </div>
     </div>
 
-    <div style="  " id="inviting">
-        <img src="/img/invite.png"
-             style="border-radius: 100%; height: 80px; width: 80px; float:right; margin-right: 120px; margin-top: 40px; cursor: pointer"
-             class="invite">
-    </div>
 </div>
-
-
-<!--</body>-->
-<!--</html>-->
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--  <meta charset="UTF-8">-->
-<!--  <script src="https://code.jquery.com/jquery-3.7.0.min.js"-->
-<!--          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>-->
-<!--  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
-<!--  <title>회원 정보</title>-->
-
-<!--  <style>-->
-<!--    @font-face {-->
-<!--      font-family: "Cafe24Supermagic-Bold-v1.0";-->
-<!--      src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");-->
-<!--      font-weight: 700;-->
-<!--      font-style: normal;-->
-<!--    }-->
-<!--    body {-->
-<!--      font-family: "Cafe24Supermagic-Bold-v1.0";-->
-<!--      /*background-image: url('/img/background.jpg'); !* 이미지 URL로 설정 *!*/-->
-<!--      background-color: #98a9bc;-->
-<!--      background-size: cover; /* 배경 이미지를 창에 맞추기 */-->
-<!--    }-->
-
-<!--    .main{-->
-<!--      padding-right: 20%;-->
-<!--      padding-left: 20%;-->
-<!--      display: flex;-->
-<!--      flex-direction: column;-->
-<!--    }-->
-
-<!--    .title-group {-->
-<!--      display: flex;-->
-<!--      justify-content: space-between;-->
-<!--      align-items: center;-->
-<!--      padding: 10px;-->
-<!--    }-->
-
-<!--    .title {-->
-<!--      cursor: pointer;-->
-<!--    }-->
-
-<!--    .title img {-->
-<!--      width: 35px;-->
-<!--      height: 35px;-->
-<!--      margin-right: 5px;-->
-<!--    }-->
-
-<!--    .icon {-->
-<!--      display: flex;-->
-<!--      flex-direction: row; /* 수정: 수평으로 나란히 표시 */-->
-<!--      justify-content: space-between; /* 수정: 여백을 이용해 간격 조절 */-->
-<!--      align-items: center;-->
-<!--    }-->
-
-<!--    .nameBlock {-->
-<!--      text-align: center;-->
-<!--      padding: 10px;-->
-<!--      margin-top: 10px;-->
-<!--    }-->
-
-<!--    .emailBlock {-->
-<!--      text-align: center;-->
-<!--      padding: 10px;-->
-<!--    }-->
-
-
-<!--  </style>-->
-
-<!--  <script th:inline="javascript">-->
-<!--    const host = 'http://' + window.location.host;-->
-
-<!--    $(document).ready(function(){-->
-
-<!--      const isSameMember = /*[[${isSameMember}]]*/ '';-->
-<!--      const memberId = /*[[${memberId}]]*/ '';-->
-<!--      console.log(memberId);-->
-
-<!--      if (isSameMember) {-->
-<!--        $('#createChatting').hide();-->
-<!--        $('#inviting').hide();-->
-<!--        $('#updateBtn').show();-->
-<!--      } else {-->
-<!--        $('#createChatting').show();-->
-<!--        $('#inviting').show();-->
-<!--        $('#updateBtn').hide();-->
-<!--      }-->
-
-<!--      $.ajax({-->
-<!--        type:'GET',-->
-<!--        url:`/api/member/`+ memberId,-->
-<!--        contentType: 'application/json',-->
-<!--        success: function(response){-->
-<!--          if(response.data.imageURL !== null){-->
-<!--            $('#profileImage').attr('src', response.data.imageURL);-->
-<!--          } else{-->
-<!--            $('#profileImage').attr('src', '/img/default.png');-->
-<!--          }-->
-
-<!--          $('#username').text(response.data.username);-->
-<!--          $('#email').text(response.data.email);-->
-<!--          $('#introduction').text(response.data.introduction);-->
-
-<!--          if (response.data.tag !== null) {-->
-<!--            let tagArray = JSON.parse(response.data.tag);-->
-<!--            tagArray.forEach(function(tag) {-->
-<!--              $('#tag').append('#' + tag.trim()+'  ');-->
-<!--            });-->
-<!--          }-->
-<!--        },-->
-<!--        error: function (error){-->
-<!--          console.error('에러 :', error.responseJSON.msg);-->
-<!--          alert(error.responseJSON.msg);-->
-<!--        }-->
-<!--      });-->
-
-<!--      $("#chatting").on("click", function(e) {-->
-<!--        window.location.href = host + '/api/chat/chatRoomList/' + memberId;-->
-<!--      });-->
-
-<!--      $("#logout").on("click", function(e) {-->
-<!--        var confirmLogout = window.confirm('로그아웃 하시겠습니까?');-->
-
-<!--        if (confirmLogout) {-->
-
-<!--          $.ajax({-->
-<!--            type: 'Post',-->
-<!--            url: '/api/member/logout',-->
-<!--            contentType: ''-->
-<!--          })-->
-<!--          .done(function (res, status, xhr) {-->
-<!--            window.location.href = host + '/'-->
-<!--          })-->
-<!--          .fail(function (xhr, status, error) {-->
-<!--            console.error('로그아웃 요청 API 에러', error);-->
-<!--          })-->
-
-<!--        } else {-->
-<!--          alert('로그아웃 취소');-->
-<!--        }-->
-<!--      });-->
-
-
-<!--      $("#createChatting").on("click", function(e) {-->
-<!--        chattingClicked();-->
-<!--      });-->
-
-<!--      $("#inviting").on("click", function(e){-->
-<!--        invitingClicked();-->
-<!--      });-->
-
-<!--    })-->
-
-
-<!--    function chattingClicked() {-->
-<!--      const memberId = /*[[${memberId}]]*/ '';-->
-
-<!--      console.log(memberId);-->
-<!--      // 채팅방 생성 or 기존 roomId 가져오기-->
-<!--      $.ajax({-->
-<!--        type: 'POST',-->
-<!--        url: '/api/chat/' + memberId,-->
-<!--        contentType: 'application/json',-->
-<!--      })-->
-<!--      .done(function (res) {-->
-<!--        console.log(res);-->
-<!--        if (res && res.data && res.data) {-->
-<!--          var roomId = res.data;-->
-<!--        }-->
-<!--        console.log(roomId);-->
-<!--        // 채팅방으로 이동-->
-<!--        $.ajax({-->
-<!--          type: 'GET',-->
-<!--          url: '/api/chat/chatRoom/' + roomId,-->
-<!--          contentType: 'application/json',-->
-<!--        })-->
-<!--        .done(function (res, status, xhr) {-->
-<!--          window.location.href = host + '/api/chat/chatRoom/' + roomId;-->
-<!--        })-->
-<!--        .fail(function (xhr, status, error) {-->
-<!--            console.error('채팅방 요청 API 에러', error);-->
-<!--        })-->
-<!--      })-->
-<!--      .fail(function (xhr, status, error) {-->
-<!--        // 실패한 경우의 동작-->
-<!--        console.error('채팅 요청 API 에러', error);-->
-<!--      });-->
-<!--    }-->
-
-
-<!--    function updateProfile() {-->
-<!--      var memberId = /*[[${memberId}]]*/ '';-->
-<!--      let url = '/api/member/updateProfilePage/' + memberId;-->
-<!--      location.href = url;-->
-<!--    }-->
-
-<!--    function invitingClicked(){-->
-<!--      var memberId = /*[[${memberId}]]*/ '';-->
-<!--      let url = '/api/member/myClub/'+memberId;-->
-<!--      location.href = url;-->
-<!--    }-->
-
-<!--  </script>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="main ">-->
-<!--  <div class="title">-->
-<!--    <header>-->
-<!--      <div class="title-group" role="group">-->
-<!--        <div class="title">-->
-<!--          <h2 class="withUs" th:onclick="|location.href='@{/}'|" style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>-->
-<!--        </div>-->
-<!--        <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">-->
-<!--          <img src="/img/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">-->
-<!--          <img src="/img/arrow_10940959.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </header>-->
-<!--  </div>-->
-<!--</div>-->
-
-
-<!--<div style="margin: 40px 35% 200px 35%">-->
-<!--  <div>-->
-<!--    <img id="profileImage"-->
-<!--         style="border-radius: 100%; height: 170px; width: 170px; float:left"-->
-<!--         class="col-auto">-->
-<!--  </div>-->
-
-<!--  <div style="padding-top: 30px">-->
-<!--    <div class="nameBlock">-->
-<!--      <h5 id="username"></h5>-->
-<!--    </div>-->
-<!--    <div class="emailBlock">-->
-<!--      <h5 id="email"></h5>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  <div style="margin-top:50px;">-->
-<!--    <h4> Tag </h4>-->
-<!--    <h5 id="tag" style="background-color: beige"> </h5>-->
-<!--  </div>-->
-
-<!--  <div style="margin-top: 50px;">-->
-<!--    <h4> 자기소개 </h4>-->
-<!--    <div style="background-color: beige; height: 100px">-->
-<!--      <h5 id="introduction"> 자기소개 </h5>-->
-<!--    </div>-->
-<!--  </div>-->
-
-
-<!--  <div class="icon">-->
-
-<!--      <button type="button" id="updateBtn"-->
-<!--              style="float: right; margin-top: 20px; margin-left: 83%"-->
-<!--              class="btn btn-primary" onclick="updateProfile()">수정하기-->
-<!--      </button>-->
-
-<!--      <div id="createChatting">-->
-<!--        <img src="/img/message.png"-->
-<!--             style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; margin-top: 40px; cursor: pointer"-->
-<!--             class="message">-->
-<!--      </div>-->
-
-<!--      <div style="  " id="inviting">-->
-<!--        <img src="/img/invite.png"-->
-<!--             style="border-radius: 100%; height: 80px; width: 80px; float:right; margin-right: 120px; margin-top: 40px; cursor: pointer"-->
-<!--             class="invite">-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--</div>-->
-
-
-<!--</body>-->
-<!--</html>-->
