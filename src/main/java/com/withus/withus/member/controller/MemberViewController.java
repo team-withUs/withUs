@@ -64,10 +64,12 @@ public class MemberViewController {
   @GetMapping("/{memberId}/myHostingClubPage")
   public String myHostingClub(
       @PathVariable("memberId") Long memberId,
+      @AuthMember Member member,
       Model model
   ) {
 
     model.addAttribute("memberId",memberId);
+    model.addAttribute("loginMemberId", member.getId());
 
     return "myClub";
   }

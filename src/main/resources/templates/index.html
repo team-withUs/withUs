@@ -418,7 +418,8 @@
                 url: '/api/club/' + category
                     + '/club?size='+ size
                     + '&keyWord='+ keyword
-                    + '&category=' + category,
+                    + '&category=' + category
+                    + '&sort=createdAt,desc',
 
                 contentType: 'application/json',
                 success: function (response) {
@@ -534,7 +535,8 @@
                     + '/club?size=' + size
                     + '&page=' + 0
                     + '&keyWord=' + keyword
-                    + '&searchCategory=' + search,
+                    + '&searchCategory=' + search
+                    + '&sort=createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     if (response.data.totalElements === 0) {
@@ -630,7 +632,8 @@
                     + '/club?size='+ size
                     + '&page=' + (pageNumber-1)
                     + '&keyWord=' + keyword
-                    + '&searchCategory=' + search,
+                    + '&searchCategory=' + search
+                    + '&sort=createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
