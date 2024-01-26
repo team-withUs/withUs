@@ -66,7 +66,5 @@ public class RedisService {
         values.delete(key, hashKey);
     }
 
-    public boolean checkExistsValue(String value) {
-        return !value.equals("false");
-    }
+
 }

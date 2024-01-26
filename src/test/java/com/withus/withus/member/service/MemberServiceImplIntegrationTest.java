@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.dto.ClubRequestDto;
 import com.withus.withus.club.dto.ClubResponseDto;
-import com.withus.withus.club.entity.Club;
-import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.club.repository.ClubMemberRepository;
 import com.withus.withus.club.repository.ClubRepository;
 import com.withus.withus.club.service.ClubMemberServiceImpl;
@@ -15,7 +13,6 @@ import com.withus.withus.global.config.EmailConfig;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.global.s3.S3Util;
-import com.withus.withus.global.security.jwt.RefreshTokenRepository;
 import com.withus.withus.global.utils.EmailService;
 import com.withus.withus.global.utils.RedisService;
 import com.withus.withus.member.dto.EmailRequestDto;
@@ -29,14 +26,12 @@ import com.withus.withus.member.repository.MemberRepository;
 import com.withus.withus.member.repository.ReportMemberRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -56,8 +51,6 @@ class MemberServiceImplIntegrationTest {
   @Autowired
   ReportMemberRepository reportMemberRepository;
 
-  @Autowired
-  RefreshTokenRepository refreshTokenRepository;
 
   @Autowired
   PasswordEncoder passwordEncoder;
