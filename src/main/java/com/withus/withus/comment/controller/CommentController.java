@@ -1,5 +1,6 @@
 package com.withus.withus.comment.controller;
 
+import com.withus.withus.comment.dto.CommentDeleteRequestDto;
 import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.comment.dto.CommentResponseDto;
 import com.withus.withus.comment.dto.ReportRequestDto;
@@ -18,12 +19,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/notice/{noticeId}")
 public class CommentController {
     private final CommentService commentService;
-    private final MemberServiceImpl memberService;
 
-    @PostMapping("/notice/{noticeId}/comment")
+
+    @PostMapping("/comment")
     public ResponseEntity<CommonResponse<CommentResponseDto>> createReportComment(
             @PathVariable("noticeId") Long noticeId,
             @RequestBody CommentRequestDto commentRequestDto,
@@ -35,7 +36,7 @@ public class CommentController {
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_CREATE, commentResponseDto));
     }
 
-    @PatchMapping("/notice/{noticeId}/comment/{commentId}")
+    @PatchMapping("/comment/{commentId}")
     public ResponseEntity<CommonResponse<CommentResponseDto>> updateComment(
             @PathVariable("noticeId") Long noticeId,
             @PathVariable("commentId") Long commentId,
@@ -47,7 +48,7 @@ public class CommentController {
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_UPDATE, commentResponseDto));
     }
 
-    @GetMapping("/notice/{noticeId}/comment")
+    @GetMapping("/comment")
     public ResponseEntity<CommonResponse<List<CommentResponseDto>>> getsComment(
 
             @PathVariable("noticeId") Long noticeId,
@@ -56,26 +57,27 @@ public class CommentController {
             @RequestParam(value = "size", defaultValue = "4") int size,
             @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy
     ){
-        System.out.println("====================");
         PageableDto pageableDto = new PageableDto(page, size, sortBy);
         return ResponseEntity.status(ResponseCode.SUCCESS_COMMENT_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_GET,
                         commentService.getComment(noticeId, pageableDto)));
     }
 
-    @DeleteMapping("/notice/{noticeId}/comment/{commentId}")
+    @DeleteMapping("/comment/{commentId}")
     public ResponseEntity<CommonResponse<String>> deleteComment(
             @PathVariable("noticeId") Long noticeId,
             @PathVariable("commentId") Long commentId,
+            @RequestBody CommentDeleteRequestDto commentDeleteRequestDto,
             @AuthMember Member member
     ) {
-        commentService.deleteComment(noticeId, commentId, member);
+        commentService.deleteComment(noticeId, commentId, member, commentDeleteRequestDto);
         return ResponseEntity.status(ResponseCode.SUCCESS_COMMENT_DELETE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_COMMENT_DELETE,""));
     }
 
     @PostMapping("/comment/{commentId}/report")
     public ResponseEntity<CommonResponse<String>> createReportComment(
+            @PathVariable("noticeId") Long noticeId,
             @PathVariable("commentId") Long commentId,
             @RequestBody ReportRequestDto requestDto,
             @AuthMember Member member

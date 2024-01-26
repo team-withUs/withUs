@@ -17,9 +17,9 @@
         document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
       });
 
-
       let loginname = $('#loginname').val();
       let password = $('#password').val();
+
 
       $.ajax({
         type: "POST",
@@ -28,7 +28,39 @@
         data: JSON.stringify({loginname: loginname, password: password}),
       })
       .done(function (res, textStatus, xhr) {
+        const eventSource = new EventSource(`/api/notification/subscribe`);
+        eventSource.addEventListener("invitedClub", function(event){
+          console.log(event.data);
+          const data = event.data;
+          (async ()=>{
+            //브라우저 알림
+            const showNotification = () =>{
+              const notification = new Notification('메세지',{
+                body: data
+              });
 
+              setTimeout(()=>{
+                notification.close();
+              }, 10*1000);
+
+              notification.addEventListener('click',()=>{
+                window.open(data.url, 'blank');
+              });
+            }
+
+            let granted = false;
+            if(Notification.permission === 'granted'){
+              granted = true;
+            } else if(Notification.permission !== 'denied'){
+              let permission = await Notification.requestPermission();
+              granted = permission === 'granted';
+            }
+
+            if(granted){
+              showNotification();
+            }
+          })();
+        })
         window.location.href = host + '/';
         // 추후에 메인페이지로 이동으로 변경
       })
