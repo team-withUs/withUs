@@ -147,4 +147,16 @@ public class ClubController {
                 .body(CommonResponse.of(ResponseCode.OK,
                         clubService.getsClubByCategory(category, pageableDto, keyWord,searchCategory)));
     }
+
+    // 클럽 멤버 탈퇴
+    @DeleteMapping("/{clubId}/leave")
+    public ResponseEntity<CommonResponse<String>> leaveClub(
+            @PathVariable("clubId") Long clubId,
+            @AuthMember Member member
+    ) {
+        String responseDto = clubMemberService.leaveClub(clubId, member);
+        return ResponseEntity
+                .status(ResponseCode.OK.getHttpStatus())
+                .body(CommonResponse.of(ResponseCode.OK, responseDto));
+    }
 }
