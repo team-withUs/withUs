@@ -15,4 +15,12 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
   boolean existsByIsActiveAndId(boolean isActive, Long noticeId);
 
   Integer countByClubIdAndIsActive(Long clubId, boolean isActive);
+
+
+  //삭제 스캐줄러용
+
+  List<Notice> findAllByIsActive(boolean isActive);
+  List<Notice> findAllByClubId(Long clubId);
+
+  List<Notice> findAllByMemberId(Long memberId);
 }

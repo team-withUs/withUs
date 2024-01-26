@@ -29,4 +29,9 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     //  추가
     Integer countByClubId(Long clubId);
+
+
+    //삭제 스케줄러용
+    List<ClubMember> findAllByClubId(Long clubId);
+    List<ClubMember> findAllByMemberId(Long memberId);
 }
