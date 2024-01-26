@@ -24,6 +24,8 @@ import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -170,42 +172,26 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public List<ClubResponseDto> getsClubByCategory(ClubCategory category, PageableDto pageableDto, String keyWord, String searchCategory) {
-        List<Club> clubList;
+    public Page<ClubResponseDto> getsClubByCategory(ClubCategory category, Pageable pageable, String keyWord, String searchCategory) {
+        Page<Club> clubPage;
         if (keyWord.equals("ace245")) {
             if (category.equals(ClubCategory.ALL)) {
-                clubList = clubRepository.
-                        findAllByIsActive(true, PageableDto.getsPageableDto(
-                                        pageableDto.page(),
-                                        pageableDto.size(),
-                                        pageableDto.sortBy()
-                                ).toPageable()
-                        );
+                clubPage = clubRepository.findAllByIsActive(true, pageable);
             } else {
-                clubList = clubRepository.
-                        findByCategoryAndIsActive(category, true, PageableDto.getsPageableDto(
-                                        pageableDto.page(),
-                                        pageableDto.size(),
-                                        pageableDto.sortBy()
-                                ).toPageable()
-                        );
+                clubPage = clubRepository.findByCategoryAndIsActive(category, true, pageable);
             }
         } else {
-                clubList = clubRepository.search(keyWord, true, searchCategory,
-                    PageableDto.getsPageableDto(
-                        pageableDto.page(),
-                        pageableDto.size(),
-                        pageableDto.sortBy()
-                    ).toPageable(),
-                    category);
+            clubPage = clubRepository.search(
+                    keyWord,
+                    true,
+                    searchCategory,
+                    pageable,
+                    category
+                );
 
         }
-        if (clubList == null || clubList.isEmpty()) {
-            return null;
-        }
-        return clubList.stream()
-                .map(ClubResponseDto::createClubResponseDto)
-                .collect(Collectors.toList());
+
+        return clubPage.map(ClubResponseDto::createClubResponseDto);
     }
 
     @Override

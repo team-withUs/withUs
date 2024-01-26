@@ -6,6 +6,7 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/sse.js}"></script>
     <style>
 
         @font-face {
@@ -228,6 +229,7 @@
         const host = 'http://' + window.location.host;
         let clubId = /*[[${clubId}]]*/ '';
         let category = 'ALL';
+        let size = 4;
         let search = '';
         console.log(search)
         let clubImage;
@@ -243,11 +245,13 @@
 
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club',
+                url: '/api/club/' + category
+                    + '/club?size='+ size
+                    + '&sortBy=CreatedAt',
                 contentType: 'application/json',
                 success: function (response) {
-                    for (var i = 0; i < response.data.length; i++) {
-                        var currentItem = response.data[i];
+                    for (var i = 0; i < response.data.content.length; i++) {
+                        var currentItem = response.data.content[i];
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
@@ -299,6 +303,22 @@
                             )
                         );
                     }
+                    let cnt;
+                    const cntArray = [];
+                    if (response.data.totalElements > 4) {
+                        cnt = response.data.totalElements / 4;
+                    } else {
+                        cnt = 1;
+                    }
+                    for (var i = 0; i < cnt; i++) {
+                        cntArray.push(i + 1);
+                    }
+                    $(cntArray).each(function (index, res) {
+                        // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
+                        const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\''
+                            + res + '\')">' + res + '</a></li>';
+                        $('#page').append(card);
+                    })
                 }
 
             });
@@ -325,12 +345,12 @@
                 window.location.href = host + '/api/member/loginPage';
             });
 
-            $("#chatting").on("click", function (e) {
-                window.location.href = host + '/api/chat/chatRoomList/' + memberId;
+            $("#chatting").on("click", function(e) {
+              window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function (e) {
-                window.location.href = host + '/api/member/profilePage/' + memberId;
+                window.location.href = host + '/api/member/' + memberId + '/profilePage';
             });
 
             $("#create").on("click", function (e) {
@@ -340,14 +360,6 @@
             $("#myclub").on("click", function (e) {
                 getMyClubs();
             });
-
-
-            const cntList = [[${countList}]];
-            $(cntList).each(function (index, res) {
-                // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
-                const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">' + res + '</a></li>';
-                $('#page').append(card);
-            })
 
             $("#logout").on("click", function (e) {
                 var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
@@ -373,18 +385,41 @@
             });
         });
 
+        // SSE 연결
+        if (memberId !== undefined && memberId !== null && memberId !== '') {
+          connectSse();
+        }
+
         function getClub(clubId) {
             let url = '/api/club/main-club/' + clubId;
             location.href = url;
         }
 
         function changeCategory(button) {
-            category = button.getAttribute('name');
+            search = document.getElementById('searchCategory').value;
+            console.log(search);
+            keyword = document.getElementById('searchText').value;
+            console.log(keyword);
+
+            if(category === 'ALL'){
+                category = button.getAttribute('name');
+            } else{
+                if(category === button.getAttribute('name')){
+                    category = 'ALL';
+                } else{
+                    category = button.getAttribute('name');
+                }
+            }
+
             console.log(category);
 
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club',
+                url: '/api/club/' + category
+                    + '/club?size='+ size
+                    + '&keyWord='+ keyword
+                    + '&category=' + category,
+
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
@@ -392,16 +427,19 @@
                         buttons[i].classList.remove('active');
                     }
                     // 클릭된 버튼에 활성 상태 추가
-                    button.classList.add('active');
+                    if(category !== 'ALL'){
+                        button.classList.add('active');
+                    }
 
-                    if (response.data === null) {
+
+                    if (response.data.totalElements === 0) {
                         $('#cardGroup').empty();
                         $('#page').empty();
                         $('#cardGroup').append($('<p>검색된 클럽이 없습니다.</p>'))
                     } else {
                         $('#cardGroup').empty();
-                        for (var i = 0; i < response.data.length; i++) {
-                            var currentItem = response.data[i];
+                        for (var i = 0; i < response.data.content.length; i++) {
+                            var currentItem = response.data.content[i];
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
@@ -457,8 +495,8 @@
                         $('#page').empty();
                         let cnt;
                         const cntArray = [];
-                        if (response.data.length >= 4) {
-                            cnt = response.data.length / 4 + 1;
+                        if (response.data.totalElements > 4) {
+                            cnt = response.data.totalElements / 4;
                         } else {
                             cnt = 1;
                         }
@@ -488,19 +526,25 @@
             // console.log(search)
             search = document.getElementById('searchCategory').value;
             keyword = document.getElementById('searchText').value;
+
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club?keyWord=' + keyword + '&searchCategory=' + search,
+                url: '/api/club/'
+                    + category
+                    + '/club?size=' + size
+                    + '&page=' + 0
+                    + '&keyWord=' + keyword
+                    + '&searchCategory=' + search,
                 contentType: 'application/json',
                 success: function (response) {
-                    if (response.data === null) {
+                    if (response.data.totalElements === 0) {
                         $('#cardGroup').empty();
                         $('#page').empty();
                         $('#cardGroup').append($('<p>검색된 클럽이 없습니다.</p>'))
                     } else {
                         $('#cardGroup').empty();
-                        for (var i = 0; i < response.data.length; i++) {
-                            var currentItem = response.data[i];
+                        for (var i = 0; i < response.data.content.length; i++) {
+                            var currentItem = response.data.content[i];
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
@@ -554,13 +598,13 @@
                         }
                         $('#page').empty();
                         let cnt;
-                        let totalCnt = /*[[${cnt}]]*/'';
                         const cntArray = [];
-                        if (totalCnt > 4) {
-                            cnt = totalCnt / 4 + 1;
+                        if (response.data.totalElements > 4) {
+                            cnt = response.data.totalElements / 4;
                         } else {
                             cnt = 1;
                         }
+                        console.log(cnt);
                         for (var i = 0; i < cnt; i++) {
                             cntArray.push(i + 1);
                         }
@@ -577,13 +621,20 @@
 
         function sendPage(pageNumber) {
             $('#cardGroup').empty();
+            search = document.getElementById('searchCategory').value;
+            keyword = document.getElementById('searchText').value;
             $.ajax({
                 type: 'GET',
-                url: '/api/club/' + category + '/club?page=' + pageNumber + '&keyWord=' + keyword + '&searchCategory=' + search,
+                url: '/api/club/'
+                    + category
+                    + '/club?size='+ size
+                    + '&page=' + (pageNumber-1)
+                    + '&keyWord=' + keyword
+                    + '&searchCategory=' + search,
                 contentType: 'application/json',
                 success: function (response) {
-                    for (var i = 0; i < response.data.length; i++) {
-                        var currentItem = response.data[i];
+                    for (var i = 0; i < response.data.content.length; i++) {
+                        var currentItem = response.data.content[i];
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
@@ -643,14 +694,15 @@
             $('.category').hide();
             $.ajax({
                 type: 'GET',
-                url: '/api/member/club?size=4&sortBy=CreatedAt',
+                url: '/api/member/club?size='+ size
+                    +'&sortBy=CreatedAt',
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
                     for (var i = 0; i < buttons.length; i++) {
                         buttons[i].classList.remove('active');
                     }
-                    if (response.data === null) {
+                    if (response.data.totalElements === 0) {
                         $('#cardGroup').empty();
                         $('#page').empty();
                         $('#cardGroup').append($('<p>검색된 클럽이 없습니다.</p>'))
@@ -737,7 +789,9 @@
             $('#cardGroup').empty();
             $.ajax({
                 type: 'GET',
-                url: '/api/member/club?size=4&page=' + (pageNumber - 1) + '&sortBy=CreatedAt',
+                url: '/api/member/club?size=' + size
+                    +'&page=' + (pageNumber - 1)
+                    + '&sortBy=CreatedAt',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {

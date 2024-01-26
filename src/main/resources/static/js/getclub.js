@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
 
     $("#reviseButton").on("click", function () {
@@ -46,8 +45,7 @@ $(document).ready(function () {
                 inviteContainer.append(inviteMemberDiv);
 
                 iconDiv.on('click', function () {
-                    window.location.href = host + '/api/member/profilePage/' + memberId;
-
+                    window.location.href = host + '/api/member/' + memberId + '/profilePage';
                 })
 
 

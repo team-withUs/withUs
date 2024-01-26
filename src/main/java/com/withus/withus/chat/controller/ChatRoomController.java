@@ -26,7 +26,7 @@ public class ChatRoomController {
   private final ChatRoomService chatRoomService;
 
   // 채팅방 생성
-  @PostMapping("/{memberId}")
+  @PostMapping("/member/{memberId}")
   public ResponseEntity<CommonResponse<Long>> getOrCreateChatRoom(
       @PathVariable("memberId") Long memberId,
       @AuthMember Member member
@@ -36,7 +36,7 @@ public class ChatRoomController {
   }
 
   //  채팅방 상세 보기
-  @GetMapping("/{roomId}")
+  @GetMapping("/chatRoom/{roomId}")
   public ResponseEntity<CommonResponse<ChatRoomResponseDto>> getChatRoom(
       @PathVariable("roomId") Long roomId,
       @AuthMember Member member
@@ -46,7 +46,7 @@ public class ChatRoomController {
   }
 
   // 채팅방 목록 조회 -> 로그인한 유저가 참여하고 있는 채팅 목록
-  @GetMapping()
+  @GetMapping("/chatRoom")
   public ResponseEntity<CommonResponse<List<ChatRoomResponseDto>>> getsChatRoom(
       @AuthMember Member member
   ) {
@@ -55,7 +55,7 @@ public class ChatRoomController {
   }
 
   // 채팅방 나가기
-  @DeleteMapping("/{roomId}")
+  @DeleteMapping("/chatRoom/{roomId}")
   public ResponseEntity<CommonResponse<String>> deleteChatRoom(
       @PathVariable("roomId") Long roomId,
       @AuthMember Member member

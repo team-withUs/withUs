@@ -23,14 +23,13 @@
 
 
             $("#chatting").on("click", function(e) {
-                window.location.href = host + '/api/chat/chatRoomList/' + memberId;
+                window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function(e) {
-                window.location.href = host + '/api/member/profilePage/' + memberId;
-
-
+                window.location.href = host + '/api/member/' + memberId + '/profilePage';
             });
+
 
             $("#logout").on("click", function(e) {
                 var confirmLogout = window.confirm('로그아웃 하시겠습니까?');

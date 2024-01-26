@@ -25,7 +25,7 @@
         #profileContainer {
             text-align: center;
             background-color: #98a9bc;
-            height: 700px;
+            height: 680px;
             width: 800px;
             border: 4px solid rgba(255, 255, 255, 0.5);
             margin: 60px auto;
@@ -67,6 +67,7 @@
 
         #updateBtn{
             margin-right: 15px;
+            margin-left: 10px;
         }
 
         .main {
@@ -100,14 +101,23 @@
             align-items: center;
         }
 
-        #createChatting{
-            margin-bottom: auto;
-        }
+    .nameBlock {
+      text-align: center;
+      padding: 10px;
+      margin-top: 10px;
+    }
 
-        #inviting{
-            margin-bottom: auto;
-        }
-
+    .emailBlock {
+      text-align: center;
+      padding: 10px;
+    }
+    #deleteBtn{
+        float: right;
+        margin-right: 10px;
+    }
+    #updateBtn{
+        float: right;
+    }
 
 
     </style>
@@ -119,15 +129,19 @@
 
             const isSameMember = /*[[${isSameMember}]]*/ '';
             const memberId = /*[[${memberId}]]*/ '';
+            const loginMemberId = /*[[${loginMemberId}]]*/ '';
+
             console.log(memberId);
 
             if (isSameMember) {
                 $('#createChatting').hide();
                 $('#inviting').hide();
+                $('#deleteBtn').show();
                 $('#updateBtn').show();
             } else {
                 $('#createChatting').show();
                 $('#inviting').show();
+                $('#deleteBtn').hide();
                 $('#updateBtn').hide();
             }
 
@@ -159,9 +173,9 @@
                 }
             });
 
-            $("#chatting").on("click", function (e) {
-                window.location.href = host + '/api/chat/chatRoomList/' + memberId;
-            });
+      $("#chatting").on("click", function(e) {
+        window.location.href = host + '/api/chat/member/' + loginMemberId + '/chatRoomListPage';
+      });
 
             $("#logout").on("click", function (e) {
                 var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
@@ -204,27 +218,16 @@
             // 채팅방 생성 or 기존 roomId 가져오기
             $.ajax({
                 type: 'POST',
-                url: '/api/chat/' + memberId,
+                url: '/api/chat/member/' + memberId,
                 contentType: 'application/json',
             })
                 .done(function (res) {
-                    console.log(res);
-                    if (res && res.data && res.data) {
-                        var roomId = res.data;
-                    }
-                    console.log(roomId);
-                    // 채팅방으로 이동
-                    $.ajax({
-                        type: 'GET',
-                        url: '/api/chat/chatRoom/' + roomId,
-                        contentType: 'application/json',
-                    })
-                        .done(function (res, status, xhr) {
-                            window.location.href = host + '/api/chat/chatRoom/' + roomId;
-                        })
-                        .fail(function (xhr, status, error) {
-                            console.error('채팅방 요청 API 에러', error);
-                        })
+                  console.log(res);
+                  if (res && res.data) {
+                    var roomId = res.data;
+                  }
+                  console.log(roomId);
+                  window.location.href = host + '/api/chat/chatRoom/' + roomId;
                 })
                 .fail(function (xhr, status, error) {
                     // 실패한 경우의 동작
@@ -235,14 +238,47 @@
 
         function updateProfile() {
             var memberId = /*[[${memberId}]]*/ '';
-            let url = '/api/member/updateProfilePage/' + memberId;
+            let url = '/api/member/' + memberId + '/updateProfilePage';
             location.href = url;
         }
 
-        function invitingClicked() {
+        function invitingClicked(){
             var memberId = /*[[${memberId}]]*/ '';
-            let url = '/api/member/myClub/' + memberId;
+            let url = '/api/member/' + memberId + '/myHostingClubPage'
             location.href = url;
+        }
+
+        function resign(){
+            var confirmLogout = window.confirm('탈퇴하시겠습니까?');
+            var memberId = /*[[${memberId}]]*/ '';
+
+            if (confirmLogout) {
+
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/member/'+ memberId,
+                    contentType: ''
+                })
+                .done(function (res, status, xhr) {
+                    alert("회원탈퇴 완료");
+                    $.ajax({
+                        type: 'Post',
+                        url: '/api/member/logout',
+                        contentType: ''
+                    })
+                    .done(function (res, status, xhr) {
+                        window.location.href = host + '/'
+                    })
+                    .fail(function (xhr, status, error) {
+                        console.error('로그아웃 요청 API 에러', error);
+                    })
+                })
+                .fail(function (xhr, status, error) {
+                    console.error('회원탈퇴 요청 API 에러', error);
+                })
+
+            }
+
         }
 
     </script>
@@ -295,22 +331,28 @@
     </div>
 
     <div>
-        <button type="button" id="updateBtn"
-                style="float: right; margin-top: 20px; margin-left: 83%"
-                class="btn btn-primary" onclick="updateProfile()">수정하기
+        <button type="button"
+                class="btn btn-danger"
+                id="deleteBtn"
+                onclick="resign()">탈퇴하기
+        </button>
+        <button type="button"
+                id="updateBtn"
+                class="btn btn-primary"
+                onclick="updateProfile()">수정하기
         </button>
     </div>
     <div class="icon">
 
         <div id="createChatting">
             <img src="/img/message.png"
-                 style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; margin-top: 40px; cursor: pointer"
+                 style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; cursor: pointer"
                  class="message">
         </div>
 
-        <div style="  " id="inviting">
+        <div id="inviting">
             <img src="/img/invite.png"
-                 style="border-radius: 100%; height: 70px; width: 70px; float:right; margin-right: 120px; margin-top: 40px; cursor: pointer"
+                 style="border-radius: 100%; height: 70px; width: 70px; float:right; margin-right: 120px; cursor: pointer"
                  class="invite">
         </div>
     </div>
