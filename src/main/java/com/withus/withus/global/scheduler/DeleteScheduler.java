@@ -36,6 +36,9 @@ public class DeleteScheduler {
   @Scheduled(cron = "0 0 22 * * * ")
   public void deleteAutoOneWeek(){
     log.info(" ========== 삭제 스케줄러 ========== ");
+    deleteClub();
+    deleteNotice();
+    deleteComment();
 
   }
   public void deleteMember(){
