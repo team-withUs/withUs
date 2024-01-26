@@ -48,11 +48,24 @@ public class ClubMemberServiceImpl implements ClubMemberService {
         return clubMember.getClub().getAuthor().equals(member) || clubMember.getClubMemberRole() == ClubMemberRole.HOST;
     }
 
+
     @Override
     public Integer getClubMemberCount(Long clubId) {
         return clubMemberRepository.countByClubId(clubId);
     }
 
+    @Override
+    public String leaveClub(Long clubId, Member member) {
+        ClubMember clubMember = getClubMemberOrThrow(member.getId(), clubId);
+        clubMemberRepository.delete(clubMember);
+        return "클럽에서 성공적으로 탈퇴했습니다.";
+    }
+
+    private ClubMember getClubMemberOrThrow(Long memberId, Long clubId) {
+        return clubMemberRepository
+                .findClubMemberByMemberIdAndClubId(memberId, clubId)
+                .orElseThrow(() -> new BisException(ErrorCode.YOUR_NOT_COME_IN));
+    }
 
     public ClubMember findClubMemberByMemberIdAndClubId(Member member, Long clubId) {
         return clubMemberRepository.findClubMemberByMemberIdAndClubId(member.getId(), clubId)
@@ -82,7 +95,17 @@ public class ClubMemberServiceImpl implements ClubMemberService {
       ClubMemberRole role,
       Pageable pageable
   ) {
-    return clubMemberRepository.findByMemberIdAndClubMemberRole(memberId, role, pageable);
+    return clubMemberRepository.findByMemberIdAndClubMemberRoleAndClub_IsActive(
+        memberId,
+        role,
+        pageable,
+        true
+    );
   }
+
+  public boolean existHost(Long memberId, Long clubId){
+        return clubMemberRepository.existHost(ClubMemberRole.HOST, memberId, clubId);
+  }
+
 }
 

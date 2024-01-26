@@ -10,13 +10,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
+public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, ClubMemberRepositoryQuery {
 
     Optional<ClubMember> findClubMemberByMemberIdAndClubId(Long memberId, Long clubId);
 
     Page<ClubMember> findByMemberIdAndClub_IsActive(Long member_id, Pageable pageable, boolean isActive);
 
-    Page<ClubMember> findByMemberIdAndClubMemberRole(Long memberId, ClubMemberRole role, Pageable pageable);
+    Page<ClubMember> findByMemberIdAndClubMemberRoleAndClub_IsActive(
+        Long memberId,
+        ClubMemberRole role,
+        Pageable pageable,
+        boolean isActive
+    );
 
     boolean existsByMemberIdAndClubId(Long memberId, Long clubId);
 

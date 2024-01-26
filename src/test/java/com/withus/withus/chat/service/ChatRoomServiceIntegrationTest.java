@@ -106,7 +106,7 @@ class ChatRoomServiceIntegrationTest {
     @DisplayName("성공")
     void openChatRoomTest_success() {
       // given
-      ChatRoom chatRoom = ChatRoom.createChatRomm(loginMember, receiveMember);
+      ChatRoom chatRoom = ChatRoom.createChatRoom(loginMember, receiveMember);
       chatRoomRepository.save(chatRoom);
 
       // when
@@ -132,8 +132,8 @@ class ChatRoomServiceIntegrationTest {
           "testEmail3@naver.com",
           "testUser3"
       ));
-      ChatRoom chatRoom1 = chatRoomRepository.save(ChatRoom.createChatRomm(loginMember, receiveMember));
-      ChatRoom chatRoom2 = chatRoomRepository.save(ChatRoom.createChatRomm(loginMember, receiveMember2));
+      ChatRoom chatRoom1 = chatRoomRepository.save(ChatRoom.createChatRoom(loginMember, receiveMember));
+      ChatRoom chatRoom2 = chatRoomRepository.save(ChatRoom.createChatRoom(loginMember, receiveMember2));
 
       // when
       List<ChatRoomResponseDto> result = chatRoomService.getsChatRoom(loginMember);
@@ -152,7 +152,7 @@ class ChatRoomServiceIntegrationTest {
     @DisplayName("성공")
     void findChatRoomTest_success() {
       // given
-      ChatRoom setChatRoom = ChatRoom.createChatRomm(loginMember, receiveMember);
+      ChatRoom setChatRoom = ChatRoom.createChatRoom(loginMember, receiveMember);
       chatRoomRepository.save(setChatRoom);
 
       // when
@@ -184,7 +184,7 @@ class ChatRoomServiceIntegrationTest {
     @DisplayName("성공")
     void deleteChatRoomTest_success() {
       // given
-      ChatRoom setChatRoom = ChatRoom.createChatRomm(loginMember, receiveMember);
+      ChatRoom setChatRoom = ChatRoom.createChatRoom(loginMember, receiveMember);
       chatRoomRepository.save(setChatRoom);
 
       // when
@@ -205,7 +205,7 @@ class ChatRoomServiceIntegrationTest {
           "anotherEmail@naver.com",
           "anotheruser"
       );
-      ChatRoom setChatRoom = ChatRoom.createChatRomm(loginMember, receiveMember);
+      ChatRoom setChatRoom = ChatRoom.createChatRoom(loginMember, receiveMember);
       chatRoomRepository.save(setChatRoom);
 
       // when - then

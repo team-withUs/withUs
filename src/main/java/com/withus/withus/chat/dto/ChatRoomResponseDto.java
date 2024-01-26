@@ -7,9 +7,10 @@ import lombok.Builder;
 public record ChatRoomResponseDto(
     Long roomId,
     String title,
-    String senderImg,
     Long senderId,
-    Long receiverId
+    String senderImg,
+    Long receiverId,
+    String receiverImg
 
 ) {
 
@@ -25,6 +26,7 @@ public record ChatRoomResponseDto(
         .senderImg(sender.getImageURL())
         .senderId(sender.getId())
         .receiverId(receiver.getId())
+        .receiverImg(receiver.getImageURL())
         .build();
   }
 

@@ -45,13 +45,11 @@ $(document).ready(function () {
                 inviteContainer.append(inviteMemberDiv);
 
                 iconDiv.on('click', function () {
-                    window.location.href = host + '/api/member/profilePage/' + memberId;
+                    window.location.href = host + '/api/member/' + memberId + '/profilePage';
                 })
 
 
             });
-
-
 
 
         },
@@ -85,5 +83,22 @@ $(document).ready(function () {
             console.error("에러상태: " + status + ", 에러: " + error);
             console.log("서버 응답:", xhr.responseText);
         }
+    });
+    $("#leaveClubButton").on("click", function () {
+        $.ajax({
+            type: "DELETE",
+            url: "/api/club/" + clubId + "/leave",
+            success: function (response) {
+                console.log(response);
+
+                alert("클럽에서 탈퇴되었습니다.");
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error("클럽 탈퇴 에러상태: " + status + ", 에러: " + error);
+                console.log("서버 응답:", xhr.responseText);
+                alert("클럽 이미 탈퇴한 회원입니다..");
+            }
+        });
     });
 });

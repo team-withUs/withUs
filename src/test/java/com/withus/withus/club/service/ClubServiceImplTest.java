@@ -21,6 +21,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -314,40 +318,34 @@ class ClubServiceImplTest {
         void getsClubByCategoryPaging_Success() {
             // GIVEN
             ClubCategory category = ClubCategory.SPORTS;
-            PageableDto pageableDto = PageableDto.builder()
-                    .page(1)
-                    .size(5)
-                    .sortBy("createdAt")
-                    .build();
-
+            Pageable pageable = PageRequest.of(1, 5, Sort.by("createdAt"));
             // WHEN
             String keyWord = "ace245";
             String searchCategory = "";
-            List<ClubResponseDto> clubList = clubService.getsClubByCategory(category, pageableDto, keyWord, searchCategory);
+            Page<ClubResponseDto> clubList = clubService.getsClubByCategory(category, pageable, keyWord, searchCategory);
 
             // THEN
             assertNotNull(clubList);
         }
+
         @Test
-        @DisplayName("Get_Clubs_By_Category (페이징 실패 Test)")
+        @DisplayName("Get_Clubs_By_Category_paging (페이징 실패)")
         void getsClubByCategoryPaging_Failure() {
             // GIVEN
             ClubCategory category = ClubCategory.SPORTS;
 
-            PageableDto pageableDto = PageableDto.builder()
-                    .page(-1)
-                    .size(5)
-                    .sortBy("createdAt")
-                    .build();
-            String keyWord = "ace245";
-            String searchCategory="";
+            int pageNumber = -1;
+            int pageSize = 5;
 
             // WHEN & THEN
-            assertThrows(IllegalArgumentException.class, () -> {
-                List<ClubResponseDto> clubList = clubService.getsClubByCategory(category, pageableDto, keyWord, searchCategory);
+            IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+                Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("createdAt"));
+                clubService.getsClubByCategory(category, pageable, "ace245", "");
             });
+
+            assertEquals("Page index must not be less than zero", exception.getMessage());
         }
-    }
+    };
 
     @Nested
     @DisplayName("Report_Test")
