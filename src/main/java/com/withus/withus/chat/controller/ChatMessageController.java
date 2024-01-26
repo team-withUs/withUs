@@ -47,9 +47,8 @@ public class ChatMessageController {
   ) {
     simpMessagingTemplate.convertAndSend("/room/api/chat/chatRoom/" + roomId + "/message", messageDto);
     Long receiverId = chatRoomService.findReceiverId(roomId, messageDto.getSenderId());
-    /// 알람기능 추가
-    notificationService.notifyMessage(receiverId);
 
+    notificationService.notifyMessage(receiverId);
     log.info("{} enter chatting room: {}", messageDto.getSenderName(), roomId);
 
   }

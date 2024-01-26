@@ -8,6 +8,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -55,10 +56,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     return;
                 }
 
-                if (!jwtUtil.checkTokenAboutLogout(accessTokenValue)) {
+                if (!jwtUtil.existTokenInRedis(accessTokenValue, "access")) {
                     log.error("로그아웃한 멤버입니다. 다시 로그인 해주세요");
                     setResponse(res, ErrorCode.LOGOUT_USER);
 
+                    return;
+                }
+
+                if (jwtUtil.isDuplicateLogin(accessTokenValue)) {
+                    deleteCookie(req, res);
+                    log.error("이미 로그인한 멤버입니다. 다시 로그인 해주세요.");
+                    setResponse(res, ErrorCode.DUPLICATE_LOGIN);
                     return;
                 }
 
@@ -69,7 +77,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 log.info(refreshToken);
                 if (refreshToken == null) {
                     log.error("쿠키에 refreshToken이 존재하지 않습니다.");
-                    setResponse(res, ErrorCode.NOT_EXIST_REFRESH_TOKEN);
+                    setResponse(res, ErrorCode.ACCESS_DENIED);
 
                     return;
                 }
@@ -90,17 +98,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 }
 
                 // refreshToken DB 조회
-                if (!jwtUtil.checkTokenDBByToken(refreshToken)) {
+                if (!jwtUtil.existTokenInRedis(refreshToken, "refresh")) {
                     log.error("DB에 해당 RefreshToken이 존재하지 않습니다.");
-                    setResponse(res, ErrorCode.NOT_EXIST_REFRESH_TOKEN);
-
+                    setResponse(res, ErrorCode.ACCESS_DENIED);
                     return;
                 }
 
                 // accessToken 재발급
-                Claims user = jwtUtil.getUserInfoFromToken(refreshToken);
-                String accessToken = jwtUtil.createAccessToken(user.getSubject());
-
+                String accessToken = jwtUtil.reissuanceAccessToken(refreshToken);
 
                 // accessToken 쿠키에 저장
                 jwtUtil.addJwtToCookie("accessToken", accessToken, res);
@@ -156,6 +161,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             e.printStackTrace();
         }
 
+    }
+
+    private void deleteCookie(HttpServletRequest request, HttpServletResponse response) {
+
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+
+                if (cookie.getName().equals("accessToken") || cookie.getName().equals("refreshToken")) {
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
+        }
     }
 
 }

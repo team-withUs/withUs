@@ -173,40 +173,40 @@
                 }
             });
 
-      $("#chatting").on("click", function(e) {
-        window.location.href = host + '/api/chat/member/' + loginMemberId + '/chatRoomListPage';
-      });
+              $("#chatting").on("click", function(e) {
+                window.location.href = host + '/api/chat/member/' + loginMemberId + '/chatRoomListPage';
+              });
 
-            $("#logout").on("click", function (e) {
-                var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+                $("#logout").on("click", function (e) {
+                    var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
 
-                if (confirmLogout) {
+                    if (confirmLogout) {
 
-                    $.ajax({
-                        type: 'Post',
-                        url: '/api/member/logout',
-                        contentType: ''
-                    })
-                        .done(function (res, status, xhr) {
-                            window.location.href = host + '/'
+                        $.ajax({
+                            type: 'Post',
+                            url: '/api/member/logout',
+                            contentType: ''
                         })
-                        .fail(function (xhr, status, error) {
-                            console.error('로그아웃 요청 API 에러', error);
-                        })
+                            .done(function (res, status, xhr) {
+                                window.location.href = host + '/'
+                            })
+                            .fail(function (xhr, status, error) {
+                                console.error('로그아웃 요청 API 에러', error);
+                            })
 
-                } else {
-                    alert('로그아웃 취소');
-                }
-            });
+                    } else {
+                        alert('로그아웃 취소');
+                    }
+                });
 
 
-            $("#createChatting").on("click", function (e) {
-                chattingClicked();
-            });
+                $("#createChatting").on("click", function (e) {
+                    chattingClicked();
+                });
 
-            $("#inviting").on("click", function (e) {
-                invitingClicked();
-            });
+                $("#inviting").on("click", function (e) {
+                    invitingClicked();
+                });
 
         })
 
@@ -227,7 +227,7 @@
                     var roomId = res.data;
                   }
                   console.log(roomId);
-                  window.location.href = host + '/api/chat/chatRoom/' + roomId;
+                  window.location.href = host + '/api/chat/chatRoom/' + roomId + '/chatRoomPage';
                 })
                 .fail(function (xhr, status, error) {
                     // 실패한 경우의 동작
