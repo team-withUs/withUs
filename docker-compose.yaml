@@ -21,13 +21,6 @@ services:
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-      DEV_DB_URL: ${{ secrets.DEV_DB_URL }}
-      DEV_DB_USERNAME: ${{ secrets.DEV_DB_USERNAME }}
-      DEV_DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
-      TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
-      TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
-      TEST_DB_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-
     depends_on:
       - redis
 
