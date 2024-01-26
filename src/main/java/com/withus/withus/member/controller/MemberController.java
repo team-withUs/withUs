@@ -41,7 +41,6 @@ public class MemberController {
   public ResponseEntity<CommonResponse<String>> signupMember (
       @Valid @RequestBody SignupRequestDto signupRequestDto
   ) {
-
     memberService.signup(signupRequestDto);
     return ResponseEntity.status(ResponseCode.SIGNUP.getHttpStatus()).body(CommonResponse.of(ResponseCode.SIGNUP, ""));
   }
