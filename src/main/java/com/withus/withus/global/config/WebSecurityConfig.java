@@ -7,6 +7,7 @@ import com.withus.withus.global.security.UserDetailsServiceImpl;
 import com.withus.withus.global.security.jwt.JwtAuthenticationFilter;
 import com.withus.withus.global.security.jwt.JwtAuthorizationFilter;
 import com.withus.withus.global.security.jwt.JwtUtil;
+import com.withus.withus.global.utils.RedisService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,6 +29,7 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 public class WebSecurityConfig {
 
   private final JwtUtil jwtUtil;
+
   private final UserDetailsServiceImpl userDetailsService;
   private final AuthenticationConfiguration authenticationConfiguration;
 

@@ -200,8 +200,8 @@
                                     let title = res.title;
                                     let id = res.id;
                                     const card =
-                                        '<div class="board-box" onclick="noticePage(\'' + id + '\')">' +
-                                        '    <div style="font-weight: bold; padding-bottom: 100px;">' + title + '</div>' +
+                                        '<div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
+                                        '    <div style="font-weight: bold; padding-bottom: 100px; text-align: center;">' + title + '</div>\n' +
                                         '</div>';
                                     $('#notice-box').append(card);
                                 });
@@ -238,16 +238,13 @@
                         contentType: 'application/json',
                         success: function (result) {
                             const list = result.data;
-                            // const startIdx = (pageNumber - 1) * pageSize;
-                            // const endIdx = startIdx + pageSize;
-                            // const slicedList = list.slice(startIdx, endIdx)
                             $(list).each(function (index, res) {
                                 let title = res.title;
                                 let id = res.id;
-                                const card = '' +
-                                    '  <div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
-                                    '                     <div style="font-weight: bold; padding-bottom: 100px;">' + title + '</div>\n' +
-                                    '                    </div>';
+                                const card =
+                                    '<div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
+                                    '    <div style="font-weight: bold; padding-bottom: 100px; text-align: center;">' + title + '</div>\n' +
+                                    '</div>';
                                 $('#notice-box').append(card);
                             });
                         }
@@ -282,12 +279,14 @@
 
                     </div>
                 </div>
-
             </div>
+
+        </section>
+        <div>
             <button id = "leaveClubButton">
                 클럽 탈퇴
             </button>
-        </section>
+        </div>
     </div>
 
 </main>

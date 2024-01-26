@@ -14,4 +14,12 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByIsActiveAndNoticeId(boolean IsActive,Long noticeId, Pageable pageable);
 
     Integer countByIsActiveAndNoticeId(boolean isActive, Long noticeId);
+
+
+
+    //삭제 스캐줄러용
+    List<Comment> findAllByIsActive(boolean isActive);
+
+    List<Comment> findAllByNoticeId(Long noticeId);
+    List<Comment> findAllByMemberId(Long memberId);
 }

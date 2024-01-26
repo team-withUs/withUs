@@ -15,6 +15,7 @@ import com.withus.withus.global.utils.EmailService;
 import com.withus.withus.global.utils.RedisService;
 import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
+import com.withus.withus.member.dto.PasswordRequestDto;
 import com.withus.withus.member.dto.ReportRequestDto;
 import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.dto.UpdateRequestDto;
@@ -134,20 +135,36 @@ public class MemberServiceImpl implements MemberService{
       String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
       updatedMember.update(
           updateRequestDto,
-          passwordEncoder.encode(updateRequestDto.password()),
           s3Util.getFileURL(filename, S3_DIR_MEMBER),
           filename
       );
     }else {
-      updatedMember.update(
-          updateRequestDto,
-          passwordEncoder.encode(updateRequestDto.password())
-      );
+      updatedMember.update(updateRequestDto);
     }
 
-    return MemberResponseDto.createMemberResponseDto(
-        updatedMember
-    );
+    return MemberResponseDto.createMemberResponseDto(updatedMember);
+  }
+
+  @Transactional
+  @Override
+  public MemberResponseDto updatePassword(
+      Long memberId,
+      PasswordRequestDto passwordRequestDto,
+      Member member
+  ) {
+    if(!memberId.equals(member.getId())){
+      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+    }
+
+    if(passwordEncoder.matches(passwordRequestDto.password(),member.getPassword())){
+      throw new BisException(ErrorCode.NOT_CHANGED_PASSWORD);
+    }
+
+    Member updatedMember = findMemberByMemberId(memberId);
+    String updatedPassword = passwordEncoder.encode(passwordRequestDto.password());
+    updatedMember.updatePassword(updatedPassword);
+
+    return MemberResponseDto.createMemberResponseDto(updatedMember);
   }
 
   @Transactional
@@ -231,6 +248,10 @@ public class MemberServiceImpl implements MemberService{
     notificationService.notifyInviting(memberId,club.getClubTitle());
   }
 
+  public boolean passwordCheck(Member member, PasswordRequestDto passwordRequestDto){
+    return passwordEncoder.matches(passwordRequestDto.password(), member.getPassword());
+  }
+
   //추가
   @Override
   public MemberResponseDto getMemberEmail(String email) {
@@ -287,11 +308,10 @@ public class MemberServiceImpl implements MemberService{
     }
 
     String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
-    if (!(redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode))) {
+    if (!(redisAuthCode.equals(authCode))) {
       throw new BisException(ErrorCode.NOT_MATCH_AUTHCODE);
     } else {
       redisService.deleteValues(AUTH_CODE_PREFIX + email);
     }
   }
-
 }

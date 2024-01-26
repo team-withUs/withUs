@@ -209,6 +209,13 @@
             hostImg = res.data.receiverImg;
           }
 
+          if (guestImg === undefined || guestImg === null) {
+            guestImg = '/img/default.png';
+          }
+          if (hostImg === undefined || hostImg === null) {
+            hostImg = '/img/default.png';
+          }
+
           $("#title").text(roomName);
         })
         .fail(function (xhr, status, error) {

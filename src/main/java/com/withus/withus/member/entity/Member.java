@@ -72,13 +72,12 @@ public class Member extends TimeStamp {
             .build();
     }
 
+    //파일 첨부
     public void update(
         UpdateRequestDto updateRequestDto,
-        String password,
         String imageURL,
         String filename
     ) {
-        this.password = password;
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
@@ -87,15 +86,21 @@ public class Member extends TimeStamp {
         this.filename = filename;
     }
 
+    //파일 미첨부
     public void update(
-        UpdateRequestDto updateRequestDto,
-        String password
+        UpdateRequestDto updateRequestDto
     ) {
-        this.password = password;
         this.username = updateRequestDto.username();
         this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
         this.tag = updateRequestDto.tag();
+    }
+
+    //비밀번호 변경
+    public void updatePassword(
+        String password
+    ){
+        this.password = password;
     }
 
     public void inactive() {

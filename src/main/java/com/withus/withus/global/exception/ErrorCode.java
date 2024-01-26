@@ -76,6 +76,8 @@ public enum ErrorCode {
     /* 409 CONFLICT */
     DUPLICATE_MEMBER(CONFLICT, "이미 가입한 멤버 입니다."),
 
+    DUPLICATE_LOGIN(CONFLICT, "이미 로그인한 유저 입니다."),
+
     DUPLICATE_USERNAME(CONFLICT, "중복된 유저이름 입니다"),
 
     DUPLICATE_EMAIL(CONFLICT, "중복된 Email 입니다"),
