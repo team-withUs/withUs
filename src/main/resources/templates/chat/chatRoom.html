@@ -154,6 +154,24 @@
       position: fixed;
     }
 
+    .wrap .chat .icon {
+      position: relative;
+      overflow: hidden;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #eee;
+    }
+
+    /* Additional style to center and size the image within .icon */
+    .wrap .chat .icon img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+
 
   </style>
 
@@ -165,7 +183,9 @@
     var username = /*[[${memberName}]]*/ '';
     var loginId = /*[[${memberId}]]*/ '';
     var hostId;
+    var hostImg;
     var guestId;
+    var guestImg;
     console.log(roomName + ", " + roomId + ", " + username + ", " + loginId);
 
 
@@ -173,15 +193,20 @@
 
       $.ajax({
         type: 'GET',
-        url: '/api/chat/' + roomId,
+        url: '/api/chat/chatRoom/' + roomId,
         contentType: 'application/json',
       })
         .done(function (res, status, xhr) {
           roomName = res.data.title;
           hostId = res.data.senderId;
+          hostImg = res.data.senderImg;
           guestId = res.data.receiverId;
-          if (guestId === loginId) {
-            guestId = hostId;
+          guestImg = res.data.receiverImg;
+          if (loginId === res.data.receiverId) {
+            guestId = res.data.senderId;
+            guestImg = res.data.senderImg;
+            hostId = res.data.receiverId;
+            hostImg = res.data.receiverImg;
           }
 
           $("#title").text(roomName);
@@ -192,7 +217,7 @@
 
       $.ajax({
         type: 'GET',
-        url: '/api/chatMessage/' + roomId,
+        url: '/api/chat/chatRoom/' + roomId + '/message',
         contentType: 'application/json',
       })
         .done(function (res, status, xhr) {
@@ -206,7 +231,7 @@
         })
 
 
-      var sockJs = new SockJS("/ws");
+      var sockJs = new SockJS('/ws');
       //1. SockJS를 내부에 들고있는 stomp를 내어줌
       var stomp = Stomp.over(sockJs);
 
@@ -215,7 +240,7 @@
         console.log("STOMP Connection")
 
         //4. subscribe(path, callback)으로 메세지를 받을 수 있음
-        stomp.subscribe("/room/api/chatMessage/" + roomId, function (messageDto) {
+        stomp.subscribe('/room/api/chat/chatRoom/' + roomId + '/message', function (messageDto) {
           var content = JSON.parse(messageDto.body);
 
           var sender = content.senderName;
@@ -227,14 +252,12 @@
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + loginId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
-
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
-          // chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
           chatDiv.append('<div class="textbox">' + message + '</div>');
           chatDiv.append('<div class="sent-time">' + sentTime.value + '</div>');
 
@@ -244,7 +267,7 @@
         })
 
         //3. send(path, header, message)로 메세지를 보낼 수 있음
-        stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
+        stomp.send('/send/api/chat/chatRoom/' + roomId + '/message/enter', {}, JSON.stringify({
           senderId: loginId,
           senderName: username,
           content : username + '님이 입장하였습니다.'
@@ -260,7 +283,7 @@
         console.log(msg);
         if (msg.value !== null || msg.value.trim() !== '') {
           console.log(username + ":" + msg.value);
-          stomp.send('/send/api/chatMessage/' + roomId, {}, JSON.stringify({
+          stomp.send('/send/api/chat/chatRoom/' + roomId + '/message', {}, JSON.stringify({
             senderId: loginId,
             senderName: username,
             content: msg.value
@@ -290,12 +313,12 @@
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + loginId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><i class="fa-solid fa-user"></i></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
-          // chatDiv.append('<div class="icon"><i class="fa-solid fa-user"></i></div>')
+
           chatDiv.append('<div class="textbox">' + content + '</div>');
           chatDiv.append('<div class="sent-time">' + sendTime.value + '</div>');
 
@@ -309,6 +332,10 @@
     function dateFormatting(timeObject) {
       var dateObject = new Date(timeObject.value);
 
+      var year = dateObject.getFullYear().toString().slice(-2);
+      var month = ('0' + (dateObject.getMonth() + 1)).slice(-2);
+      var day = ('0' + dateObject.getDate()).slice(-2);
+
       var hours = dateObject.getHours();
       var minutes = dateObject.getMinutes();
       var period = (hours < 12) ? '오전' : '오후';
@@ -316,7 +343,7 @@
       if (hours > 12) { hours -= 12; }
       if (hours === 0) { hours = 12; }
 
-      timeObject.value = period + ' ' + ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+      timeObject.value = year + '.' + month + '.' + day + ' ' + period + ' ' + ('0' + hours).slice(-2) + ':' + minutes;
     }
 
     function enterkey() {

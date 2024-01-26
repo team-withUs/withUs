@@ -18,4 +18,6 @@ public interface ClubMemberService {
     boolean isAuthorOrHost(Member member, Long clubId);
 
     Integer getClubMemberCount(Long clubId);
+
+    String leaveClub(Long clubId, Member member);
 }

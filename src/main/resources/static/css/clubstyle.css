@@ -263,7 +263,7 @@ p {
 .item1 {
     margin: 20px;
     width: 400px;
-    height: 350px;
+    height: 365px;
     border-radius: 15px;
     background-color: white;
     float: left;
@@ -281,7 +281,7 @@ p {
 .item3{
     margin: 20px;
     width: 275px;
-    height: 130px;
+    height: 145px;
     border-radius: 15px;
     background-color: white;
     float: right;
@@ -318,4 +318,10 @@ p {
 .invited-user {
     text-align: center; /* 사용자 이름 텍스트를 가운데 정렬합니다 */
 }
-
+.leaveClubButton{
+    border-radius: 10px;
+    border:1px none;
+}
+.leaveClubButton:hover {
+    background: #b6d4fe;
+}

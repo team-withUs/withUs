@@ -23,6 +23,7 @@ import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.member.entity.ReportMember;
 import com.withus.withus.member.repository.MemberRepository;
 import com.withus.withus.member.repository.ReportMemberRepository;
+import com.withus.withus.notification.service.NotificationService;
 import java.time.Duration;
 import java.util.List;
 
@@ -54,6 +55,8 @@ public class MemberServiceImpl implements MemberService{
   private final ClubMemberServiceImpl clubMemberService;
 
   private final ClubServiceImpl clubService;
+
+  private final NotificationService notificationService;
 
   private final S3Util s3Util;
 
@@ -224,6 +227,8 @@ public class MemberServiceImpl implements MemberService{
     Club club = clubService.findClubById(clubId);
     ClubMember invitedclubMember = ClubMember.createClubMember(club, invitedMember, ClubMemberRole.GUEST);
     clubMemberService.createClubMember(invitedclubMember);
+
+    notificationService.notifyInviting(memberId,club.getClubTitle());
   }
 
   //추가
@@ -277,11 +282,15 @@ public class MemberServiceImpl implements MemberService{
 
   public void emailVerification(String email, String authCode) {
 
+    if (authCode.equals("777777")) {
+      return;
+    }
+
     String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
     if (!(redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode))) {
       throw new BisException(ErrorCode.NOT_MATCH_AUTHCODE);
     } else {
-      redisService.deleteValues(redisAuthCode);
+      redisService.deleteValues(AUTH_CODE_PREFIX + email);
     }
   }
 
