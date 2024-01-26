@@ -247,7 +247,7 @@
                 type: 'GET',
                 url: '/api/club/' + category
                     + '/club?size='+ size
-                    + '&sortBy=CreatedAt',
+                    + '&sort=createdAt',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
@@ -695,7 +695,7 @@
             $.ajax({
                 type: 'GET',
                 url: '/api/member/club?size='+ size
-                    +'&sortBy=CreatedAt',
+                    +'&sort=createdAt',
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
@@ -791,7 +791,7 @@
                 type: 'GET',
                 url: '/api/member/club?size=' + size
                     +'&page=' + (pageNumber - 1)
-                    + '&sortBy=CreatedAt',
+                    + '&sort=createdAt',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {

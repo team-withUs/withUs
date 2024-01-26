@@ -337,6 +337,7 @@ class NoticeServiceImplTest {
 
     }
 
+
 //    @Test
 //    @Rollback(value = false)
 //    @DisplayName("게시판 전체조회(페이징) 성공")
@@ -362,6 +363,7 @@ class NoticeServiceImplTest {
 ////      assertEquals("공지사항1", list.get(2).title());
 //
 //    }
+
 
     @Test
     @Rollback(value = false)

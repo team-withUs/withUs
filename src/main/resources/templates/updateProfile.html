@@ -49,13 +49,13 @@
   console.log(memberId);
   let loginMemberId = /*[[${loginMemberId}]]*/ '';
   console.log(loginMemberId);
+
   $(document).ready(function(){
-    console.log(memberId);
-    console.log(loginMemberId);
     if(memberId !== loginMemberId){
       alert("권한이 없습니다.");
       history.back();
     }
+    $('#passwordContainer').hide();
 
     $.ajax({
       type:'GET',
@@ -155,6 +155,61 @@
     // x 버튼을 눌렀을 때 실행되는 함수
     $(button).parent().remove();
   }
+
+  function authenticationEmail(){
+    let email = jQuery('#email').val();
+    $.ajax({
+      type:"POST",
+      url:`/api/member/signup/email`,
+      contentType:"application/json",
+      dataType:"json",
+      data : JSON.stringify({email}),
+      success: function (response) {
+          alert(response.msg);
+      },
+      error: function (error) {
+        alert(error.responseJSON.msg);
+      }
+
+    })
+
+  }
+
+  function UpdatePassword() {
+    var memberId = /*[[${memberId}]]*/ '';
+    if($('#password').val() !== $('#passwordCheck').val()){
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+    }else{
+      $.ajax({
+        type:'PATCH',
+        url :'/api/member/'+ memberId + '/updatePassword',
+        contentType : 'application/json',
+        data : JSON.stringify({
+          password : $('#password').val()
+        }),
+        success : function (response){
+          if(response.msg === "비밀번호 수정 성공"){
+            alert(response.msg);
+            window.location.href = host + '/api/member/'+ memberId + '/profilePage';
+          } else{
+            alert(response.msg);
+          }
+        },
+        error : function(error){
+          alert(error.responseJSON.msg);
+        }
+      })
+    }
+
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Enter 키의 기본 동작(폼 제출)을 방지
+      UpdatePassword();
+    }
+  }
+
 </script>
 <body>
   <div style="margin: 50px 35% 0 35%">
@@ -172,26 +227,29 @@
              minlength="3" maxlength="8"
              placeholder="이름을 입력해주세요.">
     </div>
-    <div style="margin-top: 20px;">
-      <input class="form-control form-control"
-             type="text"
-             id="email"
-             maxlength="255"
-             placeholder="이메일을 입력해주세요.">
-    </div>
-    <div style="padding: 20px 0 5px 0 ">
-      <input class="form-control form-control"
-             type="password"
-             id="password"
-             minlength="4" maxlength="16"
-             placeholder="비밀번호를 입력해주세요.">
-    </div>
-    <div style="padding: 20px 0 5px 0 ">
-      <input class="form-control form-control"
-             type="password"
-             id="passwordCheck"
-             minlength="4" maxlength="16"
-             placeholder="비밀번호를 다시 입력해주세요.">
+    <div>
+      <div>
+        <form class="row g-1" method="post" onsubmit="return false">
+          <div class="col-lg-9" style="float:left; margin-top: 20px">
+            <input type="text"
+                   class="form-control form-control"
+                   name="email"
+                   id="email"
+                   placeholder="이메일을 입력해 주세요">
+          </div>
+          <div>
+            <button type="button"
+                    class="btn btn-primary col-auto" onclick="authenticationEmail()">인증
+            </button>
+          </div>
+        </form>
+      </div>
+      <div style="padding: 5px ">
+        <input class="form-control form-control-lg"
+               type="text"
+               id="code"
+               placeholder="인증번호를 입력해주세요.">
+      </div>
     </div>
     <div class="tag">
       <p id="tagList">태그 : </p>
@@ -218,11 +276,43 @@
              maxlength="100"
              placeholder="자기소개를 입력해주세요.">
     </div>
+    <div id="passwordContainer">
+    </div>
     <div style="text-align: center; margin-bottom: 30px">
+      <button type="button"
+              class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#passwordModal">비밀번호 변경
+      </button>
       <button type="submit"
               class="btn btn-primary" onclick="submitUpdate()">수정 완료
       </button>
+      <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">비밀번호 변경</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="password" class="col-form-label">비밀번호 입력 : </label>
+                  <input id="password" type="password" onkeypress="handleKeyPress(event)" min="4" max="16"></input>
+                </div>
+                <div class="mb-3">
+                  <label for="passwordCheck" class="col-form-label">비밀번호 확인 : </label>
+                  <input id="passwordCheck" type="password" onkeypress="handleKeyPress(event)" min="4" max="16"></input>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary" onclick="UpdatePassword()">확인</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>

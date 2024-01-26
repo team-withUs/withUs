@@ -82,6 +82,22 @@ public class MemberController {
         .body(CommonResponse.of(ResponseCode.UPDATE_PROFILE, memberResponseDto));
   }
 
+  @PatchMapping("/{memberId}/updatePassword")
+  public ResponseEntity<CommonResponse<MemberResponseDto>> updatePassword(
+      @PathVariable("memberId") Long memberId,
+      @AuthMember Member member,
+      @Valid @RequestBody PasswordRequestDto passwordRequestDto
+  ) {
+    MemberResponseDto memberResponseDto = memberService.updatePassword(
+      memberId,
+      passwordRequestDto,
+      member
+    );
+
+    return ResponseEntity.status(ResponseCode.UPDATE_PASSWORD.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.UPDATE_PASSWORD, memberResponseDto));
+  }
+
   @DeleteMapping("/{memberId}")
   public ResponseEntity<CommonResponse<String>> deleteMember(
       @PathVariable("memberId") Long memberId,
@@ -144,4 +160,17 @@ public class MemberController {
         .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""));
   }
 
+  @PostMapping("/passwordCheck")
+  public ResponseEntity<CommonResponse<String>> passwordCheck(
+      @AuthMember Member member,
+      @RequestBody PasswordRequestDto passwordRequestDto
+  ){
+    if(memberService.passwordCheck(member,passwordRequestDto)){
+      return ResponseEntity.status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
+          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD,"일치"));
+    }else{
+      return ResponseEntity.status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
+          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD,"불일치"));
+    }
+  }
 }
