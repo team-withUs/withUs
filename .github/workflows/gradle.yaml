@@ -1,0 +1,59 @@
+name: withUs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-docker-image:
+    runs-on : ubuntu-latest
+
+    steps:
+      - name : Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name : Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build with Gradle
+        run : ./gradlew build
+
+      - name: Build and push Docker image
+        run: |
+          sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          sudo docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/withus .
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/withus
+
+      
+
+      - name: Deploy to Product
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            docker rm -f $(docker ps -qa)
+            docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/withus
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/withus
+            docker compose up -d

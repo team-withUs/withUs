@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.withus.withus.chat.dto.ChatRoomResponseDto;
 import com.withus.withus.chat.entity.ChatRoom;
 import com.withus.withus.chat.repository.ChatRoomRepository;
+import com.withus.withus.chat.service.ChatRoomService;
 import com.withus.withus.global.exception.BisException;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.repository.MemberRepository;
