@@ -25,7 +25,7 @@
         #profileContainer {
             text-align: center;
             background-color: #98a9bc;
-            height: 650px;
+            height: 700px;
             width: 800px;
             border: 4px solid rgba(255, 255, 255, 0.5);
             margin: 60px auto;
@@ -111,7 +111,13 @@
       text-align: center;
       padding: 10px;
     }
-
+    #deleteBtn{
+        float: right;
+        margin-right: 10px;
+    }
+    #updateBtn{
+        float: right;
+    }
 
 
     </style>
@@ -318,10 +324,10 @@
         </div>
     </div>
 
-    <div id="profileContainer">
-        <div  class="sectionBox">
-            <img id="profileImage" class="col-auto">
-        </div>
+<div id="profileContainer">
+    <div  class="sectionBox">
+        <img id="profileImage" class="col-auto">
+    </div>
 
         <div class="sectionBox1">
             <div class="nameBlock">
@@ -344,7 +350,7 @@
             </div>
         </div>
 
-        <div style="display: flex; margin-left: 70%">
+        <div>
             <button type="button"
                     class="btn btn-danger"
                     id="deleteBtn"
@@ -383,16 +389,17 @@
 
         <div id="createChatting">
             <img src="/img/message.png"
-                 style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; margin-top: 40px; cursor: pointer"
+                 style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; cursor: pointer"
                  class="message">
         </div>
 
-        <div style="  " id="inviting">
+        <div id="inviting">
             <img src="/img/invite.png"
-                 style="border-radius: 100%; height: 80px; width: 80px; float:right; margin-right: 120px; margin-top: 40px; cursor: pointer"
+                 style="border-radius: 100%; height: 70px; width: 70px; float:right; margin-right: 120px; cursor: pointer"
                  class="invite">
         </div>
     </div>
 
+</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

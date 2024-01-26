@@ -44,18 +44,25 @@
 
             if(isClubMember === true){
                 $('#Notice-post').show();
+                // $("#leaveClubButton").show();
+
             }else{
                 $('#Notice-post').hide();
+                $('#leaveClubButton').hide();
             }
+
 
             console.log(isHost);
             if (isHost === true) {
                 $('#reviseButton').show();
                 $('#deleteButton').show();
+                $('#leaveClubButton').hide();
             }else{
                 $('#reviseButton').hide();
                 $('#deleteButton').hide();
             }
+
+
 
             $("#loginBtn").on("click", function(e) {
                 window.location.href = host + '/api/member/loginPage';
@@ -79,7 +86,7 @@
                 if (confirmLogout) {
 
                     $.ajax({
-                        type: 'Post',
+                        type: 'POST',
                         url: '/api/member/logout',
                         contentType: ''
                     })
@@ -239,7 +246,7 @@
                                 let id = res.id;
                                 const card = '' +
                                     '  <div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
-                                    '                     <p>' + title + '</p>\n' +
+                                    '                     <div style="font-weight: bold; padding-bottom: 100px;">' + title + '</div>\n' +
                                     '                    </div>';
                                 $('#notice-box').append(card);
                             });
@@ -277,6 +284,9 @@
                 </div>
 
             </div>
+            <button id = "leaveClubButton">
+                클럽 탈퇴
+            </button>
         </section>
     </div>
 
