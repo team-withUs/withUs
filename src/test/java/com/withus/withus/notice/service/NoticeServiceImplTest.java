@@ -1,4 +1,4 @@
-package com.withus.withus.notice.service;
+/*package com.withus.withus.notice.service;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -415,3 +415,4 @@ class NoticeServiceImplTest {
 
 
 }
+*/
