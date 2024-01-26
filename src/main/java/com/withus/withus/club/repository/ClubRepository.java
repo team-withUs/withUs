@@ -2,6 +2,7 @@ package com.withus.withus.club.repository;
 
 import com.withus.withus.category.entity.ClubCategory;
 import com.withus.withus.club.entity.Club;
+import com.withus.withus.comment.entity.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,10 @@ public interface ClubRepository extends JpaRepository<Club, Long>, ClubRepositor
     Page<Club> findAllByIsActive(boolean isActive, Pageable pageable);
 
     Integer countByIsActive(boolean isActive);
+
+
+    //삭제 스캐줄러용
+    List<Club> findAllByIsActive(boolean isActive);
+    List<Club> findAllByMemberId(Long memberId);
 }
 
