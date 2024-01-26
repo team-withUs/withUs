@@ -40,17 +40,20 @@
             margin-top: 30px;
             object-fit: cover;
         }
-        .nameBlock{
+
+        .nameBlock {
             text-align: center;
             width: 500px;
             margin: 30px auto;
         }
-        .emailBlock{
+
+        .emailBlock {
             text-align: center;
             width: 500px;
             margin: 30px auto;
         }
-        .sectionBox2{
+
+        .sectionBox2 {
             text-align: center;
             width: 500px;
             margin: 30px auto;
@@ -62,10 +65,10 @@
             width: 400px;
             padding: 10px;
             margin: 30px auto;
-            overflow : auto;
+            overflow: auto;
         }
 
-        #updateBtn{
+        #updateBtn {
             margin-right: 15px;
             margin-left: 10px;
         }
@@ -101,23 +104,25 @@
             align-items: center;
         }
 
-    .nameBlock {
-      text-align: center;
-      padding: 10px;
-      margin-top: 10px;
-    }
+        .nameBlock {
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+        }
 
-    .emailBlock {
-      text-align: center;
-      padding: 10px;
-    }
-    #deleteBtn{
-        float: right;
-        margin-right: 10px;
-    }
-    #updateBtn{
-        float: right;
-    }
+        .emailBlock {
+            text-align: center;
+            padding: 10px;
+        }
+
+        #deleteBtn {
+            float: right;
+            margin-right: 10px;
+        }
+
+        #updateBtn {
+            float: right;
+        }
 
 
     </style>
@@ -173,40 +178,40 @@
                 }
             });
 
-              $("#chatting").on("click", function(e) {
+            $("#chatting").on("click", function (e) {
                 window.location.href = host + '/api/chat/member/' + loginMemberId + '/chatRoomListPage';
-              });
+            });
 
-                $("#logout").on("click", function (e) {
-                    var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+            $("#logout").on("click", function (e) {
+                var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
 
-                    if (confirmLogout) {
+                if (confirmLogout) {
 
-                        $.ajax({
-                            type: 'Post',
-                            url: '/api/member/logout',
-                            contentType: ''
+                    $.ajax({
+                        type: 'Post',
+                        url: '/api/member/logout',
+                        contentType: ''
+                    })
+                        .done(function (res, status, xhr) {
+                            window.location.href = host + '/'
                         })
-                            .done(function (res, status, xhr) {
-                                window.location.href = host + '/'
-                            })
-                            .fail(function (xhr, status, error) {
-                                console.error('로그아웃 요청 API 에러', error);
-                            })
+                        .fail(function (xhr, status, error) {
+                            console.error('로그아웃 요청 API 에러', error);
+                        })
 
-                    } else {
-                        alert('로그아웃 취소');
-                    }
-                });
+                } else {
+                    alert('로그아웃 취소');
+                }
+            });
 
 
-                $("#createChatting").on("click", function (e) {
-                    chattingClicked();
-                });
+            $("#createChatting").on("click", function (e) {
+                chattingClicked();
+            });
 
-                $("#inviting").on("click", function (e) {
-                    invitingClicked();
-                });
+            $("#inviting").on("click", function (e) {
+                invitingClicked();
+            });
 
         })
 
@@ -222,12 +227,12 @@
                 contentType: 'application/json',
             })
                 .done(function (res) {
-                  console.log(res);
-                  if (res && res.data) {
-                    var roomId = res.data;
-                  }
-                  console.log(roomId);
-                  window.location.href = host + '/api/chat/chatRoom/' + roomId + '/chatRoomPage';
+                    console.log(res);
+                    if (res && res.data) {
+                        var roomId = res.data;
+                    }
+                    console.log(roomId);
+                    window.location.href = host + '/api/chat/chatRoom/' + roomId + '/chatRoomPage';
                 })
                 .fail(function (xhr, status, error) {
                     // 실패한 경우의 동작
@@ -240,16 +245,16 @@
             var memberId = /*[[${memberId}]]*/ '';
 
             $.ajax({
-                type:'POST',
-                url :'/api/member/passwordCheck',
-                contentType : 'application/json',
-                data : JSON.stringify({
-                    password : $('#password').val()
+                type: 'POST',
+                url: '/api/member/passwordCheck',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    password: $('#password').val()
                 }),
-                success : function (response){
-                    if(response.data === "일치"){
-                        window.location.href = host + '/api/member/'+ memberId + '/updateProfilePage';
-                    } else{
+                success: function (response) {
+                    if (response.data === "일치") {
+                        window.location.href = host + '/api/member/' + memberId + '/updateProfilePage';
+                    } else {
                         alert("비밀번호가 일치하지 않습니다.");
                     }
                 }
@@ -263,13 +268,13 @@
             }
         }
 
-        function invitingClicked(){
+        function invitingClicked() {
             var memberId = /*[[${memberId}]]*/ '';
             let url = '/api/member/' + memberId + '/myHostingClubPage'
             location.href = url;
         }
 
-        function resign(){
+        function resign() {
             var confirmLogout = window.confirm('탈퇴하시겠습니까?');
             var memberId = /*[[${memberId}]]*/ '';
 
@@ -277,26 +282,26 @@
 
                 $.ajax({
                     type: 'DELETE',
-                    url: '/api/member/'+ memberId,
+                    url: '/api/member/' + memberId,
                     contentType: ''
                 })
-                .done(function (res, status, xhr) {
-                    alert("회원탈퇴 완료");
-                    $.ajax({
-                        type: 'Post',
-                        url: '/api/member/logout',
-                        contentType: ''
-                    })
                     .done(function (res, status, xhr) {
-                        window.location.href = host + '/'
+                        alert("회원탈퇴 완료");
+                        $.ajax({
+                            type: 'Post',
+                            url: '/api/member/logout',
+                            contentType: ''
+                        })
+                            .done(function (res, status, xhr) {
+                                window.location.href = host + '/'
+                            })
+                            .fail(function (xhr, status, error) {
+                                console.error('로그아웃 요청 API 에러', error);
+                            })
                     })
                     .fail(function (xhr, status, error) {
-                        console.error('로그아웃 요청 API 에러', error);
+                        console.error('회원탈퇴 요청 API 에러', error);
                     })
-                })
-                .fail(function (xhr, status, error) {
-                    console.error('회원탈퇴 요청 API 에러', error);
-                })
 
             }
 
@@ -305,100 +310,100 @@
     </script>
 </head>
 <body>
-    <div class="main ">
-        <div class="title">
-            <header>
-                <div class="title-group" role="group">
-                    <div class="title">
-                        <h2 class="withUs" th:onclick="|location.href='@{/}'|"
-                            style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
-                    </div>
-                    <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
-                        <img src="/img/message.png" id="chatting" class="chat-icon"
-                             style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
-                        <img src="/img/arrow_10940959.png" id="logout" class="my-info"
-                             style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    </div>
+<div class="main ">
+    <div class="title">
+        <header>
+            <div class="title-group" role="group">
+                <div class="title">
+                    <h2 class="withUs" th:onclick="|location.href='@{/}'|"
+                        style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
                 </div>
-            </header>
-        </div>
+                <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
+                    <img src="/img/message.png" id="chatting" class="chat-icon"
+                         style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
+                    <img src="/img/arrow_10940959.png" id="logout" class="my-info"
+                         style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
+                </div>
+            </div>
+        </header>
     </div>
+</div>
 
 <div id="profileContainer">
-    <div  class="sectionBox">
+    <div class="sectionBox">
         <img id="profileImage" class="col-auto">
     </div>
 
-        <div class="sectionBox1">
-            <div class="nameBlock">
-                <h2 id="username"></h2>
-            </div>
-            <div class="emailBlock">
-                <h4 id="email"></h4>
-            </div>
+    <div class="sectionBox1">
+        <div class="nameBlock">
+            <h2 id="username"></h2>
         </div>
-
-        <div class="sectionBox2">
-            <h3> Tag </h3>
-            <div id="tag"></div>
+        <div class="emailBlock">
+            <h4 id="email"></h4>
         </div>
+    </div>
 
-        <div class="sectionBox3">
-            <h3> 자기소개 </h3>
-            <div>
-                <div id="introduction"> 자기소개 </div>
-            </div>
-        </div>
+    <div class="sectionBox2">
+        <h3> Tag </h3>
+        <div id="tag"></div>
+    </div>
 
+    <div class="sectionBox3">
+        <h3> 자기소개 </h3>
         <div>
-            <button type="button"
-                    class="btn btn-danger"
-                    id="deleteBtn"
-                    onclick="resign()">탈퇴하기
-            </button>
-            <button type="button" id="updateBtn"
-                    class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#passwordModal">수정하기
-            </button>
-            <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">비밀번호 확인</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="mb-3">
-                                    <label for="password" class="col-form-label">비밀번호 입력 : </label>
-                                    <input id="password" onkeypress="handleKeyPress(event)"></input>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                            <button type="button" class="btn btn-primary" onclick="passwordCheck()">확인</button>
-                        </div>
+            <div id="introduction"> 자기소개</div>
+        </div>
+    </div>
+
+    <div>
+        <button type="button"
+                class="btn btn-danger"
+                id="deleteBtn"
+                onclick="resign()">탈퇴하기
+        </button>
+        <button type="button" id="updateBtn"
+                class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#passwordModal">수정하기
+        </button>
+        <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">비밀번호 확인</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="password" class="col-form-label">비밀번호 입력 : </label>
+                                <input id="password" onkeypress="handleKeyPress(event)"></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="button" class="btn btn-primary" onclick="passwordCheck()">확인</button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <div class="icon">
+    <div id="buttonContainer" style="text-align: center;">
 
-        <div id="createChatting">
+        <div id="createChatting" style="display: inline-block; margin: 0 10px;">
             <img src="/img/message.png"
-                 style="border-radius: 100%; height: 70px; width: 70px; float:left; margin-left: 120px; cursor: pointer"
+                 style="border-radius: 100%; height: 70px; width: 70px; cursor: pointer"
                  class="message">
         </div>
 
-        <div id="inviting">
+        <div id="inviting" style="display: inline-block; margin: 0 10px;">
             <img src="/img/invite.png"
-                 style="border-radius: 100%; height: 70px; width: 70px; float:right; margin-right: 120px; cursor: pointer"
+                 style="border-radius: 100%; height: 70px; width: 70px; cursor: pointer"
                  class="invite">
         </div>
+
     </div>
+</div>
 
 </div>
 </body>
