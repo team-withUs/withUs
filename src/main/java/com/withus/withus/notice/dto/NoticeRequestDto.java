@@ -1,4 +1,14 @@
 package com.withus.withus.notice.dto;
 
-public class NoticeRequestDto {
+
+import org.springframework.web.multipart.MultipartFile;
+
+public record NoticeRequestDto(
+  String title,
+  String content,
+  String category,
+  MultipartFile imageFile
+  )
+{
+
 }

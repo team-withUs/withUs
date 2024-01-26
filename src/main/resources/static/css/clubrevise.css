@@ -1,0 +1,266 @@
+@font-face {
+    font-family: "Cafe24Supermagic-Bold-v1.0";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
+    font-weight: 700;
+}
+
+body {
+    font-family: "Cafe24Supermagic-Bold-v1.0", cursive;
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.all-container {
+    border-radius: 15px;
+    border: 3px solid grey;
+    /*background-image: url(https://cdn.class101.net/images/a53280a2-5a97-4241-8069-04274b016896);*/
+    background-color: #98a9bc;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+/*클럽 이름*/
+.main{
+    padding-right: 20%;
+    padding-left: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+.title-group {
+    margin-left: 10%;
+    margin-top: 10px;
+}
+
+.title1 {
+    margin-left: -5%;
+}
+
+
+.title2 {
+    float: right;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.title2 img {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin: 5px;
+}
+
+.chat-icon {
+    float: left;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.login {
+    float: left;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.my-info {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-top: 5px
+}
+
+.logout {
+    float: right;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-top: 5px;
+}
+
+.create {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin-top: 5px
+}
+
+.withUs {
+    float: left;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 30px;
+}
+/* --------------------------제목 추가------------------------------*/
+
+#club-title {
+    text-align: left;
+    margin-top: 20px;
+    margin-left: 300px;
+}
+#clubTitleInput{
+    border-radius: 15px;
+    border: 1px solid grey;
+}
+
+.title-item {
+    font-size: 30px;
+}
+.check-btn{
+    width: 50px;
+    height: 45px;
+    font-size: 16px;
+    background: grey;
+    border-radius: 15px;
+    border: none;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+.check-btn:hover{
+    background-color: cornflowerblue;
+}
+
+/* 카테고리 드롭다운 */
+.dropdown {
+    display: flex;
+}
+
+.title-category {
+    display: flex;
+    align-items: center;
+}
+
+.button-item {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 15px;
+    margin-right: 40px;
+}
+.header_btn1{
+    background: none;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+}
+
+.header_btn2{
+    background: none;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+}
+
+.header_btn2:hover{
+    border-radius: 10px;
+    background-color: #ddd;
+    border: none;
+    color: #333;
+}
+
+.header_btn3{
+    background: none;
+    border: none;
+    padding: 10PX;
+    margin: 5px;
+}
+
+.header_btn3:hover{
+    border-radius: 10px;
+    background-color: #ddd;
+    border: none;
+    color: #333;
+}
+.search-input{
+    border-radius: 10px;
+    margin-left: 10px;
+    width: 230px;
+    height: 45px;
+}
+.search-btn{
+    width: 50px;
+    height: 45px;
+    background: grey;
+    border-radius: 15px;
+    border: none;
+    padding: 10PX;
+    margin: 5px;
+}
+.search-btn:hover{
+    background-color: cornflowerblue;
+}
+
+
+
+/*초대상자*/
+#invite-container{
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    margin:10px auto;
+    width: 300px;
+    height: 70px;
+    max-height: 200px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 세로 스크롤바를 추가함으로써 내용이 넘칠 때 스크롤 가능하게 함 */
+}
+
+/*club*/
+#club-container {
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 760px;
+    height: 310px;
+}
+
+.search-item {
+    margin: 10px;
+    width: 340px;
+    height: 250px;
+    border-radius: 15px;
+    background-color: white;
+    float: left;
+}
+
+
+.Date-item {
+    margin: 10px;
+    width: 340px;
+    height: 250px;
+    border-radius: 15px;
+    background-color: white;
+    float: right;
+}
+
+#club-introduce {
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px auto;
+    width: 760px;
+    height: 400px;
+}
+
+.club-revise-item {
+    width: 700px;
+    height: 350px;
+    border-radius: 15px;
+    background-color: white;
+    margin: 5px auto;
+    align-items: center;
+}
+
+#club-content {
+    width: 100%;
+    height: 250px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+

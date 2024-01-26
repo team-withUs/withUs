@@ -1,9 +1,12 @@
 package com.withus.withus.notice.entity;
 
 import com.withus.withus.club.entity.Club;
-import com.withus.withus.global.timestamp.Timestamp;
+import com.withus.withus.global.timestamp.TimeStamp;
+import com.withus.withus.member.entity.Member;
 import com.withus.withus.notice.dto.NoticeRequestDto;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name="notices")
-public class Notice extends Timestamp {
+public class Notice extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,31 +25,85 @@ public class Notice extends Timestamp {
     private String content;
 
     @Column
-    private String image;
+    private String imageURL;
 
     @Column
-    private Integer report = 0;
+    private String filename;
 
-    @Column(nullable = false)
-    private Long memberId;
+    @Column
+    private Boolean isActive = true;
+
+    @ManyToOne
+    @JoinColumn(name="member_id", nullable = false)
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "Club_id", nullable = false)
     private Club club;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NoticeCategory category;
+
+
 
     @Builder
-    public Notice(String title,String content,
-                  Long memberId,Club club){
-        this.title=title;
-        this.content=content;
-        this.memberId=memberId;
-        this.club=club;
+    private Notice(String title, String content,Member member, Club club,
+        NoticeCategory category, String imageURL, String filename){
+        this.title = title;
+        this.content = content;
+        this.member = member;
+        this.club = club;
+        this.category = category;
+        this.imageURL = imageURL;
+        this.filename = filename;
     }
 
-    public void update(NoticeRequestDto requestDto){
-        this.title=title;
-        this.content=content;
+    public void update(NoticeRequestDto requestDto, NoticeCategory category){
+        this.title = requestDto.title();
+        this.content = requestDto.content();
+        this.category = category;
+    }
+    public void updatePlusImage(NoticeRequestDto requestDto, NoticeCategory category,
+        String imageURL, String filename){
+        this.title = requestDto.title();
+        this.content = requestDto.content();
+        this.category = category;
+        this.imageURL = imageURL;
+        this.filename = filename;
+    }
+
+    public void inActive(){
+        this.isActive=false;
+    }
+
+    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club, NoticeCategory category){
+        String title = requestDto.title();
+        String content = requestDto.content();
+
+      return Notice.builder()
+          .title(title)
+          .content(content)
+          .member(member)
+          .club(club)
+          .category(category)
+          .build();
+    }
+
+    public static Notice createNoticePlusImage(NoticeRequestDto requestDto, Member member, Club club,
+        NoticeCategory category, String imageURL, String filename){
+        String title = requestDto.title();
+        String content = requestDto.content();
+
+        return Notice.builder()
+            .title(title)
+            .content(content)
+            .member(member)
+            .club(club)
+            .category(category)
+            .imageURL(imageURL)
+            .filename(filename)
+            .build();
     }
 
 

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>참여중인 채팅방 목록</title>
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <style>
+    @font-face {
+      font-family: "Cafe24Supermagic-Bold-v1.0";
+      src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+    }
+
+    body {
+      /*background-image: url('/img/background.jpg'); !* 이미지 URL로 설정 *!*/
+      background-color: #98a9bc;
+
+      background-size: cover; /* 배경 이미지를 창에 맞추기 */
+      background-position: center center; /* 배경 이미지 중앙 정렬 */
+      font-family : "Cafe24Supermagic-Bold-v1.0";
+      margin: 0;
+      padding: 0;
+      height: 100vh; /* 뷰포트의 높이만큼 전체 화면 높이로 설정 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      width: 80%; /* 전체 너비로 조절 */
+      top: 0;
+      margin-left: 10%;
+    }
+
+    .withUs {
+      cursor: pointer;
+    }
+
+    .title {
+      margin-left: 30px;
+    }
+
+    .title2 {
+      display: flex;
+      align-items: center;
+      margin-right: 120px;
+    }
+
+    .withUs {
+      margin-top: 5px;
+      margin-bottom: 5px; /* 아래쪽 여백 5px 추가 */
+    }
+
+    .icon, .arrow-icon {
+      cursor: pointer;
+      font-size: 20px;
+      margin-left: 50%; /* 좌측 여백 15% 추가 */
+      margin-right: 40px; /* 우측 여백 15px 추가 */
+    }
+
+
+    .chat-list-container {
+      width: 80%;
+      height: calc(100% - 100px);
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column; /* 세로 정렬을 위해 컨테이너의 방향을 세로로 설정 */
+      align-items: center; /* 가로 정렬을 위해 중앙 정렬 */
+      padding: 20px; /* 여백 추가 */
+      margin-top: 50px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h3 {
+      font-size: 50px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd; /* 회색 구분선 스타일 지정 */
+    }
+
+    .chat-room {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%; /* 가로 폭 100% */
+      text-decoration: none; /* 하이퍼링크 텍스트에 기본 텍스트 스타일 적용 방지 */
+      color: inherit; /* 하이퍼링크 텍스트 색상을 부모로부터 상속 */
+    }
+
+    .chat-room:hover {
+      background-color: #f0f0f0;
+    }
+
+    .chat-room img {
+      border-radius: 50%;
+      margin-right: 10px;
+      width: 50px; /* 이미지의 고정된 너비 */
+      height: 50px; /* 이미지의 고정된 높이 */
+      object-fit: cover; /* 이미지의 비율을 유지하면서 크롭 */
+    }
+
+    .chat-room-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      text-align: center;
+      margin-left: -130px;
+    }
+
+    .chat-room-info h4 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .close-icon {
+      margin-left: auto;
+      margin-right: 30px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .close-icon i {
+      font-size: 20px;
+    }
+
+    .chat-room-divider {
+      width: 100%;
+      height: 1px;
+      background-color: #ddd; /* 구분선의 색상 */
+      margin: 10px 0; /* 위아래 여백 추가 */
+    }
+  </style>
+
+  <script th:inline="javascript">
+    const host = 'http://' + window.location.host;
+    const memberId = /*[[${memberId}]]*/ '';
+
+    $(document).ready(function() {
+      var chatRoomList;
+
+      $.ajax({
+        type: 'GET',
+        url: '/api/chat/chatRoom',
+        contentType: 'application/json',
+      })
+        .done(function (res, status, xhr) {
+        chatRoomList = res.data;
+        console.log("채팅방 목록 받아오기 성공");
+
+        getChatRoomList(chatRoomList);
+        })
+        .fail(function (xhr, status, error) {
+          console.error('채팅방 목록 요청 API 에러', error);
+        })
+
+
+
+    })
+
+    function getChatRoomList(chatRoomList) {
+
+      if (chatRoomList) {
+        console.log("채팅방 불러오는 중")
+        chatRoomList.forEach(function (chatRoomResponseDto) {
+          var roomId = chatRoomResponseDto.roomId;
+          var title = chatRoomResponseDto.title;
+          var img = chatRoomResponseDto.senderImg;
+
+          console.info(roomId, title);
+          console.info(img);
+
+          var chatRoomDiv = $('<a href="' + host + '/api/chat/chatRoom/' + roomId + '/chatRoomPage' + '" class="chat-room">');
+
+          if (img) {
+            chatRoomDiv.append('<img src="' + img + '" alt="채팅방 이미지">');
+          } else {
+            // 이미지가 없을 때 아이콘 사용
+            var iconDiv = $('<div class="icon"><i class="fa-solid fa-user"></i></div>');
+            iconDiv.css({
+              'width': '50px',
+              'height': '50px',
+              'display': 'flex',
+              'align-items': 'center',
+              'justify-content': 'center',
+              'margin-left': '30px'
+            }); // 크기 조절 및 가운데 정렬
+            chatRoomDiv.append(iconDiv);
+          }
+
+          var chatRoomInfoDiv = $('<div class="chat-room-info">');
+          chatRoomInfoDiv.append('<h4>' + title + '</h4>');
+          chatRoomDiv.append(chatRoomInfoDiv);
+
+          var closeIconDiv = $('<div class="close-icon" data-room-id="' + roomId + '"><i class="fa-solid fa-times"></i></div>');
+          chatRoomDiv.append(closeIconDiv);
+
+          $('.chat-list-container').append(chatRoomDiv);
+          $('.chat-list-container').append('<div class="chat-room-divider"></div>'); /* 구분선 추가 */
+
+          closeIconDiv.on('click', function () {
+            event.preventDefault(); // 기본 동작 중지
+            event.stopPropagation(); // 이벤트 전파 중지
+            var roomIdToDelete = $(this).data('room-id');
+            deleteChatRoom(roomIdToDelete);
+          });
+        });
+      }
+    }
+    function deleteChatRoom(roomId) {
+
+      // Make the DELETE request
+      $.ajax({
+        type: 'DELETE',
+        url: '/api/chat/chatRoom/' + roomId,
+        contentType: 'application/json',
+      })
+      .done(function (res, status, xhr) {
+        console.log('Chat room deleted successfully');
+        location.reload();
+      })
+      .fail(function (xhr, status, error) {
+        console.error('Chat room deletion error', error);
+      });
+    }
+
+
+
+
+  </script>
+
+</head>
+
+<body>
+
+<div>
+  <header>
+    <div class="title">
+      <h2 class="withUs" onclick="location.href=host + '/'">withUs</h2>
+    </div>
+    <div class="title2">
+      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/' + memberId + '/profilePage'"></i>
+      <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
+    </div>
+  </header>
+</div>
+
+<div class="chat-list-container">
+  <h3>채팅목록</h3>
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+          integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <title>withUs</title>
+
+  <script th:inline="javascript">
+    const host = 'http://' + window.location.host;
+
+    function onLogin(){
+
+      // 쿠키 삭제
+      document.cookie.split(";").forEach(function(c) {
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+
+      let loginname = $('#loginname').val();
+      let password = $('#password').val();
+
+
+      $.ajax({
+        type: "POST",
+        url: `/api/member/login`,
+        contentType: "application/json",
+        data: JSON.stringify({loginname: loginname, password: password}),
+      })
+      .done(function (res, textStatus, xhr) {
+        const eventSource = new EventSource(`/api/notification/subscribe`);
+        eventSource.addEventListener("invitedClub", function(event){
+          console.log(event.data);
+          const data = event.data;
+          (async ()=>{
+            //브라우저 알림
+            const showNotification = () =>{
+              const notification = new Notification('메세지',{
+                body: data
+              });
+
+              setTimeout(()=>{
+                notification.close();
+              }, 10*1000);
+
+              notification.addEventListener('click',()=>{
+                window.open(data.url, 'blank');
+              });
+            }
+
+            let granted = false;
+            if(Notification.permission === 'granted'){
+              granted = true;
+            } else if(Notification.permission !== 'denied'){
+              let permission = await Notification.requestPermission();
+              granted = permission === 'granted';
+            }
+
+            if(granted){
+              showNotification();
+            }
+          })();
+        })
+        window.location.href = host + '/';
+        // 추후에 메인페이지로 이동으로 변경
+      })
+      .fail(function (error) {
+        alert("로그인 실패! 다시 로그인 해주세요.");
+        window.location.href = '/api/member/loginPage'
+      });
+    }
+  </script>
+
+</head>
+<body>
+<div style="text-align: center">
+
+  <h1 th:onclick="|location.href='@{/}'|" style="font-size: 60px; padding-top: 40px; cursor: pointer" >withUs</h1>
+  <form id="loginForm" action ="/api/member/login" method="post">
+    <div style="padding: 50px 35% 0px 35%; ">
+      <div style="padding: 5px 0 5px 0 ">
+        <input class="form-control form-control-lg"
+               type="text"
+               id="loginname"
+               placeholder="아이디를 입력해주세요.">
+      </div>
+      <div style="padding: 5px 0 5px 0 ">
+        <input class="form-control form-control-lg"
+               type="password"
+               id="password"
+               placeholder="비밀번호를 입력해주세요.">
+      </div>
+    </div>
+    <div class="d-grid col-3 mx-auto" style="padding: 15px 0 5px 0 ">
+      <button type="button"
+              class="btn btn-primary"
+              onclick="onLogin()">로그인
+      </button>
+    </div>
+  </form>
+  <form action ="/api/member/signup" method="get" >
+    <div>
+      <span style="color:#0b5ed7; cursor: pointer"
+            onclick="location.href='signupPage.html'"
+            th:onclick="|location.href='@{/api/member/signupPage}'|">회원가입</span>
+    </div>
+  </form>
+
+</div>
+
+</body>
+</html>

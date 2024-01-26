@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  spring-app:
+    container_name: spring-app-withUs
+    image: minseok588098/withus
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    environment:
+      - DB_REDIS_HOST=${{ secrets.DB_REDIS_HOST }}
+      - WEB_DB_URL=${{ secrets.WEB_DB_URL }}
+      - WEB_DB_USERNAME=${{ secrets.WEB_DB_USERNAME }}
+      - WEB_DB_PASSWORD=${{ secrets.WEB_DB_PASSWORD }}
+      - S3_ACCESSKEY=${{ secrets.S3_ACCESSKEY }}
+      - S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }}
+      - S3_REGION=${{ secrets.S3_REGION }}
+      - S3_SECRETKEY=${{ secrets.S3_SECRETKEY }}
+      - S3_STACK_AUTO=${{ secrets.S3_STACK_AUTO }}
+      - MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+      - MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
+      - JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+    depends_on:
+      - redis
+
+  redis:
+    container_name: redis-server-withUs
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    restart: always
