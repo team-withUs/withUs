@@ -1,6 +1,7 @@
 package com.withus.withus.member.repository;
 
 import com.withus.withus.member.entity.Member;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -23,4 +24,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
   //추가
   Optional<Member> findMemberByEmail(String email);
+
+
+  //삭제 스케줄러용
+  List<Member> findAllByIsActive(boolean isActive);
 }

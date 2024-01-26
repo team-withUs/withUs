@@ -15,25 +15,29 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
-import java.util.Optional;
-
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Component
 public class JwtUtil {
 
     // 사용자 권한 값의 KEY
-    public static final String AUTHORIZATION_KEY = "auth";
+    private static final String AUTHORIZATION_KEY = "auth";
+
+    private final String REFRESH_TOKEN = "refresh";
+
+    private final String ACCESS_TOKEN = "access";
 
     // 토큰 만료시간
     private final long ACCESS_TOKEN_TIME = 30 * 60 * 1000L; // 30분
@@ -49,12 +53,9 @@ public class JwtUtil {
     // 로그 설정
     public static final Logger logger = LoggerFactory.getLogger("JWT 관련 로그");
 
-    private final RefreshTokenRepository refreshTokenRepository;
-
     private final RedisService redisService;
 
-    public JwtUtil(RefreshTokenRepository refreshTokenRepository, RedisService redisService) {
-        this.refreshTokenRepository = refreshTokenRepository;
+    public JwtUtil(RedisService redisService) {
         this.redisService = redisService;
     }
 
@@ -106,43 +107,47 @@ public class JwtUtil {
         res.addCookie(cookie);
     }
 
-    // RefreshToken 객체 생성 및 DB 저장
-    public void saveRefreshJwtToDB(String refreshToken, String loginname) {
-        // RefreshToken DB에 저장
-        RefreshToken refreshTokenEntity = RefreshToken.createRefreshToken(refreshToken, loginname);
+    // Token DB 저장
+    public void saveJwtToRedis(String accessToken, String refreshToken, String loginname) {
 
-        refreshTokenRepository.save(refreshTokenEntity);
+        redisService.setValues(loginname + ACCESS_TOKEN, accessToken, Duration.ofMinutes(30));
+        redisService.setValues(loginname + REFRESH_TOKEN, refreshToken, Duration.ofDays(7));
     }
 
-    // RefreshToken DB 중복 조회 검사
-    public boolean checkTokenDBByToken(String token) {
+    // Redis refreshToken 존재여부 검사
+    public boolean existTokenInRedis(String token, String tokenName) {
         Claims user = getUserInfoFromToken(token);
-        try {
-            Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKeyLoginname(user.getSubject());
-            if (refreshToken.isPresent()) {
-                return true;
+
+        if (tokenName.equals("access")) {
+            String accessToken = redisService.getValues(user.getSubject() + ACCESS_TOKEN);
+            if(accessToken.isBlank()) {
+                return false;
             }
-        } catch (IllegalArgumentException e) {
+            return true;
+
+        } else if (tokenName.equals("refresh")) {
+            String refreshToken = redisService.getValues(user.getSubject() + REFRESH_TOKEN);
+            if(refreshToken.isBlank()) {
+                return false;
+            }
+            return true;
+        } else {
+            throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+        }
+
+    }
+    // 중복로그인여부 검증
+    public boolean isDuplicateLogin(String accessTokenValue) {
+        Claims user = getUserInfoFromToken(accessTokenValue);
+        String redisAccessToken = redisService.getValues(user.getSubject() + ACCESS_TOKEN);
+
+        if (accessTokenValue.equals(redisAccessToken)) {
+            log.info("중복로그인 아님!");
             return false;
         }
-
-        throw new BisException(ErrorCode.NOT_EXIST_TOKEN);
+        return true;
     }
 
-    // AccessToken 로그아웃 여부 검사
-    public boolean checkTokenAboutLogout(String token) {
-        return redisService.checkExistsValue(token);
-    }
-
-    // RefreshToken DB에서 loginname으로 가져오기
-    public RefreshToken getTokenDBByLoginname(String loginname) {
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByKeyLoginname(loginname);
-        if (refreshToken.isPresent()) {
-            return refreshToken.get();
-        } else {
-            throw new NullPointerException();
-        }
-    }
 
 
     // 토큰 검증
@@ -186,5 +191,33 @@ public class JwtUtil {
         return null;
     }
 
+
+    public boolean existTokenByLoginname(String loginname) {
+        String accessToken = redisService.getValues(loginname + ACCESS_TOKEN);
+        String refreshToken = redisService.getValues(loginname + REFRESH_TOKEN);
+        log.info("엑세스토큰조회 : " + accessToken);
+        log.info("리프레시토큰조회 : " + refreshToken);
+        if (accessToken.isBlank() && refreshToken.isBlank()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Transactional
+    public String reissuanceAccessToken(String refreshToken) {
+        String loginname = getUserInfoFromToken(refreshToken).getSubject();
+        String accessToken = createAccessToken(loginname);
+
+        redisService.setValues(loginname + ACCESS_TOKEN, accessToken, Duration.ofMinutes(30));
+
+        return accessToken;
+    }
+
+    @Transactional
+    public void deleteTokenInRedis(String loginname) {
+        redisService.deleteValues(loginname + REFRESH_TOKEN);
+        redisService.deleteValues(loginname + ACCESS_TOKEN);
+    }
 
 }

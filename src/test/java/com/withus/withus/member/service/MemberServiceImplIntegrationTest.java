@@ -263,8 +263,6 @@ class MemberServiceImplIntegrationTest {
             //given
             Member savedMember = memberRepository.save(member);
             UpdateRequestDto updateRequestDto = new UpdateRequestDto(
-                    "123456",
-                    "123456",
                     "username33",
                     "user33@email.com",
                     "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
@@ -294,8 +292,6 @@ class MemberServiceImplIntegrationTest {
             //when
             BisException e = Assertions.assertThrows(BisException.class, () -> {
                 UpdateRequestDto updateRequestDto = new UpdateRequestDto(
-                        "123456",
-                        "1234567",
                         "username33",
                         "user33@email.com",
                         "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
@@ -327,8 +323,6 @@ class MemberServiceImplIntegrationTest {
             Member savedMember2 = memberRepository.save(member2);
 
             UpdateRequestDto updateRequestDto = new UpdateRequestDto(
-                    "123456",
-                    "123456",
                     "username33",
                     "user33@email.com",
                     "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",

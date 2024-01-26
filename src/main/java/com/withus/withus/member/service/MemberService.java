@@ -3,6 +3,7 @@ package com.withus.withus.member.service;
 import com.withus.withus.club.dto.ClubResponseDto;
 import com.withus.withus.member.dto.EmailRequestDto;
 import com.withus.withus.member.dto.MemberResponseDto;
+import com.withus.withus.member.dto.PasswordRequestDto;
 import com.withus.withus.member.dto.ReportRequestDto;
 import com.withus.withus.member.dto.SignupRequestDto;
 import com.withus.withus.member.dto.UpdateRequestDto;
@@ -23,6 +24,8 @@ public interface MemberService {
     MemberResponseDto getMember(Long memberId);
 
     MemberResponseDto updateMember(Long memberId, UpdateRequestDto updateRequestDto, Member member);
+
+    MemberResponseDto updatePassword(Long memberId, PasswordRequestDto passwordRequestDto, Member member);
 
     void deleteMember(Long memberId, Member member);
 
