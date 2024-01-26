@@ -281,7 +281,7 @@ public class MemberServiceImpl implements MemberService{
     if (!(redisService.checkExistsValue(redisAuthCode) && redisAuthCode.equals(authCode))) {
       throw new BisException(ErrorCode.NOT_MATCH_AUTHCODE);
     } else {
-      redisService.deleteValues(redisAuthCode);
+      redisService.deleteValues(AUTH_CODE_PREFIX + email);
     }
   }
 
