@@ -6,6 +6,7 @@ import com.withus.withus.chat.service.ChatMessageService;
 import com.withus.withus.chat.service.ChatRoomService;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
+import com.withus.withus.notification.service.NotificationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class ChatMessageController {
 
   private final SimpMessagingTemplate simpMessagingTemplate;
 
+  private final NotificationService notificationService;
   //Client가 SEND할 수 있는 경로
   //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
   //대상 roomId를 구독하고있는 구독자 대상에게 메세지를 전달함
@@ -46,8 +48,7 @@ public class ChatMessageController {
     simpMessagingTemplate.convertAndSend("/room/api/chat/chatRoom/" + roomId + "/message", messageDto);
     Long receiverId = chatRoomService.findReceiverId(roomId, messageDto.getSenderId());
     /// 알람기능 추가
-
-
+    notificationService.notifyMessage(receiverId);
 
     log.info("{} enter chatting room: {}", messageDto.getSenderName(), roomId);
 

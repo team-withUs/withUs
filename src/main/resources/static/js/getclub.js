@@ -45,7 +45,7 @@ $(document).ready(function () {
                 inviteContainer.append(inviteMemberDiv);
 
                 iconDiv.on('click', function () {
-                    window.location.href = host + '/api/member/profilePage/' + memberId;
+                    window.location.href = host + '/api/member/' + memberId + '/profilePage';
                 })
 
 

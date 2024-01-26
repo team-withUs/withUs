@@ -7,6 +7,7 @@ import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.member.dto.*;
 import com.withus.withus.member.entity.Member;
 import com.withus.withus.member.service.MemberServiceImpl;
+import com.withus.withus.notification.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,6 @@ import org.springframework.ui.Model;
 public class MemberController {
 
   private final MemberServiceImpl memberService;
-
 
   @PostMapping("/signup/email")
   public ResponseEntity<CommonResponse<EmailRequestDto>> authenticationEmail (
@@ -89,7 +89,6 @@ public class MemberController {
       @AuthMember Member member
   ) {
       memberService.deleteMember(memberId, member);
-
       return ResponseEntity
           .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
           .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,""));
