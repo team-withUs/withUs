@@ -33,12 +33,12 @@ public class DeleteScheduler {
 
 
   //매일 23시에 한번 1주일 지난거(isActive가 false 인것만) 삭제
-  @Scheduled(cron = "0 0 22 * * * ")
+  @Scheduled(cron = "0 0 20 * * * ")
   public void deleteAutoOneWeek(){
     log.info(" ========== 삭제 스케줄러 ========== ");
-    deleteClub();
-    deleteNotice();
-    deleteComment();
+//    deleteClub();
+//    deleteNotice();
+//    deleteComment();
 
   }
   public void deleteMember(){
