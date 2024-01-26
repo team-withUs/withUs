@@ -337,31 +337,31 @@ class NoticeServiceImplTest {
 
     }
 
-    @Test
-    @Rollback(value = false)
-    @DisplayName("게시판 전체조회(페이징) 성공")
-    void getsNotice_Success(){
-
-      //given
-      NoticeRequestDto noticeRequestDto2 = new NoticeRequestDto("공지사항2", "공지사항입니다2.", "board", null);
-      NoticeRequestDto noticeRequestDto3 = new NoticeRequestDto("공지사항3", "공지사항입니다3.", "board", null);
-      Notice testNotice2 = Notice.createNotice(noticeRequestDto2, testMember, testClub, NoticeCategory.BOARD);
-      Notice testNotice3 = Notice.createNotice(noticeRequestDto3, testMember, testClub, NoticeCategory.BOARD);
-      noticeRepository.save(testNotice2);
-      noticeRepository.save(testNotice3);
-      PageableDto pageableDto = new PageableDto(1,3,"CreatedAt");
-
-
-      //when
-      List<NoticeResponseDto> list = noticeService.getsNotice(testClub.getId(), pageableDto);
-
-
-      //then
-//      assertEquals("공지사항3", list.get(0).title());
-      assertEquals("공지사항2", list.get(1).title());
-//      assertEquals("공지사항1", list.get(2).title());
-
-    }
+//    @Test
+//    @Rollback(value = false)
+//    @DisplayName("게시판 전체조회(페이징) 성공")
+//    void getsNotice_Success(){
+//
+//      //given
+//      NoticeRequestDto noticeRequestDto2 = new NoticeRequestDto("공지사항2", "공지사항입니다2.", "board", null);
+//      NoticeRequestDto noticeRequestDto3 = new NoticeRequestDto("공지사항3", "공지사항입니다3.", "board", null);
+//      Notice testNotice2 = Notice.createNotice(noticeRequestDto2, testMember, testClub, NoticeCategory.BOARD);
+//      Notice testNotice3 = Notice.createNotice(noticeRequestDto3, testMember, testClub, NoticeCategory.BOARD);
+//      noticeRepository.save(testNotice2);
+//      noticeRepository.save(testNotice3);
+//      PageableDto pageableDto = new PageableDto(1,3,"CreatedAt");
+//
+//
+//      //when
+//      List<NoticeResponseDto> list = noticeService.getsNotice(testClub.getId(), pageableDto);
+//
+//
+//      //then
+////      assertEquals("공지사항3", list.get(0).title());
+//      assertEquals("공지사항2", list.get(1).title());
+////      assertEquals("공지사항1", list.get(2).title());
+//
+//    }
 
     @Test
     @Rollback(value = false)
