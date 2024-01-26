@@ -84,7 +84,7 @@ $(document).ready(function () {
             console.log("서버 응답:", xhr.responseText);
         }
     });
-    $(".leaveClubButton").on("click", function () {
+    $("#leaveClubButton").on("click", function () {
         $.ajax({
             type: "DELETE",
             url: "/api/club/" + clubId + "/leave",
