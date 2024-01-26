@@ -44,6 +44,8 @@ jobs:
           sudo docker build -f Dockerfile -t ${{ secrets.DOCKERHUB_USERNAME }}/withus .
           sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/withus
 
+      
+
       - name: Deploy to Product
         uses: appleboy/ssh-action@master
         with:
