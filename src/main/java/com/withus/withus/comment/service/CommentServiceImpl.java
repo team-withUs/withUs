@@ -3,6 +3,7 @@ package com.withus.withus.comment.service;
 import com.withus.withus.club.entity.ClubMember;
 import com.withus.withus.club.entity.ClubMemberRole;
 import com.withus.withus.club.service.ClubMemberServiceImpl;
+import com.withus.withus.comment.dto.CommentDeleteRequestDto;
 import com.withus.withus.comment.dto.CommentRequestDto;
 import com.withus.withus.comment.dto.CommentResponseDto;
 import com.withus.withus.comment.dto.ReportRequestDto;
@@ -44,10 +45,8 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     @Override
     public CommentResponseDto updateComment(Long noticeId, Long commentId, CommentRequestDto commentRequestDto, Member member) {
-        Notice notice = noticeService.findByIsActiveAndNoticeId(noticeId);
         Comment comment = findByIsActiveAndCommentId(commentId);
-        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member, notice.getClub().getId());
-        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || comment.getMember().getId().equals(member.getId())){
+        if(clubMemberService.existHost(member.getId(), commentRequestDto.clubId()) || comment.getMember().getId().equals(member.getId())){
             comment.update(commentRequestDto);
             return CommentResponseDto.createCommentResponseDto(comment);
         }
@@ -59,9 +58,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponseDto> getComment(Long noticeId, PageableDto pageableDto) {
-        if (!existsByNoticeId(noticeId)) {
-            throw new BisException(ErrorCode.NOT_FOUND_NOTICE);
-        }
         List<Comment> commentList = commentRepository
                 .findAllByIsActiveAndNoticeId(true,noticeId, PageableDto
                         .getsPageableDto(
@@ -79,11 +75,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void deleteComment(Long noticeId, Long commentId, Member loginMember) {
-        Notice notice = noticeService.findByIsActiveAndNoticeId(noticeId);
+    public void deleteComment(Long noticeId, Long commentId, Member loginMember, CommentDeleteRequestDto commentDeleteRequestDto) {
         Comment comment = findByIsActiveAndCommentId(commentId);
-        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(loginMember, notice.getClub().getId());
-        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || comment.getMember().getId().equals(loginMember.getId())){
+        if(clubMemberService.existHost(loginMember.getId(), commentDeleteRequestDto.clubId()) || comment.getMember().getId().equals(loginMember.getId())){
             comment.inActive();
         }
         else {
