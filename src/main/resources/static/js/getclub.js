@@ -32,7 +32,7 @@ $(document).ready(function () {
                 inviteMemberDiv.append(hostDiv);
 
                 if (imageURL === null) {
-                    var iconDiv = $('<img src="/img/myInfo.png" alt="멤버 이미지">')
+                    var iconDiv = $('<img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myInfo.png" alt="멤버 이미지">')
                 } else {
                     var iconDiv = $('<img src="' + imageURL + '" alt="멤버 이미지">')
                 }
