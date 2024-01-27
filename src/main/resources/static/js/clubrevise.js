@@ -22,7 +22,11 @@ $(document).ready(function () {
             $("#uploadedImage").attr("src", imageURL);
 
             if (imageURL) {
-                $('.all-container').css('background-image', 'url(' + imageURL + ')');
+                $('.all-container').css({
+                    'background-image': 'url(' + imageURL + ')',
+                    'background-repeat': 'no-repeat',
+                    'background-size': 'cover' // 바둑판 모양 방지 및 꽉 차게 표시
+                });
             }
 
             // 초대된 목록 불러오기
@@ -135,7 +139,11 @@ $(document).ready(function () {
                 $("#uploadedImage").attr("src", imageURL);
 
                 if (imageURL) {
-                    $('.all-container').css('background-image', 'url(' + imageURL + ')');
+                    $('.all-container').css({
+                        'background-image': 'url(' + imageURL + ')',
+                        'background-repeat': 'no-repeat',
+                        'background-size': 'cover' // 바둑판 모양 방지 및 꽉 차게 표시
+                    });
                 }
                 location.reload();
             },
@@ -156,14 +164,20 @@ function handleFileSelect() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            container.css('background-image', 'url(' + e.target.result + ')');
+            container.css({
+                'background-image': 'url(' + e.target.result + ')',
+                'background-size': 'cover'
+            });
         };
 
         reader.readAsDataURL(input.files[0]);
     } else if (!input.value) {
         // 파일을 선택하지 않은 경우, 기존 이미지를 다시 불러옴
         var imageURL = $("#uploadedImage").attr("src");
-        container.css('background-image', 'url(' + imageURL + ')');
+        container.css({
+            'background-image': 'url(' + imageURL + ')',
+            'background-size': 'cover'
+        });
     }
 }
 

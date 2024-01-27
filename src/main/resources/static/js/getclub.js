@@ -91,14 +91,18 @@ $(document).ready(function () {
             var club = response.data;
             $(".club-title-name").text(club.clubTitle);
             $(".club-introduce-box").text(club.content);
-            $(".start-time").text("Start Date: " + club.startTime);
-            $(".end-time").text("End Date: " + club.endTime);
+            $(".start-time").text(formatDateTime(club.startTime));
+            $(".end-time").text(" ~ " + formatDateTime(club.endTime));
 
             var imageURL = club.imageURL;
             $("#uploadedImage").attr("src", imageURL);
 
             if (imageURL) {
-                $('.all-container').css('background-image', 'url(' + imageURL + ')');
+                $('.all-container').css({
+                    'background-image': 'url(' + imageURL + ')',
+                    'background-repeat': 'no-repeat',
+                    'background-size': 'cover',
+                });
             }
         },
         error: function (xhr, status, error) {
@@ -106,6 +110,23 @@ $(document).ready(function () {
             console.log("서버 응답:", xhr.responseText);
         }
     });
+    function formatDateTime(dateTimeString) {
+        var date = new Date(dateTimeString);
+        var year = date.getFullYear();
+        var month = String(date.getMonth() + 1).padStart(2, '0');
+        var day = String(date.getDate()).padStart(2, '0');
+        var hours = String(date.getHours()).padStart(2, '0');
+        var minutes = String(date.getMinutes()).padStart(2, '0');
+        var period = (date.getHours() < 12) ? '오전' : '오후';
+
+        if (hours > 12) {
+            hours -= 12;
+        } else if (hours === 0) {
+            hours = 12;
+        }
+
+        return year + '-' + month + '-' + day + ' ' + period + ' ' + String(hours).padStart(2, '0') + ':' + minutes;
+    }
     $("#leaveClubButton").on("click", function () {
         $.ajax({
             type: "DELETE",

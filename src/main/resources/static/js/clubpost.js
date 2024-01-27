@@ -157,7 +157,10 @@ function handleFileSelect() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            container.css('background-image', 'url(' + e.target.result + ')');
+            container.css({
+                'background-image': 'url(' + e.target.result + ')',
+                'background-size': 'cover',
+            });
         };
         reader.readAsDataURL(input.files[0]);
     }
