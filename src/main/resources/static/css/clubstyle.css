@@ -1,12 +1,5 @@
-@font-face {
-    font-family: "Cafe24Supermagic-Bold-v1.0";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
-    font-weight: 700;
-    font-style: normal;
-}
-
 body {
-    font-family: "Cafe24Supermagic-Bold-v1.0", cursive;
+    font-family: 'Poor Story', system-ui;
     margin: 0;
     padding: 0;
     color: black;
@@ -15,7 +8,25 @@ body {
 /*.page{*/
 /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);*/
 /*}*/
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
 
+/* 다크 모드 스타일 */
+body.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+#darkModeToggle{
+    border-radius: 10px;
+    border: none;
+    float: right;
+}
+#darkModeToggle:hover{
+    background-color: #b6d4fe;
+}
 .all-container{
     border-radius: 15px;
     border: 3px solid grey;
@@ -44,6 +55,13 @@ body {
 }
 /*버튼 컨테이너*/
 .club-button-container1{
+    border: 1px solid white;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+.club-button-container2{
+    border: 1px solid white;
+    border-radius: 10px;
     margin-right: 10px;
 }
 /*수정*/
@@ -169,7 +187,7 @@ body {
 /*notice*/
 
 #notice-container {
-    background-color: #f0f0f0;
+    background-color: #bdc0c3;
     padding: 20px;
     width: 760px;
     border-radius: 10px;
@@ -177,7 +195,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 .board-box {
-    background-color: #fff;
+    background-color: #d7d7da;
     border: 1px solid #ddd;
     height: 15px;
     border-radius: 8px;
@@ -185,6 +203,8 @@ body {
     margin-right: 10px;
     margin-bottom: 10px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
 }
 
 .pagination {
@@ -251,7 +271,7 @@ p {
 /*club*/
 #club-container {
     justify-content: center;
-    background-color: #f0f0f0;
+    background-color: #bdc0c3;
     padding: 20px;
     border-radius: 10px;
     margin: 10px auto;
@@ -265,26 +285,30 @@ p {
     width: 400px;
     height: 365px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #d7d7da;
     float: left;
     overflow-y: auto;
     white-space: pre-line;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
 }
 .item2 {
     margin: 20px;
     width: 275px;
     height: 180px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #d7d7da;
     float: right;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 .item3{
     margin: 20px;
     width: 275px;
     height: 145px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #d7d7da;
     float: right;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .invite-member {
@@ -293,18 +317,16 @@ p {
     justify-content: flex-start; /* 디자인 요구에 따라 조정하세요 */
     max-height: 200px;
     overflow-x: auto;
+    padding: 5px;
 }
-/*.club-introduce-box{*/
-/*    !*overflow-x: auto;*!*/
-/*    overflow-y: auto;*/
-/*    margin-bottom: 10px;*/
-/*}*/
+
 .memberDiv img {
     width: 30px;
     height: 30px;
     margin-bottom: 5px; /* 디자인 요구에 따라 조정하세요 */
     cursor: pointer;
     border-radius: 50%;
+    text-align: center;
 }
 
 .memberDiv {
