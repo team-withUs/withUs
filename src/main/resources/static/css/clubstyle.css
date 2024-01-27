@@ -15,7 +15,16 @@ body {
 /*.page{*/
 /*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);*/
 /*}*/
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
 
+/* 다크 모드 스타일 */
+body.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
 .all-container{
     border-radius: 15px;
     border: 3px solid grey;
@@ -44,6 +53,13 @@ body {
 }
 /*버튼 컨테이너*/
 .club-button-container1{
+    border: 1px solid white;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+.club-button-container2{
+    border: 1px solid white;
+    border-radius: 10px;
     margin-right: 10px;
 }
 /*수정*/
@@ -169,7 +185,7 @@ body {
 /*notice*/
 
 #notice-container {
-    background-color: #f0f0f0;
+    background-color: #83868d;
     padding: 20px;
     width: 760px;
     border-radius: 10px;
@@ -251,7 +267,7 @@ p {
 /*club*/
 #club-container {
     justify-content: center;
-    background-color: #f0f0f0;
+    background-color: #83868d;
     padding: 20px;
     border-radius: 10px;
     margin: 10px auto;
@@ -265,7 +281,7 @@ p {
     width: 400px;
     height: 365px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #bdc0c3;
     float: left;
     overflow-y: auto;
     white-space: pre-line;
@@ -275,7 +291,7 @@ p {
     width: 275px;
     height: 180px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #bdc0c3;
     float: right;
 }
 .item3{
@@ -283,7 +299,7 @@ p {
     width: 275px;
     height: 145px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #bdc0c3;
     float: right;
 }
 

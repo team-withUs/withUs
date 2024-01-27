@@ -2,6 +2,26 @@ $(document).ready(function () {
     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
     console.log(clubId)
 
+    // 다크 모드와 라이트 모드 설정 부분
+    var isDarkMode = localStorage.getItem('darkMode');
+    if (isDarkMode === 'true') {
+        $('body').addClass('dark-mode');
+    }
+
+    // 다크 모드와 라이트 모드를 토글하는 함수
+    function toggleDarkMode() {
+        $('body').toggleClass('dark-mode');
+        // 추가로 스타일을 변경해야 하는 요소가 있다면 여기에 추가합니다.
+    }
+
+    // 다크 모드 토글 버튼 또는 다른 요소에 이벤트 리스너 추가
+    $('#darkModeToggle').on('click', function () {
+        toggleDarkMode();
+
+        // 다크 모드 상태를 localStorage에 저장
+        var isDarkMode = $('body').hasClass('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode.toString());
+    });
     // 초대된 목록 초기화
     var inviteeList = [];
 

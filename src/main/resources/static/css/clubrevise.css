@@ -10,6 +10,16 @@ body {
     padding: 0;
     color: black;
 }
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* 다크 모드 스타일 */
+body.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
+}
 
 .all-container {
     border-radius: 15px;
@@ -150,7 +160,9 @@ body {
 
 .header_btn2{
     background: none;
-    border: none;
+    border-radius: 10px;
+
+    border: 1px solid white;
     padding: 10px;
     margin: 5px;
 }
@@ -164,7 +176,8 @@ body {
 
 .header_btn3{
     background: none;
-    border: none;
+    border-radius: 10px;
+    border: 1px solid white;
     padding: 10PX;
     margin: 5px;
 }
@@ -210,7 +223,7 @@ body {
 /*club*/
 #club-container {
     justify-content: center;
-    background-color: #f0f0f0;
+    background-color: #83868d;
     padding: 20px;
     border-radius: 10px;
     margin: 10px auto;
@@ -223,7 +236,7 @@ body {
     width: 340px;
     height: 250px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #bdc0c3;
     float: left;
 }
 
@@ -233,13 +246,13 @@ body {
     width: 340px;
     height: 250px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #bdc0c3;
     float: right;
 }
 
 #club-introduce {
     justify-content: center;
-    background-color: #f0f0f0;
+    background-color: #83868d;
     padding: 20px;
     border-radius: 10px;
     margin: 10px auto;
@@ -251,7 +264,7 @@ body {
     width: 700px;
     height: 350px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #bdc0c3;
     margin: 5px auto;
     align-items: center;
 }
