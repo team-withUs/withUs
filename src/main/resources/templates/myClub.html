@@ -6,6 +6,9 @@
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <!--  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 
   <title>Title</title>
   <style>
@@ -130,13 +133,13 @@
               if (currentItem.imageURL !== null) {
                 clubImage = currentItem.imageURL;
               } else {
-                clubImage = '/img/default.png';
+                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
               }
               clubId = currentItem.clubId;
               clubName = currentItem.clubTitle;
               clubContent = currentItem.content;
               console.log("생성완료");
-              var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+              var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
               $.ajax({
                 type: 'GET',
@@ -216,7 +219,7 @@
             if (currentItem.imageURL !== null) {
               clubImage = currentItem.imageURL;
             } else {
-              clubImage = '/img/default.png';
+              clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
             }
             clubId = currentItem.clubId;
             console.log(clubId);
@@ -298,8 +301,8 @@
             <h2 class="withUs" th:onclick="|location.href='@{/}'|" style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
           </div>
           <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
-            <img src="/img/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
-            <img src="/img/arrow_10940959.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
+            <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
+            <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/arrow_10940959.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
           </div>
         </div>
       </header>

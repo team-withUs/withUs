@@ -29,6 +29,11 @@ public class MemberController {
 
   private final MemberServiceImpl memberService;
 
+  @GetMapping("/healthcheck")
+  public String healthcheck() {
+    return "OK";
+  }
+
   @PostMapping("/signup/email")
   public ResponseEntity<CommonResponse<EmailRequestDto>> authenticationEmail (
       @Valid @RequestBody EmailRequestDto emailRequestDto
