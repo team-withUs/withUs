@@ -156,7 +156,7 @@
                     if (response.data.imageURL !== null) {
                         $('#profileImage').attr('src', response.data.imageURL);
                     } else {
-                        $('#profileImage').attr('src', '/img/default.png');
+                        $('#profileImage').attr('src', 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png');
                     }
 
                     $('#username').text(response.data.username);
