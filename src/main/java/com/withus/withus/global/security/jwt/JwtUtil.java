@@ -142,7 +142,6 @@ public class JwtUtil {
         String redisAccessToken = redisService.getValues(user.getSubject() + ACCESS_TOKEN);
 
         if (accessTokenValue.equals(redisAccessToken)) {
-            log.info("중복로그인 아님!");
             return false;
         }
         return true;
