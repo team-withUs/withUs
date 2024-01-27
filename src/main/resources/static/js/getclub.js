@@ -63,11 +63,6 @@ $(document).ready(function () {
                     } catch (err) {
                         alert("죄송합니다. 해당 오류에 대한 정보를 신고해주세요.")
                     }
-
-
-
-
-                    // window.location.href = host + '/api/member/' + memberId + '/profilePage';
                 })
 
 
