@@ -126,6 +126,8 @@ public class MemberServiceImpl implements MemberService{
       sameMemberInDBByEmail(updateRequestDto.email());
     }
 
+    emailVerification(updateRequestDto.email(), updateRequestDto.code());
+
     Member updatedMember = findMemberByMemberId(memberId);
 
     if(updateRequestDto.imageFile()!=null) {

@@ -13,7 +13,7 @@ public record SignupRequestDto (
     @Pattern(regexp = "^.{4,16}$", message = "비밀번호는 4자, 16자이하 이여야합니다.")
     String password,
     @NotBlank(message = "이름은 필수항목입니다.")
-    @Pattern(regexp = "^[a-zA-Z0-9]{3,}$", message = "닉네임은 3자이상 8자이하 영대소문자, 숫자만 가능합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9]{3,12}$", message = "닉네임은 3자이상 12자이하 영대소문자, 숫자만 가능합니다.")
     String username,
     @NotBlank(message = "이메일은 필수항목입니다.")
     @Length(max = 255)

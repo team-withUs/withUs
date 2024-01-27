@@ -130,7 +130,7 @@
               if (currentItem.imageURL !== null) {
                 clubImage = currentItem.imageURL;
               } else {
-                clubImage = '/img/default.png';
+                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
               }
               clubId = currentItem.clubId;
               clubName = currentItem.clubTitle;
@@ -216,7 +216,7 @@
             if (currentItem.imageURL !== null) {
               clubImage = currentItem.imageURL;
             } else {
-              clubImage = '/img/default.png';
+              clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
             }
             clubId = currentItem.clubId;
             console.log(clubId);
@@ -298,8 +298,8 @@
             <h2 class="withUs" th:onclick="|location.href='@{/}'|" style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
           </div>
           <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
-            <img src="/img/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
-            <img src="/img/arrow_10940959.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
+            <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/message.png" id="chatting" class="chat-icon" style="float: left; cursor: pointer;  width: 35px; height: 35px; margin-top: 5px">
+            <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/arrow_10940959.png" id="logout" class="my-info" style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px" >
           </div>
         </div>
       </header>
