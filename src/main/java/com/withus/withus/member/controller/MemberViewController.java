@@ -54,7 +54,11 @@ public class MemberViewController {
       Model model,
       @AuthMember Member loginMember
   ) {
-
+    if (loginMember.getId().equals(memberId)) {
+      model.addAttribute("isSameMember", true);
+    } else {
+      model.addAttribute("isSameMember", false);
+    }
     model.addAttribute("memberId",memberId);
     model.addAttribute("loginMemberId",loginMember.getId());
     return "updateProfile";
