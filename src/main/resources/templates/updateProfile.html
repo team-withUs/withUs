@@ -146,6 +146,7 @@
     if($('#formFileSm')[0].files[0]){
       formData.append('imageFile', $('#formFileSm')[0].files[0]);
     }
+    formData.append('code', $('#code').val());
 
     $.ajax({
       method:'PATCH',
@@ -302,7 +303,7 @@
       <input class="form-control form-control"
              type="text"
              id="username"
-             minlength="3" maxlength="8"
+             minlength="3" maxlength="12"
              placeholder="이름을 입력해주세요.">
     </div>
     <div>
