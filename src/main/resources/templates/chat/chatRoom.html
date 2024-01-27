@@ -25,7 +25,7 @@
     body {
       background-color: #A8C0D6;
       margin: 0; /* Remove default body margin */
-      font-family: 'Arial', sans-serif; /* Add font-family for consistency */
+      font-family: 'Poor Story', system-ui; /* Add font-family for consistency */
     }
 
     .titleContainer {
@@ -212,10 +212,10 @@
           }
 
           if (guestImg === undefined || guestImg === null) {
-            guestImg = '/img/default.png';
+            guestImg = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
           }
           if (hostImg === undefined || hostImg === null) {
-            hostImg = '/img/default.png';
+            hostImg = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
           }
 
           $("#title").text(roomName);

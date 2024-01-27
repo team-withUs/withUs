@@ -20,8 +20,11 @@ body.dark-mode {
 }
 
 #darkModeToggle{
+    font-family: 'Poor Story', system-ui;
     border-radius: 10px;
     border: none;
+    width: 80px;
+    height: 30px;
     float: right;
 }
 #darkModeToggle:hover{
