@@ -269,8 +269,8 @@
         }
 
         function invitingClicked() {
-            var memberId = /*[[${memberId}]]*/ '';
-            let url = '/api/member/' + memberId + '/myHostingClubPage'
+            var loginMemberId = /*[[${loginMemberId}]]*/ '';
+            let url = '/api/member/' + loginMemberId + '/myHostingClubPage'
             location.href = url;
         }
 
@@ -375,7 +375,7 @@
                         <form>
                             <div class="mb-3">
                                 <label for="password" class="col-form-label">비밀번호 입력 : </label>
-                                <input id="password" onkeypress="handleKeyPress(event)"></input>
+                                <input id="password" type="password" onkeypress="handleKeyPress(event)"></input>
                             </div>
                         </form>
                     </div>
