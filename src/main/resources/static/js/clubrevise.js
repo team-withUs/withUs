@@ -11,7 +11,6 @@ $(document).ready(function () {
     // 다크 모드와 라이트 모드를 토글하는 함수
     function toggleDarkMode() {
         $('body').toggleClass('dark-mode');
-        // 추가로 스타일을 변경해야 하는 요소가 있다면 여기에 추가합니다.
     }
 
     // 다크 모드 토글 버튼 또는 다른 요소에 이벤트 리스너 추가

@@ -25,6 +25,15 @@ body.dark-mode {
     background-color: #333333;
     color: #ffffff;
 }
+
+#darkModeToggle{
+    border-radius: 10px;
+    border: none;
+    float: right;
+}
+#darkModeToggle:hover{
+    background-color: #b6d4fe;
+}
 .all-container{
     border-radius: 15px;
     border: 3px solid grey;
@@ -185,7 +194,7 @@ body.dark-mode {
 /*notice*/
 
 #notice-container {
-    background-color: #83868d;
+    background-color: #bdc0c3;
     padding: 20px;
     width: 760px;
     border-radius: 10px;
@@ -201,6 +210,8 @@ body.dark-mode {
     margin-right: 10px;
     margin-bottom: 10px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
 }
 
 .pagination {
@@ -267,7 +278,7 @@ p {
 /*club*/
 #club-container {
     justify-content: center;
-    background-color: #83868d;
+    background-color: #bdc0c3;
     padding: 20px;
     border-radius: 10px;
     margin: 10px auto;
@@ -281,26 +292,30 @@ p {
     width: 400px;
     height: 365px;
     border-radius: 15px;
-    background-color: #bdc0c3;
+    background-color: #d7d7da;
     float: left;
     overflow-y: auto;
     white-space: pre-line;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
 }
 .item2 {
     margin: 20px;
     width: 275px;
     height: 180px;
     border-radius: 15px;
-    background-color: #bdc0c3;
+    background-color: #d7d7da;
     float: right;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 .item3{
     margin: 20px;
     width: 275px;
     height: 145px;
     border-radius: 15px;
-    background-color: #bdc0c3;
+    background-color: #d7d7da;
     float: right;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .invite-member {
@@ -309,18 +324,16 @@ p {
     justify-content: flex-start; /* 디자인 요구에 따라 조정하세요 */
     max-height: 200px;
     overflow-x: auto;
+    padding: 5px;
 }
-/*.club-introduce-box{*/
-/*    !*overflow-x: auto;*!*/
-/*    overflow-y: auto;*/
-/*    margin-bottom: 10px;*/
-/*}*/
+
 .memberDiv img {
     width: 30px;
     height: 30px;
     margin-bottom: 5px; /* 디자인 요구에 따라 조정하세요 */
     cursor: pointer;
     border-radius: 50%;
+    text-align: center;
 }
 
 .memberDiv {
