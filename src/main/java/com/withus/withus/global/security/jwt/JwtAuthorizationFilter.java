@@ -45,6 +45,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String accessTokenValue = jwtUtil.getTokenFromRequest("accessToken", req);
+        String accessToken = "";
         if (StringUtils.hasText(accessTokenValue)) {
             log.info(accessTokenValue);
 
@@ -74,7 +75,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 // 만료된 accessToken 일경우 accessToken 재발급
                 // 쿠키에서 refreshToken 가져와서 유효성 검사 후  발급
                 String refreshToken = jwtUtil.getTokenFromRequest("refreshToken", req);
-                log.info(refreshToken);
                 if (refreshToken == null) {
                     log.error("쿠키에 refreshToken이 존재하지 않습니다.");
                     setResponse(res, ErrorCode.ACCESS_DENIED);
@@ -105,17 +105,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 }
 
                 // accessToken 재발급
-                String accessToken = jwtUtil.reissuanceAccessToken(refreshToken);
+                accessToken = jwtUtil.reissuanceAccessToken(refreshToken);
+                log.info("accessToken 재발급");
 
                 // accessToken 쿠키에 저장
                 jwtUtil.addJwtToCookie("accessToken", accessToken, res);
 
-                res.setStatus(200);
-                res.setCharacterEncoding("utf-8");
-                PrintWriter writer = res.getWriter();
-                writer.println("accessToken이 재발급되었습니다. 다시 시도 해주세요.");
+            }
 
-                return;
+            if (!accessToken.isBlank()) {
+                accessTokenValue = accessToken;
             }
 
             Claims info = jwtUtil.getUserInfoFromToken(accessTokenValue);

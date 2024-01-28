@@ -26,7 +26,7 @@
     body {
       background-color: #A8C0D6;
       margin: 0; /* Remove default body margin */
-      font-family: 'Arial', sans-serif; /* Add font-family for consistency */
+      font-family: 'Poor Story', system-ui; /* Add font-family for consistency */
     }
 
     .titleContainer {
@@ -179,7 +179,7 @@
   </style>
 
   <script th:inline="javascript">
-    const host = 'http://' + window.location.host;
+
     var roomId = /*[[${roomId}]]*/ '';
     var roomName;
     var chatList;
@@ -213,10 +213,10 @@
           }
 
           if (guestImg === undefined || guestImg === null) {
-            guestImg = '/img/default.png';
+            guestImg = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
           }
           if (hostImg === undefined || hostImg === null) {
-            hostImg = '/img/default.png';
+            hostImg = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
           }
 
           $("#title").text(roomName);
@@ -262,10 +262,10 @@
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + message + '</div>');
@@ -326,10 +326,10 @@
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + content + '</div>');
