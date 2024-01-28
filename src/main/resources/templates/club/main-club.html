@@ -15,6 +15,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+    <script th:src="@{/js/sse.js}"></script>
+
     <script th:inline="javascript">
         const host = 'http://' + window.location.host;
         var memberId;
@@ -68,19 +70,19 @@
 
 
             $("#loginBtn").on("click", function(e) {
-                window.location.href = host + '/api/member/loginPage';
+                window.location.href = '/api/member/loginPage';
             });
 
             $("#chatting").on("click", function(e) {
-                window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
+                window.location.href = '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function(e) {
-                window.location.href = host + '/api/member/' + memberId + '/profilePage';
+                window.location.href = '/api/member/' + memberId + '/profilePage';
             });
 
             $("#create").on("click", function(e) {
-                window.location.href = host + '/api/club/post-club';
+                window.location.href = '/api/club/post-club';
             });
 
             $("#logout").on("click", function(e) {
@@ -94,7 +96,7 @@
                         contentType: ''
                     })
                     .done(function (res, status, xhr) {
-                        window.location.href = host + '/'
+                        window.location.href = '/'
                     })
                     .fail(function (xhr, status, error) {
                         console.error('로그아웃 요청 API 에러', error);
@@ -144,7 +146,7 @@
         <section id="club-title">
             <div class=title-item>
                 <article class="club">
-                    <h2 class="club-title-name" >클럽 이름</h2>
+                    <h2 class="club-title-name">클럽 이름</h2>
                 </article>
             </div>
 
@@ -192,6 +194,7 @@
                 /*<![CDATA[*/
                 $(document).ready(function () {
                     fetchNotices();
+                    memberId = [[${memberId}]];
                     function fetchNotices() {
                         var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
                         console.log(clubId)
@@ -222,6 +225,10 @@
                         const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
                         $('#page').append(card);
                     })
+
+                    if (memberId !== undefined && memberId !== null && memberId !== '') {
+                        connectSse();
+                    }
                 });
                 /*]]>*/
 
@@ -259,14 +266,11 @@
         </section>
         <section id="club-container">
             <div class="item1">
-                <h1 class="club-introduce" >클럽소개</h1>
-                <article class="Club-container">
-                    <div class="club-introduce">
-                        <div class="club-introduce-box">
-                            소개 내용
-                        </div>
+                <div class="club-introduce-title">클럽소개</div>
+                <div class="club-introduce">
+                    <div class="club-introduce-box">
                     </div>
-                </article>
+                </div>
             </div>
 
             <div class="item2">
@@ -288,7 +292,7 @@
 
         </section>
         <div>
-            <button id = "leaveClubButton">
+            <button id="leaveClubButton">
                 클럽 탈퇴
             </button>
         </div>

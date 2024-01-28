@@ -11,6 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
   <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
+  <script th:src="@{/js/sse.js}"></script>
   <style>
     * {
       padding: 0;
@@ -178,7 +179,7 @@
   </style>
 
   <script th:inline="javascript">
-    const host = 'http://' + window.location.host;
+
     var roomId = /*[[${roomId}]]*/ '';
     var roomName;
     var chatList;
@@ -261,10 +262,10 @@
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + message + '</div>');
@@ -301,6 +302,9 @@
         }
       });
 
+      if (loginId !== undefined && loginId !== null && loginId !== '') {
+        connectSse();
+      }
     });
 
     function getChatList(chatList, username) {
@@ -322,10 +326,10 @@
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + content + '</div>');

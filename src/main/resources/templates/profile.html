@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 
+    <script th:src="@{/js/sse.js}"></script>
     <title>회원 정보</title>
-
     <style>
         body {
             font-family: 'Poor Story', system-ui;
@@ -126,7 +126,6 @@
     </style>
 
     <script th:inline="javascript">
-        const host = 'http://' + window.location.host;
 
         $(document).ready(function () {
 
@@ -177,7 +176,7 @@
             });
 
             $("#chatting").on("click", function (e) {
-                window.location.href = host + '/api/chat/member/' + loginMemberId + '/chatRoomListPage';
+                window.location.href = '/api/chat/member/' + loginMemberId + '/chatRoomListPage';
             });
 
             $("#logout").on("click", function (e) {
@@ -191,7 +190,7 @@
                         contentType: ''
                     })
                         .done(function (res, status, xhr) {
-                            window.location.href = host + '/'
+                            window.location.href = '/'
                         })
                         .fail(function (xhr, status, error) {
                             console.error('로그아웃 요청 API 에러', error);
@@ -211,6 +210,10 @@
                 invitingClicked();
             });
 
+            // SSE 연결
+            if (loginMemberId !== undefined && loginMemberId !== null && loginMemberId !== '') {
+                connectSse();
+            }
         })
 
 
@@ -230,7 +233,7 @@
                         var roomId = res.data;
                     }
                     console.log(roomId);
-                    window.location.href = host + '/api/chat/chatRoom/' + roomId + '/chatRoomPage';
+                    window.location.href = '/api/chat/chatRoom/' + roomId + '/chatRoomPage';
                 })
                 .fail(function (xhr, status, error) {
                     // 실패한 경우의 동작
@@ -251,7 +254,7 @@
                 }),
                 success: function (response) {
                     if (response.data === "일치") {
-                        window.location.href = host + '/api/member/' + memberId + '/updateProfilePage';
+                        window.location.href = '/api/member/' + memberId + '/updateProfilePage';
                     } else {
                         alert("비밀번호가 일치하지 않습니다.");
                     }
@@ -291,7 +294,7 @@
                             contentType: ''
                         })
                             .done(function (res, status, xhr) {
-                                window.location.href = host + '/'
+                                window.location.href = '/'
                             })
                             .fail(function (xhr, status, error) {
                                 console.error('로그아웃 요청 API 에러', error);

@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 
+  <script th:src="@{/js/sse.js}"></script>
   <title>Title</title>
   <style>
     .main{
@@ -202,6 +203,11 @@
           }
         }
       });
+
+      // SSE 연결
+      if (memberId !== undefined && memberId !== null && memberId !== '') {
+        connectSse();
+      }
     })
 
     function sendPage(pageNumber) {

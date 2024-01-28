@@ -240,6 +240,10 @@ body.dark-mode {
     height: 310px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
+.dark-mode #club-container {
+    background-color: #454545;
+    color: #ffffff;
+}
 
 .search-item {
     margin: 10px;
@@ -249,6 +253,10 @@ body.dark-mode {
     background-color: #d7d7da;
     float: left;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.dark-mode .search-item {
+    background-color: #2b2b2b;
+    color: #ffffff;
 }
 
 
@@ -262,6 +270,11 @@ body.dark-mode {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.dark-mode .Date-item {
+    background-color: #2b2b2b;
+    color: #ffffff;
+}
+
 #club-introduce {
     justify-content: center;
     background-color: #bdc0c3;
@@ -272,6 +285,10 @@ body.dark-mode {
     height: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
+.dark-mode #club-introduce {
+    background-color: #454545;
+    color: #ffffff;
+}
 
 .club-revise-item {
     width: 700px;
@@ -281,6 +298,10 @@ body.dark-mode {
     margin: 5px auto;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.dark-mode .club-revise-item {
+    background-color: #2b2b2b;
+    color: #ffffff;
 }
 
 #club-content {

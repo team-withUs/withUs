@@ -6,7 +6,7 @@ function connectSse(){
     (async () => {
       //브라우저 알림
       const showNotification = () => {
-        const notification = new Notification('메세지', {
+        const notification = new Notification('알림', {
           body: data
         });
 
@@ -15,7 +15,7 @@ function connectSse(){
         }, 10 * 1000);
 
         notification.addEventListener('click', () => {
-          window.open(data.url, 'blank');
+          window.open('/api/member/club?size=4&sort=club.createdAt,desc', 'blank');
         });
       }
 
@@ -39,7 +39,7 @@ function connectSse(){
     (async () => {
       //브라우저 알림
       const showNotification = () => {
-        const notification = new Notification('메세지', {
+        const notification = new Notification('알림', {
           body: data
         });
 
@@ -48,7 +48,7 @@ function connectSse(){
         }, 10 * 1000);
 
         notification.addEventListener('click', () => {
-          window.open(data.url, 'blank');
+          window.open('/api/chat/member/'+memberId+'/chatRoomListPage', 'blank');
         });
       }
 

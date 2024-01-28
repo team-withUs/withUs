@@ -39,6 +39,10 @@ body.dark-mode {
     height: 100%;
     margin: 0 auto;
 }
+.club-introduce-title{
+    font-size: 24px;
+    font-weight: bold;
+}
 
 /*클럽 이름*/
 .main{
@@ -197,6 +201,10 @@ body.dark-mode {
     margin: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
+.dark-mode #notice-container {
+    background-color: #454545;
+    color: #ffffff;
+}
 .board-box {
     background-color: #d7d7da;
     border: 1px solid #ddd;
@@ -208,6 +216,10 @@ body.dark-mode {
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 
+}
+.dark-mode .board-box {
+    background-color: #2b2b2b;
+    color: #ffffff;
 }
 
 .pagination {
@@ -282,6 +294,10 @@ p {
     height: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
+.dark-mode #club-container {
+    background-color: #454545;
+    color: #ffffff;
+}
 
 .item1 {
     margin: 20px;
@@ -295,6 +311,10 @@ p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 
 }
+.dark-mode .item1 {
+    background-color: #2b2b2b;
+    color: #ffffff;
+}
 .item2 {
     margin: 20px;
     width: 275px;
@@ -304,6 +324,10 @@ p {
     float: right;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+.dark-mode .item2 {
+    background-color: #2b2b2b;
+    color: #ffffff;
+}
 .item3{
     margin: 20px;
     width: 275px;
@@ -312,6 +336,10 @@ p {
     background-color: #d7d7da;
     float: right;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.dark-mode .item3 {
+    background-color: #2b2b2b;
+    color: #ffffff;
 }
 
 .invite-member {
