@@ -288,7 +288,7 @@
           if(response.msg === "초대 성공"){
             alert("초대되었습니다.")
           }
-          window.location.href = '/api/member/profilePage/'+memberId;
+          window.location.href = '/api/member/'+memberId+'/profilePage';
         },
         error: function (error){
           console.error('에러 :', error.responseJSON.msg);
