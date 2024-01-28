@@ -2,6 +2,8 @@ package com.withus.withus.notice.controller;
 
 
 import com.withus.withus.comment.service.CommentServiceImpl;
+import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.member.entity.Member;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -19,15 +21,24 @@ public class NoticeViewController {
 
 
   @GetMapping("/noticeAddPage")
-  public String getNoticeAddPage(@PathVariable("clubId") Long clubId, Model model){
+  public String getNoticeAddPage(
+      @PathVariable("clubId") Long clubId,
+      Model model,
+      @AuthMember Member member
+      ){
     model.addAttribute("clubId",clubId);
+    model.addAttribute("memberId", member.getId());
     return "notice/noticeAdd";
   }
 
 
   @GetMapping("/{noticeId}/noticeDetailPage")
-  public String getNoticeDetailPage(@PathVariable("clubId") Long clubId,
-      @PathVariable("noticeId") Long noticeId, Model model){
+  public String getNoticeDetailPage(
+      @PathVariable("clubId") Long clubId,
+      @PathVariable("noticeId") Long noticeId,
+      Model model,
+      @AuthMember Member member
+  ) {
     Integer totalListCnt = commentService.count(noticeId);
     int count;
 
@@ -53,16 +64,22 @@ public class NoticeViewController {
     model.addAttribute("clubId",clubId);
     model.addAttribute("noticeId",noticeId);
     model.addAttribute("countList", countList);
+    model.addAttribute("memberId", member.getId());
     return "notice/noticeDetail";
   }
 
 
   @GetMapping("/{noticeId}/noticeEditPage")
-  public String getNoticeEditPage(@PathVariable("clubId") Long clubId,
-      @PathVariable("noticeId") Long noticeId, Model model){
+  public String getNoticeEditPage(
+      @PathVariable("clubId") Long clubId,
+      @PathVariable("noticeId") Long noticeId,
+      Model model,
+      @AuthMember Member member
+  ) {
 
     model.addAttribute("clubId", clubId);
     model.addAttribute("noticeId", noticeId);
+    model.addAttribute("memberId", member.getId());
     return "notice/noticeEdit";
   }
 
