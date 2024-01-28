@@ -45,7 +45,7 @@ function connectSse(){
 
         setTimeout(() => {
           notification.close();
-        }, 10 * 1000);
+        }, 60 * 1000 * 60);
 
         notification.addEventListener('click', () => {
           window.open('/api/chat/member/'+memberId+'/chatRoomListPage', 'blank');
