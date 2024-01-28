@@ -39,6 +39,10 @@ body.dark-mode {
     height: 100%;
     margin: 0 auto;
 }
+.club-introduce-title{
+    font-size: 24px;
+    font-weight: bold;
+}
 
 /*클럽 이름*/
 .main{
