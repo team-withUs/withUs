@@ -10,7 +10,6 @@
   <title>withUs</title>
 
   <script th:inline="javascript">
-    const host = 'https://' + window.location.host;
 
     function onLogin(){
 
@@ -63,7 +62,7 @@
             }
           })();
         })
-        window.location.href = host + '/';
+        window.location.href = '/';
         // 추후에 메인페이지로 이동으로 변경
       })
       .fail(function (error) {
