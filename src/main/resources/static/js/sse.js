@@ -15,7 +15,7 @@ function connectSse(){
         }, 10 * 1000);
 
         notification.addEventListener('click', () => {
-          window.open(data.url, 'blank');
+          window.open('/api/member/club?size=4&sort=club.createdAt,desc', 'blank');
         });
       }
 
