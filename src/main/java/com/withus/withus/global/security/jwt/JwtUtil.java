@@ -97,7 +97,7 @@ public class JwtUtil {
 
         Cookie cookie = new Cookie(tokenName, JWT); // Name-Value
         cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24); // 쿠키 유효기간 1일
+        cookie.setMaxAge(15 * 60 * 60 * 24); // 쿠키 유효기간 15일
 
         if (tokenName.equals("refreshToken")) {
             cookie.setHttpOnly(true);

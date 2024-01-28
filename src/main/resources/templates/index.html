@@ -8,19 +8,16 @@
 <!--    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
 <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
     <script th:src="@{/js/sse.js}"></script>
     <style>
 
-        @font-face {
-            font-family: "Cafe24Supermagic-Bold-v1.0";
-            src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
-            font-weight: 700;
-            font-style: normal;
-        }
 
         /*전체*/
         .main {
-            font-family: "Cafe24Supermagic-Bold-v1.0";
+            font-family: 'Poor Story', system-ui;
             padding-right: 20%;
             padding-left: 20%;
             display: flex;
@@ -228,7 +225,6 @@
 
     </style>
     <script th:inline="javascript">
-        const host = 'http://' + window.location.host;
         let clubId = /*[[${clubId}]]*/ '';
         let category = 'ALL';
         let size = 4;
@@ -257,14 +253,14 @@
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
-                            clubImage = '/img/default.png';
+                            clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                         }
                         clubId = currentItem.clubId;
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
 
-                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                        var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                         $.ajax({
                             type: 'GET',
@@ -344,19 +340,19 @@
             }
 
             $("#loginBtn").on("click", function (e) {
-                window.location.href = host + '/api/member/loginPage';
+                window.location.href = '/api/member/loginPage';
             });
 
             $("#chatting").on("click", function(e) {
-              window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
+              window.location.href = '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function (e) {
-                window.location.href = host + '/api/member/' + memberId + '/profilePage';
+                window.location.href = '/api/member/' + memberId + '/profilePage';
             });
 
             $("#create").on("click", function (e) {
-                window.location.href = host + '/api/club/post-club';
+                window.location.href = '/api/club/post-club';
             });
 
             $("#myclub").on("click", function (e) {
@@ -374,7 +370,7 @@
                         contentType: ''
                     })
                         .done(function (res, status, xhr) {
-                            window.location.href = host + '/'
+                            window.location.href = '/'
                         })
                         .fail(function (xhr, status, error) {
                             console.error('로그아웃 요청 API 에러', error);
@@ -446,13 +442,13 @@
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
-                                clubImage = '/img/default.png';
+                                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                             }
                             clubId = currentItem.clubId;
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
-                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                            var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                             $.ajax({
                                 type: 'GET',
@@ -552,13 +548,13 @@
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
-                                clubImage = '/img/default.png';
+                                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                             }
                             clubId = currentItem.clubId;
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
-                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                            var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                             $.ajax({
                                 type: 'GET',
@@ -643,14 +639,14 @@
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
-                            clubImage = '/img/default.png';
+                            clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                         }
                         clubId = currentItem.clubId;
                         console.log(clubId);
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
-                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                        var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                         $.ajax({
                             type: 'GET',
@@ -700,7 +696,7 @@
             $.ajax({
                 type: 'GET',
                 url: '/api/member/club?size='+ size
-                    +'&sort=createdAt,desc',
+                    +'&sort=club.createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
@@ -718,13 +714,13 @@
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
-                                clubImage = '/img/default.png';
+                                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                             }
                             clubId = currentItem.clubId;
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
-                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                            var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                             $.ajax({
                                 type: 'GET',
@@ -796,7 +792,7 @@
                 type: 'GET',
                 url: '/api/member/club?size=' + size
                     +'&page=' + (pageNumber - 1)
-                    + '&sort=createdAt,desc',
+                    + '&sort=club.createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
@@ -804,14 +800,14 @@
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
-                            clubImage = '/img/default.png';
+                            clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                         }
                         clubId = currentItem.clubId;
                         console.log(clubId);
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
-                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                        var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                         $.ajax({
                             type: 'GET',
