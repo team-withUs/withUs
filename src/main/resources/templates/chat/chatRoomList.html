@@ -153,7 +153,6 @@
   </style>
 
   <script th:inline="javascript">
-    const host = 'https://' + window.location.host;
     const memberId = /*[[${memberId}]]*/ '';
 
     $(document).ready(function() {
@@ -190,7 +189,7 @@
           console.info(roomId, title);
           console.info(img);
 
-          var chatRoomDiv = $('<a href="' + host + '/api/chat/chatRoom/' + roomId + '/chatRoomPage' + '" class="chat-room">');
+          var chatRoomDiv = $('<a href="' + '/api/chat/chatRoom/' + roomId + '/chatRoomPage' + '" class="chat-room">');
 
           if (img) {
             chatRoomDiv.append('<img src="' + img + '" alt="채팅방 이미지">');
@@ -256,10 +255,10 @@
 <div>
   <header>
     <div class="title">
-      <h2 class="withUs" onclick="location.href=host + '/'">withUs</h2>
+      <h2 class="withUs" onclick="location.href='/'">withUs</h2>
     </div>
     <div class="title2">
-      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/' + memberId + '/profilePage'"></i>
+      <i class="icon fa-solid fa-user" onclick="location.href='/api/member/' + memberId + '/profilePage'"></i>
       <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
     </div>
   </header>

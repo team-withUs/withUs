@@ -16,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
     <script th:inline="javascript">
-        const host = 'https://' + window.location.host;
         var memberId;
         var isLogin;
         var isClubMember;
@@ -68,19 +67,19 @@
 
 
             $("#loginBtn").on("click", function(e) {
-                window.location.href = host + '/api/member/loginPage';
+                window.location.href = '/api/member/loginPage';
             });
 
             $("#chatting").on("click", function(e) {
-                window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
+                window.location.href = '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function(e) {
-                window.location.href = host + '/api/member/' + memberId + '/profilePage';
+                window.location.href = '/api/member/' + memberId + '/profilePage';
             });
 
             $("#create").on("click", function(e) {
-                window.location.href = host + '/api/club/post-club';
+                window.location.href = '/api/club/post-club';
             });
 
             $("#logout").on("click", function(e) {
@@ -94,7 +93,7 @@
                         contentType: ''
                     })
                     .done(function (res, status, xhr) {
-                        window.location.href = host + '/'
+                        window.location.href = '/'
                     })
                     .fail(function (xhr, status, error) {
                         console.error('로그아웃 요청 API 에러', error);

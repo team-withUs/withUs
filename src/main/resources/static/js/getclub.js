@@ -68,13 +68,13 @@ $(document).ready(function () {
                 iconDiv.on('click', function () {
                     try {
                         // URL로 이동을 시도합니다.
-                        fetch(host + '/api/member/' + memberId + '/profilePage')
+                        fetch('/api/member/' + memberId + '/profilePage')
                         .then(response => {
                             if (response.status === 403) {
                                 alert("로그인한 회원만 프로필에 접근할 수 있습니다.")
                                 window.location.href = '/api/member/loginPage';
                             } else if (response.ok) {
-                                window.location.href = host + '/api/member/' + memberId + '/profilePage'
+                                window.location.href = '/api/member/' + memberId + '/profilePage'
                             }
                             return response.text();
                         })
