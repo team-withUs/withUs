@@ -60,7 +60,9 @@ $(document).ready(function () {
 
                 inviteMemberDiv.append(iconDiv);
 
-                var usernameDiv = $('<div class="invited-user">' + username + '</div>');
+                var maxUsernameLength = 7;
+                var truncatedUsername = username.length > maxUsernameLength ? username.substring(0, maxUsernameLength) + '...' : username;
+                var usernameDiv = $('<div class="invited-member">' + truncatedUsername + '</div>');
                 inviteMemberDiv.append(usernameDiv);
 
                 inviteContainer.append(inviteMemberDiv);
