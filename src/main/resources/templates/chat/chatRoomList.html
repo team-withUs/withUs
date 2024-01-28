@@ -13,6 +13,7 @@
 
   <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script th:src="@{/js/sse.js}"></script>
   <style>
 
 
@@ -173,7 +174,9 @@
           console.error('채팅방 목록 요청 API 에러', error);
         })
 
-
+      if (memberId !== undefined && memberId !== null && memberId !== '') {
+        connectSse();
+      }
 
     })
 

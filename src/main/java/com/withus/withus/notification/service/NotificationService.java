@@ -42,7 +42,8 @@ public class NotificationService {
         sseEmitterReceiver.send(SseEmitter
             .event()
             .name("invitedClub")
-            .data(clubTitle+"에 초대되었습니다."));
+            .data(clubTitle+"에 초대되었습니다.")
+        );
       } catch (IOException e){
         NotificationController.sseEmitters.remove(memberId);
       }
