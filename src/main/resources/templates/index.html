@@ -696,7 +696,7 @@
             $.ajax({
                 type: 'GET',
                 url: '/api/member/club?size='+ size
-                    +'&sort=createdAt,desc',
+                    +'&sort=club.createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
@@ -792,7 +792,7 @@
                 type: 'GET',
                 url: '/api/member/club?size=' + size
                     +'&page=' + (pageNumber - 1)
-                    + '&sort=createdAt,desc',
+                    + '&sort=club.createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
