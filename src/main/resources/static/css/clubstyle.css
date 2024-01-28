@@ -374,9 +374,16 @@ p {
 #leaveClubButton{
     border-radius: 10px;
     background:none;
-    border: 1px solid black;
-    font-family: "Cafe24Supermagic-Bold-v1.0", cursive;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    float: right;
+    font-family: 'Poor Story', system-ui;
 }
 #leaveClubButton:hover {
     background: #b6d4fe;
+}
+.dark-mode #leaveClubButton {
+    background-color: #454545;
+    color: #ffffff;
+
 }
