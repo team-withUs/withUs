@@ -77,8 +77,11 @@ $(document).ready(function () {
         var clubTitle = $("#clubTitleInput").val().trim();
         var category = $(".btn-secondary.dropdown-toggle").text().trim();
         console.log(category)
+        if (category.toLowerCase() === "category") {
+            alert("유효하지 않은 카테고리가 선택되었습니다. 유효한 카테고리를 선택해주세요.");
+            return;
+        }
         var content = $("#club-content").val().trim();
-        // var maxMember = $("#totalInviteesInput").val().trim();
         var startTime = $("#startDate").val().trim();
         var endTime = $("#endDate").val().trim();
 
