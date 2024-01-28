@@ -44,7 +44,8 @@ function connectSse(){
         }, 60 * 1000 * 60);
 
         notification.addEventListener('click', () => {
-          window.open('/api/chat/member/'+memberId+'/chatRoomListPage', 'blank');
+          notification.close();
+          window.location.href='/api/chat/member/'+memberId+'/chatRoomListPage';
         });
       }
 
