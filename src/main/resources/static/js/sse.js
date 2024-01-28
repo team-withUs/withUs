@@ -13,10 +13,6 @@ function connectSse(){
         setTimeout(() => {
           notification.close();
         }, 10 * 1000*60);
-
-        notification.addEventListener('click', () => {
-          window.open('/api/member/club?size=4&sort=club.createdAt,desc', 'blank');
-        });
       }
 
       let granted = false;
@@ -48,7 +44,8 @@ function connectSse(){
         }, 60 * 1000 * 60);
 
         notification.addEventListener('click', () => {
-          window.open('/api/chat/member/'+memberId+'/chatRoomListPage', 'blank');
+          notification.close();
+          window.location.href='/api/chat/member/'+memberId+'/chatRoomListPage';
         });
       }
 
