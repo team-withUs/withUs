@@ -100,6 +100,11 @@ $(document).ready(function () {
                     error: function (xhr, status, error) {
                         console.error("초대 에러. 상태:", status, "에러:", error);
                         console.log("서버 응답:", xhr.responseText);
+                        if (xhr.status === 404) {
+                            alert("사용자를 찾을 수 없습니다. 올바른 이메일을 입력해주세요.");
+                        } else {
+                            alert("초대 중에 오류가 발생했습니다. 다시 시도해주세요.");
+                        }
                     }
                 });
 
@@ -107,6 +112,7 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 console.error("초대 대상 사용자 정보를 가져오는 중 (상태):", status, "에러:", error);
                 console.log("서버 응답:", xhr.responseText);
+                alert("초대 대상 사용자 정보가 없습니다. 다시 시도해주세요.");
             }
         });
     }
