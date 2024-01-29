@@ -290,8 +290,14 @@
 
       $("#button-send").on("click", function(e) {
         var msg = document.getElementById("msg");
+
+        if (msg.value.length >= 100) {
+          alert("메시지는 100자를 초과할수 없습니다.");
+          return;
+        }
+
         console.log(msg);
-        if (msg.value !== null || msg.value.trim() !== '') {
+        if (msg.value !== null && msg.value.trim() !== '' && msg.value !== undefined) {
           console.log(username + ":" + msg.value);
           stomp.send('/send/api/chat/chatRoom/' + roomId + '/message', {}, JSON.stringify({
             senderId: loginId,
@@ -299,6 +305,8 @@
             content: msg.value
           }));
           msg.value = '';
+        } else {
+          alert("메시지 내용을 입력해주세요.")
         }
       });
 
@@ -350,7 +358,7 @@
       var day = ('0' + dateObject.getDate()).slice(-2);
 
       var hours = dateObject.getHours();
-      var minutes = dateObject.getMinutes();
+      var minutes = ('0' + dateObject.getMinutes()).slice(-2);
       var period = (hours < 12) ? '오전' : '오후';
 
       if (hours > 12) { hours -= 12; }

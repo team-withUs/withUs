@@ -1,7 +1,7 @@
 package com.withus.withus.global.security;
 
-import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.repository.MemberRepository;
+import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.repository.MemberRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

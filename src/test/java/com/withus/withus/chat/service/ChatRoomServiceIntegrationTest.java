@@ -2,14 +2,14 @@
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.withus.withus.chat.dto.ChatRoomResponseDto;
-import com.withus.withus.chat.entity.ChatRoom;
-import com.withus.withus.chat.repository.ChatRoomRepository;
-import com.withus.withus.chat.service.ChatRoomService;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.repository.MemberRepository;
-import com.withus.withus.member.service.MemberServiceImpl;
+import com.withus.withus.domain.chat.dto.ChatRoomResponseDto;
+import com.withus.withus.domain.chat.entity.ChatRoom;
+import com.withus.withus.domain.chat.repository.ChatRoomRepository;
+import com.withus.withus.domain.chat.service.ChatRoomService;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.repository.MemberRepository;
+import com.withus.withus.domain.member.service.MemberServiceImpl;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package com.withus.withus.global.utils;
 
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
@@ -20,9 +20,11 @@ public class EmailService {
 
     private final JavaMailSender emailSender;
 
-    public void sendEmail(String toEmail,
+    public void sendEmail(
+        String toEmail,
         String title,
-        String text) {
+        String text
+    ) {
         SimpleMailMessage emailForm = createEmailForm(toEmail, title, text);
         try {
             emailSender.send(emailForm);
@@ -34,9 +36,11 @@ public class EmailService {
     }
 
     // 발신할 이메일 데이터 세팅
-    private SimpleMailMessage createEmailForm(String toEmail,
+    private SimpleMailMessage createEmailForm(
+        String toEmail,
         String title,
-        String text) {
+        String text
+    ) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject(title);
@@ -54,6 +58,7 @@ public class EmailService {
             for (int i = 0; i < lenth; i++) {
                 builder.append(random.nextInt(10));
             }
+
             return builder.toString();
         } catch (NoSuchAlgorithmException e) {
             log.debug("EmailService.createCode() exception occur");
