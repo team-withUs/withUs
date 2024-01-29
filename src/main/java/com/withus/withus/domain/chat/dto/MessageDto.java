@@ -14,6 +14,7 @@ public class MessageDto{
   @NotNull
   private String senderName;
 
+  @NotNull
   private String content;
 
   @Builder
