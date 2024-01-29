@@ -3,7 +3,7 @@ package com.withus.withus.domain.club.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.withus.withus.domain.club.entity.ClubMemberRole;
 import lombok.RequiredArgsConstructor;
-import static com.withus.withus.club.entity.QClubMember.clubMember;
+import static com.withus.withus.domain.club.entity.QClubMember.clubMember;
 
 @RequiredArgsConstructor
 public class ClubMemberRepositoryQueryImpl implements ClubMemberRepositoryQuery {

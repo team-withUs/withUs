@@ -172,9 +172,9 @@ public class ClubServiceImpl implements ClubService {
         Page<Club> clubPage;
         if (keyWord.equals("ace245")) {
             if (category.equals(ClubCategory.ALL)) {
-                clubPage = clubRepository.findAllByIsActive(true, pageable);
+                clubPage = clubRepository.findAllByIsActiveAndMember_IsActive(true, true, pageable);
             } else {
-                clubPage = clubRepository.findByCategoryAndIsActive(category, true, pageable);
+                clubPage = clubRepository.findByCategoryAndIsActiveAndMember_IsActive(category, true, true, pageable);
             }
         } else {
             clubPage = clubRepository.search(

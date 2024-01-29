@@ -16,9 +16,17 @@ public interface ClubRepository extends JpaRepository<Club, Long>, ClubRepositor
   
     boolean existsByIsActiveAndId(boolean isActive, Long clubId);
 
-    Page<Club> findByCategoryAndIsActive(ClubCategory category, boolean isActive, Pageable pageable);
+    Page<Club> findByCategoryAndIsActiveAndMember_IsActive(
+        ClubCategory category,
+        boolean isActive,
+        boolean memberIsActive,
+        Pageable pageable);
 
-    Page<Club> findAllByIsActive(boolean isActive, Pageable pageable);
+    Page<Club> findAllByIsActiveAndMember_IsActive(
+        boolean isActive,
+        boolean memberIsActive,
+        Pageable pageable
+    );
 
     Integer countByIsActive(boolean isActive);
 

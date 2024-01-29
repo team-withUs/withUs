@@ -206,7 +206,7 @@ public class MemberServiceImpl implements MemberService{
 
   @Override
   public Page<ClubResponseDto> getMyClubList(Pageable pageable, Member member) {
-    Page<ClubMember> myClubMemberPage = clubMemberService.findAllByMemberId(member,pageable);
+    Page<ClubMember> myClubMemberPage = clubMemberService.findAllByMemberId(member, pageable);
     Page<ClubResponseDto> clubResponseDtoPage = myClubMemberPage
         .map(clubMember -> ClubResponseDto.createClubResponseDto(clubMember.getClub()));
 

@@ -14,7 +14,12 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     Optional<ClubMember> findClubMemberByMemberIdAndClubId(Long memberId, Long clubId);
 
-    Page<ClubMember> findByMemberIdAndClub_IsActive(Long member_id, Pageable pageable, boolean isActive);
+    Page<ClubMember> findByMemberIdAndClub_IsActiveAndClub_Member_IsActive(
+        Long member_id,
+        Pageable pageable,
+        boolean isActive,
+        boolean memberIsActive
+    );
 
     Page<ClubMember> findByMemberIdAndClubMemberRoleAndClub_IsActive(
         Long memberId,
@@ -25,10 +30,10 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     boolean existsByMemberIdAndClubId(Long memberId, Long clubId);
 
-    List<ClubMember> findByClubId(Long clubId);
+    List<ClubMember> findByClubIdAndClub_Member_IsActive(Long clubId, boolean memberIsActive);
 
     //  추가
-    Integer countByClubId(Long clubId);
+    Integer countByClubIdAndClub_Member_IsActive(Long clubId, boolean memberIsActive);
 
 
     //삭제 스케줄러용
