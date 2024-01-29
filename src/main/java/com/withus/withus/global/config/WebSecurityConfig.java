@@ -1,6 +1,5 @@
 package com.withus.withus.global.config;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.withus.withus.global.security.CustomLogoutHandler;
 import com.withus.withus.global.security.UserDetailsServiceImpl;
@@ -22,7 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
-
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -31,6 +29,7 @@ public class WebSecurityConfig {
   private final JwtUtil jwtUtil;
 
   private final UserDetailsServiceImpl userDetailsService;
+
   private final AuthenticationConfiguration authenticationConfiguration;
 
   private final ObjectMapper objectMapper;
@@ -55,6 +54,7 @@ public class WebSecurityConfig {
   public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
     JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
     filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+
     return filter;
   }
 
@@ -93,16 +93,11 @@ public class WebSecurityConfig {
         .addLogoutHandler(logoutHandler)
         .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK ));
 
-
-
     // 필터 관리
     http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
     http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-
-
     return http.build();
   }
-
 
 }

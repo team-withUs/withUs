@@ -1,4 +1,4 @@
-package com.withus.withus.global.exception;
+package com.withus.withus.global.response.exception;
 
 import lombok.Getter;
 

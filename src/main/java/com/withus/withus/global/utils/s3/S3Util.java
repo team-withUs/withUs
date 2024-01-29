@@ -1,15 +1,14 @@
-package com.withus.withus.global.s3;
+package com.withus.withus.global.utils.s3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +20,6 @@ public class S3Util {
   private String bucket;
 
   private final AmazonS3Client amazonS3Client;
-
 
   //파일 업로드
   public String uploadFile(MultipartFile file, String classification) {
@@ -41,6 +39,7 @@ public class S3Util {
           filename,
           file.getInputStream(),metadata
       );
+
       return filename;
     } catch(IOException e){
       throw new BisException(ErrorCode.FAILED_UPLOAD_IMAGE);

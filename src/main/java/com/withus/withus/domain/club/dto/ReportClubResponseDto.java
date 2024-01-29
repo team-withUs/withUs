@@ -13,11 +13,11 @@ public record ReportClubResponseDto(
             Club club,
             ReportClub reportClub
     ) {
-        String username = club.getUsername();
-        String content = reportClub.getContent();
+//        String content = reportClub.getContent();
+
         return ReportClubResponseDto.builder()
                 .clubId(club.getId())
-                .username(username)
+                .username(club.getUsername())
                 .content(reportClub.getContent())
                 .build();
     }

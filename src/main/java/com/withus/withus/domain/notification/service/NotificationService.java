@@ -1,7 +1,7 @@
 package com.withus.withus.domain.notification.service;
 
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
 import com.withus.withus.domain.notification.controller.NotificationController;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -32,19 +32,21 @@ public class NotificationService {
 
   public void notifyInviting(Long memberId, String clubTitle){
 
-    if(NotificationController.sseEmitters.containsKey(memberId)){
+    if(NotificationController.sseEmitters.containsKey(memberId)) {
       SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(memberId);
 
       try{
         sseEmitterReceiver.send(SseEmitter
             .event()
             .name("invitedClub")
-            .data(clubTitle+"에 초대되었습니다.")
+            .data(clubTitle + "에 초대되었습니다.")
         );
+
       } catch (IOException e){
         NotificationController.sseEmitters.remove(memberId);
       }
     }
+
   }
 
   public void notifyMessage(Long memberId){
@@ -57,9 +59,12 @@ public class NotificationService {
             .event()
             .name("message")
             .data("채팅메세지가 도착했습니다."));
+
       } catch (IOException e){
         NotificationController.sseEmitters.remove(memberId);
       }
     }
+
   }
+
 }

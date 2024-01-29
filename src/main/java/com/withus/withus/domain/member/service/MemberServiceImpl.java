@@ -1,30 +1,30 @@
 package com.withus.withus.domain.member.service;
 
-import static com.withus.withus.global.s3.S3Const.S3_DIR_MEMBER;
+import static com.withus.withus.global.utils.s3.S3Const.S3_DIR_MEMBER;
 
 import com.withus.withus.domain.club.dto.ClubResponseDto;
 import com.withus.withus.domain.club.entity.Club;
 import com.withus.withus.domain.club.entity.ClubMember;
 import com.withus.withus.domain.club.service.ClubMemberServiceImpl;
 import com.withus.withus.domain.club.service.ClubServiceImpl;
-import com.withus.withus.domain.member.dto.ReportRequestDto;
-import com.withus.withus.domain.member.dto.SignupRequestDto;
-import com.withus.withus.domain.member.dto.UpdateRequestDto;
-import com.withus.withus.domain.member.entity.ReportMember;
-import com.withus.withus.domain.member.repository.MemberRepository;
-import com.withus.withus.domain.member.repository.ReportMemberRepository;
-import com.withus.withus.global.config.EmailConfig;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.s3.S3Util;
-import com.withus.withus.global.utils.EmailService;
-import com.withus.withus.global.utils.RedisService;
 import com.withus.withus.domain.member.dto.EmailRequestDto;
 import com.withus.withus.domain.member.dto.MemberResponseDto;
 import com.withus.withus.domain.member.dto.PasswordRequestDto;
+import com.withus.withus.domain.member.dto.ReportRequestDto;
+import com.withus.withus.domain.member.dto.UpdateRequestDto;
+import com.withus.withus.domain.member.entity.ReportMember;
+import com.withus.withus.domain.member.repository.ReportMemberRepository;
+import com.withus.withus.domain.notification.service.NotificationService;
+import com.withus.withus.global.config.EmailConfig;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
+import com.withus.withus.global.utils.s3.S3Util;
+import com.withus.withus.global.utils.EmailService;
+import com.withus.withus.global.utils.RedisService;
+import com.withus.withus.domain.member.dto.SignupRequestDto;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.club.entity.ClubMemberRole;
-import com.withus.withus.domain.notification.service.NotificationService;
+import com.withus.withus.domain.member.repository.MemberRepository;
 import java.time.Duration;
 
 import lombok.AllArgsConstructor;
@@ -121,6 +121,7 @@ public class MemberServiceImpl implements MemberService{
     if(!updateRequestDto.username().equals(member.getUsername())){
       sameMemberInDBByUsername(updateRequestDto.username());
     }
+
     if(!updateRequestDto.email().equals(member.getEmail())){
       sameMemberInDBByEmail(updateRequestDto.email());
     }
@@ -133,13 +134,15 @@ public class MemberServiceImpl implements MemberService{
       if(updatedMember.getFilename() != null){
         s3Util.deleteFile(updatedMember.getFilename(),S3_DIR_MEMBER);
       }
+
       String filename = s3Util.uploadFile(updateRequestDto.imageFile(), S3_DIR_MEMBER);
       updatedMember.update(
           updateRequestDto,
           s3Util.getFileURL(filename, S3_DIR_MEMBER),
           filename
       );
-    }else {
+
+    } else {
       updatedMember.update(updateRequestDto);
     }
 
@@ -153,7 +156,7 @@ public class MemberServiceImpl implements MemberService{
       PasswordRequestDto passwordRequestDto,
       Member member
   ) {
-    if(!memberId.equals(member.getId())){
+    if(!memberId.equals(member.getId())) {
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
 
@@ -171,9 +174,10 @@ public class MemberServiceImpl implements MemberService{
   @Transactional
   @Override
   public void deleteMember(Long memberId, Member member) {
-    if(!memberId.equals(member.getId())){
+    if(!memberId.equals(member.getId())) {
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
+
     if(!member.getIsActive()){
       throw new BisException(ErrorCode.DELETED_MEMBER);
     }
@@ -184,11 +188,11 @@ public class MemberServiceImpl implements MemberService{
   @Transactional
   @Override
   public void reportMember(Long memberId, ReportRequestDto reportRequestDto, Member member) {
-    if(!existMemberByIsActiveAndId(memberId)){
+    if(!existMemberByIsActiveAndId(memberId)) {
       throw new BisException(ErrorCode.NOT_FOUND_MEMBER);
     }
 
-    if(reportMemberRepository.existsByReporterIdAndReportedId(member.getId(),memberId)){
+    if(reportMemberRepository.existsByReporterIdAndReportedId(member.getId(), memberId)){
       throw new BisException(ErrorCode.DUPLICATE_REPORT);
     }
     ReportMember reportMember = ReportMember.createReportMember(
@@ -249,15 +253,15 @@ public class MemberServiceImpl implements MemberService{
     notificationService.notifyInviting(memberId,club.getClubTitle());
   }
 
-  public boolean passwordCheck(Member member, PasswordRequestDto passwordRequestDto){
+  public boolean passwordCheck(Member member, PasswordRequestDto passwordRequestDto) {
     return passwordEncoder.matches(passwordRequestDto.password(), member.getPassword());
   }
 
   //추가
   @Override
   public MemberResponseDto getMemberEmail(String email) {
-    Member member = findMemberByMemberEmail(email);
-    return MemberResponseDto.searchEmail(member);
+
+    return MemberResponseDto.searchEmail(findMemberByMemberEmail(email));
   }
 
   public Member findMemberByMemberEmail(String email) {
@@ -275,8 +279,6 @@ public class MemberServiceImpl implements MemberService{
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }
-
-
 
   public Member findMemberByLoginname(String loginname){
     return memberRepository.findByLoginnameAndIsActive(loginname, true).orElseThrow(
@@ -311,8 +313,10 @@ public class MemberServiceImpl implements MemberService{
     String redisAuthCode = redisService.getValues(AUTH_CODE_PREFIX + email);
     if (!(redisAuthCode.equals(authCode))) {
       throw new BisException(ErrorCode.NOT_MATCH_AUTHCODE);
+
     } else {
       redisService.deleteValues(AUTH_CODE_PREFIX + email);
     }
   }
+
 }

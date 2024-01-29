@@ -11,15 +11,14 @@ public record ChatRoomResponseDto(
     String senderImg,
     Long receiverId,
     String receiverImg
-
 ) {
-
   public static ChatRoomResponseDto createChatRoomResponseDto(
       Long roomId,
       String title,
       Member sender,
       Member receiver
   ) {
+
     return ChatRoomResponseDto.builder()
         .roomId(roomId)
         .title(title)

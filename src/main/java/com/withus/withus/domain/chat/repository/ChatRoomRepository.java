@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
-
   Optional<ChatRoom> findChatRoomByIdAndIsActive(Long roomId, boolean isActive);
-
 
   @Query("SELECT cr FROM ChatRoom cr " +
       "WHERE ((cr.sender = :sender AND cr.receiver = :receiver) OR " +
@@ -32,7 +30,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
       @Param("receiver") Member receiver,
       @Param("isActive") boolean isActive
   );
-
-
 
 }

@@ -1,6 +1,5 @@
 package com.withus.withus.domain.notice.dto;
 
-
 import org.springframework.web.multipart.MultipartFile;
 
 public record NoticeRequestDto(
@@ -8,7 +7,6 @@ public record NoticeRequestDto(
   String content,
   String category,
   MultipartFile imageFile
-  )
-{
+) {
 
 }

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import static com.withus.withus.club.entity.QClub.club;
+import static com.withus.withus.domain.club.entity.QClub.club;
 
 @RequiredArgsConstructor
 public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
@@ -75,6 +75,7 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
   private BooleanExpression containsSearchTitle(String keyWord){
     return keyWord != null ? club.clubTitle.contains(keyWord) : null;
   }
+
   private BooleanExpression containsSearchContent(String keyWord){
     return keyWord != null ? club.content.contains(keyWord) : null;
   }

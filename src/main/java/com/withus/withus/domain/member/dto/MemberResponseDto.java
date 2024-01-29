@@ -13,28 +13,25 @@ public record MemberResponseDto(
         String imageURL,
         String tag
 ) {
-    public static MemberResponseDto createMemberResponseDto(Member member){
-        String username = member.getUsername();
-        String email = member.getEmail();
-        String introduction = member.getIntroduction();
-        String imageURL = member.getImageURL();
-        String tag = member.getTag();
+
+    public static MemberResponseDto createMemberResponseDto(Member member) {
+
         return MemberResponseDto.builder()
-                .username(username)
-                .email(email)
-                .introduction(introduction)
-                .imageURL(imageURL)
-                .tag(tag)
+                .username(member.getUsername())
+                .email(member.getEmail())
+                .introduction(member.getIntroduction())
+                .imageURL(member.getImageURL())
+                .tag(member.getTag())
                 .build();
     }
 
 
     public static MemberResponseDto searchEmail(Member member) {
-        String email = member.getEmail();
-        Long id = member.getId();
+
         return MemberResponseDto.builder()
-                .id(id)
-                .email(email)
+                .id(member.getId())
+                .email(member.getEmail())
                 .build();
     }
+
 }

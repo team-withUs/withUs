@@ -234,9 +234,14 @@
 
                 function noticePage(noticeId){
                     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
+                    var memberId = [[${memberId}]];
+                    if (memberId === undefined || memberId === null || memberId === '') {
+                        alert("회원만 이용 가능합니다.");
+                        window.location.href = '/api/member/loginPage';
+                        return;
+                    }
                     window.location.href = "/api/club/" + clubId +"/notice/" + noticeId + "/noticeDetailPage"
                     console.log(clubId)
-                    // var noticeId
                     console.log(noticeId)
                 }
 

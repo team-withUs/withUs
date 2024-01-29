@@ -1,12 +1,13 @@
 package com.withus.withus.domain.club.repository;
 
+import static com.withus.withus.domain.club.entity.QClubMember.clubMember;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.withus.withus.domain.club.entity.ClubMemberRole;
 import lombok.RequiredArgsConstructor;
-import static com.withus.withus.club.entity.QClubMember.clubMember;
 
 @RequiredArgsConstructor
 public class ClubMemberRepositoryQueryImpl implements ClubMemberRepositoryQuery {
+
   private final JPAQueryFactory jpaQueryFactory;
 
   @Override
@@ -18,6 +19,7 @@ public class ClubMemberRepositoryQueryImpl implements ClubMemberRepositoryQuery 
             clubMember.member.id.eq(memberId),
             clubMember.club.id.eq(clubId))
         .fetchFirst();
+
     return existHost != null;
   }
 }

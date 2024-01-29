@@ -1,7 +1,7 @@
 package com.withus.withus.global.security.jwt;
 
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
 import com.withus.withus.global.utils.RedisService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -41,13 +41,14 @@ public class JwtUtil {
 
     // 토큰 만료시간
     private final long ACCESS_TOKEN_TIME = 30 * 60 * 1000L; // 30분
+
     private final long REFRESH_TOKEN_TIME = 7 * 24 * 60 * 60 * 1000L; // 1주
 
     @Value("${jwt.secret}") // Base64 Encode 한 SecretKey
     private String secretKey;
 
-
     private Key key;
+
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
     // 로그 설정
@@ -121,16 +122,21 @@ public class JwtUtil {
         if (tokenName.equals("access")) {
             String accessToken = redisService.getValues(user.getSubject() + ACCESS_TOKEN);
             if(accessToken.isBlank()) {
+
                 return false;
             }
+
             return true;
 
         } else if (tokenName.equals("refresh")) {
             String refreshToken = redisService.getValues(user.getSubject() + REFRESH_TOKEN);
             if(refreshToken.isBlank()) {
+
                 return false;
             }
+
             return true;
+
         } else {
             throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
         }
@@ -142,8 +148,10 @@ public class JwtUtil {
         String redisAccessToken = redisService.getValues(user.getSubject() + ACCESS_TOKEN);
 
         if (accessTokenValue.equals(redisAccessToken)) {
+
             return false;
         }
+
         return true;
     }
 
@@ -153,6 +161,7 @@ public class JwtUtil {
     public boolean validateToken(String token) throws ExpiredJwtException {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+
             return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
             logger.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
@@ -164,11 +173,13 @@ public class JwtUtil {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
         }
+
         return false;
     }
 
     // 토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token) {
+
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
@@ -179,14 +190,17 @@ public class JwtUtil {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(tokenName)) {
                     try {
+
                         return URLDecoder.decode(cookie.getValue(),
                                 "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode
                     } catch (UnsupportedEncodingException e) {
+
                         return null;
                     }
                 }
             }
         }
+
         return null;
     }
 
@@ -194,11 +208,14 @@ public class JwtUtil {
     public boolean existTokenByLoginname(String loginname) {
         String accessToken = redisService.getValues(loginname + ACCESS_TOKEN);
         String refreshToken = redisService.getValues(loginname + REFRESH_TOKEN);
+
         log.info("엑세스토큰조회 : " + accessToken);
         log.info("리프레시토큰조회 : " + refreshToken);
         if (accessToken.isBlank() && refreshToken.isBlank()) {
+
             return false;
         } else {
+
             return true;
         }
     }

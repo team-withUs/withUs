@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface NoticeRepository extends JpaRepository<Notice,Long> {
+
   Optional<Notice> findByIsActiveAndId(Boolean isActive,Long noticeId);
 
   List<Notice> findAllByIsActiveAndClubId(Boolean isActive,Long clubId, Pageable pageable);
@@ -18,9 +19,10 @@ public interface NoticeRepository extends JpaRepository<Notice,Long> {
 
 
   //삭제 스캐줄러용
-
   List<Notice> findAllByIsActive(boolean isActive);
+
   List<Notice> findAllByClubId(Long clubId);
 
   List<Notice> findAllByMemberId(Long memberId);
+
 }

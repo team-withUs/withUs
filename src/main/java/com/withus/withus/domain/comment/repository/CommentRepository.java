@@ -8,18 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    Optional<Comment> findByIsActiveAndId(Boolean isActive, Long commentId);
 
+    Optional<Comment> findByIsActiveAndId(Boolean isActive, Long commentId);
 
     List<Comment> findAllByIsActiveAndNoticeId(boolean IsActive,Long noticeId, Pageable pageable);
 
     Integer countByIsActiveAndNoticeId(boolean isActive, Long noticeId);
 
-
-
     //삭제 스캐줄러용
     List<Comment> findAllByIsActive(boolean isActive);
 
     List<Comment> findAllByNoticeId(Long noticeId);
+
     List<Comment> findAllByMemberId(Long memberId);
 }

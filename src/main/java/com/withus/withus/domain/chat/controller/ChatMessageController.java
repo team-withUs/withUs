@@ -4,9 +4,9 @@ import com.withus.withus.domain.chat.dto.ChatMessageResponseDto;
 import com.withus.withus.domain.chat.dto.MessageDto;
 import com.withus.withus.domain.chat.service.ChatMessageService;
 import com.withus.withus.domain.chat.service.ChatRoomService;
+import com.withus.withus.domain.notification.service.NotificationService;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
-import com.withus.withus.domain.notification.service.NotificationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,16 +30,16 @@ public class ChatMessageController {
   private final SimpMessagingTemplate simpMessagingTemplate;
 
   private final NotificationService notificationService;
+
   //Client가 SEND할 수 있는 경로
   //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
   //대상 roomId를 구독하고있는 구독자 대상에게 메세지를 전달함
-  //"/send/api/chat/chatRoom/{roomId}/message"
+  //"/ws/send/api/chat/chatRoom/{roomId}/message"
   @MessageMapping("/api/chat/chatRoom/{roomId}/message")
-  public void message(@DestinationVariable("roomId") Long roomId, MessageDto messageDto) {
+  public void message(@DestinationVariable("roomId") Long roomId, MessageDto messageDto
+  ) {
     simpMessagingTemplate.convertAndSend("/room/api/chat/chatRoom/" + roomId + "/message", messageDto);
     chatMessageService.saveMessage(roomId, messageDto);
-    log.info("Message [{}] send by member: {} to chatting room: {}", messageDto.getContent(),
-        messageDto.getSenderId(), roomId);
   }
 
   @MessageMapping("/api/chat/chatRoom/{roomId}/message/enter")
@@ -49,22 +49,17 @@ public class ChatMessageController {
     Long receiverId = chatRoomService.findReceiverId(roomId, messageDto.getSenderId());
 
     notificationService.notifyMessage(receiverId);
-    log.info("{} enter chatting room: {}", messageDto.getSenderName(), roomId);
-
   }
-
-
-
 
   @GetMapping("/api/chat/chatRoom/{roomId}/message")
   public ResponseEntity<CommonResponse<List<ChatMessageResponseDto>>> getMessage(
       @PathVariable("roomId") Long roomId
   ) {
     List<ChatMessageResponseDto> chatMessageResponseDtoList = chatMessageService.getsMessage(roomId);
-    return ResponseEntity.ok().body(
+
+    return ResponseEntity.status(ResponseCode.OK.getHttpStatus()).body(
         CommonResponse.of(ResponseCode.OK, chatMessageResponseDtoList));
   }
-
 
 }
 

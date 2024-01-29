@@ -1,4 +1,4 @@
-package com.withus.withus.global.s3;
+package com.withus.withus.global.utils.s3;
 
 public interface S3Const {
   String S3_BASEURL = "https://sparta-withus.s3.ap-northeast-2.amazonaws.com";

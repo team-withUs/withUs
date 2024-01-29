@@ -1,24 +1,24 @@
 package com.withus.withus.domain.notice.service;
 
 
-import static com.withus.withus.global.s3.S3Const.S3_DIR_NOTICE;
+import static com.withus.withus.global.utils.s3.S3Const.S3_DIR_NOTICE;
 
 import com.withus.withus.domain.club.entity.Club;
 import com.withus.withus.domain.club.entity.ClubMember;
 import com.withus.withus.domain.club.entity.ClubMemberRole;
 import com.withus.withus.domain.club.service.ClubMemberServiceImpl;
 import com.withus.withus.domain.club.service.ClubServiceImpl;
-import com.withus.withus.domain.notice.entity.Notice;
+import com.withus.withus.domain.notice.dto.PageableDto;
+import com.withus.withus.domain.notice.dto.ReportRequestDto;
 import com.withus.withus.domain.notice.entity.NoticeCategory;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.s3.S3Util;
+import com.withus.withus.domain.notice.entity.ReportNotice;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
+import com.withus.withus.global.utils.s3.S3Util;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.notice.dto.NoticeRequestDto;
 import com.withus.withus.domain.notice.dto.NoticeResponseDto;
-import com.withus.withus.domain.notice.dto.PageableDto;
-import com.withus.withus.domain.notice.dto.ReportRequestDto;
-import com.withus.withus.domain.notice.entity.ReportNotice;
+import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.repository.NoticeRepository;
 import com.withus.withus.domain.notice.repository.ReportRepository;
 
@@ -37,7 +37,6 @@ public class NoticeServiceImpl implements NoticeService {
     private final ClubServiceImpl clubService;
     private final ClubMemberServiceImpl clubMemberService;
     private final S3Util s3Util;
-
 
     @Override
     public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member) {

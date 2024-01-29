@@ -1,4 +1,4 @@
-package com.withus.withus;
+package com.withus.withus.domain;
 
 import com.withus.withus.domain.club.service.ClubServiceImpl;
 import com.withus.withus.global.annotation.AuthMember;

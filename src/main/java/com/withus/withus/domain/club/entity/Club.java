@@ -1,9 +1,9 @@
 package com.withus.withus.domain.club.entity;
 
 import com.withus.withus.domain.club.dto.ClubRequestDto;
-import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.global.timestamp.TimeStamp;
+import com.withus.withus.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Length;
 
 @Entity
 @Getter
@@ -20,30 +21,39 @@ public class Club extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private ClubCategory category;
+
     @Column(nullable = false)
     private String clubTitle;
-    @Column(nullable = false)
+
+    @Column(length = 1000, nullable = false)
     private String content;
+
     @Column
     private String filename;
+
     @Column
     private String imageURL;
+
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
     @Column(nullable = false)
     private String username;
-    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
-    private List<ClubMember> clubMemberList = new ArrayList<>();
+
+    private boolean isActive = true;
+
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<Notice> noticeList = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-    @Enumerated(EnumType.STRING)
-    private ClubCategory category;
-    private boolean isActive = true;
 
     @Builder
     private Club(
@@ -62,21 +72,24 @@ public class Club extends TimeStamp {
         this.filename = filename;
         this.imageURL = imageURL;
         this.member = member;
-//        this.MaxMember = maxMember;
         this.startTime = startTime;
         this.endTime = endTime;
         this.username = member.getUsername();
     }
 
-    public static Club createClub(ClubRequestDto clubRequestDto, Member member, String filename, String imageURL, LocalDateTime startTime, LocalDateTime endTime
+    public static Club createClub(
+        ClubRequestDto clubRequestDto,
+        Member member,
+        String filename,
+        String imageURL,
+        LocalDateTime startTime,
+        LocalDateTime endTime
     ) {
-        String clubTitle = clubRequestDto.clubTitle();
-        String content = clubRequestDto.content();
-        ClubCategory category = clubRequestDto.category();
+
         return Club.builder()
-                .clubTitle(clubTitle)
-                .content(content)
-                .category(category)
+                .clubTitle(clubRequestDto.clubTitle())
+                .content(clubRequestDto.content())
+                .category(clubRequestDto.category())
                 .filename(filename)
                 .imageURL(imageURL)
                 .member(member)
@@ -90,13 +103,11 @@ public class Club extends TimeStamp {
             String filename,
             String imageURL
     ) {
-        ClubCategory category = clubrequestDto.category();
         this.clubTitle = clubrequestDto.clubTitle();
         this.content = clubrequestDto.content();
-        this.category = category;
+        this.category = clubrequestDto.category();
         this.filename = filename;
         this.imageURL = imageURL;
-//        this.MaxMember = clubrequestDto.maxMember();
         this.startTime = clubrequestDto.startTime();
         this.endTime = clubrequestDto.endTime();
     }
@@ -117,11 +128,9 @@ public class Club extends TimeStamp {
         return this.imageURL;
     }
 
-    public Member getCreator() {
-        return this.member;
-    }
 
     public Member getAuthor() {
         return this.member;
     }
+
 }

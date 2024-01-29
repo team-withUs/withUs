@@ -1,6 +1,5 @@
 package com.withus.withus.domain.comment.entity;
 
-
 import com.withus.withus.domain.comment.dto.CommentRequestDto;
 import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.global.timestamp.TimeStamp;
@@ -25,6 +24,9 @@ public class Comment extends TimeStamp {
     @Column(nullable = false)
     private String content;
 
+    @Column
+    private Boolean isActive = true;
+
     // 게시판은 여러개의 댓글을 가질 수 있다. (댓글입장 다대일), 지연로딩, 즉시로딩 거의 안씀
     // nullable = false면 게시판없는 댓글은 없다.
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,19 +39,16 @@ public class Comment extends TimeStamp {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column
-    private Boolean isActive = true;
-
     // shift+f6 = 같은 이름을 쓰는 파라미터를 한 번에 수정 가능 !! 배움 !!
     // pubic -> private로 변경 / 생성자는 Entity 내부에서만 사용하기 위함. (@Builder 관련)
     @Builder
-    private Comment(String content, Notice findNotice, Member loginMember){
+    private Comment(String content, Notice findNotice, Member loginMember) {
         this.content = content;
         this.notice = findNotice;
         this.member = loginMember;
     }
 
-    public void update(CommentRequestDto commentRequestDto){
+    public void update(CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.content();
     }
 
@@ -57,13 +56,17 @@ public class Comment extends TimeStamp {
         this.isActive = false;
     }
 
-    public static Comment createComment(CommentRequestDto commentRequestDto, Member member, Notice notice) {
-        String content = commentRequestDto.content();
+    public static Comment createComment(
+        CommentRequestDto commentRequestDto,
+        Member member,
+        Notice notice
+    ) {
 
         return Comment.builder()
-                .content(content)
+                .content(commentRequestDto.content())
                 .findNotice(notice)
                 .loginMember(member)
                 .build();
     }
+
 }

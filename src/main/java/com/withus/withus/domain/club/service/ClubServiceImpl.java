@@ -12,10 +12,10 @@ import com.withus.withus.domain.club.entity.ReportClub;
 import com.withus.withus.domain.club.repository.ClubRepository;
 import com.withus.withus.domain.club.repository.ReportClubRepository;
 import com.withus.withus.domain.member.entity.Member;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.s3.S3Const;
-import com.withus.withus.global.s3.S3Util;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
+import com.withus.withus.global.utils.s3.S3Const;
+import com.withus.withus.global.utils.s3.S3Util;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 
@@ -32,9 +32,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ClubServiceImpl implements ClubService {
+
     private final ClubRepository clubRepository;
+
     private final ReportClubRepository reportClubRepository;
+
     private final S3Util s3Util;
+
     private final ClubMemberService clubMemberService;
 
     @Override
@@ -46,9 +50,11 @@ public class ClubServiceImpl implements ClubService {
             if (StringUtils.isBlank(clubRequestDto.clubTitle())) {
                 throw new BisException(ErrorCode.INVALID_VALUE);
             }
+
             if (startTime == null || endTime == null) {
                 throw new BisException(ErrorCode.INVALID_VALUE);
             }
+
             String imageFile = null;
             String imageUrl = null;
             if (image != null) {
@@ -56,14 +62,18 @@ public class ClubServiceImpl implements ClubService {
                 System.out.println(imageFile);
                 imageUrl = s3Util.getFileURL(imageFile, S3Const.S3_DIR_CLUB);
             }
+
             Club club = Club.createClub(clubRequestDto, member, imageFile, imageUrl, startTime, endTime);
             if (imageFile != null) {
                 club.setImgUrl(imageFile);
             }
+
             Club savedClub = clubRepository.save(club);
             ClubMember clubMember = ClubMember.createClubMember(club, member, ClubMemberRole.HOST);
             clubMemberService.createClubMember(clubMember);
+
             return ClubResponseDto.createClubResponseDto(savedClub);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new BisException(ErrorCode.INVALID_VALUE);
@@ -76,6 +86,7 @@ public class ClubServiceImpl implements ClubService {
         if (clubList == null || clubList.isEmpty()) {
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
+
         return clubList.stream()
                 .map(ClubResponseDto::createClubResponseDto)
                 .collect(Collectors.toList());
@@ -150,32 +161,47 @@ public class ClubServiceImpl implements ClubService {
     }
 
     @Override
-    public ReportClubResponseDto createReportClub(Long clubId, ReportClubRequestDto reportClubRequestDto, Member member) {
+    public ReportClubResponseDto createReportClub(
+        Long clubId,
+        ReportClubRequestDto reportClubRequestDto,
+        Member member
+    ) {
         if (StringUtils.isBlank(reportClubRequestDto.content())) {
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
+
         Club club = verifyMember(clubId);
         ReportClub reportClub = ReportClub.createReport(reportClubRequestDto, member, club);
         if (!reportClubRepository.existsByClubIdAndMemberId(club.getId(), member.getId())) {
             reportClubRepository.save(reportClub);
+
             if (reportClubRepository.countByClubId(club.getId()) > 5) {
                 club.inActive();
             }
+
             return ReportClubResponseDto.createReportClubResponseDto(club, reportClub);
+
         } else {
             throw new BisException(ErrorCode.CLUB_EXIST_REPORT);
         }
     }
 
     @Override
-    public Page<ClubResponseDto> getsClubByCategory(ClubCategory category, Pageable pageable, String keyWord, String searchCategory) {
+    public Page<ClubResponseDto> getsClubByCategory(
+        ClubCategory category,
+        Pageable pageable,
+        String keyWord,
+        String searchCategory
+    ) {
         Page<Club> clubPage;
         if (keyWord.equals("ace245")) {
             if (category.equals(ClubCategory.ALL)) {
                 clubPage = clubRepository.findAllByIsActive(true, pageable);
+
             } else {
                 clubPage = clubRepository.findByCategoryAndIsActive(category, true, pageable);
             }
+
         } else {
             clubPage = clubRepository.search(
                     keyWord,
@@ -184,7 +210,6 @@ public class ClubServiceImpl implements ClubService {
                     pageable,
                     category
                 );
-
         }
 
         return clubPage.map(ClubResponseDto::createClubResponseDto);
@@ -195,29 +220,25 @@ public class ClubServiceImpl implements ClubService {
         return clubRepository.countByIsActive(true);
     }
 
-
     public Club findClubById(Long clubId) {
         return clubRepository.findById(clubId).
                 orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
     }
 
     private Club verifyMember(Long clubId) {
-        Club club = clubRepository.findByIsActiveAndId(true, clubId)
-                .orElseThrow(() ->
-                        new BisException(ErrorCode.NOT_FOUND_CLUB)
-                );
-        return club;
+
+        return clubRepository.findByIsActiveAndId(true, clubId)
+            .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
     }
 
     public Club findByIsActiveAndClubId(Long clubId) {
-        Club club = clubRepository.findByIsActiveAndId(true, clubId)
-                .orElseThrow(() ->
-                        new BisException(ErrorCode.NOT_FOUND_CLUB)
-                );
-        return club;
+
+        return clubRepository.findByIsActiveAndId(true, clubId)
+            .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
     }
 
     public boolean existByIsActiveAndClubId(Long clubId) {
+
         return clubRepository.existsByIsActiveAndId(true, clubId);
     }
 }

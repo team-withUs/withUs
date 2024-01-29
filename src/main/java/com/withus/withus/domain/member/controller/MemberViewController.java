@@ -1,8 +1,8 @@
 package com.withus.withus.domain.member.controller;
 
-import com.withus.withus.domain.member.service.MemberServiceImpl;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/member")
 public class MemberViewController {
 
-  private final MemberServiceImpl memberService;
-
   @GetMapping("/signupPage")
   public String getSignupPage(){
+
     return "auth/signupPage";
   }
 
   @GetMapping("/loginPage")
   public String getLoginPage(){
+
     return "auth/loginPage";
   }
 
@@ -35,11 +35,14 @@ public class MemberViewController {
   ){
     if (loginMember.getId().equals(memberId)) {
       model.addAttribute("isSameMember", true);
+
     } else {
       model.addAttribute("isSameMember", false);
     }
+
     model.addAttribute("memberId", memberId);
     model.addAttribute("loginMemberId", loginMember.getId());
+
     return "profile";
   }
 
@@ -51,11 +54,14 @@ public class MemberViewController {
   ) {
     if (loginMember.getId().equals(memberId)) {
       model.addAttribute("isSameMember", true);
+
     } else {
       model.addAttribute("isSameMember", false);
     }
+
     model.addAttribute("memberId",memberId);
     model.addAttribute("loginMemberId",loginMember.getId());
+
     return "updateProfile";
 
   }
@@ -66,7 +72,6 @@ public class MemberViewController {
       @AuthMember Member member,
       Model model
   ) {
-
     model.addAttribute("memberId",memberId);
     model.addAttribute("loginMemberId", member.getId());
 
