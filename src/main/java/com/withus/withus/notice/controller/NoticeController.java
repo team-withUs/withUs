@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class NoticeController {
   private final NoticeService noticeService;
-  private final MemberServiceImpl memberService;
 
 
   @PostMapping("/club/{clubId}/notice")
