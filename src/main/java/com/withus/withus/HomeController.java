@@ -1,22 +1,14 @@
 package com.withus.withus;
 
-import com.withus.withus.category.entity.ClubCategory;
-import com.withus.withus.club.dto.ClubResponseDto;
-import com.withus.withus.club.entity.Club;
-import com.withus.withus.club.service.ClubServiceImpl;
+import com.withus.withus.domain.club.service.ClubServiceImpl;
 import com.withus.withus.global.annotation.AuthMember;
-import com.withus.withus.member.entity.Member;
-import com.withus.withus.notice.dto.PageableDto;
+import com.withus.withus.domain.member.entity.Member;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor

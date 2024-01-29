@@ -1,6 +1,6 @@
 package com.withus.withus.global.security;
 
-import com.withus.withus.member.entity.Member;
+import com.withus.withus.domain.member.entity.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
