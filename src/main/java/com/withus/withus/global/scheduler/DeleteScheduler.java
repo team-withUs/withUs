@@ -1,21 +1,20 @@
 package com.withus.withus.global.scheduler;
 
 
-import com.withus.withus.club.entity.Club;
-import com.withus.withus.club.entity.ClubMember;
-import com.withus.withus.club.repository.ClubMemberRepository;
-import com.withus.withus.club.repository.ClubRepository;
-import com.withus.withus.comment.entity.Comment;
-import com.withus.withus.comment.repository.CommentRepository;
-import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.repository.MemberRepository;
-import com.withus.withus.notice.entity.Notice;
-import com.withus.withus.notice.repository.NoticeRepository;
+import com.withus.withus.domain.club.entity.Club;
+import com.withus.withus.domain.club.entity.ClubMember;
+import com.withus.withus.domain.club.repository.ClubMemberRepository;
+import com.withus.withus.domain.club.repository.ClubRepository;
+import com.withus.withus.domain.comment.entity.Comment;
+import com.withus.withus.domain.comment.repository.CommentRepository;
+import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.repository.MemberRepository;
+import com.withus.withus.domain.notice.entity.Notice;
+import com.withus.withus.domain.notice.repository.NoticeRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

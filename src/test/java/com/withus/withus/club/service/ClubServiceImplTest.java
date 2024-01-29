@@ -1,19 +1,18 @@
 package com.withus.withus.club.service;
 
-import com.withus.withus.category.entity.ClubCategory;
-import com.withus.withus.club.dto.ClubRequestDto;
-import com.withus.withus.club.dto.ClubResponseDto;
-import com.withus.withus.club.dto.ReportClubRequestDto;
-import com.withus.withus.club.dto.ReportClubResponseDto;
-import com.withus.withus.club.entity.Club;
-import com.withus.withus.club.repository.ClubRepository;
-import com.withus.withus.club.repository.ReportClubRepository;
-import com.withus.withus.club.service.ClubServiceImpl;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.repository.MemberRepository;
-import com.withus.withus.notice.dto.PageableDto;
+import com.withus.withus.domain.club.entity.ClubCategory;
+import com.withus.withus.domain.club.dto.ClubRequestDto;
+import com.withus.withus.domain.club.dto.ClubResponseDto;
+import com.withus.withus.domain.club.dto.ReportClubRequestDto;
+import com.withus.withus.domain.club.dto.ReportClubResponseDto;
+import com.withus.withus.domain.club.entity.Club;
+import com.withus.withus.domain.club.repository.ClubRepository;
+import com.withus.withus.domain.club.repository.ReportClubRepository;
+import com.withus.withus.domain.club.service.ClubServiceImpl;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
+import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
