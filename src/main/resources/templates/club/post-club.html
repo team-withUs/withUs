@@ -7,11 +7,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script th:src="@{/js/clubpost.js}"></script>
 
-<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
-<!--    <link th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+    <!--    <link th:href="@{/css/bootstrap.min.css}" href="../../static/css/bootstrap.min.css" rel="stylesheet">-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<!-- font -->
+    <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
@@ -47,13 +47,15 @@
                         url: '/api/member/logout',
                         contentType: ''
                     })
-                    .done(function (res, status, xhr) {
-                        window.location.href = '/'
-                    })
-                    .fail(function (xhr, status, error) {
-                        console.error('로그아웃 요청 API 에러', error);
-                    })
+                        .done(function (res, status, xhr) {
+                            window.location.href = '/'
+                        })
+                        .fail(function (xhr, status, error) {
+                            console.error('로그아웃 요청 API 에러', error);
+                        })
 
+                } else {
+                    alert('로그아웃 취소');
                 }
 
             });
@@ -113,15 +115,15 @@
                     <div class="dropdown">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            category
+                            카테고리
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="club-category">
-                            <li><a class="dropdown-item" href="#">SPORTS</a></li>
-                            <li><a class="dropdown-item" href="#">GAME</a></li>
-                            <li><a class="dropdown-item" href="#">TODAY</a></li>
-                            <li><a class="dropdown-item" href="#">FOOD</a></li>
-                            <li><a class="dropdown-item" href="#">STUDY</a></li>
-                            <li><a class="dropdown-item" href="#">ETC</a></li>
+                            <li><a class="dropdown-item" href="#">운동</a></li>
+                            <li><a class="dropdown-item" href="#">게임</a></li>
+                            <li><a class="dropdown-item" href="#">일상</a></li>
+                            <li><a class="dropdown-item" href="#">음식</a></li>
+                            <li><a class="dropdown-item" href="#">스터디</a></li>
+                            <li><a class="dropdown-item" href="#">기타</a></li>
                         </ul>
                     </div>
                 </article>

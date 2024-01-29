@@ -75,9 +75,10 @@ $(document).ready(function () {
     function createDataAndConfirmInvitations() {
 
         var clubTitle = $("#clubTitleInput").val().trim();
-        var category = $(".btn-secondary.dropdown-toggle").text().trim();
+        var categoryKr = $(".btn-secondary.dropdown-toggle").text().trim();
+        var category = getEnumValueForCategory(categoryKr);
         console.log(category)
-        if (category.toLowerCase() === "category") {
+        if (category.toLowerCase() === "") {
             alert("유효하지 않은 카테고리가 선택되었습니다. 유효한 카테고리를 선택해주세요.");
             return;
         }
@@ -159,17 +160,13 @@ $(document).ready(function () {
                     }
                 });
             },
-            error: function (xhr, status, error) {
-                console.error("초대 대상 사용자 정보를 가져오는 중 (상태):", status, "에러:", error);
-                console.log("서버 응답:", xhr.responseText);
-                alert("사용자를 찾을 수 없습니다. 올바른 이메일을 입력해주세요.");
-            }
         });
     }
 
     $('#club-category li').on('click', function () {
         var selectedCategory = $(this).text();
         $('#dropdownMenuLink').text(selectedCategory);
+        selectedCategory && inviteeList.push(selectedCategory);
     });
 });
 
@@ -186,5 +183,24 @@ function handleFileSelect() {
             });
         };
         reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function getEnumValueForCategory(categoryKr) {
+    switch (categoryKr) {
+        case "운동":
+            return "SPORTS";
+        case "일상":
+            return "TODAY";
+        case "게임":
+            return "GAME";
+        case "음식":
+            return "FOOD";
+        case "스터디":
+            return "STUDY";
+        case "기타":
+            return "ETC";
+        default:
+            return "";
     }
 }

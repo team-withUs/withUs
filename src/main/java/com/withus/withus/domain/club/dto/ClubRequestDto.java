@@ -12,6 +12,7 @@ public record ClubRequestDto(
         String clubTitle,
         String content,
         ClubCategory category,
+        String categoryKrName,
         MultipartFile imageFile,
         LocalDateTime startTime,
         LocalDateTime endTime
