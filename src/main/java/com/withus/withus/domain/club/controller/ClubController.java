@@ -13,22 +13,21 @@ import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
 import com.withus.withus.domain.member.entity.Member;
-import com.withus.withus.domain.member.service.MemberService;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/club")
 public class ClubController {
+
     private final ClubService clubService;
-    private final MemberService memberService;
+
     private final ClubMemberService clubMemberService;
 
     @PostMapping
@@ -36,7 +35,10 @@ public class ClubController {
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        ClubResponseDto responseDto = clubService.createClub(clubRequestDto, member, clubRequestDto.imageFile());
+        ClubResponseDto responseDto = clubService.createClub(
+            clubRequestDto, member, clubRequestDto.imageFile()
+        );
+
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_CREATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_CREATE, responseDto));
@@ -73,6 +75,7 @@ public class ClubController {
     @GetMapping
     public ResponseEntity<CommonResponse<List<ClubResponseDto>>> getAllClubs() {
         List<ClubResponseDto> responseDtoList = clubService.getAllClubs();
+
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDtoList));
@@ -84,6 +87,7 @@ public class ClubController {
             @PathVariable("clubId") Long clubId
     ) {
         ClubResponseDto responseDto = clubService.getClub(clubId);
+
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_GET.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_GET, responseDto));
@@ -96,7 +100,10 @@ public class ClubController {
             @ModelAttribute ClubRequestDto clubRequestDto,
             @AuthMember Member member
     ) {
-        ClubResponseDto responseDto = clubService.updateClub(clubId, clubRequestDto, member, clubRequestDto.imageFile());
+        ClubResponseDto responseDto = clubService.updateClub(
+            clubId, clubRequestDto, member, clubRequestDto.imageFile()
+        );
+
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_UPDATE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_UPDATE, responseDto));
@@ -109,6 +116,7 @@ public class ClubController {
             @AuthMember Member member
     ) {
         String responseDto = clubService.deleteClub(clubId, member);
+
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
@@ -121,7 +129,10 @@ public class ClubController {
             @RequestBody ReportClubRequestDto reportClubRequestDto,
             @AuthMember Member member
     ) {
-        ReportClubResponseDto reportClubResponse = clubService.createReportClub(clubId, reportClubRequestDto, member);
+        ReportClubResponseDto reportClubResponse = clubService.createReportClub(
+            clubId, reportClubRequestDto, member
+        );
+
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_REPORT.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_REPORT, reportClubResponse));
@@ -135,10 +146,12 @@ public class ClubController {
             @RequestParam(value = "keyWord", defaultValue = "ace245") String keyWord,
             @RequestParam(value = "searchCategory", defaultValue = "all") String searchCategory
     ) {
-        System.out.println("==================================="+searchCategory);
-        return ResponseEntity.status(ResponseCode.OK.getHttpStatus())
-                .body(CommonResponse.of(ResponseCode.OK,
-                        clubService.getsClubByCategory(category, pageable, keyWord,searchCategory)));
+
+        return ResponseEntity
+            .status(ResponseCode.OK.getHttpStatus())
+            .body(CommonResponse.of(ResponseCode.OK, clubService.getsClubByCategory(
+                category, pageable, keyWord,searchCategory
+            )));
     }
 
     // 클럽 멤버 탈퇴
@@ -148,6 +161,7 @@ public class ClubController {
             @AuthMember Member member
     ) {
         String responseDto = clubMemberService.leaveClub(clubId, member);
+
         return ResponseEntity
                 .status(ResponseCode.OK.getHttpStatus())
                 .body(CommonResponse.of(ResponseCode.OK, responseDto));

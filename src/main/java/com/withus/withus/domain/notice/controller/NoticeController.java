@@ -1,17 +1,17 @@
 package com.withus.withus.domain.notice.controller;
 
 
-import com.withus.withus.domain.notice.service.NoticeService;
+import com.withus.withus.domain.notice.dto.NoticeRequestDto;
+import com.withus.withus.domain.notice.dto.NoticeResponseDto;
+import com.withus.withus.domain.notice.dto.PageableDto;
+import com.withus.withus.domain.notice.dto.ReportRequestDto;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.ResponseCode;
 
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.member.service.MemberServiceImpl;
-import com.withus.withus.domain.notice.dto.NoticeRequestDto;
-import com.withus.withus.domain.notice.dto.NoticeResponseDto;
-import com.withus.withus.domain.notice.dto.PageableDto;
-import com.withus.withus.domain.notice.dto.ReportRequestDto;
+import com.withus.withus.domain.notice.service.NoticeService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/api")
 public class NoticeController {
-  private final NoticeService noticeService;
-  private final MemberServiceImpl memberService;
 
+  private final NoticeService noticeService;
 
   @PostMapping("/club/{clubId}/notice")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> createNotice(
@@ -32,7 +31,9 @@ public class NoticeController {
       @AuthMember Member member
   ) {
     NoticeResponseDto responseDto = noticeService.createNotice(clubId, requestDto, member);
-    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_CREATE.getHttpStatus())
+
+    return ResponseEntity
+        .status(ResponseCode.SUCCESS_NOTICE_CREATE.getHttpStatus())
             .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_CREATE,responseDto));
   }
 
@@ -44,7 +45,9 @@ public class NoticeController {
       @AuthMember Member member
   ) {
     NoticeResponseDto responseDto = noticeService.updateNotice(clubId, noticeId, requestDto, member);
-    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
+
+    return ResponseEntity
+        .status(ResponseCode.SUCCESS_NOTICE_UPDATE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_UPDATE, responseDto));
   }
 
@@ -55,6 +58,7 @@ public class NoticeController {
       @AuthMember Member member
   ) {
     NoticeResponseDto responseDto = noticeService.getNotice(clubId, noticeId, member);
+
     return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GET.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GET,responseDto));
   }
@@ -67,7 +71,9 @@ public class NoticeController {
       @RequestParam(value = "sortBy", defaultValue = "CreatedAt") String sortBy
   ) {
     PageableDto pageableDto = new PageableDto(page,size,sortBy);
-    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_GETS.getHttpStatus())
+
+    return ResponseEntity
+        .status(ResponseCode.SUCCESS_NOTICE_GETS.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_GETS,
             noticeService.getsNotice(clubId, pageableDto)));
   }
@@ -79,7 +85,9 @@ public class NoticeController {
       @AuthMember Member member
   ) {
     noticeService.deleteNotice(clubId, noticeId, member);
-    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_DELETE.getHttpStatus())
+
+    return ResponseEntity
+        .status(ResponseCode.SUCCESS_NOTICE_DELETE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_DELETE,""));
   }
 
@@ -90,7 +98,8 @@ public class NoticeController {
       @AuthMember Member member
   ) {
     noticeService.createReportNotice(noticeId, requestDto, member);
-    return ResponseEntity.status(ResponseCode.SUCCESS_NOTICE_REPORT.getHttpStatus())
+    return ResponseEntity
+        .status(ResponseCode.SUCCESS_NOTICE_REPORT.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_REPORT,""));
   }
 

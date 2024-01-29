@@ -64,6 +64,7 @@ public class Member extends TimeStamp {
         String email,
         String username
     ) {
+
         return Member.builder()
             .loginname(loginname)
             .password(password)
@@ -99,7 +100,7 @@ public class Member extends TimeStamp {
     //비밀번호 변경
     public void updatePassword(
         String password
-    ){
+    ) {
         this.password = password;
     }
 

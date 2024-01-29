@@ -5,6 +5,7 @@ import com.withus.withus.domain.club.entity.Club;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+
 @Builder
 public record ClubResponseDto(
         Long clubId,
@@ -21,6 +22,7 @@ public record ClubResponseDto(
     public static ClubResponseDto createClubResponseDto(
             Club club
     ) {
+
         return ClubResponseDto.builder()
                 .clubId(club.getId())
                 .clubTitle(club.getClubTitle())

@@ -2,10 +2,10 @@ package com.withus.withus.domain.chat.controller;
 
 import com.withus.withus.domain.chat.dto.ChatRoomResponseDto;
 import com.withus.withus.domain.chat.service.ChatRoomService;
+import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
-import com.withus.withus.domain.member.entity.Member;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +32,7 @@ public class ChatRoomController {
       @AuthMember Member member
   ) {
     Long roomId = chatRoomService.getOrCreateChatRoom(memberId, member);
+
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, roomId));
   }
 
@@ -42,6 +43,7 @@ public class ChatRoomController {
       @AuthMember Member member
   ) {
     ChatRoomResponseDto chatRoomResponseDto = chatRoomService.getChatRoom(roomId, member);
+
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, chatRoomResponseDto));
   }
 
@@ -51,6 +53,7 @@ public class ChatRoomController {
       @AuthMember Member member
   ) {
     List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomService.getsChatRoom(member);
+
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, chatRoomResponseDtoList));
   }
 
@@ -61,6 +64,7 @@ public class ChatRoomController {
       @AuthMember Member member
   ) {
     chatRoomService.deleteChatRoom(roomId, member);
+
     return ResponseEntity.ok().body(CommonResponse.of(ResponseCode.OK, ""));
   }
 

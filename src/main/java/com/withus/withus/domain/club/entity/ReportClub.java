@@ -34,11 +34,14 @@ public class ReportClub extends TimeStamp {
         this.member = member;
     }
 
-    public static ReportClub createReport(ReportClubRequestDto reportClubRequestDto, Member member, Club club) {
-        String content = reportClubRequestDto.content();
+    public static ReportClub createReport(
+        ReportClubRequestDto reportClubRequestDto,
+        Member member,
+        Club club
+    ) {
 
         return ReportClub.builder()
-                .content(content)
+                .content(reportClubRequestDto.content())
                 .member(member)
                 .club(club)
                 .build();

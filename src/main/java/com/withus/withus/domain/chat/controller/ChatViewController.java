@@ -1,9 +1,9 @@
 package com.withus.withus.domain.chat.controller;
 
-import com.withus.withus.global.annotation.AuthMember;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
 import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.global.annotation.AuthMember;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,8 @@ public class ChatViewController {
     model.addAttribute("roomId", roomId);
     model.addAttribute("memberName", member.getUsername());
     model.addAttribute("memberId", member.getId());
-      return "chat/chatRoom";
+
+    return "chat/chatRoom";
   }
 
   @GetMapping("/member/{memberId}/chatRoomListPage")
@@ -39,6 +40,7 @@ public class ChatViewController {
     }
 
     model.addAttribute("memberId", memberId);
+
     return "chat/chatRoomList";
   }
 }

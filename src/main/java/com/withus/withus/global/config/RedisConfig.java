@@ -18,6 +18,7 @@ public class RedisConfig {
 
     @Value("${redis.host}")
     private String host;
+
     @Value("${redis.port}")
     private int port;
 
@@ -34,4 +35,5 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
         return redisTemplate;
     }
+
 }

@@ -23,9 +23,7 @@ public interface ClubService {
 
     ClubResponseDto updateClub(Long clubId, ClubRequestDto clubRequestDto, Member member, MultipartFile image);
 
-
     String deleteClub(Long clubId, Member member);
-
 
     Club findClubById(Long clubId);
 

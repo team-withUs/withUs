@@ -1,7 +1,7 @@
 package com.withus.withus.domain.notice.entity;
 
-import com.withus.withus.domain.notice.dto.ReportRequestDto;
 import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.notice.dto.ReportRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,9 +17,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReportNotice {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @Column(nullable = false)
   private String content;
 
@@ -38,11 +40,14 @@ public class ReportNotice {
     this.notice = notice;
   }
 
-  public static ReportNotice createReport(ReportRequestDto requestDto, Member member, Notice notice){
-    String content = requestDto.content();
+  public static ReportNotice createReport(
+      ReportRequestDto requestDto,
+      Member member,
+      Notice notice
+  ) {
 
     return ReportNotice.builder()
-        .content(content)
+        .content(requestDto.content())
         .member(member)
         .notice(notice)
         .build();

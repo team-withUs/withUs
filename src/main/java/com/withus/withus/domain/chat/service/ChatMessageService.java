@@ -5,17 +5,19 @@ import com.withus.withus.domain.chat.dto.MessageDto;
 import com.withus.withus.domain.chat.entity.ChatMessage;
 import com.withus.withus.domain.chat.entity.ChatRoom;
 import com.withus.withus.domain.chat.repository.ChatMessageRepository;
-import com.withus.withus.domain.member.service.MemberServiceImpl;
 import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.service.MemberServiceImpl;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@AllArgsConstructor
 public class ChatMessageService {
 
   private final MemberServiceImpl memberService;
@@ -58,6 +60,7 @@ public class ChatMessageService {
 
   public List<ChatMessage> findMessages(Long roomId) {
     ChatRoom chatRoom = chatRoomService.findChatRoom(roomId);
+
     return chatMessageRepository.findAllByChatRoomOrderBySendTimeAsc(chatRoom);
   }
 

@@ -17,9 +17,15 @@ public class Notice extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NoticeCategory category;
+
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
+
+    @Column(length = 2000, nullable = false)
     private String content;
 
     @Column
@@ -39,15 +45,16 @@ public class Notice extends TimeStamp {
     @JoinColumn(name = "Club_id", nullable = false)
     private Club club;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private NoticeCategory category;
-
-
-
     @Builder
-    private Notice(String title, String content,Member member, Club club,
-        NoticeCategory category, String imageURL, String filename){
+    private Notice(
+        String title,
+        String content,
+        Member member,
+        Club club,
+        NoticeCategory category,
+        String imageURL,
+        String filename
+    ) {
         this.title = title;
         this.content = content;
         this.member = member;
@@ -57,13 +64,18 @@ public class Notice extends TimeStamp {
         this.filename = filename;
     }
 
-    public void update(NoticeRequestDto requestDto, NoticeCategory category){
+    public void update(NoticeRequestDto requestDto, NoticeCategory category) {
         this.title = requestDto.title();
         this.content = requestDto.content();
         this.category = category;
     }
-    public void updatePlusImage(NoticeRequestDto requestDto, NoticeCategory category,
-        String imageURL, String filename){
+
+    public void updatePlusImage(
+        NoticeRequestDto requestDto,
+        NoticeCategory category,
+        String imageURL,
+        String filename
+    ) {
         this.title = requestDto.title();
         this.content = requestDto.content();
         this.category = category;
@@ -75,27 +87,34 @@ public class Notice extends TimeStamp {
         this.isActive=false;
     }
 
-    public static Notice createNotice(NoticeRequestDto requestDto, Member member, Club club, NoticeCategory category){
-        String title = requestDto.title();
-        String content = requestDto.content();
+    public static Notice createNotice(
+        NoticeRequestDto requestDto,
+        Member member,
+        Club club,
+        NoticeCategory category
+    ) {
 
       return Notice.builder()
-          .title(title)
-          .content(content)
+          .title(requestDto.title())
+          .content(requestDto.content())
           .member(member)
           .club(club)
           .category(category)
           .build();
     }
 
-    public static Notice createNoticePlusImage(NoticeRequestDto requestDto, Member member, Club club,
-        NoticeCategory category, String imageURL, String filename){
-        String title = requestDto.title();
-        String content = requestDto.content();
+    public static Notice createNoticePlusImage(
+        NoticeRequestDto requestDto,
+        Member member,
+        Club club,
+        NoticeCategory category,
+        String imageURL,
+        String filename
+    ) {
 
         return Notice.builder()
-            .title(title)
-            .content(content)
+            .title(requestDto.title())
+            .content(requestDto.content())
             .member(member)
             .club(club)
             .category(category)
@@ -103,11 +122,5 @@ public class Notice extends TimeStamp {
             .filename(filename)
             .build();
     }
-
-
-
-
-
-
 
 }

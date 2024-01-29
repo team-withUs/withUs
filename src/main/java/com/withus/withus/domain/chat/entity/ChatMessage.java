@@ -17,8 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class ChatMessage  {
-
+public class ChatMessage{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -51,6 +50,7 @@ public class ChatMessage  {
       Member sender,
       ChatRoom chatRoom
   ) {
+
     return ChatMessage.builder()
         .content(content)
         .sendTime(sendTime)
@@ -70,4 +70,5 @@ public class ChatMessage  {
   public void setChatRoom(ChatRoom chatRoom) {
     this.chatRoom = chatRoom;
   }
+
 }

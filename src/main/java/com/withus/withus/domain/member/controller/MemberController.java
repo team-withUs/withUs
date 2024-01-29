@@ -7,20 +7,25 @@ import com.withus.withus.domain.member.dto.PasswordRequestDto;
 import com.withus.withus.domain.member.dto.ReportRequestDto;
 import com.withus.withus.domain.member.dto.SignupRequestDto;
 import com.withus.withus.domain.member.dto.UpdateRequestDto;
+import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.service.MemberServiceImpl;
 import com.withus.withus.global.annotation.AuthMember;
 import com.withus.withus.global.response.CommonResponse;
 import com.withus.withus.global.response.ResponseCode;
-import com.withus.withus.domain.member.dto.*;
-import com.withus.withus.domain.member.entity.Member;
-import com.withus.withus.domain.member.service.MemberServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
@@ -39,7 +44,10 @@ public class MemberController {
       @Valid @RequestBody EmailRequestDto emailRequestDto
   ) {
     memberService.sendAuthCodeToEmail(emailRequestDto);
-    return ResponseEntity.status(ResponseCode.SEND_MAIL.getHttpStatus()).body(CommonResponse.of(ResponseCode.SEND_MAIL, emailRequestDto));
+
+    return ResponseEntity
+        .status(ResponseCode.SEND_MAIL.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.SEND_MAIL, emailRequestDto));
   }
 
   @PostMapping("/signup")
@@ -47,7 +55,10 @@ public class MemberController {
       @Valid @RequestBody SignupRequestDto signupRequestDto
   ) {
     memberService.signup(signupRequestDto);
-    return ResponseEntity.status(ResponseCode.SIGNUP.getHttpStatus()).body(CommonResponse.of(ResponseCode.SIGNUP, ""));
+
+    return ResponseEntity
+        .status(ResponseCode.SIGNUP.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.SIGNUP, ""));
   }
 
   @GetMapping("/{memberId}")
@@ -60,12 +71,14 @@ public class MemberController {
         .status(ResponseCode.GET_PROFILE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.GET_PROFILE, memberResponseDto));
   }
+
   // 추가
   @GetMapping("email/{email}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> getMemberEmail(
           @PathVariable("email") String email
   ){
     MemberResponseDto memberResponseDto = memberService.getMemberEmail(email);
+
     return ResponseEntity
             .status(ResponseCode.OK.getHttpStatus())
             .body(CommonResponse.of(ResponseCode.OK, memberResponseDto));
@@ -74,24 +87,25 @@ public class MemberController {
   @PatchMapping("/{memberId}")
   public ResponseEntity<CommonResponse<MemberResponseDto>> updateMember(
       @PathVariable("memberId") Long memberId,
-      @AuthMember Member member,
-      @Valid @ModelAttribute UpdateRequestDto updateRequestDto
-      ) {
+      @Valid @ModelAttribute UpdateRequestDto updateRequestDto,
+      @AuthMember Member member
+  ) {
     MemberResponseDto memberResponseDto = memberService.updateMember(
         memberId,
         updateRequestDto,
         member
     );
 
-    return ResponseEntity.status(ResponseCode.UPDATE_PROFILE.getHttpStatus())
+    return ResponseEntity
+        .status(ResponseCode.UPDATE_PROFILE.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.UPDATE_PROFILE, memberResponseDto));
   }
 
   @PatchMapping("/{memberId}/updatePassword")
   public ResponseEntity<CommonResponse<MemberResponseDto>> updatePassword(
       @PathVariable("memberId") Long memberId,
-      @AuthMember Member member,
-      @Valid @RequestBody PasswordRequestDto passwordRequestDto
+      @Valid @RequestBody PasswordRequestDto passwordRequestDto,
+      @AuthMember Member member
   ) {
     MemberResponseDto memberResponseDto = memberService.updatePassword(
       memberId,
@@ -99,7 +113,8 @@ public class MemberController {
       member
     );
 
-    return ResponseEntity.status(ResponseCode.UPDATE_PASSWORD.getHttpStatus())
+    return ResponseEntity
+        .status(ResponseCode.UPDATE_PASSWORD.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.UPDATE_PASSWORD, memberResponseDto));
   }
 
@@ -111,7 +126,7 @@ public class MemberController {
       memberService.deleteMember(memberId, member);
       return ResponseEntity
           .status(ResponseCode.RESIGN_MEMBER.getHttpStatus())
-          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER,""));
+          .body(CommonResponse.of(ResponseCode.RESIGN_MEMBER, ""));
   }
 
   @PostMapping("/{memberId}/report")
@@ -123,7 +138,7 @@ public class MemberController {
     memberService.reportMember(memberId,reportRequestDto,member);
     return ResponseEntity
         .status(ResponseCode.INVITE_MEMBER.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.SUCCESS_MEMBER_REPORT,""));
+        .body(CommonResponse.of(ResponseCode.SUCCESS_MEMBER_REPORT, ""));
   }
 
   @GetMapping("/club")
@@ -135,7 +150,7 @@ public class MemberController {
 
     return ResponseEntity
         .status(ResponseCode.GET_MY_CLUBLIST.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.GET_MY_CLUBLIST,clubResponseDtoList));
+        .body(CommonResponse.of(ResponseCode.GET_MY_CLUBLIST, clubResponseDtoList));
   }
 
   @GetMapping("/myHostingClub")
@@ -150,7 +165,7 @@ public class MemberController {
 
     return ResponseEntity
         .status(ResponseCode.GET_MY_CLUBLIST.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.GET_MY_CLUBLIST,clubResponseDtoPage));
+        .body(CommonResponse.of(ResponseCode.GET_MY_CLUBLIST, clubResponseDtoPage));
   }
 
   @PostMapping("/{memberId}/club/{clubId}")
@@ -161,8 +176,9 @@ public class MemberController {
   ) {
     memberService.inviteMember(memberId,clubId,member);
 
-    return ResponseEntity.status(ResponseCode.INVITE_MEMBER.getHttpStatus())
-        .body(CommonResponse.of(ResponseCode.INVITE_MEMBER,""));
+    return ResponseEntity
+        .status(ResponseCode.INVITE_MEMBER.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.INVITE_MEMBER, ""));
   }
 
   @PostMapping("/passwordCheck")
@@ -170,12 +186,17 @@ public class MemberController {
       @AuthMember Member member,
       @RequestBody PasswordRequestDto passwordRequestDto
   ){
-    if(memberService.passwordCheck(member,passwordRequestDto)){
-      return ResponseEntity.status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
-          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD,"일치"));
-    }else{
-      return ResponseEntity.status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
-          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD,"불일치"));
+    if (memberService.passwordCheck(member,passwordRequestDto)) {
+
+      return ResponseEntity
+          .status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
+          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD, "일치"));
+
+    } else {
+
+      return ResponseEntity
+          .status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
+          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD, "불일치"));
     }
   }
 }

@@ -8,13 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 public class ReportComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id", nullable = false)
@@ -24,9 +27,6 @@ public class ReportComment {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(nullable = false)
-    private String content;
-
     @Builder
     public ReportComment(String content, Member loginMember, Comment reportComment){
         this.content = content;
@@ -34,13 +34,17 @@ public class ReportComment {
         this.comment = reportComment;
     }
 
-    public static ReportComment createReport(ReportRequestDto requestDto, Member member, Comment comment) {
-        String content = requestDto.content();
+    public static ReportComment createReport(
+        ReportRequestDto requestDto,
+        Member member,
+        Comment comment
+    ) {
 
         return ReportComment.builder()
-                .content(content)
+                .content(requestDto.content())
                 .loginMember(member)
                 .reportComment(comment)
                 .build();
     }
+
 }

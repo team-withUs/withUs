@@ -1,7 +1,7 @@
 package com.withus.withus.domain.chat.entity;
 
-import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.global.timestamp.TimeStamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,8 +17,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class ChatRoom extends TimeStamp {
-
+public class ChatRoom extends TimeStamp{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -28,7 +27,6 @@ public class ChatRoom extends TimeStamp {
 
   @Column
   private Boolean isActive = true;
-
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sender_id")
@@ -46,6 +44,7 @@ public class ChatRoom extends TimeStamp {
   }
 
   public static ChatRoom createChatRoom(Member sender, Member receiver) {
+
     return ChatRoom.builder()
         .sender(sender)
         .receiver(receiver)
@@ -60,4 +59,5 @@ public class ChatRoom extends TimeStamp {
   public void chatRoomTransform() {
     this.isActive = false;
   }
+
 }

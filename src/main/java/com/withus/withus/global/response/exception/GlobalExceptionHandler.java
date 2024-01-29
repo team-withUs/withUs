@@ -1,7 +1,6 @@
-package com.withus.withus.global.exception;
+package com.withus.withus.global.response.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,21 +18,25 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponseDto> bisExceptionHandler(BisException e) {
 
         ExceptionResponseDto responseDto = new ExceptionResponseDto(e.getErrorCode());
+
         return ResponseEntity.status(responseDto.getStatus()).body(responseDto);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponseDto> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException e) {
+            MethodArgumentNotValidException e
+    ) {
         BindingResult bindingResult = e.getBindingResult();
         String msg = bindingResult.getFieldErrors().get(0).getDefaultMessage();
+
         return ResponseEntity.status(BAD_REQUEST).body(
                 new ExceptionResponseDto(BAD_REQUEST, msg)
         );
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<ExceptionResponseDto> handleMaxUploadSizeExceeded(){
+    public ResponseEntity<ExceptionResponseDto> handleMaxUploadSizeExceeded() {
+
         return ResponseEntity
             .status(ErrorCode.OVER_FILE_SIZE.getStatus())
             .body(new ExceptionResponseDto(ErrorCode.OVER_FILE_SIZE));

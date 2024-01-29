@@ -7,12 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MessageDto {
-
+public class MessageDto{
   @NotNull
   private Long senderId;
+
   @NotNull
   private String senderName;
+
   private String content;
 
   @Builder
@@ -29,6 +30,7 @@ public class MessageDto {
         .content(content)
         .build();
   }
+
   public void setContent(String content) {
     this.content = content;
   }

@@ -6,7 +6,7 @@ import com.withus.withus.domain.chat.dto.ChatRoomResponseDto;
 import com.withus.withus.domain.chat.entity.ChatRoom;
 import com.withus.withus.domain.chat.repository.ChatRoomRepository;
 import com.withus.withus.domain.chat.service.ChatRoomService;
-import com.withus.withus.global.exception.BisException;
+import com.withus.withus.global.response.exception.BisException;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.member.repository.MemberRepository;
 import com.withus.withus.domain.member.service.MemberServiceImpl;

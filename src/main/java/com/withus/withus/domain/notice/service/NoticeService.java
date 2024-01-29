@@ -1,10 +1,10 @@
 package com.withus.withus.domain.notice.service;
 
-import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.notice.dto.NoticeRequestDto;
 import com.withus.withus.domain.notice.dto.NoticeResponseDto;
 import com.withus.withus.domain.notice.dto.PageableDto;
 import com.withus.withus.domain.notice.dto.ReportRequestDto;
+import com.withus.withus.domain.member.entity.Member;
 import java.util.List;
 
 public interface NoticeService {

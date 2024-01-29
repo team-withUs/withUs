@@ -1,4 +1,4 @@
-package com.withus.withus.global.exception;
+package com.withus.withus.global.response.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;

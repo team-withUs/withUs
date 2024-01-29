@@ -5,6 +5,7 @@ import lombok.Builder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+
 @Builder
 
 public record ClubRequestDto(

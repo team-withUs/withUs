@@ -75,6 +75,7 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
   private BooleanExpression containsSearchTitle(String keyWord){
     return keyWord != null ? club.clubTitle.contains(keyWord) : null;
   }
+
   private BooleanExpression containsSearchContent(String keyWord){
     return keyWord != null ? club.content.contains(keyWord) : null;
   }
