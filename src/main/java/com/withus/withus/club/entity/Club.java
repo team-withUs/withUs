@@ -21,29 +21,41 @@ public class Club extends TimeStamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String clubTitle;
+
     @Column(nullable = false)
     private String content;
+
     @Column
     private String filename;
+
     @Column
     private String imageURL;
+
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
     @Column(nullable = false)
     private String username;
+
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubMember> clubMemberList = new ArrayList<>();
+
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<Notice> noticeList = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
     @Enumerated(EnumType.STRING)
     private ClubCategory category;
+
     private boolean isActive = true;
 
     @Builder
