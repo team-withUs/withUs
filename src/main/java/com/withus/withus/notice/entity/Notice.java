@@ -21,7 +21,7 @@ public class Notice extends TimeStamp {
     private Long id;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
+    @Column(nullable = false,length = 5000)
     private String content;
 
     @Column
