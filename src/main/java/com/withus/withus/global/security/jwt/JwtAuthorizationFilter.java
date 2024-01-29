@@ -1,8 +1,8 @@
 package com.withus.withus.global.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.exception.ExceptionResponseDto;
+import com.withus.withus.global.response.exception.ErrorCode;
+import com.withus.withus.global.response.exception.ExceptionResponseDto;
 import com.withus.withus.global.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

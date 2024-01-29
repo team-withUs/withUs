@@ -3,7 +3,7 @@ package com.withus.withus.global.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.withus.withus.global.security.UserDetailsImpl;
-import com.withus.withus.member.dto.LoginRequestDto;
+import com.withus.withus.domain.member.dto.LoginRequestDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

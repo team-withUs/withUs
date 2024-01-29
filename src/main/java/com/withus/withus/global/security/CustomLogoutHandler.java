@@ -24,19 +24,14 @@ public class CustomLogoutHandler implements LogoutHandler {
 
   private final ObjectMapper objectMapper;
 
-  private final RedisService redisService;
-
   private final JwtUtil jwtUtil;
 
   public CustomLogoutHandler(
-      ObjectMapper objectMapper, RedisService redisService, JwtUtil jwtUtil
+      ObjectMapper objectMapper, JwtUtil jwtUtil
   ) {
     this.objectMapper = objectMapper;
-    this.redisService = redisService;
     this.jwtUtil = jwtUtil;
   }
-
-
 
   @Override
   @Transactional
@@ -52,6 +47,7 @@ public class CustomLogoutHandler implements LogoutHandler {
           PrintWriter writer = response.getWriter();
           writer.println(" 403 : Forbidden");
           writer.println("유효하지 않은 accessToken입니다.");
+
         } catch (IOException ex) {
           throw new RuntimeException(ex);
         }
@@ -65,9 +61,11 @@ public class CustomLogoutHandler implements LogoutHandler {
         PrintWriter writer = response.getWriter();
         writer.println(" 403 : Forbidden");
         writer.println("만료된 accessToken입니다.");
+
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }
+
       return;
     }
 
@@ -85,6 +83,7 @@ public class CustomLogoutHandler implements LogoutHandler {
       } catch (IOException ex) {
         throw new RuntimeException(ex);
       }
+
       return;
     }
 
