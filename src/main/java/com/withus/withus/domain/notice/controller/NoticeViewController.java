@@ -39,31 +39,31 @@ public class NoticeViewController {
       Model model,
       @AuthMember Member member
   ) {
-    Integer totalListCnt = commentService.count(noticeId);
-    int count;
-
-    if(totalListCnt==0){
-      count=0;
-    }
-    else if(totalListCnt > 4){
-      if(totalListCnt%4==0){
-        count=totalListCnt/4;
-      }
-      else {
-        count=totalListCnt/4+1;
-      }
-    }
-    else {
-      count=1;
-    }
-    List<Integer> countList = new ArrayList<>();
-    for(int i=0; i<count; i++){
-      countList.add(i+1);
-    }
+//    Integer totalListCnt = commentService.count(noticeId);
+//    int count;
+//
+//    if(totalListCnt==0){
+//      count=0;
+//    }
+//    else if(totalListCnt > 4){
+//      if(totalListCnt%4==0){
+//        count=totalListCnt/4;
+//      }
+//      else {
+//        count=totalListCnt/4+1;
+//      }
+//    }
+//    else {
+//      count=1;
+//    }
+//    List<Integer> countList = new ArrayList<>();
+//    for(int i=0; i<count; i++){
+//      countList.add(i+1);
+//    }
 
     model.addAttribute("clubId",clubId);
     model.addAttribute("noticeId",noticeId);
-    model.addAttribute("countList", countList);
+
     model.addAttribute("memberId", member.getId());
 
     return "notice/noticeDetail";
