@@ -91,6 +91,11 @@ $(document).ready(function () {
             return;
         }
 
+        if (new Date(endTime) < new Date(startTime)) {
+            alert("마감시간은 시작시간보다 늦어야 합니다. 다시 설정해주세요.");
+            return;
+        }
+
         var formData = new FormData();
         formData.append("clubTitle", clubTitle);
         formData.append("category", category);

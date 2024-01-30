@@ -126,6 +126,18 @@ $(document).ready(function () {
     }
 
     function saveData() {
+        var clubTitle = $("#clubTitleInput").val();
+        var categoryKr = $(".btn-secondary.dropdown-toggle").text();
+        var category = getEnumValueForCategory(categoryKr);
+        var content = $("#club-content").val();
+        var startTime = $("#startDate").val();
+        var endTime = $("#endDate").val();
+
+        if (new Date(endTime) < new Date(startTime)) {
+            alert("마감시간은 시작시간보다 늦어야 합니다. 다시 설정해주세요.");
+            return;
+        }
+
         var formData = new FormData();
         formData.append("clubTitle", $("#clubTitleInput").val());
         formData.append("category", getEnumValueForCategory($(".btn-secondary.dropdown-toggle").text()));
