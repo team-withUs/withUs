@@ -1,9 +1,11 @@
 package com.withus.withus.domain.comment.entity;
 
 import com.withus.withus.domain.comment.dto.CommentRequestDto;
+
 import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.domain.member.entity.Member;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
