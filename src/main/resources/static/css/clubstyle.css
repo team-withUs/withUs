@@ -39,6 +39,9 @@ body.dark-mode {
     height: 100%;
     margin: 0 auto;
 }
+.dark-mode .all-container{
+    background-color: #3a434d;
+}
 .club-introduce-title{
     font-size: 24px;
     font-weight: bold;
