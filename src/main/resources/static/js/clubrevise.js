@@ -80,6 +80,11 @@ $(document).ready(function () {
 
     function inviteMember() {
         var email = $("#searchInput").val();
+        var emailType = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailType.test(email)) {
+            alert("올바른 이메일 형식을 입력해주세요.");
+            return;
+        }
         console.log("멤버 Email:", email);
 
         $.ajax({
