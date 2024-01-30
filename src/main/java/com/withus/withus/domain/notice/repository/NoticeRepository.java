@@ -1,6 +1,7 @@
 package com.withus.withus.domain.notice.repository;
 
-import com.withus.withus.domain.notice.entity.Notice;
+
+import com.withus.withus.notice.entity.Notice;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

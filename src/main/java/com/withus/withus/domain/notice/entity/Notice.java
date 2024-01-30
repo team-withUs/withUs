@@ -1,12 +1,14 @@
 package com.withus.withus.notice.entity;
 
-import com.withus.withus.club.entity.Club;
+
+import com.withus.withus.domain.club.entity.Club;
+import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.notice.dto.NoticeRequestDto;
+import com.withus.withus.domain.notice.entity.NoticeCategory;
 import com.withus.withus.global.timestamp.TimeStamp;
-import com.withus.withus.member.entity.Member;
-import com.withus.withus.notice.dto.NoticeRequestDto;
+
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -97,8 +99,8 @@ public class Notice extends TimeStamp {
     ) {
 
       return Notice.builder()
-          .title(title)
-          .content(content)
+          .title(requestDto.title())
+          .content(requestDto.content())
           .member(member)
           .club(club)
           .category(category)
@@ -115,8 +117,8 @@ public class Notice extends TimeStamp {
     ) {
 
         return Notice.builder()
-            .title(title)
-            .content(content)
+            .title(requestDto.title())
+            .content(requestDto.content())
             .member(member)
             .club(club)
             .category(category)
