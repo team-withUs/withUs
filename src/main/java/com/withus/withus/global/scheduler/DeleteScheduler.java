@@ -9,8 +9,9 @@ import com.withus.withus.domain.comment.entity.Comment;
 import com.withus.withus.domain.comment.repository.CommentRepository;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.member.repository.MemberRepository;
+import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.repository.NoticeRepository;
-import com.withus.withus.notice.entity.Notice;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -10,11 +10,12 @@ import com.withus.withus.domain.comment.entity.ReportComment;
 import com.withus.withus.domain.comment.repository.CommentRepository;
 import com.withus.withus.domain.comment.repository.CommentReportRepository;
 import com.withus.withus.domain.notice.dto.PageableDto;
+import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.service.NoticeServiceImpl;
 import com.withus.withus.global.response.exception.BisException;
 import com.withus.withus.global.response.exception.ErrorCode;
 import com.withus.withus.domain.member.entity.Member;
-import com.withus.withus.notice.entity.Notice;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

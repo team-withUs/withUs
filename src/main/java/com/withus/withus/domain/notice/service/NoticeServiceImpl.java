@@ -9,6 +9,7 @@ import com.withus.withus.domain.club.service.ClubMemberServiceImpl;
 import com.withus.withus.domain.club.service.ClubServiceImpl;
 import com.withus.withus.domain.notice.dto.PageableDto;
 import com.withus.withus.domain.notice.dto.ReportRequestDto;
+import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.entity.NoticeCategory;
 import com.withus.withus.domain.notice.entity.ReportNotice;
 import com.withus.withus.global.response.exception.BisException;
@@ -19,7 +20,7 @@ import com.withus.withus.domain.notice.dto.NoticeResponseDto;
 import com.withus.withus.domain.notice.repository.NoticeRepository;
 import com.withus.withus.domain.notice.repository.ReportRepository;
 
-import com.withus.withus.notice.entity.Notice;
+
 import java.util.ArrayList;
 import java.util.List;
 

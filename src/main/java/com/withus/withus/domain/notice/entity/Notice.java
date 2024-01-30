@@ -1,4 +1,4 @@
-package com.withus.withus.notice.entity;
+package com.withus.withus.domain.notice.entity;
 
 
 import com.withus.withus.domain.club.entity.Club;

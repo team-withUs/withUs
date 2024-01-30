@@ -11,6 +11,7 @@ import com.withus.withus.domain.club.entity.ClubMember;
 import com.withus.withus.domain.club.entity.ClubMemberRole;
 import com.withus.withus.domain.club.repository.ClubMemberRepository;
 import com.withus.withus.domain.club.repository.ClubRepository;
+import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.global.response.exception.BisException;
 import com.withus.withus.global.response.exception.ErrorCode;
 import com.withus.withus.domain.member.entity.Member;
@@ -24,7 +25,7 @@ import com.withus.withus.domain.notice.entity.ReportNotice;
 import com.withus.withus.domain.notice.repository.NoticeRepository;
 import com.withus.withus.domain.notice.repository.ReportRepository;
 import com.withus.withus.domain.notice.service.NoticeService;
-import com.withus.withus.notice.entity.Notice;
+
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

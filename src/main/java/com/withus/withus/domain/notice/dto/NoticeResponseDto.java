@@ -2,7 +2,8 @@ package com.withus.withus.domain.notice.dto;
 
 
 
-import com.withus.withus.notice.entity.Notice;
+
+import com.withus.withus.domain.notice.entity.Notice;
 import lombok.Builder;
 
 @Builder
