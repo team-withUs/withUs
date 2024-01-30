@@ -24,7 +24,6 @@ public class NoticeController {
 
   private final NoticeService noticeService;
 
-
   @PostMapping("/club/{clubId}/notice")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> createNotice(
       @PathVariable("clubId") Long clubId,
@@ -99,6 +98,7 @@ public class NoticeController {
       @AuthMember Member member
   ) {
     noticeService.createReportNotice(noticeId, requestDto, member);
+
     return ResponseEntity
         .status(ResponseCode.SUCCESS_NOTICE_REPORT.getHttpStatus())
         .body(CommonResponse.of(ResponseCode.SUCCESS_NOTICE_REPORT,""));
