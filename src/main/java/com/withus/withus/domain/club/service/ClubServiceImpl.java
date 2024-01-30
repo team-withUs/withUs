@@ -136,7 +136,7 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public String deleteClub(Long clubId, Member member) {
+    public void deleteClub(Long clubId, Member member) {
         validateClub(clubId, member);
 
         Club club = verifyMember(clubId);
@@ -147,7 +147,6 @@ public class ClubServiceImpl implements ClubService {
         }
 
         club.delete();
-        return "Club delete successfully";
     }
 
     private void validateClub(Long clubId, Member member) {
