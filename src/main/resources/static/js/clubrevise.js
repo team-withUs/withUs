@@ -60,8 +60,10 @@ $(document).ready(function () {
 
     // 완료 버튼 눌렀을때 경로 이동
     $("#imgBtn2").on("click", function () {
-        saveData();
-        window.location.href = '/api/club/main-club/' + clubId;
+        if (validateData()) {
+            saveData();
+            window.location.href = '/api/club/main-club/' + clubId;
+        }
     });
 
     $("#imgBtn3").on("click", function () {
@@ -124,19 +126,18 @@ $(document).ready(function () {
             updateInviteContainer(email);
         });
     }
-
-    function saveData() {
-        var clubTitle = $("#clubTitleInput").val();
-        var categoryKr = $(".btn-secondary.dropdown-toggle").text();
-        var category = getEnumValueForCategory(categoryKr);
-        var content = $("#club-content").val();
+    function validateData() {
         var startTime = $("#startDate").val();
         var endTime = $("#endDate").val();
 
         if (new Date(endTime) < new Date(startTime)) {
             alert("마감시간은 시작시간보다 늦어야 합니다. 다시 설정해주세요.");
-            return;
+            return false;
         }
+        return true;
+    }
+
+    function saveData() {
 
         var formData = new FormData();
         formData.append("clubTitle", $("#clubTitleInput").val());
