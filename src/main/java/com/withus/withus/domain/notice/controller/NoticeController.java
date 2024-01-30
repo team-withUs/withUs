@@ -1,4 +1,4 @@
-package com.withus.withus.notice.controller;
+package com.withus.withus.domain.notice.controller;
 
 
 import com.withus.withus.domain.member.entity.Member;
