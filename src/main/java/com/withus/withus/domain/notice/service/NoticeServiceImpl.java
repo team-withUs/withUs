@@ -24,6 +24,7 @@ import com.withus.withus.domain.notice.repository.ReportRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -126,12 +127,9 @@ public class NoticeServiceImpl implements NoticeService {
                         ).toPageable()
                 );
 
-        List<NoticeResponseDto> responseDtoList = new ArrayList<>();
-        for (Notice notice : noticeList) {
-            responseDtoList.add(NoticeResponseDto.createNoticeResponseDto(notice));
-        }
-
-        return responseDtoList;
+        return noticeList.stream()
+            .map(NoticeResponseDto::createNoticeResponseDto)
+            .collect(Collectors.toList());
 
     }
 
