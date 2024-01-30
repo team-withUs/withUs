@@ -1,10 +1,14 @@
-package com.withus.withus.domain.notice.entity;
+package com.withus.withus.notice.entity;
+
 
 import com.withus.withus.domain.club.entity.Club;
-import com.withus.withus.global.timestamp.TimeStamp;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.notice.dto.NoticeRequestDto;
+import com.withus.withus.domain.notice.entity.NoticeCategory;
+import com.withus.withus.global.timestamp.TimeStamp;
+
 import jakarta.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

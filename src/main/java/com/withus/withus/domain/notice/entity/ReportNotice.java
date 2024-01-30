@@ -2,6 +2,9 @@ package com.withus.withus.domain.notice.entity;
 
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.notice.dto.ReportRequestDto;
+
+
+import com.withus.withus.notice.entity.Notice;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

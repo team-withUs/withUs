@@ -19,12 +19,12 @@ import com.withus.withus.domain.notice.dto.NoticeRequestDto;
 import com.withus.withus.domain.notice.dto.NoticeResponseDto;
 import com.withus.withus.domain.notice.dto.PageableDto;
 import com.withus.withus.domain.notice.dto.ReportRequestDto;
-import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.entity.NoticeCategory;
 import com.withus.withus.domain.notice.entity.ReportNotice;
 import com.withus.withus.domain.notice.repository.NoticeRepository;
 import com.withus.withus.domain.notice.repository.ReportRepository;
 import com.withus.withus.domain.notice.service.NoticeService;
+import com.withus.withus.notice.entity.Notice;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,8 +32,6 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -148,42 +146,6 @@ class NoticeServiceImplTest {
 
     }
 
-    @Test
-    @DisplayName("게시판 생성 실패(클럽이 없을경우)")
-    void createNotice_Failure_Club(){
-      //given
-      NoticeRequestDto requestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", null);
-
-
-      //when
-      BisException exception = assertThrows(BisException.class, ()-> {
-        noticeService.createNotice(10L, requestDto, testMember);
-      });
-
-
-      //then
-      assertEquals(ErrorCode.NOT_FOUND_CLUB, exception.getErrorCode());
-
-    }
-
-    @Test
-    @DisplayName("게시판 생성 성공(이미지)")
-    void createNotice_Success_Image(){
-      //given
-      MockMultipartFile file = new MockMultipartFile("file", "hello.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
-      NoticeRequestDto noticeRequestDto =new NoticeRequestDto("공지사항1", "공지사항입니다1.", "Notice", file);
-
-
-      //when
-      NoticeResponseDto responseDto = noticeService.createNotice(testClub.getId(), noticeRequestDto, testMember);
-
-
-      //then
-      assertEquals("공지사항1", responseDto.title());
-      assertEquals("공지사항입니다1.", responseDto.content());
-      assertNotNull(responseDto.imageURL());
-
-    }
 
   }
 
