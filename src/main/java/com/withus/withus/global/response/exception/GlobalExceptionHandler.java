@@ -2,6 +2,9 @@ package com.withus.withus.global.response.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+import com.withus.withus.global.slack.SlackService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,8 +14,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private final SlackService slackService;
 
     @ExceptionHandler(BisException.class)
     public ResponseEntity<ExceptionResponseDto> bisExceptionHandler(BisException e) {
@@ -42,4 +48,9 @@ public class GlobalExceptionHandler {
             .body(new ExceptionResponseDto(ErrorCode.OVER_FILE_SIZE));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleException(Exception e, HttpServletRequest request){
+        slackService.sendSlackAlertLog(e,request);
+        return ResponseEntity.status(500).body(ErrorCode.INTERNAL_SERVER_ERROR.getMsg());
+    }
 }
