@@ -115,9 +115,7 @@ public class MemberServiceImpl implements MemberService{
       UpdateRequestDto updateRequestDto,
       Member member
   ) {
-    if(!memberId.equals(member.getId())){
-      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
-    }
+    verifyMember(memberId, member);
 
     if(!updateRequestDto.username().equals(member.getUsername())){
       sameMemberInDBByUsername(updateRequestDto.username());
@@ -151,9 +149,7 @@ public class MemberServiceImpl implements MemberService{
       PasswordRequestDto passwordRequestDto,
       Member member
   ) {
-    if(!memberId.equals(member.getId())) {
-      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
-    }
+    verifyMember(memberId, member);
 
     if(passwordEncoder.matches(passwordRequestDto.password(),member.getPassword())){
       throw new BisException(ErrorCode.NOT_CHANGED_PASSWORD);
@@ -169,9 +165,7 @@ public class MemberServiceImpl implements MemberService{
   @Transactional
   @Override
   public void deleteMember(Long memberId, Member member) {
-    if(!memberId.equals(member.getId())) {
-      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
-    }
+    verifyMember(memberId, member);
 
     if(!member.getIsActive()){
       throw new BisException(ErrorCode.DELETED_MEMBER);
@@ -187,7 +181,7 @@ public class MemberServiceImpl implements MemberService{
     }
     deletedMember.inactive();
   }
-  @Transactional
+
   @Override
   public void reportMember(Long memberId, ReportRequestDto reportRequestDto, Member member) {
     if(!existMemberByIsActiveAndId(memberId)) {
@@ -235,6 +229,7 @@ public class MemberServiceImpl implements MemberService{
   @Override
   public void inviteMember(Long memberId, Long clubId, Member member) {
     ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member,clubId);
+
     if(!clubMember.getClubMemberRole().equals(ClubMemberRole.HOST)){
       throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
     }
@@ -255,10 +250,6 @@ public class MemberServiceImpl implements MemberService{
     notificationService.notifyInviting(memberId,club.getClubTitle());
   }
 
-  public boolean passwordCheck(Member member, PasswordRequestDto passwordRequestDto) {
-    return passwordEncoder.matches(passwordRequestDto.password(), member.getPassword());
-  }
-
   //추가
   @Override
   public MemberResponseDto getMemberEmail(String email) {
@@ -266,17 +257,31 @@ public class MemberServiceImpl implements MemberService{
     return MemberResponseDto.searchEmail(findMemberByMemberEmail(email));
   }
 
+  public boolean passwordCheck(Member member, PasswordRequestDto passwordRequestDto) {
+
+    return passwordEncoder.matches(passwordRequestDto.password(), member.getPassword());
+  }
+
+  public void verifyMember(Long memberId, Member member){
+    if(!memberId.equals(member.getId())){
+      throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
+    }
+  }
+
   public Member findMemberByMemberEmail(String email) {
+
     return memberRepository.findMemberByEmail(email).orElseThrow(
             () -> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
   }
 
   public boolean existMemberByIsActiveAndId(Long memberId){
+
     return memberRepository.existsByIsActiveAndId(true, memberId);
   }
 
   public Member findMemberByMemberId(Long memberId){
+
     return memberRepository.findByIdAndIsActive(memberId, true).orElseThrow(
         ()-> new BisException(ErrorCode.NOT_FOUND_MEMBER)
     );
