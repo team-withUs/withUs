@@ -25,7 +25,7 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
         list = jpaQueryFactory
             .select(club)
             .from(club)
-            .where(club.isActive.eq(true),containsSearchContent(keyWord))
+            .where(club.isActive.eq(true),club.member.isActive.eq(true),containsSearchContent(keyWord))
             .orderBy(club.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -36,7 +36,7 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
         list = jpaQueryFactory
             .select(club)
             .from(club)
-            .where(club.isActive.eq(true),containsSearchTitle(keyWord))
+            .where(club.isActive.eq(true),club.member.isActive.eq(true),containsSearchTitle(keyWord))
             .orderBy(club.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -50,7 +50,7 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
         list = jpaQueryFactory
             .select(club)
             .from(club)
-            .where(club.isActive.eq(true),club.category.eq(category),containsSearchContent(keyWord))
+            .where(club.isActive.eq(true),club.member.isActive.eq(true),club.category.eq(category),containsSearchContent(keyWord))
             .orderBy(club.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -61,7 +61,7 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
         list = jpaQueryFactory
             .select(club)
             .from(club)
-            .where(club.isActive.eq(true),club.category.eq(category),containsSearchTitle(keyWord))
+            .where(club.isActive.eq(true),club.member.isActive.eq(true),club.category.eq(category),containsSearchTitle(keyWord))
             .orderBy(club.createdAt.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -83,7 +83,7 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
   private long countTotalRecords(String keyWord, boolean isActive, String searchCategory, ClubCategory category) {
     return jpaQueryFactory
         .selectFrom(club)
-        .where(club.isActive.eq(true),
+        .where(club.isActive.eq(isActive),
             category.equals(ClubCategory.ALL) ? null : club.category.eq(category),
             searchCategory.equals("content") ? containsSearchContent(keyWord) : containsSearchTitle(keyWord))
         .fetchCount();

@@ -1,3 +1,5 @@
+// 초대된 목록 초기화
+var inviteeList = [];
 $(document).ready(function () {
     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
     console.log(clubId)
@@ -21,8 +23,7 @@ $(document).ready(function () {
         var isDarkMode = $('body').hasClass('dark-mode');
         localStorage.setItem('darkMode', isDarkMode.toString());
     });
-    // 초대된 목록 초기화
-    var inviteeList = [];
+
 
     $.ajax({
         type: "GET",
@@ -32,7 +33,7 @@ $(document).ready(function () {
             var club = response.data;
 
             $("#clubTitleInput").val(club.clubTitle);
-            $(".btn-secondary.dropdown-toggle").text(club.category);
+            $(".btn-secondary.dropdown-toggle").text(club.categoryKrName);
             $("#club-content").val(club.content);
             $("#startDate").val(club.startTime);
             $("#endDate").val(club.endTime);
@@ -59,8 +60,10 @@ $(document).ready(function () {
 
     // 완료 버튼 눌렀을때 경로 이동
     $("#imgBtn2").on("click", function () {
-        saveData();
-        window.location.href = '/api/club/main-club/' + clubId;
+        if (validateData()) {
+            saveData();
+            window.location.href = '/api/club/main-club/' + clubId;
+        }
     });
 
     $("#imgBtn3").on("click", function () {
@@ -77,6 +80,11 @@ $(document).ready(function () {
 
     function inviteMember() {
         var email = $("#searchInput").val();
+        var emailType = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailType.test(email)) {
+            alert("올바른 이메일 형식을 입력해주세요.");
+            return;
+        }
         console.log("멤버 Email:", email);
 
         $.ajax({
@@ -107,13 +115,7 @@ $(document).ready(function () {
                         }
                     }
                 });
-
             },
-            error: function (xhr, status, error) {
-                console.error("초대 대상 사용자 정보를 가져오는 중 (상태):", status, "에러:", error);
-                console.log("서버 응답:", xhr.responseText);
-                alert("초대 대상 사용자 정보가 없습니다. 다시 시도해주세요.");
-            }
         });
     }
 
@@ -129,11 +131,22 @@ $(document).ready(function () {
             updateInviteContainer(email);
         });
     }
+    function validateData() {
+        var startTime = $("#startDate").val();
+        var endTime = $("#endDate").val();
+
+        if (new Date(endTime) < new Date(startTime)) {
+            alert("마감시간은 시작시간보다 늦어야 합니다. 다시 설정해주세요.");
+            return false;
+        }
+        return true;
+    }
 
     function saveData() {
+
         var formData = new FormData();
         formData.append("clubTitle", $("#clubTitleInput").val());
-        formData.append("category", $(".btn-secondary.dropdown-toggle").text());
+        formData.append("category", getEnumValueForCategory($(".btn-secondary.dropdown-toggle").text()));
         formData.append("content", $("#club-content").val());
         formData.append("startTime", $("#startDate").val());
         formData.append("endTime", $("#endDate").val());
@@ -211,5 +224,25 @@ $(document).ready(function () {
     $('#club-category li').on('click', function () {
         var selectedCategory = $(this).text();
         $('#dropdownMenuLink').text(selectedCategory);
+        selectedCategory && inviteeList.push(selectedCategory);
     });
 });
+
+function getEnumValueForCategory(categoryKr) {
+    switch (categoryKr) {
+        case "운동":
+            return "SPORTS";
+        case "일상":
+            return "TODAY";
+        case "게임":
+            return "GAME";
+        case "음식":
+            return "FOOD";
+        case "스터디":
+            return "STUDY";
+        case "기타":
+            return "ETC";
+        default:
+            return "";
+    }
+}
