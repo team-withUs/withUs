@@ -20,6 +20,8 @@ services:
       - MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
       - MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
       - JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+      - SLACK_CHANNEL_URL=${{ secrets.SLACK_CHANNEL_URL }}
+
     depends_on:
       - redis
 
