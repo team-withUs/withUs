@@ -44,17 +44,11 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
+        validateClubCreation(clubRequestDto);
+
         LocalDateTime startTime = clubRequestDto.startTime();
         LocalDateTime endTime = clubRequestDto.endTime();
         try {
-            if (StringUtils.isBlank(clubRequestDto.clubTitle())) {
-                throw new BisException(ErrorCode.INVALID_VALUE);
-            }
-
-            if (startTime == null || endTime == null) {
-                throw new BisException(ErrorCode.INVALID_VALUE);
-            }
-
             String imageFile = null;
             String imageUrl = null;
             if (image != null) {
@@ -201,7 +195,7 @@ public class ClubServiceImpl implements ClubService {
                     true,
                     pageable
                 );
-
+                
             } else {
                 clubPage = clubRepository.findByCategoryAndIsActiveAndMember_IsActive(
                     category,
@@ -209,7 +203,6 @@ public class ClubServiceImpl implements ClubService {
                     true,
                     pageable
                 );
-
             }
 
         } else {
@@ -237,6 +230,20 @@ public class ClubServiceImpl implements ClubService {
              .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
     }
 
+    private void validateClubCreation(ClubRequestDto clubRequestDto) {
+        if (StringUtils.isBlank(clubRequestDto.clubTitle())) {
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
+
+        LocalDateTime startTime = clubRequestDto.startTime();
+        LocalDateTime endTime = clubRequestDto.endTime();
+
+        if (startTime == null || endTime == null) {
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
+
+    }
+    
     private Club verifyMember(Long clubId) {
 
         return clubRepository.findByIsActiveAndId(true, clubId)
