@@ -23,13 +23,15 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     boolean existsByMemberIdAndClubId(Long memberId, Long clubId);
 
-    List<ClubMember> findByClubId(Long clubId);
+    List<ClubMember> findByClubIdAndMember_IsActive(Long clubId, boolean memberIsActive);
 
     //  추가
-    Integer countByClubId(Long clubId);
+    Integer countByClubIdAndMember_IsActive(Long clubId, boolean memberIsActive);
 
     //삭제 스케줄러용
     List<ClubMember> findAllByClubId(Long clubId);
 
     List<ClubMember> findAllByMemberId(Long memberId);
+
+    List<ClubMember> findByMemberIdAndClubMemberRole(Long memberId, ClubMemberRole role);
 }
