@@ -186,17 +186,17 @@ public class MemberController {
       @AuthMember Member member,
       @RequestBody PasswordRequestDto passwordRequestDto
   ){
+    String message;
+
     if (memberService.passwordCheck(member,passwordRequestDto)) {
+      message = "일치";
 
-      return ResponseEntity
-          .status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
-          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD, "일치"));
-
-    } else {
-
-      return ResponseEntity
-          .status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
-          .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD, "불일치"));
+    } else{
+      message = "불일치";
     }
+
+    return ResponseEntity
+        .status(ResponseCode.MATCHED_PASSWORD.getHttpStatus())
+        .body(CommonResponse.of(ResponseCode.MATCHED_PASSWORD, message));
   }
 }
