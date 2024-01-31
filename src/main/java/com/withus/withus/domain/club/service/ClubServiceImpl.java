@@ -20,6 +20,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClubServiceImpl implements ClubService {
@@ -42,7 +43,6 @@ public class ClubServiceImpl implements ClubService {
     private final ClubMemberService clubMemberService;
 
     @Override
-    @Transactional
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
         LocalDateTime startTime = clubRequestDto.startTime();
         LocalDateTime endTime = clubRequestDto.endTime();
@@ -76,6 +76,7 @@ public class ClubServiceImpl implements ClubService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("Error creating club", e);
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
     }
@@ -216,12 +217,14 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Integer count() {
+
         return clubRepository.countByIsActive(true);
     }
 
     public Club findClubById(Long clubId) {
-        return clubRepository.findById(clubId).
-                orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
+
+        return clubRepository.findById(clubId)
+             .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
     }
 
     private Club verifyMember(Long clubId) {
