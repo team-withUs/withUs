@@ -6,8 +6,7 @@ services:
     image: minseok588098/withus
     ports:
       - "8080:8080"
-    expose:
-      - "8080"
+
     environment:
       - DB_REDIS_HOST=${{ secrets.DB_REDIS_HOST }}
       - WEB_DB_URL=${{ secrets.WEB_DB_URL }}
