@@ -27,6 +27,7 @@ import com.withus.withus.domain.club.entity.ClubMemberRole;
 import com.withus.withus.domain.member.repository.MemberRepository;
 import java.time.Duration;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -122,12 +123,6 @@ public class MemberServiceImpl implements MemberService{
       sameMemberInDBByUsername(updateRequestDto.username());
     }
 
-    if(!updateRequestDto.email().equals(member.getEmail())){
-      sameMemberInDBByEmail(updateRequestDto.email());
-    }
-
-    emailVerification(updateRequestDto.email(), updateRequestDto.code());
-
     Member updatedMember = findMemberByMemberId(memberId);
 
     if(updateRequestDto.imageFile()!=null) {
@@ -183,6 +178,13 @@ public class MemberServiceImpl implements MemberService{
     }
 
     Member deletedMember = findMemberByMemberId(memberId);
+    List<ClubMember> inActiveClubList = clubMemberService.findByMemberIdAndClubMemberRole(
+        memberId,
+        ClubMemberRole.HOST
+    );
+    for (ClubMember clubMember : inActiveClubList) {
+      clubMember.getClub().inActive();
+    }
     deletedMember.inactive();
   }
   @Transactional

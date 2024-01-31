@@ -12,6 +12,7 @@ public record ClubResponseDto(
         String clubTitle,
         String content,
         ClubCategory category,
+        String categoryKrName,
         String imageURL,
         String username,
         LocalDateTime startTime,
@@ -28,6 +29,7 @@ public record ClubResponseDto(
                 .clubTitle(club.getClubTitle())
                 .content(club.getContent())
                 .category(club.getCategory())
+                .categoryKrName(club.getCategory().getKrName())
                 .imageURL(club.getImageUrl())
                 .username(club.getUsername())
                 .startTime(club.getStartTime())

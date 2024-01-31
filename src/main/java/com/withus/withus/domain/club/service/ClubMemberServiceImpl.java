@@ -24,7 +24,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
     @Override
     public List<ClubMember> getInvitedUserByClub(Long clubId) {
 
-        return clubMemberRepository.findByClubId(clubId);
+        return clubMemberRepository.findByClubIdAndMember_IsActive(clubId,true);
     }
 
     //추가
@@ -49,7 +49,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
     @Override
     public Integer getClubMemberCount(Long clubId) {
 
-        return clubMemberRepository.countByClubId(clubId);
+        return clubMemberRepository.countByClubIdAndMember_IsActive(clubId,true);
     }
 
     @Override
@@ -113,6 +113,11 @@ public class ClubMemberServiceImpl implements ClubMemberService {
         true,
         pageable
     );
+  }
+
+  public  List<ClubMember> findByMemberIdAndClubMemberRole(Long memberId, ClubMemberRole role) {
+
+        return clubMemberRepository.findByMemberIdAndClubMemberRole(memberId,role);
   }
 
   public boolean existHost(Long memberId, Long clubId) {
