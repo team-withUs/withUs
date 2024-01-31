@@ -7,6 +7,7 @@ import com.withus.withus.domain.club.entity.Club;
 
 import com.withus.withus.domain.club.service.ClubMemberServiceImpl;
 import com.withus.withus.domain.club.service.ClubServiceImpl;
+import com.withus.withus.domain.comment.dto.CommentResponseDto;
 import com.withus.withus.domain.notice.dto.PageableDto;
 import com.withus.withus.domain.notice.dto.ReportRequestDto;
 import com.withus.withus.domain.notice.entity.Notice;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,11 +91,14 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<NoticeResponseDto> getsNotice(Long clubId, PageableDto pageableDto) {
+    public Page<NoticeResponseDto> getsNotice(
+            Long clubId,
+            PageableDto pageableDto
+    ) {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
-        List<Notice> noticeList = noticeRepository
+        Page<Notice> noticePage = noticeRepository
                 .findAllByIsActiveAndClubId(true,clubId, PageableDto.
                         getsPageableDto(
                                 pageableDto.page(),
@@ -101,11 +106,7 @@ public class NoticeServiceImpl implements NoticeService {
                                 pageableDto.sortBy()
                         ).toPageable()
                 );
-        List<NoticeResponseDto> responseDtoList = new ArrayList<>();
-        for (Notice notice : noticeList) {
-            responseDtoList.add(NoticeResponseDto.createNoticeResponseDto(notice));
-        }
-        return responseDtoList;
+        return noticePage.map(NoticeResponseDto::createNoticeResponseDto);
     }
 
     @Override

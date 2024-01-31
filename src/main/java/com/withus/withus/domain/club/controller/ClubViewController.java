@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("api/club")
 public class ClubViewController {
 
-    private final NoticeService noticeService;
-
     private final ClubMemberServiceImpl clubMemberServiceimpl;
 
     @GetMapping("/main-club/{clubId}")
@@ -40,28 +38,7 @@ public class ClubViewController {
             model.addAttribute("isClubMember", false);
 
         }
-
-        Integer totalList = noticeService.count(clubId);
-        int count;
-        if(totalList == 0){
-            count = 0;
-        } else if(totalList > 4){
-            if(totalList%4 == 0){
-                count = totalList/4;
-            } else {
-                count = totalList/4 + 1;
-            }
-        } else {
-            count = 1;
-        }
-
-        List<Integer> countList = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            countList.add(i + 1);
-        }
-
         model.addAttribute("clubId", clubId);
-        model.addAttribute("countList", countList);
 
         return "club/main-club";
     }
