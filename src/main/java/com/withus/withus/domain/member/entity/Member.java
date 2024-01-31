@@ -80,7 +80,6 @@ public class Member extends TimeStamp {
         String filename
     ) {
         this.username = updateRequestDto.username();
-        this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
         this.tag = updateRequestDto.tag();
         this.imageURL = imageURL;
@@ -92,7 +91,6 @@ public class Member extends TimeStamp {
         UpdateRequestDto updateRequestDto
     ) {
         this.username = updateRequestDto.username();
-        this.email = updateRequestDto.email();
         this.introduction = updateRequestDto.introduction();
         this.tag = updateRequestDto.tag();
     }
