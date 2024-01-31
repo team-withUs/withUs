@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>채팅방</title>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<!--  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
           integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
   <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
+  <script th:src="@{/js/sse.js}"></script>
   <style>
     * {
       padding: 0;
@@ -23,7 +26,7 @@
     body {
       background-color: #A8C0D6;
       margin: 0; /* Remove default body margin */
-      font-family: 'Arial', sans-serif; /* Add font-family for consistency */
+      font-family: 'Poor Story', system-ui; /* Add font-family for consistency */
     }
 
     .titleContainer {
@@ -176,7 +179,7 @@
   </style>
 
   <script th:inline="javascript">
-    const host = 'http://' + window.location.host;
+
     var roomId = /*[[${roomId}]]*/ '';
     var roomName;
     var chatList;
@@ -207,6 +210,13 @@
             guestImg = res.data.senderImg;
             hostId = res.data.receiverId;
             hostImg = res.data.receiverImg;
+          }
+
+          if (guestImg === undefined || guestImg === null) {
+            guestImg = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
+          }
+          if (hostImg === undefined || hostImg === null) {
+            hostImg = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
           }
 
           $("#title").text(roomName);
@@ -252,10 +262,10 @@
 
           if (sender === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + message + '</div>');
@@ -280,8 +290,14 @@
 
       $("#button-send").on("click", function(e) {
         var msg = document.getElementById("msg");
+
+        if (msg.value.length >= 100) {
+          alert("메시지는 100자를 초과할수 없습니다.");
+          return;
+        }
+
         console.log(msg);
-        if (msg.value !== null || msg.value.trim() !== '') {
+        if (msg.value !== null && msg.value.trim() !== '' && msg.value !== undefined) {
           console.log(username + ":" + msg.value);
           stomp.send('/send/api/chat/chatRoom/' + roomId + '/message', {}, JSON.stringify({
             senderId: loginId,
@@ -289,9 +305,14 @@
             content: msg.value
           }));
           msg.value = '';
+        } else {
+          alert("메시지 내용을 입력해주세요.")
         }
       });
 
+      if (loginId !== undefined && loginId !== null && loginId !== '') {
+        connectSse();
+      }
     });
 
     function getChatList(chatList, username) {
@@ -313,10 +334,10 @@
 
           if (senderName === username) {
             chatDiv.addClass('chat ch1');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + hostId + '/profilePage' + '\'"><img src="' + hostImg + '" alt="송신자 이미지"></div>')
           } else {
             chatDiv.addClass('chat ch2');
-            chatDiv.append('<div class="icon" onclick="location.href=\'' + host + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
+            chatDiv.append('<div class="icon" onclick="location.href=\'' + '/api/member/' + guestId + '/profilePage' + '\'"><img src="' + guestImg + '" alt="수신자 이미지"></div>')
           }
 
           chatDiv.append('<div class="textbox">' + content + '</div>');
@@ -337,7 +358,7 @@
       var day = ('0' + dateObject.getDate()).slice(-2);
 
       var hours = dateObject.getHours();
-      var minutes = dateObject.getMinutes();
+      var minutes = ('0' + dateObject.getMinutes()).slice(-2);
       var period = (hours < 12) ? '오전' : '오후';
 
       if (hours > 12) { hours -= 12; }

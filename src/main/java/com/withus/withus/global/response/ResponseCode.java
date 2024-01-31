@@ -24,11 +24,15 @@ public enum ResponseCode {
 
     UPDATE_PROFILE(200, "프로필 수정 성공"),
 
+    UPDATE_PASSWORD(200,"비밀번호 수정 성공"),
+
     RESIGN_MEMBER(200, "회원탈퇴 성공"),
 
     GET_MY_CLUBLIST(200, "내 클럽 불러오기 성공"),
 
     SUCCESS_MEMBER_REPORT(200, "Member 신고 성공"),
+
+    MATCHED_PASSWORD(200, "비밀번호 확인 성공"),
   
     /* NOTICE */
     SUCCESS_NOTICE_UPDATE(200,"Notice 수정 성공"),
@@ -50,6 +54,8 @@ public enum ResponseCode {
 
     SUCCESS_COMMENT_REPORT(200, "Comment 신고 성공"),
 
+    SUCCESS_CLUB_GET(200,"Club 조회 성공"),
+
     /* 201 CREATED */
     SIGNUP(201, "회원가입 성공"),
 
@@ -61,18 +67,16 @@ public enum ResponseCode {
 
     SUCCESS_CLUB_REPORT(201, "Club 신고 성공"),
 
-    SUCCESS_CLUB_GET(200,"Club 조회 성공"),
+    /* 200 UPDATE*/
+    SUCCESS_CLUB_UPDATE(200,"Club 업데이트 성공"),
 
-    /* 201 UPDATE*/
-    SUCCESS_CLUB_UPDATE(201,"Club 업데이트 성공"),
+    SUCCESS_COMMENT_UPDATE(200, "Comment 업데이트 성공"),
 
-    SUCCESS_COMMENT_UPDATE(201, "Comment 업데이트 성공"),
-
-    /* 201 DELETE*/
-    SUCCESS_CLUB_DELETE(201,"Club 삭제 성공");
-
+    /* 200 DELETE*/
+    SUCCESS_CLUB_DELETE(200,"Club 삭제 성공");
 
     private final int httpStatus;
+
     private final String message;
 
 }

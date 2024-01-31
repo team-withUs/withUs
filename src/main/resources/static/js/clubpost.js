@@ -1,6 +1,26 @@
 $(document).ready(function () {
     var inviteeList = [];
 
+    // 다크 모드와 라이트 모드 설정 부분
+    var isDarkMode = localStorage.getItem('darkMode');
+    if (isDarkMode === 'true') {
+        $('body').addClass('dark-mode');
+    }
+
+    // 다크 모드와 라이트 모드를 토글하는 함수
+    function toggleDarkMode() {
+        $('body').toggleClass('dark-mode');
+    }
+
+    // 다크 모드 토글 버튼 또는 다른 요소에 이벤트 리스너 추가
+    $('#darkModeToggle').on('click', function () {
+        toggleDarkMode();
+
+        // 다크 모드 상태를 localStorage에 저장
+        var isDarkMode = $('body').hasClass('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode.toString());
+    });
+
     $("#search-image").on("click", function () {
         loadMemberInfo();
     });
@@ -57,8 +77,11 @@ $(document).ready(function () {
         var clubTitle = $("#clubTitleInput").val().trim();
         var category = $(".btn-secondary.dropdown-toggle").text().trim();
         console.log(category)
+        if (category.toLowerCase() === "category") {
+            alert("유효하지 않은 카테고리가 선택되었습니다. 유효한 카테고리를 선택해주세요.");
+            return;
+        }
         var content = $("#club-content").val().trim();
-        // var maxMember = $("#totalInviteesInput").val().trim();
         var startTime = $("#startDate").val().trim();
         var endTime = $("#endDate").val().trim();
 
@@ -157,7 +180,10 @@ function handleFileSelect() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            container.css('background-image', 'url(' + e.target.result + ')');
+            container.css({
+                'background-image': 'url(' + e.target.result + ')',
+                'background-size': 'cover',
+            });
         };
         reader.readAsDataURL(input.files[0]);
     }

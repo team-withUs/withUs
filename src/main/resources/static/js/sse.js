@@ -6,17 +6,13 @@ function connectSse(){
     (async () => {
       //브라우저 알림
       const showNotification = () => {
-        const notification = new Notification('메세지', {
+        const notification = new Notification('알림', {
           body: data
         });
 
         setTimeout(() => {
           notification.close();
-        }, 10 * 1000);
-
-        notification.addEventListener('click', () => {
-          window.open(data.url, 'blank');
-        });
+        }, 10 * 1000*60);
       }
 
       let granted = false;
@@ -39,16 +35,17 @@ function connectSse(){
     (async () => {
       //브라우저 알림
       const showNotification = () => {
-        const notification = new Notification('메세지', {
+        const notification = new Notification('알림', {
           body: data
         });
 
         setTimeout(() => {
           notification.close();
-        }, 10 * 1000);
+        }, 60 * 1000 * 60);
 
         notification.addEventListener('click', () => {
-          window.open(data.url, 'blank');
+          notification.close();
+          window.location.href='/api/chat/member/'+memberId+'/chatRoomListPage';
         });
       }
 

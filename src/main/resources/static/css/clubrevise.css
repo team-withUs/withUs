@@ -1,14 +1,25 @@
-@font-face {
-    font-family: "Cafe24Supermagic-Bold-v1.0";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
-    font-weight: 700;
-}
+/*@font-face {*/
+/*    font-family: "Cafe24Supermagic-Bold-v1.0";*/
+/*    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");*/
+/*    font-weight: 700;*/
+/*}*/
 
 body {
-    font-family: "Cafe24Supermagic-Bold-v1.0", cursive;
+    /*font-family: "Cafe24Supermagic-Bold-v1.0", cursive;*/
+    font-family: 'Poor Story', system-ui;
     margin: 0;
     padding: 0;
     color: black;
+}
+body.light-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* 다크 모드 스타일 */
+body.dark-mode {
+    background-color: #333333;
+    color: #ffffff;
 }
 
 .all-container {
@@ -150,7 +161,8 @@ body {
 
 .header_btn2{
     background: none;
-    border: none;
+    border-radius: 10px;
+    border: 1px solid white;
     padding: 10px;
     margin: 5px;
 }
@@ -164,7 +176,8 @@ body {
 
 .header_btn3{
     background: none;
-    border: none;
+    border-radius: 10px;
+    border: 1px solid white;
     padding: 10PX;
     margin: 5px;
 }
@@ -194,11 +207,20 @@ body {
     background-color: cornflowerblue;
 }
 
+#darkModeToggle{
+    border-radius: 10px;
+    border: none;
+    float: right;
+}
+#darkModeToggle:hover{
+    background-color: #b6d4fe;
+}
 
 
 /*초대상자*/
 #invite-container{
-    background-color: #f0f0f0;
+    border: 1px solid black;
+    background-color: #c7c7c7;
     border-radius: 10px;
     margin:10px auto;
     width: 300px;
@@ -210,12 +232,17 @@ body {
 /*club*/
 #club-container {
     justify-content: center;
-    background-color: #f0f0f0;
+    background-color: #bdc0c3;
     padding: 20px;
     border-radius: 10px;
     margin: 10px auto;
     width: 760px;
     height: 310px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+.dark-mode #club-container {
+    background-color: #454545;
+    color: #ffffff;
 }
 
 .search-item {
@@ -223,8 +250,13 @@ body {
     width: 340px;
     height: 250px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #d7d7da;
     float: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.dark-mode .search-item {
+    background-color: #2b2b2b;
+    color: #ffffff;
 }
 
 
@@ -233,27 +265,43 @@ body {
     width: 340px;
     height: 250px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #d7d7da;
     float: right;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .Date-item {
+    background-color: #2b2b2b;
+    color: #ffffff;
 }
 
 #club-introduce {
     justify-content: center;
-    background-color: #f0f0f0;
+    background-color: #bdc0c3;
     padding: 20px;
     border-radius: 10px;
     margin: 10px auto;
     width: 760px;
     height: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+.dark-mode #club-introduce {
+    background-color: #454545;
+    color: #ffffff;
 }
 
 .club-revise-item {
     width: 700px;
-    height: 350px;
+    height: 340px;
     border-radius: 15px;
-    background-color: white;
+    background-color: #d7d7da;
     margin: 5px auto;
     align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.dark-mode .club-revise-item {
+    background-color: #2b2b2b;
+    color: #ffffff;
 }
 
 #club-content {

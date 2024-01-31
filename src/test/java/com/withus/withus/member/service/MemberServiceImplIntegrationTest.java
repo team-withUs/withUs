@@ -1,26 +1,41 @@
 package com.withus.withus.member.service;
 
-import com.withus.withus.category.entity.ClubCategory;
-import com.withus.withus.club.dto.ClubRequestDto;
-import com.withus.withus.club.dto.ClubResponseDto;
-import com.withus.withus.club.repository.ClubMemberRepository;
-import com.withus.withus.club.repository.ClubRepository;
-import com.withus.withus.club.service.ClubMemberServiceImpl;
-import com.withus.withus.club.service.ClubServiceImpl;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import com.withus.withus.domain.club.entity.ClubCategory;
+import com.withus.withus.domain.club.dto.ClubRequestDto;
+import com.withus.withus.domain.club.dto.ClubResponseDto;
+import com.withus.withus.domain.club.repository.ClubMemberRepository;
+import com.withus.withus.domain.club.repository.ClubRepository;
+import com.withus.withus.domain.club.service.ClubMemberServiceImpl;
+import com.withus.withus.domain.club.service.ClubServiceImpl;
+import com.withus.withus.domain.member.service.MemberServiceImpl;
 import com.withus.withus.global.config.EmailConfig;
-import com.withus.withus.global.exception.BisException;
-import com.withus.withus.global.exception.ErrorCode;
-import com.withus.withus.global.s3.S3Util;
-import com.withus.withus.global.security.jwt.RefreshTokenRepository;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
+import com.withus.withus.global.utils.s3.S3Util;
 import com.withus.withus.global.utils.EmailService;
 import com.withus.withus.global.utils.RedisService;
-import com.withus.withus.member.dto.*;
-import com.withus.withus.member.entity.Member;
-import com.withus.withus.member.entity.ReportMember;
-import com.withus.withus.member.repository.MemberRepository;
-import com.withus.withus.member.repository.ReportMemberRepository;
-import com.withus.withus.notification.service.NotificationService;
-import org.junit.jupiter.api.*;
+import com.withus.withus.domain.member.dto.EmailRequestDto;
+import com.withus.withus.domain.member.dto.MemberResponseDto;
+import com.withus.withus.domain.member.dto.ReportRequestDto;
+import com.withus.withus.domain.member.dto.SignupRequestDto;
+import com.withus.withus.domain.member.dto.UpdateRequestDto;
+import com.withus.withus.domain.member.entity.Member;
+import com.withus.withus.domain.member.entity.ReportMember;
+import com.withus.withus.domain.member.repository.MemberRepository;
+import com.withus.withus.domain.member.repository.ReportMemberRepository;
+import com.withus.withus.domain.notification.service.NotificationService;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -29,11 +44,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -44,9 +54,6 @@ class MemberServiceImplIntegrationTest {
 
     @Autowired
     ReportMemberRepository reportMemberRepository;
-
-    @Autowired
-    RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -257,8 +264,6 @@ class MemberServiceImplIntegrationTest {
             //given
             Member savedMember = memberRepository.save(member);
             UpdateRequestDto updateRequestDto = new UpdateRequestDto(
-                    "123456",
-                    "123456",
                     "username33",
                     "user33@email.com",
                     "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
@@ -288,8 +293,6 @@ class MemberServiceImplIntegrationTest {
             //when
             BisException e = Assertions.assertThrows(BisException.class, () -> {
                 UpdateRequestDto updateRequestDto = new UpdateRequestDto(
-                        "123456",
-                        "1234567",
                         "username33",
                         "user33@email.com",
                         "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",
@@ -321,8 +324,6 @@ class MemberServiceImplIntegrationTest {
             Member savedMember2 = memberRepository.save(member2);
 
             UpdateRequestDto updateRequestDto = new UpdateRequestDto(
-                    "123456",
-                    "123456",
                     "username33",
                     "user33@email.com",
                     "[\"asdf \",\"asdf \",\"adsa \",\"1234 \"]",

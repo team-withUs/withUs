@@ -1,6 +1,27 @@
 $(document).ready(function () {
     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
 
+    // 다크 모드와 라이트 모드 설정 부분
+    var isDarkMode = localStorage.getItem('darkMode');
+    if (isDarkMode === 'true') {
+        $('body').addClass('dark-mode');
+    }
+
+    // 다크 모드와 라이트 모드를 토글하는 함수
+    function toggleDarkMode() {
+        $('body').toggleClass('dark-mode');
+    }
+
+    // 다크 모드 토글 버튼 또는 다른 요소에 이벤트 리스너 추가
+    $('#darkModeToggle').on('click', function () {
+        toggleDarkMode();
+
+        // 다크 모드 상태를 localStorage에 저장
+        var isDarkMode = $('body').hasClass('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode.toString());
+    });
+
+
     $("#reviseButton").on("click", function () {
         location.href = '/api/club/' + clubId + '/revise-club';
     });
@@ -32,20 +53,39 @@ $(document).ready(function () {
                 inviteMemberDiv.append(hostDiv);
 
                 if (imageURL === null) {
-                    var iconDiv = $('<img src="/img/myInfo.png" alt="멤버 이미지">')
+                    var iconDiv = $('<img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myInfo.png" alt="멤버 이미지">')
                 } else {
                     var iconDiv = $('<img src="' + imageURL + '" alt="멤버 이미지">')
                 }
 
                 inviteMemberDiv.append(iconDiv);
 
-                var usernameDiv = $('<div class="invited-user">' + username + '</div>');
+                var maxUsernameLength = 7;
+                var truncatedUsername = username.length > maxUsernameLength ? username.substring(0, maxUsernameLength) + '...' : username;
+                var usernameDiv = $('<div class="invited-member">' + truncatedUsername + '</div>');
                 inviteMemberDiv.append(usernameDiv);
 
                 inviteContainer.append(inviteMemberDiv);
 
                 iconDiv.on('click', function () {
-                    window.location.href = host + '/api/member/' + memberId + '/profilePage';
+                    try {
+                        // URL로 이동을 시도합니다.
+                        fetch('/api/member/' + memberId + '/profilePage')
+                        .then(response => {
+                            if (response.status === 403) {
+                                alert("로그인한 회원만 프로필에 접근할 수 있습니다.")
+                                window.location.href = '/api/member/loginPage';
+                            } else if (response.ok) {
+                                window.location.href = '/api/member/' + memberId + '/profilePage'
+                            }
+                            return response.text();
+                        })
+                        .catch(error => {
+                            alert("죄송합니다. 해당 오류에 대한 정보를 신고해주세요.")
+                        });
+                    } catch (err) {
+                        alert("죄송합니다. 해당 오류에 대한 정보를 신고해주세요.")
+                    }
                 })
 
 
@@ -69,14 +109,18 @@ $(document).ready(function () {
             var club = response.data;
             $(".club-title-name").text(club.clubTitle);
             $(".club-introduce-box").text(club.content);
-            $(".start-time").text("Start Date: " + club.startTime);
-            $(".end-time").text("End Date: " + club.endTime);
+            $(".start-time").text(formatDateTime(club.startTime));
+            $(".end-time").text(" ~ " + formatDateTime(club.endTime));
 
             var imageURL = club.imageURL;
             $("#uploadedImage").attr("src", imageURL);
 
             if (imageURL) {
-                $('.all-container').css('background-image', 'url(' + imageURL + ')');
+                $('.all-container').css({
+                    'background-image': 'url(' + imageURL + ')',
+                    'background-repeat': 'no-repeat',
+                    'background-size': 'cover',
+                });
             }
         },
         error: function (xhr, status, error) {
@@ -84,6 +128,23 @@ $(document).ready(function () {
             console.log("서버 응답:", xhr.responseText);
         }
     });
+    function formatDateTime(dateTimeString) {
+        var date = new Date(dateTimeString);
+        var year = date.getFullYear();
+        var month = String(date.getMonth() + 1).padStart(2, '0');
+        var day = String(date.getDate()).padStart(2, '0');
+        var hours = String(date.getHours()).padStart(2, '0');
+        var minutes = String(date.getMinutes()).padStart(2, '0');
+        var period = (date.getHours() < 12) ? '오전' : '오후';
+
+        if (hours > 12) {
+            hours -= 12;
+        } else if (hours === 0) {
+            hours = 12;
+        }
+
+        return year + '-' + month + '-' + day + ' ' + period + ' ' + String(hours).padStart(2, '0') + ':' + minutes;
+    }
     $("#leaveClubButton").on("click", function () {
         $.ajax({
             type: "DELETE",

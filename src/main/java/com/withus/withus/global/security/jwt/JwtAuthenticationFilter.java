@@ -3,7 +3,7 @@ package com.withus.withus.global.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.withus.withus.global.security.UserDetailsImpl;
-import com.withus.withus.member.dto.LoginRequestDto;
+import com.withus.withus.domain.member.dto.LoginRequestDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,19 +54,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("로그인 성공 및 JWT 생성");
         String loginname = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
 
+        // 로그인시 기 발급된 토큰이 존재하면 해당 토큰 무효화 처리
+        // AccessToken, RefreshToken Redis삭제
+        jwtUtil.deleteTokenInRedis(loginname);
+
         String accessToken = jwtUtil.createAccessToken(loginname);
-        String refreshToken = "";
+        String refreshToken = jwtUtil.createRefreshToken(loginname);
 
-        try {
-            //  Http 로그인 URL 요청시 토큰저장소 조회 **
-            RefreshToken refreshTokenIns = jwtUtil.getTokenDBByLoginname(loginname);
-            refreshToken = refreshTokenIns.getRefreshToken();
-
-        } catch (NullPointerException e) {
-            refreshToken = jwtUtil.createRefreshToken(loginname);
-            // RefreshToken DB에 저장
-            jwtUtil.saveRefreshJwtToDB(refreshToken, loginname);
-        }
+        jwtUtil.saveJwtToRedis(accessToken, refreshToken, loginname);
 
         // RefreshToken 쿠키에 저장
         jwtUtil.addJwtToCookie("refreshToken", refreshToken, response);

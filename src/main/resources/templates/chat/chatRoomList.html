@@ -5,24 +5,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>참여중인 채팅방 목록</title>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<!--  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+
   <script src="https://kit.fontawesome.com/d1fc3aeceb.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script th:src="@{/js/sse.js}"></script>
   <style>
-    @font-face {
-      font-family: "Cafe24Supermagic-Bold-v1.0";
-      src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
-      font-weight: 700;
-      font-style: normal;
-    }
+
 
     body {
-      /*background-image: url('/img/background.jpg'); !* 이미지 URL로 설정 *!*/
       background-color: #98a9bc;
 
       background-size: cover; /* 배경 이미지를 창에 맞추기 */
       background-position: center center; /* 배경 이미지 중앙 정렬 */
-      font-family : "Cafe24Supermagic-Bold-v1.0";
+      font-family: 'Poor Story', system-ui;
       margin: 0;
       padding: 0;
       height: 100vh; /* 뷰포트의 높이만큼 전체 화면 높이로 설정 */
@@ -154,7 +154,6 @@
   </style>
 
   <script th:inline="javascript">
-    const host = 'http://' + window.location.host;
     const memberId = /*[[${memberId}]]*/ '';
 
     $(document).ready(function() {
@@ -175,7 +174,9 @@
           console.error('채팅방 목록 요청 API 에러', error);
         })
 
-
+      if (memberId !== undefined && memberId !== null && memberId !== '') {
+        connectSse();
+      }
 
     })
 
@@ -191,7 +192,7 @@
           console.info(roomId, title);
           console.info(img);
 
-          var chatRoomDiv = $('<a href="' + host + '/api/chat/chatRoom/' + roomId + '/chatRoomPage' + '" class="chat-room">');
+          var chatRoomDiv = $('<a href="' + '/api/chat/chatRoom/' + roomId + '/chatRoomPage' + '" class="chat-room">');
 
           if (img) {
             chatRoomDiv.append('<img src="' + img + '" alt="채팅방 이미지">');
@@ -257,10 +258,10 @@
 <div>
   <header>
     <div class="title">
-      <h2 class="withUs" onclick="location.href=host + '/'">withUs</h2>
+      <h2 class="withUs" onclick="location.href='/'">withUs</h2>
     </div>
     <div class="title2">
-      <i class="icon fa-solid fa-user" onclick="location.href=host + '/api/member/' + memberId + '/profilePage'"></i>
+      <i class="icon fa-solid fa-user" onclick="location.href='/api/member/' + memberId + '/profilePage'"></i>
       <i class="arrow-icon fa-solid fa-arrow-rotate-left" onclick="history.back()"></i>
     </div>
   </header>

@@ -11,6 +11,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/clubstyle.css}">
+<!--    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300;500;700&display=swap" rel="stylesheet">-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+    <script th:src="@{/js/sse.js}"></script>
 
     <script th:inline="javascript">
         const host = 'http://' + window.location.host;
@@ -65,19 +70,19 @@
 
 
             $("#loginBtn").on("click", function(e) {
-                window.location.href = host + '/api/member/loginPage';
+                window.location.href = '/api/member/loginPage';
             });
 
             $("#chatting").on("click", function(e) {
-                window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
+                window.location.href = '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function(e) {
-                window.location.href = host + '/api/member/' + memberId + '/profilePage';
+                window.location.href = '/api/member/' + memberId + '/profilePage';
             });
 
             $("#create").on("click", function(e) {
-                window.location.href = host + '/api/club/post-club';
+                window.location.href = '/api/club/post-club';
             });
 
             $("#logout").on("click", function(e) {
@@ -91,14 +96,12 @@
                         contentType: ''
                     })
                     .done(function (res, status, xhr) {
-                        window.location.href = host + '/'
+                        window.location.href = '/'
                     })
                     .fail(function (xhr, status, error) {
                         console.error('로그아웃 요청 API 에러', error);
                     })
 
-                } else {
-                    alert('로그아웃 취소');
                 }
 
             });
@@ -118,11 +121,11 @@
                     <h2 class="withUs" th:onclick="|location.href='@{/}'|">withUs</h2>
                 </div>
                 <div class="title2">
-                    <img src="/img/message.png" id="chatting" class="chat-icon">
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/message.png" id="chatting" class="chat-icon">
                     <h2 class="login" id="loginBtn">login</h2>
-                    <img src="/img/create.png" id="create" class="create">
-                    <img src="/img/myInfo.png" id="myInfo" class="my-info">
-                    <img src="/img/arrow_10940959.png" id="logout" class="logout">
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/create.png" id="create" class="create">
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myInfo.png" id="myInfo" class="my-info">
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/arrow_10940959.png" id="logout" class="logout">
                 </div>
             </div>
         </header>
@@ -136,10 +139,12 @@
 
 <main>
     <div class="all-container">
+        <button id="darkModeToggle">DarkMode</button>
+
         <section id="club-title">
             <div class=title-item>
                 <article class="club">
-                    <h2 class="club-title-name" >클럽 이름</h2>
+                    <h2 class="club-title-name">클럽 이름</h2>
                 </article>
             </div>
 
@@ -147,13 +152,13 @@
             <div class="button-item">
                 <article class="club-button-container1">
                     <button id="reviseButton">
-                        <img src="/icons/수정.png">
+                        <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/update.png">
                     </button>
 
                 </article>
                 <article class="club-button-container2">
                     <button id="deleteButton">
-                        <img src="/icons/icons8-취소-30.png">
+                        <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/cancel.png">
                     </button>
                 </article>
             </div>
@@ -162,7 +167,7 @@
         <section id="notice-container">
             <div>
                 <button id="Notice-post" onclick="navigateToNoticeAddPage()">
-                    <img src="/icons/noties.png"/>
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/noties.png"/>
                 </button>
                 <div>
                     <h1 class="Noitce"> Notice </h1>
@@ -187,6 +192,7 @@
                 /*<![CDATA[*/
                 $(document).ready(function () {
                     fetchNotices();
+                    memberId = [[${memberId}]];
                     function fetchNotices() {
                         var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
                         console.log(clubId)
@@ -200,8 +206,8 @@
                                     let title = res.title;
                                     let id = res.id;
                                     const card =
-                                        '<div class="board-box" onclick="noticePage(\'' + id + '\')">' +
-                                        '    <div style="font-weight: bold; padding-bottom: 100px;">' + title + '</div>' +
+                                        '<div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
+                                        '    <div style="font-weight: bold; padding-bottom: 100px; text-align: center;">' + title + '</div>\n' +
                                         '</div>';
                                     $('#notice-box').append(card);
                                 });
@@ -217,14 +223,23 @@
                         const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
                         $('#page').append(card);
                     })
+
+                    if (memberId !== undefined && memberId !== null && memberId !== '') {
+                        connectSse();
+                    }
                 });
                 /*]]>*/
 
                 function noticePage(noticeId){
                     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
+                    var memberId = [[${memberId}]];
+                    if (memberId === undefined || memberId === null || memberId === '') {
+                        alert("회원만 이용 가능합니다.");
+                        window.location.href = '/api/member/loginPage';
+                        return;
+                    }
                     window.location.href = "/api/club/" + clubId +"/notice/" + noticeId + "/noticeDetailPage"
                     console.log(clubId)
-                    // var noticeId
                     console.log(noticeId)
                 }
 
@@ -238,16 +253,13 @@
                         contentType: 'application/json',
                         success: function (result) {
                             const list = result.data;
-                            // const startIdx = (pageNumber - 1) * pageSize;
-                            // const endIdx = startIdx + pageSize;
-                            // const slicedList = list.slice(startIdx, endIdx)
                             $(list).each(function (index, res) {
                                 let title = res.title;
                                 let id = res.id;
-                                const card = '' +
-                                    '  <div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
-                                    '                     <div style="font-weight: bold; padding-bottom: 100px;">' + title + '</div>\n' +
-                                    '                    </div>';
+                                const card =
+                                    '<div class="board-box" onclick="noticePage(\'' + id + '\')">\n' +
+                                    '    <div style="font-weight: bold; padding-bottom: 100px; text-align: center;">' + title + '</div>\n' +
+                                    '</div>';
                                 $('#notice-box').append(card);
                             });
                         }
@@ -257,14 +269,11 @@
         </section>
         <section id="club-container">
             <div class="item1">
-                <h1 class="club-introduce" >클럽소개</h1>
-                <article class="Club-container">
-                    <div class="club-introduce">
-                        <div class="club-introduce-box">
-                            소개 내용
-                        </div>
+                <div class="club-introduce-title">클럽소개</div>
+                <div class="club-introduce">
+                    <div class="club-introduce-box">
                     </div>
-                </article>
+                </div>
             </div>
 
             <div class="item2">
@@ -282,12 +291,16 @@
 
                     </div>
                 </div>
+                <div>
+                    <button id="leaveClubButton">
+                        클럽 탈퇴
+                    </button>
+                </div>
 
             </div>
-            <button id = "leaveClubButton">
-                클럽 탈퇴
-            </button>
+
         </section>
+
     </div>
 
 </main>

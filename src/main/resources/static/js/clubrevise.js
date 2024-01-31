@@ -2,6 +2,25 @@ $(document).ready(function () {
     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
     console.log(clubId)
 
+    // 다크 모드와 라이트 모드 설정 부분
+    var isDarkMode = localStorage.getItem('darkMode');
+    if (isDarkMode === 'true') {
+        $('body').addClass('dark-mode');
+    }
+
+    // 다크 모드와 라이트 모드를 토글하는 함수
+    function toggleDarkMode() {
+        $('body').toggleClass('dark-mode');
+    }
+
+    // 다크 모드 토글 버튼 또는 다른 요소에 이벤트 리스너 추가
+    $('#darkModeToggle').on('click', function () {
+        toggleDarkMode();
+
+        // 다크 모드 상태를 localStorage에 저장
+        var isDarkMode = $('body').hasClass('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode.toString());
+    });
     // 초대된 목록 초기화
     var inviteeList = [];
 
@@ -22,7 +41,11 @@ $(document).ready(function () {
             $("#uploadedImage").attr("src", imageURL);
 
             if (imageURL) {
-                $('.all-container').css('background-image', 'url(' + imageURL + ')');
+                $('.all-container').css({
+                    'background-image': 'url(' + imageURL + ')',
+                    'background-repeat': 'no-repeat',
+                    'background-size': 'cover' // 바둑판 모양 방지 및 꽉 차게 표시
+                });
             }
 
             // 초대된 목록 불러오기
@@ -77,6 +100,11 @@ $(document).ready(function () {
                     error: function (xhr, status, error) {
                         console.error("초대 에러. 상태:", status, "에러:", error);
                         console.log("서버 응답:", xhr.responseText);
+                        if (xhr.status === 404) {
+                            alert("사용자를 찾을 수 없습니다. 올바른 이메일을 입력해주세요.");
+                        } else {
+                            alert("초대 중에 오류가 발생했습니다. 다시 시도해주세요.");
+                        }
                     }
                 });
 
@@ -84,6 +112,7 @@ $(document).ready(function () {
             error: function (xhr, status, error) {
                 console.error("초대 대상 사용자 정보를 가져오는 중 (상태):", status, "에러:", error);
                 console.log("서버 응답:", xhr.responseText);
+                alert("초대 대상 사용자 정보가 없습니다. 다시 시도해주세요.");
             }
         });
     }
@@ -135,7 +164,11 @@ $(document).ready(function () {
                 $("#uploadedImage").attr("src", imageURL);
 
                 if (imageURL) {
-                    $('.all-container').css('background-image', 'url(' + imageURL + ')');
+                    $('.all-container').css({
+                        'background-image': 'url(' + imageURL + ')',
+                        'background-repeat': 'no-repeat',
+                        'background-size': 'cover' // 바둑판 모양 방지 및 꽉 차게 표시
+                    });
                 }
                 location.reload();
             },
@@ -156,14 +189,20 @@ function handleFileSelect() {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            container.css('background-image', 'url(' + e.target.result + ')');
+            container.css({
+                'background-image': 'url(' + e.target.result + ')',
+                'background-size': 'cover'
+            });
         };
 
         reader.readAsDataURL(input.files[0]);
     } else if (!input.value) {
         // 파일을 선택하지 않은 경우, 기존 이미지를 다시 불러옴
         var imageURL = $("#uploadedImage").attr("src");
-        container.css('background-image', 'url(' + imageURL + ')');
+        container.css({
+            'background-image': 'url(' + imageURL + ')',
+            'background-size': 'cover'
+        });
     }
 }
 

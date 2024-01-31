@@ -5,20 +5,19 @@
     <title>withUs</title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
             integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<!--    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
     <script th:src="@{/js/sse.js}"></script>
     <style>
 
-        @font-face {
-            font-family: "Cafe24Supermagic-Bold-v1.0";
-            src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/Cafe24Supermagic-Bold-v1.0.woff2") format("woff2");
-            font-weight: 700;
-            font-style: normal;
-        }
 
         /*전체*/
         .main {
-            font-family: "Cafe24Supermagic-Bold-v1.0";
+            font-family: 'Poor Story', system-ui;
             padding-right: 20%;
             padding-left: 20%;
             display: flex;
@@ -226,7 +225,6 @@
 
     </style>
     <script th:inline="javascript">
-        const host = 'http://' + window.location.host;
         let clubId = /*[[${clubId}]]*/ '';
         let category = 'ALL';
         let size = 4;
@@ -247,7 +245,7 @@
                 type: 'GET',
                 url: '/api/club/' + category
                     + '/club?size='+ size
-                    + '&sortBy=CreatedAt',
+                    + '&sort=createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
@@ -255,14 +253,14 @@
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
-                            clubImage = '/img/default.png';
+                            clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                         }
                         clubId = currentItem.clubId;
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
 
-                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                        var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                         $.ajax({
                             type: 'GET',
@@ -342,19 +340,19 @@
             }
 
             $("#loginBtn").on("click", function (e) {
-                window.location.href = host + '/api/member/loginPage';
+                window.location.href = '/api/member/loginPage';
             });
 
             $("#chatting").on("click", function(e) {
-              window.location.href = host + '/api/chat/member/' + memberId + '/chatRoomListPage';
+              window.location.href = '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
 
             $("#myInfo").on("click", function (e) {
-                window.location.href = host + '/api/member/' + memberId + '/profilePage';
+                window.location.href = '/api/member/' + memberId + '/profilePage';
             });
 
             $("#create").on("click", function (e) {
-                window.location.href = host + '/api/club/post-club';
+                window.location.href = '/api/club/post-club';
             });
 
             $("#myclub").on("click", function (e) {
@@ -372,14 +370,12 @@
                         contentType: ''
                     })
                         .done(function (res, status, xhr) {
-                            window.location.href = host + '/'
+                            window.location.href = '/'
                         })
                         .fail(function (xhr, status, error) {
                             console.error('로그아웃 요청 API 에러', error);
                         })
 
-                } else {
-                    alert('로그아웃 취소');
                 }
 
             });
@@ -418,7 +414,8 @@
                 url: '/api/club/' + category
                     + '/club?size='+ size
                     + '&keyWord='+ keyword
-                    + '&category=' + category,
+                    + '&category=' + category
+                    + '&sort=createdAt,desc',
 
                 contentType: 'application/json',
                 success: function (response) {
@@ -443,13 +440,13 @@
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
-                                clubImage = '/img/default.png';
+                                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                             }
                             clubId = currentItem.clubId;
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
-                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                            var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                             $.ajax({
                                 type: 'GET',
@@ -534,7 +531,8 @@
                     + '/club?size=' + size
                     + '&page=' + 0
                     + '&keyWord=' + keyword
-                    + '&searchCategory=' + search,
+                    + '&searchCategory=' + search
+                    + '&sort=createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     if (response.data.totalElements === 0) {
@@ -548,13 +546,13 @@
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
-                                clubImage = '/img/default.png';
+                                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                             }
                             clubId = currentItem.clubId;
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
-                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                            var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                             $.ajax({
                                 type: 'GET',
@@ -630,7 +628,8 @@
                     + '/club?size='+ size
                     + '&page=' + (pageNumber-1)
                     + '&keyWord=' + keyword
-                    + '&searchCategory=' + search,
+                    + '&searchCategory=' + search
+                    + '&sort=createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
@@ -638,14 +637,14 @@
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
-                            clubImage = '/img/default.png';
+                            clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                         }
                         clubId = currentItem.clubId;
                         console.log(clubId);
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
-                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                        var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                         $.ajax({
                             type: 'GET',
@@ -695,7 +694,7 @@
             $.ajax({
                 type: 'GET',
                 url: '/api/member/club?size='+ size
-                    +'&sortBy=CreatedAt',
+                    +'&sort=club.createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     var buttons = document.getElementsByClassName('btn');
@@ -713,13 +712,13 @@
                             if (currentItem.imageURL !== null) {
                                 clubImage = currentItem.imageURL;
                             } else {
-                                clubImage = '/img/default.png';
+                                clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                             }
                             clubId = currentItem.clubId;
                             clubName = currentItem.clubTitle;
                             clubContent = currentItem.content;
                             console.log("생성완료");
-                            var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                            var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                             $.ajax({
                                 type: 'GET',
@@ -791,7 +790,7 @@
                 type: 'GET',
                 url: '/api/member/club?size=' + size
                     +'&page=' + (pageNumber - 1)
-                    + '&sortBy=CreatedAt',
+                    + '&sort=club.createdAt,desc',
                 contentType: 'application/json',
                 success: function (response) {
                     for (var i = 0; i < response.data.content.length; i++) {
@@ -799,14 +798,14 @@
                         if (currentItem.imageURL !== null) {
                             clubImage = currentItem.imageURL;
                         } else {
-                            clubImage = '/img/default.png';
+                            clubImage = 'https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/default.png';
                         }
                         clubId = currentItem.clubId;
                         console.log(clubId);
                         clubName = currentItem.clubTitle;
                         clubContent = currentItem.content;
                         console.log("생성완료");
-                        var truncatedContent = clubContent.length > 10 ? clubContent.substring(0, 10) + '...' : clubContent;
+                        var truncatedContent = clubContent.length > 20 ? clubContent.substring(0, 20) + '...' : clubContent;
 
                         $.ajax({
                             type: 'GET',
@@ -862,16 +861,16 @@
                         style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
                 </div>
                 <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
-                    <img src="/img/myclub.png" id="myclub" class="my-info"
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myclub.png" id="myclub" class="my-info"
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    <img src="/img/message.png" id="chatting" class="chat-icon"
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/message.png" id="chatting" class="chat-icon"
                          style="float: left; cursor: pointer; display: none; width: 35px; height: 35px; margin-right: 5px; margin-top: 5px">
                     <h2 class="login" id="loginBtn" style="float: left; cursor: pointer; margin-top: 5px">login</h2>
-                    <img src="/img/create.png" id="create" class="create"
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/create.png" id="create" class="create"
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    <img src="/img/myInfo.png" id="myInfo" class="my-info"
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myInfo.png" id="myInfo" class="my-info"
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    <img src="/img/arrow_10940959.png" id="logout" class="my-info"
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/arrow_10940959.png" id="logout" class="my-info"
                          style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
                 </div>
             </div>
@@ -886,7 +885,7 @@
                     <option value="content">내용</option>
                 </select>
                 <input type="text" id="searchText" placeholder="검색어 입력" onkeyup="handleKeyUp(event)">
-                <img src="/img/icon-search.png" onclick="searchKeyword()">
+                <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/icon-search.png" onclick="searchKeyword()">
             </div>
         </div>
     </div>
