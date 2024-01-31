@@ -1,26 +1,25 @@
 package com.withus.withus.domain.notice.service;
 
 
-import static com.withus.withus.global.utils.s3.S3Const.S3_DIR_NOTICE;
+
 
 import com.withus.withus.domain.club.entity.Club;
-import com.withus.withus.domain.club.entity.ClubMember;
-import com.withus.withus.domain.club.entity.ClubMemberRole;
+
 import com.withus.withus.domain.club.service.ClubMemberServiceImpl;
 import com.withus.withus.domain.club.service.ClubServiceImpl;
 import com.withus.withus.domain.notice.dto.PageableDto;
 import com.withus.withus.domain.notice.dto.ReportRequestDto;
+import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.entity.NoticeCategory;
 import com.withus.withus.domain.notice.entity.ReportNotice;
 import com.withus.withus.global.response.exception.BisException;
 import com.withus.withus.global.response.exception.ErrorCode;
-import com.withus.withus.global.utils.s3.S3Util;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.notice.dto.NoticeRequestDto;
 import com.withus.withus.domain.notice.dto.NoticeResponseDto;
-import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.repository.NoticeRepository;
 import com.withus.withus.domain.notice.repository.ReportRepository;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,29 +35,21 @@ public class NoticeServiceImpl implements NoticeService {
     private final ReportRepository reportRepository;
     private final ClubServiceImpl clubService;
     private final ClubMemberServiceImpl clubMemberService;
-    private final S3Util s3Util;
+
 
     @Override
     public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member) {
-        Club club = clubService.findByIsActiveAndClubId(clubId);
         if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
         }
+        Club club = clubService.findByIsActiveAndClubId(clubId);
 
         NoticeCategory category = NoticeCategory.BOARD;
         if (requestDto.category().equals("공지사항")) {
             category = NoticeCategory.NOTICE;
         }
 
-        Notice createNotice;
-        if (requestDto.imageFile() == null) {
-            createNotice = Notice.createNotice(requestDto, member, club, category);
-        } else {
-            String filename = s3Util.uploadFile(requestDto.imageFile(), S3_DIR_NOTICE);
-            createNotice = Notice.createNoticePlusImage(requestDto, member, club, category,
-                    s3Util.getFileURL(filename, S3_DIR_NOTICE), filename);
-        }
-
+        Notice createNotice = Notice.createNotice(requestDto, member, club, category);
         Notice saveNotice = noticeRepository.save(createNotice);
         return NoticeResponseDto.createNoticeResponseDto(saveNotice);
     }
@@ -70,28 +61,13 @@ public class NoticeServiceImpl implements NoticeService {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
 
-//        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
-//            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
-//        }
         Notice notice = findByIsActiveAndNoticeId(noticeId);
-        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member, clubId);
-        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || notice.getMember().getId().equals(member.getId())){
+        if(clubMemberService.existHost(member.getId(), clubId) || notice.getMember().getId().equals(member.getId())){
             NoticeCategory category = NoticeCategory.BOARD;
             if (requestDto.category().equals("공지사항")) {
                 category = NoticeCategory.NOTICE;
             }
-
-            if (requestDto.imageFile() != null) {
-                if (notice.getFilename() != null) {
-                    s3Util.deleteFile(notice.getFilename(), S3_DIR_NOTICE);
-                }
-                String filename = s3Util.uploadFile(requestDto.imageFile(), S3_DIR_NOTICE);
-                notice.updatePlusImage(requestDto, category,
-                    s3Util.getFileURL(filename, S3_DIR_NOTICE), filename
-                );
-            } else {
-                notice.update(requestDto, category);
-            }
+            notice.update(requestDto, category);
             return NoticeResponseDto.createNoticeResponseDto(notice);
         }
         else {
@@ -143,12 +119,8 @@ public class NoticeServiceImpl implements NoticeService {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
-//        if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
-//            throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
-//        }
-        ClubMember clubMember = clubMemberService.findClubMemberByMemberIdAndClubId(member, clubId);
         Notice notice = findByIsActiveAndNoticeId(noticeId);
-        if(clubMember.getClubMemberRole().equals(ClubMemberRole.HOST) || notice.getMember().getId().equals(member.getId())){
+        if(clubMemberService.existHost(member.getId(), clubId) || notice.getMember().getId().equals(member.getId())){
             notice.inActive();
         }
         else {
