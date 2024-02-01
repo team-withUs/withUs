@@ -31,7 +31,7 @@ public record ClubResponseDto(
                 .category(club.getCategory())
                 .categoryKrName(club.getCategory().getKrName())
                 .imageURL(club.getImageUrl())
-                .username(club.getUsername())
+                .username(club.getMember().getUsername())
                 .startTime(club.getStartTime())
                 .endTime(club.getEndTime())
                 .createdAt(club.getCreatedAt())

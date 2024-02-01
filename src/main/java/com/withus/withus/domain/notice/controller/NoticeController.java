@@ -14,6 +14,7 @@ import com.withus.withus.global.response.CommonResponse;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,7 +65,7 @@ public class NoticeController {
   }
 
   @GetMapping("/club/{clubId}/notice")
-  public ResponseEntity<CommonResponse<List<NoticeResponseDto>>> getsNotice(
+  public ResponseEntity<CommonResponse<Page<NoticeResponseDto>>> getsNotice(
       @PathVariable("clubId") Long clubId,
       @RequestParam(value = "page", defaultValue = "1") int page,
       @RequestParam(value = "size", defaultValue = "4") int size,

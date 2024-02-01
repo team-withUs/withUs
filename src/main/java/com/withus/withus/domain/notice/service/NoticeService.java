@@ -5,6 +5,8 @@ import com.withus.withus.domain.notice.dto.NoticeResponseDto;
 import com.withus.withus.domain.notice.dto.PageableDto;
 import com.withus.withus.domain.notice.dto.ReportRequestDto;
 import com.withus.withus.domain.member.entity.Member;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface NoticeService {
@@ -19,7 +21,7 @@ public interface NoticeService {
 
   void createReportNotice(Long noticeId, ReportRequestDto requestDto, Member member);
 
-  List<NoticeResponseDto> getsNotice(Long clubId, PageableDto pageableDto);
+  Page<NoticeResponseDto> getsNotice(Long clubId, PageableDto pageableDto);
 
   Integer count(Long clubId);
 }

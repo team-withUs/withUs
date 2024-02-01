@@ -115,11 +115,11 @@ public class ClubController {
             @PathVariable("clubId") Long clubId,
             @AuthMember Member member
     ) {
-        String responseDto = clubService.deleteClub(clubId, member);
+        clubService.deleteClub(clubId, member);
 
         return ResponseEntity
                 .status(ResponseCode.SUCCESS_CLUB_DELETE.getHttpStatus())
-                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE, responseDto));
+                .body(CommonResponse.of(ResponseCode.SUCCESS_CLUB_DELETE,""));
     }
 
     // 신고
