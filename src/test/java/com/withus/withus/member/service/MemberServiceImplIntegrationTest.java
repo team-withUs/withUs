@@ -653,5 +653,3 @@ class MemberServiceImplIntegrationTest {
         }
     }
 }
-
-
