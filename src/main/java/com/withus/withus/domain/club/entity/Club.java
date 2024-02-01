@@ -1,11 +1,9 @@
 package com.withus.withus.domain.club.entity;
 
 import com.withus.withus.domain.club.dto.ClubRequestDto;
-
+import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.global.timestamp.TimeStamp;
-import com.withus.withus.domain.member.entity.Member;
-
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +12,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Length;
 
 @Entity
 @Getter
@@ -45,9 +42,6 @@ public class Club extends TimeStamp {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
-    private String username;
-
     private boolean isActive = true;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
@@ -76,7 +70,6 @@ public class Club extends TimeStamp {
         this.member = member;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.username = member.getUsername();
     }
 
     public static Club createClub(

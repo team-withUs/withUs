@@ -21,9 +21,22 @@ $(document).ready(function () {
         localStorage.setItem('darkMode', isDarkMode.toString());
     });
 
-
+    // 수정버튼
     $("#reviseButton").on("click", function () {
         location.href = '/api/club/' + clubId + '/revise-club';
+    });
+
+    $("#reviseButton").on("mouseover", function (e) {
+        $("#reviseTooltip").css({
+            top: e.pageY + 10,
+            left: e.pageX + 10
+        });
+
+        $("#reviseTooltip").show();
+    });
+
+    $("#reviseButton").on("mouseout", function (e) {
+        $("#reviseTooltip").hide();
     });
 
     // 초대된 사용자 가져오기

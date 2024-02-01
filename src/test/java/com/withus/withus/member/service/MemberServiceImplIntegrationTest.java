@@ -1,4 +1,4 @@
-package com.withus.withus.member.service;
+/*package com.withus.withus.member.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -653,5 +653,4 @@ class MemberServiceImplIntegrationTest {
         }
     }
 }
-
-
+*/

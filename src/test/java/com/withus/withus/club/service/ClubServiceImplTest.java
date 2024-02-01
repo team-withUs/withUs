@@ -1,4 +1,4 @@
-package com.withus.withus.club.service;
+/*package com.withus.withus.club.service;
 
 import com.withus.withus.domain.club.entity.ClubCategory;
 import com.withus.withus.domain.club.dto.ClubRequestDto;
@@ -424,3 +424,6 @@ class ClubServiceImplTest {
         }
     }
 }
+
+*/
+

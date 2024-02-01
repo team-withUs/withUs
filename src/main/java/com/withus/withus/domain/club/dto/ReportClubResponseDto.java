@@ -17,7 +17,7 @@ public record ReportClubResponseDto(
 
         return ReportClubResponseDto.builder()
                 .clubId(club.getId())
-                .username(club.getUsername())
+                .username(club.getMember().getUsername())
                 .content(reportClub.getContent())
                 .build();
     }
