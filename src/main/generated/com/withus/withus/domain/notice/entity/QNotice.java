@@ -1,4 +1,4 @@
-package com.withus.withus.notice.entity;
+package com.withus.withus.domain.notice.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QNotice extends EntityPathBase<Notice> {
 
-    private static final long serialVersionUID = 1362701082L;
+    private static final long serialVersionUID = 82562250L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -26,7 +26,7 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public final EnumPath<NoticeCategory> category = createEnum("category", NoticeCategory.class);
 
-    public final com.withus.withus.club.entity.QClub club;
+    public final com.withus.withus.domain.club.entity.QClub club;
 
     public final StringPath content = createString("content");
 
@@ -41,7 +41,7 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public final BooleanPath isActive = createBoolean("isActive");
 
-    public final com.withus.withus.member.entity.QMember member;
+    public final com.withus.withus.domain.member.entity.QMember member;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
@@ -66,8 +66,8 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public QNotice(Class<? extends Notice> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.club = inits.isInitialized("club") ? new com.withus.withus.club.entity.QClub(forProperty("club"), inits.get("club")) : null;
-        this.member = inits.isInitialized("member") ? new com.withus.withus.member.entity.QMember(forProperty("member")) : null;
+        this.club = inits.isInitialized("club") ? new com.withus.withus.domain.club.entity.QClub(forProperty("club"), inits.get("club")) : null;
+        this.member = inits.isInitialized("member") ? new com.withus.withus.domain.member.entity.QMember(forProperty("member")) : null;
     }
 
 }

@@ -39,6 +39,9 @@ body.dark-mode {
     height: 100%;
     margin: 0 auto;
 }
+.dark-mode .all-container{
+    background-color: #3a434d;
+}
 .club-introduce-title{
     font-size: 24px;
     font-weight: bold;
@@ -386,4 +389,31 @@ p {
     background-color: #454545;
     color: #ffffff;
 
+}
+/*tooltip*/
+#reviseTooltip{
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px #888888;
+}
+
+#deleteTooltip{
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px #888888;
+}
+
+#noticeTooltip{
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px #888888;
 }

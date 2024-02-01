@@ -1,4 +1,4 @@
-package com.withus.withus.member.entity;
+package com.withus.withus.domain.member.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QReportMember extends EntityPathBase<ReportMember> {
 
-    private static final long serialVersionUID = 379547250L;
+    private static final long serialVersionUID = -430044126L;
 
     public static final QReportMember reportMember = new QReportMember("reportMember");
 

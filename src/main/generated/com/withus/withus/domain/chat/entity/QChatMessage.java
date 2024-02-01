@@ -1,4 +1,4 @@
-package com.withus.withus.chat.entity;
+package com.withus.withus.domain.chat.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QChatMessage extends EntityPathBase<ChatMessage> {
 
-    private static final long serialVersionUID = -259824947L;
+    private static final long serialVersionUID = -1861147875L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -28,7 +28,7 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.withus.withus.member.entity.QMember sender;
+    public final com.withus.withus.domain.member.entity.QMember sender;
 
     public final DateTimePath<java.time.LocalDateTime> sendTime = createDateTime("sendTime", java.time.LocalDateTime.class);
 
@@ -51,7 +51,7 @@ public class QChatMessage extends EntityPathBase<ChatMessage> {
     public QChatMessage(Class<? extends ChatMessage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.chatRoom = inits.isInitialized("chatRoom") ? new QChatRoom(forProperty("chatRoom"), inits.get("chatRoom")) : null;
-        this.sender = inits.isInitialized("sender") ? new com.withus.withus.member.entity.QMember(forProperty("sender")) : null;
+        this.sender = inits.isInitialized("sender") ? new com.withus.withus.domain.member.entity.QMember(forProperty("sender")) : null;
     }
 
 }

@@ -10,13 +10,15 @@ import com.withus.withus.domain.comment.entity.ReportComment;
 import com.withus.withus.domain.comment.repository.CommentRepository;
 import com.withus.withus.domain.comment.repository.CommentReportRepository;
 import com.withus.withus.domain.notice.dto.PageableDto;
+import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.service.NoticeServiceImpl;
 import com.withus.withus.global.response.exception.BisException;
 import com.withus.withus.global.response.exception.ErrorCode;
 import com.withus.withus.domain.member.entity.Member;
-import com.withus.withus.domain.notice.entity.Notice;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -71,8 +73,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponseDto> getComment(Long noticeId, PageableDto pageableDto) {
-        List<Comment> commentList = commentRepository
+    public Page<CommentResponseDto> getComment(
+        Long noticeId,
+        PageableDto pageableDto
+    ) {
+        Page<Comment> commentPage = commentRepository
                 .findAllByIsActiveAndNoticeId(true,noticeId, PageableDto
                         .getsPageableDto(
                                 pageableDto.page(),
@@ -81,12 +86,7 @@ public class CommentServiceImpl implements CommentService {
                         ).toPageable()
                 );
 
-        List<CommentResponseDto> responseDtoList = new ArrayList<>();
-        for (Comment comment : commentList) {
-            responseDtoList.add(CommentResponseDto.createCommentResponseDto(comment));
-        }
-
-        return responseDtoList;
+        return commentPage.map(CommentResponseDto::createCommentResponseDto);
     }
 
     @Transactional

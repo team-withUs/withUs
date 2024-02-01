@@ -424,4 +424,6 @@ class ClubServiceImplTest {
         }
     }
 }
+
 */
+

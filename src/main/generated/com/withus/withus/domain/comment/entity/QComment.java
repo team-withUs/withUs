@@ -1,4 +1,4 @@
-package com.withus.withus.comment.entity;
+package com.withus.withus.domain.comment.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QComment extends EntityPathBase<Comment> {
 
-    private static final long serialVersionUID = -1250014288L;
+    private static final long serialVersionUID = 1192182112L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -33,12 +33,12 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final BooleanPath isActive = createBoolean("isActive");
 
-    public final com.withus.withus.member.entity.QMember member;
+    public final com.withus.withus.domain.member.entity.QMember member;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
 
-    public final com.withus.withus.notice.entity.QNotice notice;
+    public final com.withus.withus.domain.notice.entity.QNotice notice;
 
     public QComment(String variable) {
         this(Comment.class, forVariable(variable), INITS);
@@ -58,8 +58,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new com.withus.withus.member.entity.QMember(forProperty("member")) : null;
-        this.notice = inits.isInitialized("notice") ? new com.withus.withus.notice.entity.QNotice(forProperty("notice"), inits.get("notice")) : null;
+        this.member = inits.isInitialized("member") ? new com.withus.withus.domain.member.entity.QMember(forProperty("member")) : null;
+        this.notice = inits.isInitialized("notice") ? new com.withus.withus.domain.notice.entity.QNotice(forProperty("notice"), inits.get("notice")) : null;
     }
 
 }

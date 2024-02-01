@@ -1,4 +1,4 @@
-package com.withus.withus.comment.entity;
+package com.withus.withus.domain.comment.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QReportComment extends EntityPathBase<ReportComment> {
 
-    private static final long serialVersionUID = -554890468L;
+    private static final long serialVersionUID = -1183122228L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -28,7 +28,7 @@ public class QReportComment extends EntityPathBase<ReportComment> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.withus.withus.member.entity.QMember member;
+    public final com.withus.withus.domain.member.entity.QMember member;
 
     public QReportComment(String variable) {
         this(ReportComment.class, forVariable(variable), INITS);
@@ -49,7 +49,7 @@ public class QReportComment extends EntityPathBase<ReportComment> {
     public QReportComment(Class<? extends ReportComment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.comment = inits.isInitialized("comment") ? new QComment(forProperty("comment"), inits.get("comment")) : null;
-        this.member = inits.isInitialized("member") ? new com.withus.withus.member.entity.QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new com.withus.withus.domain.member.entity.QMember(forProperty("member")) : null;
     }
 
 }

@@ -1,4 +1,4 @@
-package com.withus.withus.club.entity;
+package com.withus.withus.domain.club.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QReportClub extends EntityPathBase<ReportClub> {
 
-    private static final long serialVersionUID = -788246L;
+    private static final long serialVersionUID = -1853559142L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -33,7 +33,7 @@ public class QReportClub extends EntityPathBase<ReportClub> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.withus.withus.member.entity.QMember member;
+    public final com.withus.withus.domain.member.entity.QMember member;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = _super.modifiedAt;
@@ -57,7 +57,7 @@ public class QReportClub extends EntityPathBase<ReportClub> {
     public QReportClub(Class<? extends ReportClub> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.club = inits.isInitialized("club") ? new QClub(forProperty("club"), inits.get("club")) : null;
-        this.member = inits.isInitialized("member") ? new com.withus.withus.member.entity.QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new com.withus.withus.domain.member.entity.QMember(forProperty("member")) : null;
     }
 
 }

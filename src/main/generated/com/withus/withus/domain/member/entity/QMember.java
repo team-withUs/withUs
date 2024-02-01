@@ -1,4 +1,4 @@
-package com.withus.withus.member.entity;
+package com.withus.withus.domain.member.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -16,13 +15,11 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QMember extends EntityPathBase<Member> {
 
-    private static final long serialVersionUID = 491804446L;
+    private static final long serialVersionUID = -788334386L;
 
     public static final QMember member = new QMember("member1");
 
     public final com.withus.withus.global.timestamp.QTimeStamp _super = new com.withus.withus.global.timestamp.QTimeStamp(this);
-
-    public final ListPath<com.withus.withus.club.entity.ClubMember, com.withus.withus.club.entity.QClubMember> clubMemberList = this.<com.withus.withus.club.entity.ClubMember, com.withus.withus.club.entity.QClubMember>createList("clubMemberList", com.withus.withus.club.entity.ClubMember.class, com.withus.withus.club.entity.QClubMember.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;

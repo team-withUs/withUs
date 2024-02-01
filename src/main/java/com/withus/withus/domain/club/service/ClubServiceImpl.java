@@ -20,6 +20,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClubServiceImpl implements ClubService {
@@ -42,19 +43,12 @@ public class ClubServiceImpl implements ClubService {
     private final ClubMemberService clubMemberService;
 
     @Override
-    @Transactional
     public ClubResponseDto createClub(ClubRequestDto clubRequestDto, Member member, MultipartFile image) {
+        validateClubCreation(clubRequestDto);
+
         LocalDateTime startTime = clubRequestDto.startTime();
         LocalDateTime endTime = clubRequestDto.endTime();
         try {
-            if (StringUtils.isBlank(clubRequestDto.clubTitle())) {
-                throw new BisException(ErrorCode.INVALID_VALUE);
-            }
-
-            if (startTime == null || endTime == null) {
-                throw new BisException(ErrorCode.INVALID_VALUE);
-            }
-
             String imageFile = null;
             String imageUrl = null;
             if (image != null) {
@@ -76,6 +70,7 @@ public class ClubServiceImpl implements ClubService {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("Error creating club", e);
             throw new BisException(ErrorCode.INVALID_VALUE);
         }
     }
@@ -136,7 +131,7 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     @Transactional
-    public String deleteClub(Long clubId, Member member) {
+    public void deleteClub(Long clubId, Member member) {
         validateClub(clubId, member);
 
         Club club = verifyMember(clubId);
@@ -147,7 +142,6 @@ public class ClubServiceImpl implements ClubService {
         }
 
         club.delete();
-        return "Club delete successfully";
     }
 
     private void validateClub(Long clubId, Member member) {
@@ -196,10 +190,19 @@ public class ClubServiceImpl implements ClubService {
         Page<Club> clubPage;
         if (keyWord.equals("ace245")) {
             if (category.equals(ClubCategory.ALL)) {
-                clubPage = clubRepository.findAllByIsActive(true, pageable);
-
+                clubPage = clubRepository.findAllByIsActiveAndMember_IsActive(
+                    true,
+                    true,
+                    pageable
+                );
+                
             } else {
-                clubPage = clubRepository.findByCategoryAndIsActive(category, true, pageable);
+                clubPage = clubRepository.findByCategoryAndIsActiveAndMember_IsActive(
+                    category,
+                    true,
+                    true,
+                    pageable
+                );
             }
 
         } else {
@@ -217,14 +220,30 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Integer count() {
+
         return clubRepository.countByIsActive(true);
     }
 
     public Club findClubById(Long clubId) {
-        return clubRepository.findById(clubId).
-                orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
+
+        return clubRepository.findById(clubId)
+             .orElseThrow(() -> new BisException(ErrorCode.NOT_FOUND_CLUB));
     }
 
+    private void validateClubCreation(ClubRequestDto clubRequestDto) {
+        if (StringUtils.isBlank(clubRequestDto.clubTitle())) {
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
+
+        LocalDateTime startTime = clubRequestDto.startTime();
+        LocalDateTime endTime = clubRequestDto.endTime();
+
+        if (startTime == null || endTime == null) {
+            throw new BisException(ErrorCode.INVALID_VALUE);
+        }
+
+    }
+    
     private Club verifyMember(Long clubId) {
 
         return clubRepository.findByIsActiveAndId(true, clubId)
