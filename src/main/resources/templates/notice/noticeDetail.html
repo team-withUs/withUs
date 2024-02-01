@@ -212,10 +212,9 @@
           url:'/api/notice/'+noticeId+'/comment',
           contentType: 'application/json',
           success:function (result){
-            const list = result.data;
+            const list = result.data.content;
 
             $(list).each(function (index,res){
-              console.log(index+" : "+res.username);
               let name = res.username;
               let comment = res.content;
               let id = res.id;
@@ -239,12 +238,46 @@
 
 
             });
-            const cntList = [[${countList}]];
-            $(cntList).each(function (index,res){
-              // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
+
+
+
+
+            $('#page').empty();
+            let cnt;
+            const cntList = [];
+            let total = result.data.totalElements;
+            console.log(total);
+            if(total === 0){
+              cnt = 0;
+              console.log("1cnt"+cnt);
+            } else if(total > 4){
+              if(total % 4 === 0){
+                cnt = Math.floor(total / 4);
+                console.log("2cnt"+cnt);
+              } else {
+                cnt = Math.floor(total / 4) + 1;
+                console.log("3cnt"+cnt);
+              }
+
+            } else {
+              cnt = 1;
+              console.log("4cnt"+cnt);
+            }
+            for(var i =0; i < cnt; i++){
+              cntList.push(i + 1);
+            }
+            $(cntList).each(function (index, res){
               const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
               $('#page').append(card);
             })
+
+
+            // const cntList = [[${countList}]];
+            // $(cntList).each(function (index,res){
+            //   // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
+            //   const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
+            //   $('#page').append(card);
+            // })
           },
           error:function (){
             alert("클럽 멤버가 아닙니다");
@@ -405,7 +438,7 @@
 
   function sendPage(pageNumber){
     const noticeId = [[${noticeId}]];
-    console.log(pageNumber);
+
 
     $('#comment').empty();
     $.ajax({
@@ -413,10 +446,9 @@
       url:'/api/notice/'+noticeId+'/comment?page='+pageNumber,
       contentType: 'application/json',
       success:function (result){
-        let list =result.data
+        let list =result.data.content;
         $(list).each(function (index,res){
-          console.log(index+" : "+res.username+"테스트");
-          console.log(list+"xxxx");
+
           let name = res.username;
           let comment = res.content;
           let id = res.id;

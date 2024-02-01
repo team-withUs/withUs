@@ -24,6 +24,7 @@ import com.withus.withus.domain.notice.repository.ReportRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,14 +32,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
+
     private final NoticeRepository noticeRepository;
+
     private final ReportRepository reportRepository;
+
     private final ClubServiceImpl clubService;
+
     private final ClubMemberServiceImpl clubMemberService;
 
-
     @Override
-    public NoticeResponseDto createNotice(Long clubId, NoticeRequestDto requestDto, Member member) {
+    public NoticeResponseDto createNotice (
+        Long clubId,
+        NoticeRequestDto requestDto,
+        Member member
+    ) {
         if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
         }
@@ -51,12 +59,18 @@ public class NoticeServiceImpl implements NoticeService {
 
         Notice createNotice = Notice.createNotice(requestDto, member, club, category);
         Notice saveNotice = noticeRepository.save(createNotice);
+
         return NoticeResponseDto.createNoticeResponseDto(saveNotice);
     }
 
     @Transactional
     @Override
-    public NoticeResponseDto updateNotice(Long clubId, Long noticeId, NoticeRequestDto requestDto, Member member) {
+    public NoticeResponseDto updateNotice (
+        Long clubId,
+        Long noticeId,
+        NoticeRequestDto requestDto,
+        Member member
+    ) {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
@@ -68,31 +82,42 @@ public class NoticeServiceImpl implements NoticeService {
                 category = NoticeCategory.NOTICE;
             }
             notice.update(requestDto, category);
+
             return NoticeResponseDto.createNoticeResponseDto(notice);
-        }
-        else {
+        } else {
             throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
         }
 
     }
 
     @Override
-    public NoticeResponseDto getNotice(Long clubId, Long noticeId, Member member) {
+    public NoticeResponseDto getNotice (
+        Long clubId,
+        Long noticeId,
+        Member member
+    ) {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
+
         Notice notice = findByIsActiveAndNoticeId(noticeId);
         if (!clubMemberService.existsClubMemberByMemberIdAndClubId(member.getId(), notice.getClub().getId())) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB_MEMBER_EXIST);
         }
+
         return NoticeResponseDto.createNoticeResponseDto(notice);
+
     }
 
     @Override
-    public List<NoticeResponseDto> getsNotice(Long clubId, PageableDto pageableDto) {
+    public List<NoticeResponseDto> getsNotice (
+        Long clubId,
+        PageableDto pageableDto
+    ) {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
+
         List<Notice> noticeList = noticeRepository
                 .findAllByIsActiveAndClubId(true,clubId, PageableDto.
                         getsPageableDto(
@@ -101,11 +126,11 @@ public class NoticeServiceImpl implements NoticeService {
                                 pageableDto.sortBy()
                         ).toPageable()
                 );
-        List<NoticeResponseDto> responseDtoList = new ArrayList<>();
-        for (Notice notice : noticeList) {
-            responseDtoList.add(NoticeResponseDto.createNoticeResponseDto(notice));
-        }
-        return responseDtoList;
+
+        return noticeList.stream()
+            .map(NoticeResponseDto::createNoticeResponseDto)
+            .collect(Collectors.toList());
+
     }
 
     @Override
@@ -115,15 +140,19 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Transactional
     @Override
-    public void deleteNotice(Long clubId, Long noticeId, Member member) {
+    public void deleteNotice(
+        Long clubId,
+        Long noticeId,
+        Member member
+    ) {
         if (!existsByClubId(clubId)) {
             throw new BisException(ErrorCode.NOT_FOUND_CLUB);
         }
+
         Notice notice = findByIsActiveAndNoticeId(noticeId);
         if(clubMemberService.existHost(member.getId(), clubId) || notice.getMember().getId().equals(member.getId())){
             notice.inActive();
-        }
-        else {
+        } else {
             throw new BisException(ErrorCode.YOUR_NOT_COME_IN);
         }
 
@@ -131,7 +160,11 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Transactional
     @Override
-    public void createReportNotice(Long noticeId, ReportRequestDto requestDto, Member member) {
+    public void createReportNotice(
+        Long noticeId,
+        ReportRequestDto requestDto,
+        Member member
+    ) {
         Notice notice = findByIsActiveAndNoticeId(noticeId);
         if (!reportRepository.existsByNoticeIdAndMemberId(notice.getId(), member.getId())) {
             reportRepository.save(ReportNotice.createReport(requestDto, member, notice));
