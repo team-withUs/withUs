@@ -155,12 +155,14 @@
                 <article class="club-button-container1">
                     <button id="reviseButton">
                         <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/update.png">
+                        <div id="reviseTooltip">수정</div>
                     </button>
 
                 </article>
                 <article class="club-button-container2">
                     <button id="deleteButton">
                         <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/cancel.png">
+                        <div id="deleteTooltip">삭제</div>
                     </button>
                 </article>
             </div>
@@ -170,6 +172,7 @@
             <div>
                 <button id="Notice-post" onclick="navigateToNoticeAddPage()">
                     <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/noties.png"/>
+                    <div id="noticeTooltip">공지글 작성</div>
                 </button>
                 <div>
                     <h1 class="Noitce"> Notice </h1>
@@ -203,7 +206,7 @@
                             url: '/api/club/' + clubId + '/notice',
                             contentType:'application/json',
                             success:function (result){
-                                const list = result.data;
+                                const list = result.data.content;
                                 $(list).each(function (index, res) {
                                     let title = res.title;
                                     let id = res.id;
@@ -213,25 +216,44 @@
                                         '</div>';
                                     $('#notice-box').append(card);
                                 });
+                                $('#page').empty();
+                                let cnt;
+                                const cntList = [];
+                                let total = result.data.totalElements;
+
+                                if (total === 0) {
+                                    cnt = 0;
+                                } else if (total > 4) {
+                                    cnt = total % 4 === 0 ? total / 4 : (total / 4 | 0) + 1;
+                                } else {
+                                    cnt = 1;
+                                }
+
+                                for (let i = 0; i < cnt; i++) {
+                                    cntList.push(i + 1);
+                                }
+
+                                $(cntList).each(function (index, res) {
+                                    const card = `<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage('${res}')">${res}</a></li>`;
+                                    $('#page').append(card);
+                                });
                             }
                         });
                     }
                     // var clubList = window.location.pathname.split('club/').pop().replace()
-                    const cntList = [[${countList}]];
                     // const cntList = /*[[${countList}]]*/ '';
-                    console.log(cntList)
-                    $(cntList).each(function (index,res){
-                        // const card = '<li class="page-item"><a class="page-link" href="@{api/notice/{noticeId}(noticeId=${'+noticeId+'})/comment(page=${'+res+'})}">'+res+'</a></li>';
-                        const card = '<li class="page-item" style="float: left"><a class="page-link" onclick="sendPage(\'' + res + '\')">'+res+'</a></li>';
-                        $('#page').append(card);
-                    })
-
                     if (memberId !== undefined && memberId !== null && memberId !== '') {
                         connectSse();
                     }
                 });
                 /*]]>*/
+                $("#Notice-post").on("mouseover", function () {
+                    $("#noticeTooltip").show();
+                });
 
+                $("#Notice-post").on("mouseout", function () {
+                    $("#noticeTooltip").hide();
+                });
                 function noticePage(noticeId){
                     var clubId = Number(window.location.pathname.split('club/').pop().replace(/[^0-9]/g, ''));
                     var memberId = [[${memberId}]];
@@ -254,7 +276,7 @@
                         url: '/api/club/' + clubId + '/notice?page=' + pageNumber,
                         contentType: 'application/json',
                         success: function (result) {
-                            const list = result.data;
+                            const list =result.data.content;
                             $(list).each(function (index, res) {
                                 let title = res.title;
                                 let id = res.id;
