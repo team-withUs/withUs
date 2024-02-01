@@ -22,4 +22,15 @@ $(document).ready(function () {
             });
         }
     });
+    $("#deleteButton").on("mouseover", function (e) {
+        $("#deleteTooltip").css({
+            top: e.pageY + 10,
+            left: e.pageX + 10
+        });
+        $("#deleteTooltip").show();
+    });
+
+    $("#deleteButton").on("mouseout", function (e) {
+        $("#deleteTooltip").hide();
+    });
 });

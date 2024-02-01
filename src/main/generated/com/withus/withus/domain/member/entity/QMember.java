@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -21,8 +20,6 @@ public class QMember extends EntityPathBase<Member> {
     public static final QMember member = new QMember("member1");
 
     public final com.withus.withus.global.timestamp.QTimeStamp _super = new com.withus.withus.global.timestamp.QTimeStamp(this);
-
-    public final ListPath<com.withus.withus.domain.club.entity.ClubMember, com.withus.withus.domain.club.entity.QClubMember> clubMemberList = this.<com.withus.withus.domain.club.entity.ClubMember, com.withus.withus.domain.club.entity.QClubMember>createList("clubMemberList", com.withus.withus.domain.club.entity.ClubMember.class, com.withus.withus.domain.club.entity.QClubMember.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;

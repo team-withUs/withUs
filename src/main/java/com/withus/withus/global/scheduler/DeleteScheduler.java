@@ -11,6 +11,7 @@ import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.member.repository.MemberRepository;
 import com.withus.withus.domain.notice.entity.Notice;
 import com.withus.withus.domain.notice.repository.NoticeRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +32,13 @@ public class DeleteScheduler {
   LocalDateTime realNow = LocalDateTime.now();
 
 
-  //매일 23시에 한번 1주일 지난거(isActive가 false 인것만) 삭제
-  @Scheduled(cron = "0 0 20 * * * ")
+  //매일 새벽 1시에 한번 1주일 지난거(isActive가 false 인것만) 삭제
+  @Scheduled(cron = "0 0 1 * * * ")
   public void deleteAutoOneWeek(){
     log.info(" ========== 삭제 스케줄러 ========== ");
-//    deleteClub();
-//    deleteNotice();
-//    deleteComment();
+    deleteClub();
+    deleteNotice();
+    deleteComment();
 
   }
   public void deleteMember(){
@@ -108,13 +109,11 @@ public class DeleteScheduler {
 
 
   public void deleteClub(){
-    log.info(" ========== 클럽 삭제 ========== ");
     List<Club> clubList = clubRepository.findAllByIsActive(false);
     if(!clubList.isEmpty()){
       for(int i=0; i < clubList.size(); i++){
         LocalDateTime oneWeek = clubList.get(i).getModifiedAt().plusDays(7);
         if(!realNow.isAfter(oneWeek)){
-          log.info("========remove============");
           clubList.remove(clubList.get(i));
         }
       }
@@ -144,36 +143,29 @@ public class DeleteScheduler {
 
 
   public void deleteNotice(){
-    log.info(" ========== 노티스 삭제 ========== ");
     List<Notice> noticeList = noticeRepository.findAllByIsActive(false);
     if(!noticeList.isEmpty()){
-      log.info("deleteNotice처음===================="+noticeList.size());
       for(int i=0; i < noticeList.size(); i++){
         LocalDateTime oneWeek = noticeList.get(i).getModifiedAt().plusDays(7);
         if(!realNow.isAfter(oneWeek)){
-          log.info("========remove============");
           noticeList.remove(noticeList.get(i));
         }
       }
 
       if(!noticeList.isEmpty()){
-        log.info("deleteNotice중간===================="+noticeList.size());
         for(Notice notice : noticeList){
           List<Comment> commentList = commentRepository.findAllByNoticeId(notice.getId());
           if(!commentList.isEmpty()){
-            log.info("========commentList============"+commentList.size());
            commentRepository.deleteAllInBatch(commentList);
           }
         }
         noticeRepository.deleteAllInBatch(noticeList);
       }
     }
-    log.info("deleteNotice마지막===================="+noticeList.size());
 
   }
 
   public void deleteComment(){
-    log.info(" ========== 댓글 삭제 ========== ");
     List<Comment> commentList = commentRepository.findAllByIsActive(false);
     if(!commentList.isEmpty()){
       for(int i=0; i < commentList.size(); i++){

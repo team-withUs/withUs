@@ -12,7 +12,7 @@ function connectSse(){
 
         setTimeout(() => {
           notification.close();
-        }, 10 * 1000*60);
+        }, 10*100*30);
       }
 
       let granted = false;
@@ -41,7 +41,7 @@ function connectSse(){
 
         setTimeout(() => {
           notification.close();
-        }, 60 * 1000 * 60);
+        }, 10*100*30);
 
         notification.addEventListener('click', () => {
           notification.close();

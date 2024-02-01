@@ -30,7 +30,7 @@
             transition: border-width 0.3s;
         }
         .card:hover {
-            border: 2px solid #556976; /* 테두리 두께와 색상 설정 */
+            border: 2px solid #556976;
         }
 
         .create {
@@ -179,15 +179,6 @@
             margin-left: 10px;
             float: left;
         }
-
-
-        /*.img-fluid {*/
-        /*  display: flex;*/
-        /*  flex-direction: column;*/
-        /*  align-items: center;*/
-        /*  justify-content: center;*/
-        /*  border-radius: 20px;*/
-        /*}*/
 
         .cardText {
             padding-top: 15px;
@@ -339,26 +330,86 @@
                 $("#myclub").hide();
             }
 
+            // 로그인
             $("#loginBtn").on("click", function (e) {
                 window.location.href = '/api/member/loginPage';
             });
 
+            //채팅
             $("#chatting").on("click", function(e) {
               window.location.href = '/api/chat/member/' + memberId + '/chatRoomListPage';
             });
+            $("#chatting").on("mouseover", function (e) {
+                $("#tooltip2").css({
+                    top: e.pageY + 10,
+                    left: e.pageX + 10
+                });
+                $("#tooltip2").show();
+            });
 
+            $("#chatting").on("mouseout", function (e) {
+                $("#tooltip2").hide();
+            });
+
+            $("#chatting").on("click", function (e) {
+                getMyClubs();
+            });
+
+            // myPage
             $("#myInfo").on("click", function (e) {
                 window.location.href = '/api/member/' + memberId + '/profilePage';
             });
+            $("#myInfo").on("mouseover", function (e) {
+                $("#tooltip1").css({
+                    top: e.pageY + 10,
+                    left: e.pageX + 10
+                });
+                $("#tooltip1").show();
+            });
 
+            $("#myInfo").on("mouseout", function (e) {
+                $("#tooltip1").hide();
+            });
+
+            $("#myInfo").on("click", function (e) {
+                getMyClubs();
+            });
+
+            // 클럽 생성
             $("#create").on("click", function (e) {
                 window.location.href = '/api/club/post-club';
             });
 
+            $("#create").on("mouseover", function (e) {
+                $("#tooltip").css({
+                    top: e.pageY + 10,
+                    left: e.pageX + 10
+                });
+                $("#tooltip").show();
+            });
+
+            $("#create").on("mouseout", function (e) {
+                $("#tooltip").hide();
+            });
+            // 내 클럽 조회
             $("#myclub").on("click", function (e) {
                 getMyClubs();
             });
 
+            $("#myclub").on("mouseover", function (e) {
+                $("#tooltip3").css({
+                    top: e.pageY + 10,
+                    left: e.pageX + 10
+                });
+
+                $("#tooltip3").show();
+            });
+
+            $("#myclub").on("mouseout", function (e) {
+                $("#tooltip3").hide();
+            });
+
+            // 로그아웃
             $("#logout").on("click", function (e) {
                 var confirmLogout = window.confirm('로그아웃 하시겠습니까?');
 
@@ -376,8 +427,6 @@
                             console.error('로그아웃 요청 API 에러', error);
                         })
 
-                } else {
-                    alert('로그아웃 취소');
                 }
 
             });
@@ -863,16 +912,41 @@
                         style="float: left; cursor: pointer; margin-top: 5px ">withUs</h2>
                 </div>
                 <div class="title2" style="float: right; display: flex; align-items: center; gap: 20px;">
-                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myclub.png" id="myclub" class="my-info"
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myclub.png"
+                         id="myclub" class="my-info"
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/message.png" id="chatting" class="chat-icon"
-                         style="float: left; cursor: pointer; display: none; width: 35px; height: 35px; margin-right: 5px; margin-top: 5px">
+                    <div id="tooltip3"
+                         style="display: none; position: absolute; background-color: #fff;
+                         padding: 5px; border: 1px solid #ccc; box-shadow: 2px 2px 5px #888888;">
+                        내 클럽 목록</div>
+
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/message.png"
+                         id="chatting" class="chat-icon"
+                         style="float: left; cursor: pointer; display: none; width: 35px;
+                         height: 35px; margin-right: 5px; margin-top: 5px">
+                    <div id="tooltip2" style="display: none; position: absolute; background-color: #fff;
+                    padding: 5px; border: 1px solid #ccc; box-shadow: 2px 2px 5px #888888;">
+                        채팅</div>
+
                     <h2 class="login" id="loginBtn" style="float: left; cursor: pointer; margin-top: 5px">login</h2>
-                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/create.png" id="create" class="create"
+
+                    <!-- 클럽 생성 -->
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/create.png"
+                         id="create" class="create"
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myInfo.png" id="myInfo" class="my-info"
+                    <div id="tooltip" style="display: none; position: absolute; background-color: #fff;
+                    padding: 5px; border: 1px solid #ccc; box-shadow: 2px 2px 5px #888888;">
+                        클럽 생성</div>
+
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/myInfo.png"
+                         id="myInfo" class="my-info"
                          style="cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
-                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/arrow_10940959.png" id="logout" class="my-info"
+                    <div id="tooltip1" style="display: none; position: absolute; background-color: #fff;
+                    padding: 5px; border: 1px solid #ccc; box-shadow: 2px 2px 5px #888888;">
+                        MyPage</div>
+
+                    <img src="https://sparta-withus.s3.ap-northeast-2.amazonaws.com/image/icon/arrow_10940959.png"
+                         id="logout" class="my-info"
                          style="float: right; cursor: pointer; width: 35px; height: 35px; margin-top: 5px">
                 </div>
             </div>

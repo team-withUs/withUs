@@ -92,8 +92,6 @@
           console.error('로그아웃 요청 API 에러', error);
         })
 
-      } else {
-        alert('로그아웃 취소');
       }
     });
 
@@ -310,30 +308,6 @@
              id="username"
              minlength="3" maxlength="12"
              placeholder="이름을 입력해주세요.">
-    </div>
-    <div>
-      <div>
-        <form class="row g-1" method="post" onsubmit="return false">
-          <div class="col-lg-9" style="float:left; margin-top: 20px">
-            <input type="text"
-                   class="form-control form-control"
-                   name="email"
-                   id="email"
-                   placeholder="이메일을 입력해 주세요">
-          </div>
-          <div>
-            <button type="button"
-                    class="btn btn-primary col-auto" onclick="authenticationEmail()">인증
-            </button>
-          </div>
-        </form>
-      </div>
-      <div style="padding: 5px ">
-        <input class="form-control form-control-lg"
-               type="text"
-               id="code"
-               placeholder="인증번호를 입력해주세요. -> 777777입력시 인증과정이 생략됩니다.">
-      </div>
     </div>
     <div class="tag">
       <p id="tagList">태그 : </p>

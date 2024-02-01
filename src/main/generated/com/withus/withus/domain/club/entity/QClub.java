@@ -52,8 +52,6 @@ public class QClub extends EntityPathBase<Club> {
 
     public final DateTimePath<java.time.LocalDateTime> startTime = createDateTime("startTime", java.time.LocalDateTime.class);
 
-    public final StringPath username = createString("username");
-
     public QClub(String variable) {
         this(Club.class, forVariable(variable), INITS);
     }
