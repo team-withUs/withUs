@@ -8,13 +8,14 @@ import com.withus.withus.domain.notice.dto.PageableDto;
 import com.withus.withus.domain.member.entity.Member;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface CommentService {
     CommentResponseDto createComment(Long noticeId, CommentRequestDto commentRequestDto, Member member);
 
     CommentResponseDto updateComment(Long noticeId, Long commentId, CommentRequestDto commentRequestDto, Member member);
 
-    List<CommentResponseDto> getComment(Long noticeId, PageableDto pageableDto);
+    Page<CommentResponseDto> getComment(Long noticeId, PageableDto pageableDto);
 
     void deleteComment(Long noticeId, Long commentId, Member member, CommentDeleteRequestDto commentDeleteRequestDto);
 

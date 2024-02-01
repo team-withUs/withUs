@@ -25,7 +25,6 @@ public class NoticeController {
 
   private final NoticeService noticeService;
 
-
   @PostMapping("/club/{clubId}/notice")
   public ResponseEntity<CommonResponse<NoticeResponseDto>> createNotice(
       @PathVariable("clubId") Long clubId,
