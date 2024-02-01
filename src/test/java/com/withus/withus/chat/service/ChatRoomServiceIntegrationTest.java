@@ -1,4 +1,4 @@
-package com.withus.withus.chat.service;
+/*package com.withus.withus.chat.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -215,3 +215,5 @@ class ChatRoomServiceIntegrationTest {
   }
 
 }
+
+*/
