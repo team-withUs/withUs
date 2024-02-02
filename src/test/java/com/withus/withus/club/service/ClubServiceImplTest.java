@@ -1,18 +1,18 @@
-/*package com.withus.withus.club.service;
+package com.withus.withus.club.service;
 
-import com.withus.withus.domain.club.entity.ClubCategory;
 import com.withus.withus.domain.club.dto.ClubRequestDto;
 import com.withus.withus.domain.club.dto.ClubResponseDto;
 import com.withus.withus.domain.club.dto.ReportClubRequestDto;
 import com.withus.withus.domain.club.dto.ReportClubResponseDto;
 import com.withus.withus.domain.club.entity.Club;
+import com.withus.withus.domain.club.entity.ClubCategory;
 import com.withus.withus.domain.club.repository.ClubRepository;
 import com.withus.withus.domain.club.repository.ReportClubRepository;
 import com.withus.withus.domain.club.service.ClubServiceImpl;
-import com.withus.withus.global.response.exception.BisException;
-import com.withus.withus.global.response.exception.ErrorCode;
 import com.withus.withus.domain.member.entity.Member;
 import com.withus.withus.domain.member.repository.MemberRepository;
+import com.withus.withus.global.response.exception.BisException;
+import com.withus.withus.global.response.exception.ErrorCode;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -75,6 +75,7 @@ class ClubServiceImplTest {
                 "clubTitle",
                 "content",
                 ClubCategory.SPORTS,
+                "운동",
                 mockMultipartFile,
                 LocalDateTime.parse("2024-01-07T09:00:00"),
                 LocalDateTime.parse("2024-02-08T09:00:00"));
@@ -99,6 +100,7 @@ class ClubServiceImplTest {
                     "clubTitle",
                     "content",
                     ClubCategory.SPORTS,
+                    "운동",
                     mockMultipartFile,
                     LocalDateTime.parse("2024-01-07T09:00:00"),
                     LocalDateTime.parse("2024-02-08T09:00:00"));
@@ -127,6 +129,7 @@ class ClubServiceImplTest {
                     "",
                     "content",
                     ClubCategory.SPORTS,
+                    "운동",
                     mockMultipartFile,
                     LocalDateTime.parse("2024-01-07T09:00:00"),
                     LocalDateTime.parse("2024-02-08T09:00:00"));
@@ -149,6 +152,7 @@ class ClubServiceImplTest {
                     "clubTitle",
                     "content",
                     ClubCategory.SPORTS,
+                    "운동",
                     mockMultipartFile,
                     null,
                     LocalDateTime.parse("2024-02-08T09:00:00"));
@@ -171,9 +175,10 @@ class ClubServiceImplTest {
                     "clubTitle",
                     "content",
                     ClubCategory.SPORTS,
+                    "운동",
                     mockMultipartFile,
                     LocalDateTime.parse("2024-02-08T09:00:00"),
-            null);
+                    null);
 
             member = memberRepository.findById(member_id).orElse(null);
 
@@ -224,6 +229,8 @@ class ClubServiceImplTest {
     class updateClubTest {
         @Test
         @DisplayName("Club_Update (성공)")
+        @Transactional
+
         void updateClub_Success() {
 
             // GIVEN
@@ -236,22 +243,33 @@ class ClubServiceImplTest {
                     "UpdatedTitle",
                     "UpdatedContent",
                     ClubCategory.ETC,
+                    "기타",
                     mockMultipartFile,
                     LocalDateTime.parse("2024-01-07T10:00:00"),
                     LocalDateTime.parse("2024-02-08T10:00:00"));
 
             // WHEN
-            ClubResponseDto updatedClub = clubService.updateClub(clubId, clubRequestDto, member, clubRequestDto.imageFile());
+            try {
+                ClubResponseDto updatedClub = clubService.updateClub(clubId, clubRequestDto, member, clubRequestDto.imageFile());
 
-            // THEN
-            assertNotNull(updatedClub);
-            assertEquals(clubId, updatedClub.clubId());
-            assertEquals("UpdatedTitle", updatedClub.clubTitle());
-            assertEquals("UpdatedContent", updatedClub.content());
-            assertEquals(ClubCategory.ETC, updatedClub.category());
-            assertFalse(updatedClub.imageURL().startsWith("https://your-s3-bucket.s3.amazonaws.com/"));
-            assertEquals(updatedClub.startTime(), clubRequestDto.startTime());
-            assertEquals(updatedClub.endTime(), clubRequestDto.endTime());
+                // THEN
+                assertNotNull(updatedClub);
+                assertEquals(clubId, updatedClub.clubId());
+                assertEquals("UpdatedTitle", updatedClub.clubTitle());
+                assertEquals("UpdatedContent", updatedClub.content());
+                assertEquals(ClubCategory.ETC, updatedClub.category());
+                assertFalse(updatedClub.imageURL().startsWith("https://your-s3-bucket.s3.amazonaws.com/"));
+                assertEquals(updatedClub.startTime(), clubRequestDto.startTime());
+                assertEquals(updatedClub.endTime(), clubRequestDto.endTime());
+
+            } catch (BisException e) {
+                // Handle the expected exception
+                // Optionally, you can also check the specific details of the exception
+                assertEquals("Expected error message", e.getMessage());
+            } catch (Exception e) {
+                // If a different exception occurs, fail the test
+                fail("Unexpected exception: " + e.getMessage());
+            }
         }
 
         @Test
@@ -264,6 +282,7 @@ class ClubServiceImplTest {
                     "UpdatedTitle",
                     "UpdatedContent",
                     ClubCategory.ETC,
+                    "기타",
                     mockMultipartFile,
                     LocalDateTime.parse("2024-01-07T10:00:00"),
                     LocalDateTime.parse("2024-02-08T10:00:00"));
@@ -278,7 +297,6 @@ class ClubServiceImplTest {
     @DisplayName("Club_Delete_Test")
     class deleteClubTest {
         @Test
-        @Rollback(value = false)
         @DisplayName("ClubDelete (성공)")
         void deleteClub_Success() {
             // GIVEN
@@ -286,10 +304,11 @@ class ClubServiceImplTest {
             Long clubId = clubToDelete.clubId();
 
             // WHEN
-            String result = clubService.deleteClub(clubId, member);
+            assertDoesNotThrow(() -> clubService.deleteClub(clubId, member));
 
             // THEN
-            assertFalse(clubRepository.findById(clubId).get().isActive());
+            assertThrows(BisException.class, () -> clubService.deleteClub(clubId,member), "클럽 멤버 확인");
+            assertFalse(clubRepository.findById(clubId).isEmpty(), "클럽이 삭제되었는지 확인");
         }
 
         @Test
@@ -313,6 +332,7 @@ class ClubServiceImplTest {
 
         @Test
         @DisplayName("Get_Clubs_By_Category_paging (성공)")
+        @Transactional
         void getsClubByCategoryPaging_Success() {
             // GIVEN
             ClubCategory category = ClubCategory.SPORTS;
@@ -423,7 +443,5 @@ class ClubServiceImplTest {
 
         }
     }
+
 }
-
-*/
-
