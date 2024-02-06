@@ -508,6 +508,7 @@ class MemberServiceImplIntegrationTest {
                     reporterMember.getId(),
                     2L)
             );
+
         }
 
         @Test
