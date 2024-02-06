@@ -37,7 +37,7 @@ public class DeleteScheduler {
   LocalDateTime realNow = LocalDateTime.now();
 
 
-  //매일 새벽 1시에 한번 1주일 지난거(isActive가 false 인것만) 삭제
+  //매일 새벽 2시에 한번 1주일 지난거(isActive가 false 인것만) 삭제
   @Scheduled(cron = "0 0 2 * * * ")
   public void deleteAutoOneWeek(){
     log.info(" ========== 삭제 스케줄러 ========== ");
