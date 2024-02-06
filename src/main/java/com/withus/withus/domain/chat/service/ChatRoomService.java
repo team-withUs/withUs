@@ -109,6 +109,18 @@ public class ChatRoomService {
     }
   }
 
+  public String findSender(Long roomId, Long loginId ) {
+    ChatRoom chatRoom = findChatRoom(roomId);
+    Long senderId = chatRoom.getSender().getId();
+    Long receiverId = chatRoom.getReceiver().getId();
+
+    if (senderId.equals(loginId)) {
+      return memberService.findMemberByMemberId(senderId).getUsername();
+    } else {
+      return memberService.findMemberByMemberId(receiverId).getUsername();
+    }
+  }
+
 
 
 

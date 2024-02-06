@@ -49,19 +49,19 @@ public class NotificationService {
 
   }
 
-  public void notifyMessage(Long memberId){
+  public void notifyMessage(Long receiverId, String sender){
 
-    if(NotificationController.sseEmitters.containsKey(memberId)){
-      SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(memberId);
+    if(NotificationController.sseEmitters.containsKey(receiverId)){
+      SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(receiverId);
 
       try{
         sseEmitterReceiver.send(SseEmitter
             .event()
             .name("message")
-            .data("채팅메세지가 도착했습니다."));
+            .data(sender+"님으로부터 채팅메세지가 도착했습니다."));
 
       } catch (IOException e){
-        NotificationController.sseEmitters.remove(memberId);
+        NotificationController.sseEmitters.remove(receiverId);
       }
     }
 
