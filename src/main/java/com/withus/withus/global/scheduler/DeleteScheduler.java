@@ -23,19 +23,25 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DeleteScheduler {
+
   private final MemberRepository memberRepository;
+
   private final ClubRepository clubRepository;
+
   private final ClubMemberRepository clubMemberRepository;
+
   private final NoticeRepository noticeRepository;
+
   private final CommentRepository commentRepository;
 
   LocalDateTime realNow = LocalDateTime.now();
 
 
-  //매일 새벽 1시에 한번 1주일 지난거(isActive가 false 인것만) 삭제
-  @Scheduled(cron = "0 0 1 * * * ")
+  //매일 새벽 2시에 한번 1주일 지난거(isActive가 false 인것만) 삭제
+  @Scheduled(cron = "0 0 2 * * * ")
   public void deleteAutoOneWeek(){
     log.info(" ========== 삭제 스케줄러 ========== ");
+    deleteMember();
     deleteClub();
     deleteNotice();
     deleteComment();
@@ -90,17 +96,17 @@ public class DeleteScheduler {
 
 
 
-
+            if(!clubMemberList.isEmpty()){
+              clubMemberRepository.deleteAllInBatch(clubMemberList);
+            }
             clubRepository.deleteAllInBatch(clubList);
           }
-          if(!clubMemberList.isEmpty()){
-            clubMemberRepository.deleteAllInBatch(clubMemberList);
-          }
+
         }
       }
 
 
-
+      memberRepository.deleteAllInBatch(memberList);
 
 
     }
