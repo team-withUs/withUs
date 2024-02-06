@@ -123,7 +123,6 @@ public class Club extends TimeStamp {
         return this.imageURL;
     }
 
-
     public Member getAuthor() {
         return this.member;
     }
