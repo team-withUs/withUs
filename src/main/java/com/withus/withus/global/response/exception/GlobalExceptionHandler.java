@@ -51,6 +51,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e, HttpServletRequest request){
         slackService.sendSlackAlertLog(e,request);
-        return ResponseEntity.status(500).body(ErrorCode.INTERNAL_SERVER_ERROR.getMsg());
+        return ResponseEntity.status(500).body(e.getMessage());
     }
 }

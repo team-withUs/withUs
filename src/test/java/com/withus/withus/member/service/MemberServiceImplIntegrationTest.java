@@ -1,4 +1,4 @@
-/*package com.withus.withus.member.service;
+package com.withus.withus.member.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,6 +11,7 @@ import com.withus.withus.domain.club.repository.ClubMemberRepository;
 import com.withus.withus.domain.club.repository.ClubRepository;
 import com.withus.withus.domain.club.service.ClubMemberServiceImpl;
 import com.withus.withus.domain.club.service.ClubServiceImpl;
+import com.withus.withus.domain.member.dto.PasswordRequestDto;
 import com.withus.withus.domain.member.service.MemberServiceImpl;
 import com.withus.withus.global.config.EmailConfig;
 import com.withus.withus.global.response.exception.BisException;
@@ -317,6 +318,61 @@ class MemberServiceImplIntegrationTest {
     }
 
     @Nested
+    @DisplayName("비밀번호 수정 테스트")
+    class updatePassword{
+      @BeforeEach
+      void setMember() {
+        member = Member.createMember(
+            loginname,
+            password,
+            email,
+            username
+        );
+      }
+
+      @Test
+      @DisplayName("비밀번호 수정 성공")
+      @Transactional
+      void updatePassword_success(){
+        //given
+        Member updatedMember = memberRepository.save(member);
+        PasswordRequestDto passwordRequestDto = new PasswordRequestDto("newPassword");
+
+        //when
+        memberService.updatePassword(updatedMember.getId(),passwordRequestDto, updatedMember);
+
+        //then
+        Assertions.assertTrue(passwordEncoder.matches(
+            passwordRequestDto.password()
+            ,updatedMember.getPassword()
+        ));
+      }
+
+      @Test
+      @DisplayName("비밀번호 수정 실패 - 동일한 비밀번호")
+      @Transactional
+      void updatePassword_notChangedPassword(){
+        //given
+        redisService.setValues("AuthCode " + email, authCode, Duration.ofMillis(300000));
+        memberService.signup(signupRequestDto);
+        Member updatedMember = memberService.findMemberByMemberEmail(signupRequestDto.email());
+        PasswordRequestDto passwordRequestDto = new PasswordRequestDto(password);
+
+        //when
+        BisException e = Assertions.assertThrows(BisException.class,
+            () -> memberService.updatePassword(
+                updatedMember.getId(),
+                passwordRequestDto,
+                updatedMember
+            )
+        );
+
+        //then
+        assertEquals(e.getErrorCode(), ErrorCode.NOT_CHANGED_PASSWORD);
+      }
+    }
+
+    @Nested
     @DisplayName("회원 탈퇴 테스트")
     class deleteMember {
         @BeforeEach
@@ -505,6 +561,7 @@ class MemberServiceImplIntegrationTest {
                     "클럽 이름",
                     "클럽 소개",
                     ClubCategory.SPORTS,
+                    "운동",
                     file,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -619,6 +676,7 @@ class MemberServiceImplIntegrationTest {
                     "클럽 이름",
                     "클럽 소개",
                     ClubCategory.SPORTS,
+                    "운동",
                     file,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -628,6 +686,7 @@ class MemberServiceImplIntegrationTest {
                     "클럽 이름2",
                     "클럽 소개2",
                     ClubCategory.SPORTS,
+                    "운동",
                     file,
                     LocalDateTime.now(),
                     LocalDateTime.now()
@@ -653,4 +712,3 @@ class MemberServiceImplIntegrationTest {
         }
     }
 }
-*/
