@@ -47,8 +47,9 @@ public class ChatMessageController {
   ) {
     simpMessagingTemplate.convertAndSend("/room/api/chat/chatRoom/" + roomId + "/message", messageDto);
     Long receiverId = chatRoomService.findReceiverId(roomId, messageDto.getSenderId());
+    String sender = chatRoomService.findSender(roomId, messageDto.getSenderId());
 
-    notificationService.notifyMessage(receiverId);
+    notificationService.notifyMessage(receiverId, sender);
   }
 
   @GetMapping("/api/chat/chatRoom/{roomId}/message")
