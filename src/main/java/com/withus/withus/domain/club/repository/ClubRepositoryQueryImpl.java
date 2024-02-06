@@ -19,7 +19,6 @@ public class ClubRepositoryQueryImpl implements ClubRepositoryQuery {
   @Override
   public Page<Club> search(String keyWord, boolean isActive,String searchCategory, Pageable pageable, ClubCategory category) {
 
-
     List<Club> list = jpaQueryFactory
         .select(club)
         .from(club)
