@@ -188,7 +188,7 @@ public class ClubServiceImpl implements ClubService {
         String searchCategory
     ) {
         Page<Club> clubPage;
-        if (keyWord.equals("ace245")) {
+        if (keyWord.equals("ace245") || keyWord.isBlank()) {
             if (category.equals(ClubCategory.ALL)) {
                 clubPage = clubRepository.findAllByIsActiveAndMember_IsActive(
                     true,
