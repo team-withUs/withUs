@@ -15,9 +15,18 @@ LoL를 같이할 멤버가 필요할때!
 ### [withUs 바로가기](https://withus.life/)
 
 ---
+## 영상 
+
+## MVP
+
+#### 클럽
+![시연영상](https://github.com/team-withUs/withUs/assets/134623719/766a7feb-3770-4fea-9ff9-b8f98fe7a66e)
+##### 채팅/알람
+![시연영상 (1)](https://github.com/team-withUs/withUs/assets/134623719/f24c1b1a-293a-49d0-b11b-2fd08c564ded)
+##### 탈퇴/게시글
+![시연영상 (2)](https://github.com/team-withUs/withUs/assets/134623719/d4d22763-e8b1-4092-9151-40ea4eeda249)
 
 ## 아키텍처
-
 
 ![아키텍처](https://github.com/team-withUs/withUs/assets/146637795/6dd640e9-32fe-4801-a0d2-f9462d87569a)
 
